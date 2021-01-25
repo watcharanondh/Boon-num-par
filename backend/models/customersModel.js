@@ -22,15 +22,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(50),
       allowNull: false,
     },
-    type_id : {
+    type_id: {
       type: DataTypes.INTEGER(10),
       allowNull: false,
     },
-    address : {
+    address: {
       type: DataTypes.INTEGER(10),
       allowNull: false,
     },
-    district_id  : {
+    district_id: {
       type: DataTypes.INTEGER(10),
       allowNull: false,
     },
@@ -43,29 +43,36 @@ module.exports = (sequelize, DataTypes) => {
       field: "updated_at",
       type: DataTypes.DATE,
       allowNull: true,
-      default: null,
+      defaultValue: null,
     },
     created_user: {
       type: DataTypes.INTEGER(10),
       allowNull: true,
-      default: null,
+      defaultValue: null,
     },
     updated_user: {
       type: DataTypes.INTEGER(10),
       allowNull: true,
-      default: null,
+      defaultValue: null,
     },
     is_active: {
       type: DataTypes.INTEGER(1),
       allowNull: false,
-      default: 1,
+      defaultValue: 1,
     },
-    is_detele: {
+    is_delete: {
       type: DataTypes.INTEGER(1),
       allowNull: false,
-      default: 0,
+      defaultValue: 0,
     },
   });
+
+  customers.associate = models => {
+    customers.belongsTo(models.districts, { foreignKey: "district_id" });
+    customers.belongsTo(models.customer_types, { foreignKey: "type_id" });
+    customers.hasMany(models.customer_tax_invoices, { foreignKey: "id" });
+    customers.hasMany(models.quotations, { foreignKey: "id" });
+  };
 
   return customers;
 };

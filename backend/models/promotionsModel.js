@@ -22,29 +22,31 @@ module.exports = (sequelize, DataTypes) => {
       field: "updated_at",
       type: DataTypes.DATE,
       allowNull: true,
-      default: null,
+      defaultValue: null,
     },
     created_user: {
       type: DataTypes.INTEGER(10),
       allowNull: true,
-      default: null,
+      defaultValue: null,
     },
     updated_user: {
       type: DataTypes.INTEGER(10),
       allowNull: true,
-      default: null,
+      defaultValue: null,
     },
     is_active: {
       type: DataTypes.INTEGER(1),
       allowNull: false,
-      default: 1,
+      defaultValue: 1,
     },
-    is_detele: {
+    is_delete: {
       type: DataTypes.INTEGER(1),
       allowNull: false,
-      default: 0,
+      defaultValue: 0,
     },
   });
-
+  promotions.associate = models => {
+    promotions.hasMany(models.quotation_promotions, { foreignKey: "id" });
+  };
   return promotions;
 };

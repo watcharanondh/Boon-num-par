@@ -5,7 +5,9 @@ const router = express.Router();
 const UserControllers = require("../controllers/users");
 
 /* User Login */
-router.get("/login", UserControllers.list_user_login);
-router.get("/fdst/:id", UserControllers.finddistricts);
+router.post("/login", UserControllers.User_login);
+
+/* User Register*/
+router.post("/regis", UserControllers.User_Register);
 
 module.exports = router;

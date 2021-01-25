@@ -43,19 +43,27 @@ module.exports = (sequelize, DataTypes) => {
       field: "updated_at",
       type: DataTypes.DATE,
       allowNull: true,
-      default: null,
+      defaultValue: null,
     },
     created_user: {
       type: DataTypes.INTEGER(10),
       allowNull: true,
-      default: null,
+      defaultValue: null,
     },
     updated_user: {
       type: DataTypes.INTEGER(10),
       allowNull: true,
-      default: null,
+      defaultValue: null,
     }
   });
+  districts.associate = models => {
+    districts.hasMany(models.customers, {
+      foreignKey: "id"
+    });
+    districts.hasMany(models.customer_tax_invoices, {
+      foreignKey: "id"
+    });
+  };
 
   return districts;
 };

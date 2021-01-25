@@ -37,14 +37,11 @@ module.exports = (sequelize, DataTypes) => {
     profile_url: {
       type: DataTypes.STRING(255),
       allowNull: true,
-      default: null,
+      defaultValue: null,
     },
     remember_token: {
       type: DataTypes.STRING(255),
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
     },
     createdAt: {
       field: "created_at",
@@ -55,38 +52,38 @@ module.exports = (sequelize, DataTypes) => {
       field: "updated_at",
       type: DataTypes.DATE,
       allowNull: true,
-      default: null,
+      defaultValue: null,
     },
     created_user: {
       type: DataTypes.INTEGER(10),
       allowNull: true,
-      default: null,
+      defaultValue: null,
     },
     updated_user: {
       type: DataTypes.INTEGER(10),
       allowNull: true,
-      default: null,
+      defaultValue: null,
     },
     last_login: {
       type: DataTypes.DATE,
       allowNull: true,
-      default: null,
+      defaultValue: null,
     },
     is_active: {
       type: DataTypes.INTEGER(1),
       allowNull: false,
-      default: 1,
+      defaultValue: 1,
     },
-    is_detele: {
+    is_delete: {
       type: DataTypes.INTEGER(1),
       allowNull: false,
-      default: 0,
+      defaultValue: 0,
     },
   });
 
-  users.associate = (models) => {
+  users.associate = models => {
     users.belongsTo(models.roles, {
-      foreignKey: "role_id ",
+      foreignKey: "role_id"
     });
   };
 

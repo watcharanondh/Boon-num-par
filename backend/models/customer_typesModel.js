@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     name: {
       type: DataTypes.STRING(255),
       allowNull: true,
-      default: null
+      defaultValue: null
     },
     createdAt: {
       field: "created_at",
@@ -20,29 +20,31 @@ module.exports = (sequelize, DataTypes) => {
       field: "updated_at",
       type: DataTypes.DATE,
       allowNull: true,
-      default: null,
+      defaultValue: null,
     },
     created_user: {
       type: DataTypes.INTEGER(10),
       allowNull: true,
-      default: null,
+      defaultValue: null,
     },
     updated_user: {
       type: DataTypes.INTEGER(10),
       allowNull: true,
-      default: null,
+      defaultValue: null,
     },
     is_active: {
       type: DataTypes.INTEGER(1),
       allowNull: false,
-      default: 1,
+      defaultValue: 1,
     },
-    is_detele: {
+    is_delete: {
       type: DataTypes.INTEGER(1),
       allowNull: false,
-      default: 0,
+      defaultValue: 0,
     },
   });
-
+  customer_types.associate = models => {
+    customer_types.hasMany(models.customers, { foreignKey: "id" });
+  };
   return customer_types;
 };

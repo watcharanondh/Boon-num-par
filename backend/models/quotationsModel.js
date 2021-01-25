@@ -20,17 +20,17 @@ module.exports = (sequelize, DataTypes) => {
     amount_savory_food: {
       type: DataTypes.INTEGER(5),
       allowNull: false,
-      default:0
+      defaultValue:0
     },
     amount_sweet_food: {
       type: DataTypes.INTEGER(5),
       allowNull: false,
-      default:0
+      defaultValue:0
     },
     amount_drink: {
       type: DataTypes.INTEGER(5),
       allowNull: false,
-      default:0
+      defaultValue:0
     },
     quotation_status_id: {
       type: DataTypes.INTEGER(1),
@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
     note: {
       type: DataTypes.STRING(255),
       allowNull: true,
-      default: null,
+      defaultValue: null,
     },
     createdAt: {
       field: "created_at",
@@ -50,29 +50,35 @@ module.exports = (sequelize, DataTypes) => {
       field: "updated_at",
       type: DataTypes.DATE,
       allowNull: true,
-      default: null,
+      defaultValue: null,
     },
     created_user: {
       type: DataTypes.INTEGER(10),
       allowNull: true,
-      default: null,
+      defaultValue: null,
     },
     updated_user: {
       type: DataTypes.INTEGER(10),
       allowNull: true,
-      default: null,
+      defaultValue: null,
     },
     is_active: {
       type: DataTypes.INTEGER(1),
       allowNull: false,
-      default: 1,
+      defaultValue: 1,
     },
-    is_detele: {
+    is_delete: {
       type: DataTypes.INTEGER(1),
       allowNull: false,
-      default: 0,
+      defaultValue: 0,
     },
   });
+  quotations.associate = models => {
+    quotations.belongsTo(models.customers, { foreignKey: "customer_id" });
+    quotations.belongsTo(models.quotation_statuses, { foreignKey: "quotation_status_id" });
+    quotations.hasMany(models.quotation_packages, { foreignKey: "id" });
+    quotations.hasMany(models.quotation_promotions, { foreignKey: "id" });
+  };
 
   return quotations;
 };
