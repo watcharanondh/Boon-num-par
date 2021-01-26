@@ -8,7 +8,7 @@
   >
     <v-app-bar-nav-icon @click="drawer=!drawer" ></v-app-bar-nav-icon>
 
-    <v-toolbar-title>BOON NUM PAR</v-toolbar-title>
+    <v-toolbar-title>{{title}} V{{ version }}</v-toolbar-title>
 
     <v-spacer></v-spacer>
 
@@ -26,41 +26,55 @@
 
     <v-divider vertical> </v-divider>
 
-    <div class="ma-6">Jones Ferdinand</div>
+    <div class="ma-6">{{$store.getters["username"]}}</div>
 
     <v-avatar color="grey lighten-2" size="40">
       <v-img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
     </v-avatar>
-
-    <div class="ma-2" v-if="false">
-      <v-btn icon>
+    
+      <v-btn icon @click="onClickLogOff">
         <v-icon>logout</v-icon>
       </v-btn>
-    </div>
+
   </v-app-bar>
   
-<div v-if="Manu=='sale'"><MenuSalesData v-if="drawer" /></div>
-<div v-if="Manu=='manage'"><MenuManageSystem v-if="drawer" /></div>
+<!-- <div v-if="Manu=='sale'"></div> -->
+  <MenuSalesData v-if="drawer" />
+<!-- <div v-if="Manu=='manage'"><MenuManageSystem v-if="drawer" /></div>  -->
 </v-card>
 </template>
 
 <script>
-import MenuSalesData from "@/components/Menu/MenuSalesData"
-import MenuManageSystem from "@/components/Menu/MenuManageSystem"
+  import MenuSalesData from "@/components/Menu/MenuSalesData"
+// import MenuManageSystem from "@/components/Menu/MenuManageSystem"
 
 export default {
-   components: {
+  name: "Header",
+  components: {
     MenuSalesData,
-    MenuManageSystem,
+    //MenuManageSystem,
   },
   data(){
     return{
-      Manu:'manage',
-      drawer:true
+      Manu:'sale',
+      drawer:false
     }
-  }
-
+  },
+  computed: {
+    version(){
+      return process.env.VUE_APP_VERSION
+    },
+    title(){
+      return process.env.VUE_APP_TITLE
+    }
+  },
+   methods: {
+      onClickLogOff(){
+        this.$store.dispatch('doLogout')
+      }
+    }
 };
+
 </script>
 
 <style></style>

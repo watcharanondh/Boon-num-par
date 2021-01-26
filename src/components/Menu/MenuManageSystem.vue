@@ -1,6 +1,6 @@
 <template>
   <v-navigation-drawer app>
-    <router-link to="/" exact>
+    <router-link to="/Homemenu" exact>
       <!-- (Logo) -->
       <v-img
         src="https://cdn.logo.com/hotlink-ok/logo-social.png"
@@ -64,11 +64,11 @@ export default {
     return {
       selectedMenu: 0,
       menus: [
-        ["รายการอุปกรณ์", "/stock"],
-        ["รายการแพ็คเกจ", "/report"],
-        ["รายการโปรโมชั่น", "/about"],
+        ["รายการอุปกรณ์", "/Homemenu"],
+        ["รายการแพ็คเกจ", "/Homemenu"],
+        ["รายการโปรโมชั่น", "/Homemenu"],
       ],
-      Backmenu: [["ย้อนกลับ", "/about"]],
+      Backmenu: [["ย้อนกลับ", "/Homemenu"]],
     };
   },
   watch: {

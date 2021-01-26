@@ -1,73 +1,126 @@
 <template>
   <v-container>
-    <v-row class="justify-center">
-      <v-card style="width:400px;">
+    <v-col></v-col>
+    <v-col></v-col>
+    <v-col></v-col>
+    <v-col></v-col>
+    <v-col></v-col>
+    <v-col></v-col>
+    <v-col></v-col>
+    <v-col></v-col>
+    <v-col></v-col>
+    <v-col>
+      <v-row class="justify-center">
+        <v-card style="width:400px;">
+          <v-img
+          class="white--text align-end"
+          src="@/assets/login_header.jpg"
+          height="200px"
+        >
           <v-card-title primary-title>
             Login
           </v-card-title>
-        <v-card-text>
-          <v-form @submit.prevent="submit">
-            <!-- Username -->
-            <v-text-field
-              name="username"
-              label="Username"
-              id="username"
-              v-model="account.username"
-            />
+        </v-img>
+          <v-card-text>
+            <form>
+              <!-- Username -->
+              <v-text-field
+                v-model="account.username"
+                :error-messages="usernameErrors"
+                label="Username"
+                required
+                @input="$v.account.username.$touch()"
+                @blur="$v.account.username.$touch()"
+              ></v-text-field>
 
-            <!-- Password -->
-            <v-text-field
-              name="password"
-              label="Password"
-              id="password"
-              v-model="account.password"
-              :append-icon="isShowPassword ? 'visibility' : 'visibility_off'"
-              @click:append="isShowPassword = !isShowPassword"
-              :type="isShowPassword ? 'text' : 'password'"
-              counter
-            />
-
-            <v-row justify="center">
-              <!-- <v-btn text @click.prevent="$router.push('/register')"
-                >Register</v-btn class="justify-space-between px-3 pt-5"
-              > -->
-              <v-btn type="submit" color="success">Login</v-btn>
-            </v-row>
-          </v-form>
-        </v-card-text>
-      </v-card>
-    </v-row>
+              <!-- Password -->
+              <v-text-field
+                v-model="account.password"
+                label="Password"
+                :error-messages="passwordErrors"
+                @input="$v.account.password.$touch()"
+                @blur="$v.account.password.$touch()"
+                :append-icon="isShowPassword ? 'visibility' : 'visibility_off'"
+                @click:append="isShowPassword = !isShowPassword"
+                :type="isShowPassword ? 'text' : 'password'"
+                 v-on:keyup.enter="submit"
+              />
+              <v-col md="12">
+              <span>{{account}}</span>
+              <v-row class="justify-space-between px-3 pt-5">
+                <v-btn @click="clear">clear</v-btn>
+                <v-btn color="success" @click="submit">Login</v-btn>
+              </v-row>
+              </v-col>
+            </form>
+          </v-card-text>
+        </v-card>
+      </v-row>
+    </v-col>
   </v-container>
 </template>
 
 <script>
 //import api from "@/services/api";
+import { required } from "vuelidate/lib/validators";
 
 export default {
-  mounted() {
-    if (api.isLoggedIn()) {
-      this.$router.push("/stock");
-    }
-  },
+  name: "Homemenu",
+  // mounted() {
+  //   if (api.isLoggedIn()) {
+  //     this.$router.push("/stock");
+  //   }
+  // },
   data() {
     return {
       isShowPassword: false,
       account: {
         username: "",
-        password: ""
-      }
+        password: "",
+      },
     };
   },
+
+  validations: {
+    account:{
+      username: { required },
+      password: { required },
+    },
+  },
+
+  computed: {
+    usernameErrors() {
+      const errors = [];
+      if (!this.$v.account.username.$dirty) return errors;
+      !this.$v.account.username.required && errors.push("username is required.");
+      return errors;
+    },
+    passwordErrors() {
+      const errors = [];
+      if (!this.$v.account.password.$dirty) return errors;
+      !this.$v.account.password.required && errors.push("Password is required.");
+      return errors;
+    },
+  },
+
   methods: {
     submit() {
-      this.$router.push("/stock");
-      this.$store.dispatch({
+      this.$v.account.$touch();
+      if(this.$v.account.$invalid == false){
+        this.$router.push("/Homemenu")
+        this.$store.dispatch({
         type: "doLogin",
         username: this.account.username,
-        password: this.account.password
+        password: this.account.password,
       });
-    }
-  }
+      } 
+    },
+     clear () {
+        this.$v.account.$reset()
+        this.account.username =''
+        this.account.password =''
+      },
+  },
 };
 </script>
 
