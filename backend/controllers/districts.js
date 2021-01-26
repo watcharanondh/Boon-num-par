@@ -5,7 +5,7 @@ const { Op } = require("sequelize");
 exports.List_Find_Province = async (req, res) => {
   try {
     const result = await districts.findAll({
-      attributes: ["id", "district","amphoe","province","zipcode","district_code","amphoe_code","province_code"],
+      attributes: ["id", "district", "amphoe", "province", "zipcode", "district_code", "amphoe_code", "province_code"],
       group: 'province'
     });
     res.json({ response: "OK", result: result });
@@ -19,11 +19,11 @@ exports.List_Find_Province = async (req, res) => {
 exports.List_Find_Amphoe = async (req, res) => {
   try {
     const result = await districts.findAll({
-      attributes: ["id", "district","amphoe","province","zipcode","district_code","amphoe_code","province_code"],
-      where:{
-        [Op.or]:{
+      attributes: ["id", "district", "amphoe", "province", "zipcode", "district_code", "amphoe_code", "province_code"],
+      where: {
+        [Op.or]: {
           province_code: req.body.province_code,
-          province:{
+          province: {
             [Op.substring]: req.body.province
           },
         }
@@ -41,11 +41,11 @@ exports.List_Find_Amphoe = async (req, res) => {
 exports.List_Find_District = async (req, res) => {
   try {
     const result = await districts.findAll({
-      attributes: ["id", "district","amphoe","province","zipcode","district_code","amphoe_code","province_code"],
-      where:{
-        [Op.or]:{
+      attributes: ["id", "district", "amphoe", "province", "zipcode", "district_code", "amphoe_code", "province_code"],
+      where: {
+        [Op.or]: {
           amphoe_code: req.body.amphoe_code,
-          amphoe:{
+          amphoe: {
             [Op.substring]: req.body.amphoe
           },
         }

@@ -13,17 +13,29 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
   res.send("Hello World");
 });
-/* Users Route */
-app.use("/users", require("./routes/Users"));
 
+/*-------------------- DashBoard --------------------*/
+/* DashBoard Route */
+app.use("/dashboard", require("./routes/Dashboard"));
+
+
+/*---------------------- SALE ----------------------*/
 /* Customers Route */
 app.use("/customers", require("./routes/Customers"));
-
+/* Quotations Route */
+app.use("/quotations", require("./routes/Quotations"));
 /* Districts Route */
 app.use("/districts", require("./routes/Districts"));
 
-/* Quotations Route */
-app.use("/quotations", require("./routes/Quotations"));
+
+/*---------------------- ADMIN ----------------------*/
+/* Equipment Route */
+app.use("/equipments", require("./routes/Equipments"));
+/* Packages Route */
+app.use("/packages", require("./routes/Packages"));
+/* Users Route */
+app.use("/users", require("./routes/Users"));
+
 
 DB.sequelize.sync().then(() => {
   app.listen(PORT, err => {
