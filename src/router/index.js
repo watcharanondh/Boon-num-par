@@ -8,6 +8,10 @@ import Personneltype from "@/views/Personneltype.vue";
 import PersonalCreateQuotation from "@/views/PersonalCreateQuotation.vue";
 import Companytype from "@/views/Companytype.vue";
 import CompanyCreateQuotation from "@/views/CompanyCreateQuotation.vue";
+import Quotation from "@/views/Quotation.vue";
+import QuotationCreate from "@/views/QuotationCreate.vue";
+import QuotationCreateSelectPackage from "@/views/QuotationCreateSelectPackage.vue";
+import QuotationCreateSelectPromotion from "@/views/QuotationCreateSelectPromotion.vue";
 
 Vue.use(VueRouter);
 
@@ -51,6 +55,26 @@ const routes = [
     path: "/CompanyCreateQuotation",
     name: "/CompanyCreateQuotation",
     component: CompanyCreateQuotation
+  },
+  {
+    path: "/Quotation",
+    name: "/Quotation",
+    component: Quotation
+  },
+  {
+    path: "/QuotationCreate",
+    name: "/QuotationCreate",
+    component: QuotationCreate
+  },
+  {
+    path: "/QuotationCreateSelectPackage",
+    name: "/QuotationCreateSelectPackage",
+    component: QuotationCreateSelectPackage
+  },
+  {
+    path: "/QuotationCreateSelectPromotion",
+    name: "/QuotationCreateSelectPromotion",
+    component: QuotationCreateSelectPromotion
   },
   {
     path: "/",

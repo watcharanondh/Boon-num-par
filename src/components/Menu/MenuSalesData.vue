@@ -65,7 +65,7 @@ export default {
       menus: [
         ["แสดงผลรวม", "/Home"],
         ["รายชื่อลูกค้า", "/Customer"],
-        ["ใบเสนอราคา", "/Homemenu"],
+        ["ใบเสนอราคา", "/Quotation"],
       ],
       Backmenu: [["ย้อนกลับ", "/Homemenu"]]
     };
