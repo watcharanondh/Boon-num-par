@@ -3,7 +3,10 @@ const router = express.Router();
 
 const EquipmentContrllers = require("../controllers/equipments");
 
-/* Create Equipment */
+/* List All Equipment */
+router.get("/listallequipment", EquipmentContrllers.List_All_Equipments);
+
+/* Create New Equipment */
 router.post("/addnewequipment", EquipmentContrllers.Create_New_Equipments);
 
 /* List Equipment to Edit*/

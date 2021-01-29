@@ -22,7 +22,7 @@ exports.List_Find_Amphoe = async (req, res) => {
       attributes: ["id", "district", "amphoe", "province", "zipcode", "district_code", "amphoe_code", "province_code"],
       where: {
         [Op.or]: {
-          province_code: req.body.province_code,
+          province_code: req.body.province_code !== undefined ? req.body.province_code : '',
           province: {
             [Op.substring]: req.body.province
           },
@@ -44,7 +44,7 @@ exports.List_Find_District = async (req, res) => {
       attributes: ["id", "district", "amphoe", "province", "zipcode", "district_code", "amphoe_code", "province_code"],
       where: {
         [Op.or]: {
-          amphoe_code: req.body.amphoe_code,
+          amphoe_code: req.body.amphoe_code !== undefined ? req.body.amphoe_code : '',
           amphoe: {
             [Op.substring]: req.body.amphoe
           },

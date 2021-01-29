@@ -3,38 +3,48 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const DB = require("./models");
 const app = express();
+const logger = require("./middleware/logger");
+
+const dotenv = require("dotenv");
+dotenv.config();
 
 const PORT = process.env.PORT || 5050;
+const START_PART_WITH = process.env.START_PART_WITH || '';
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get("/", (req, res) => {
+//Init MiddleWare
+app.use(logger);
+
+app.get(START_PART_WITH + "/", (req, res) => {
   res.send("Hello World");
 });
 
 /*-------------------- DashBoard --------------------*/
 /* DashBoard Route */
-app.use("/dashboard", require("./routes/Dashboard"));
+app.use(START_PART_WITH + "/dashboard", require("./routes/Dashboard"));
 
 
 /*---------------------- SALE ----------------------*/
 /* Customers Route */
-app.use("/customers", require("./routes/Customers"));
+app.use(START_PART_WITH + "/customers", require("./routes/Customers"));
 /* Quotations Route */
-app.use("/quotations", require("./routes/Quotations"));
+app.use(START_PART_WITH + "/quotations", require("./routes/Quotations"));
 /* Districts Route */
-app.use("/districts", require("./routes/Districts"));
+app.use(START_PART_WITH + "/districts", require("./routes/Districts"));
 
 
 /*---------------------- ADMIN ----------------------*/
 /* Equipment Route */
-app.use("/equipments", require("./routes/Equipments"));
+app.use(START_PART_WITH + "/equipments", require("./routes/Equipments"));
 /* Packages Route */
-app.use("/packages", require("./routes/Packages"));
+app.use(START_PART_WITH + "/packages", require("./routes/Packages"));
+/* Promotions Route */
+app.use(START_PART_WITH + "/promotions", require("./routes/Promotions"));
 /* Users Route */
-app.use("/users", require("./routes/Users"));
+app.use(START_PART_WITH + "/users", require("./routes/Users"));
 
 
 DB.sequelize.sync().then(() => {

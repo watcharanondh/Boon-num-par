@@ -10,9 +10,11 @@ const CustomerContrllers = require("../controllers/customers");
 router.get("/customertypeselector", CustomerContrllers.List_Customer_type);
 
 /* List All Customer */
-router.get("/listallcustomer", CustomerContrllers.List_All_Customer);
+router.get("/listallcustomers", CustomerContrllers.List_All_Customer);
 /* Create New Customer */
 router.post("/newcustomer", CustomerContrllers.Create_customer);
+/* List Customer to Edit */
+router.post("/listcustomer", CustomerContrllers.List_Customer_to_Edit);
 /* Edit Customer */
 router.put("/editcustomer", CustomerContrllers.Edit_customer);
 /* Delete Customer */

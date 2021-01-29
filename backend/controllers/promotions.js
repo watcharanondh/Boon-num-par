@@ -1,17 +1,17 @@
-const { equipments } = require("../models");
+const { promotions } = require("../models");
 const { Op, Sequelize } = require("sequelize");
 const helper = require("../helper/sku");
 
 
-/* List All Equipments */
-exports.List_All_Equipments = async (req, res) => {
+/* List All Promotions */
+exports.List_All_Promotions = async (req, res) => {
   try {
-    const result = await equipments.findAll({
+    const result = await promotions.findAll({
       attributes: [
         "id",
         "name",
-        "stock_out",
-        [Sequelize.literal("`stock_in`- `stock_out`"), 'balance_stock'],
+        [Sequelize.fn("date_format", Sequelize.col("`promotions`.`updated_at`"), "%d.%m.%Y"), "update"],
+        "discount",
       ],
       where: {
         is_active: 1,
@@ -33,16 +33,16 @@ exports.List_All_Equipments = async (req, res) => {
   }
 };
 
-/* Create New Equipments */
-exports.Create_New_Equipments = async (req, res) => {
-  const { name, stock_in } = req.body;
+/* Create New Promotions */
+exports.Create_New_Promotions = async (req, res) => {
+  const { name, discount } = req.body;
   try {
-    const getMaxEquipId = await equipments.findOne({ attributes: [[Sequelize.fn('MAX', Sequelize.col('id')), "maxEquipId"]] })
-    console.log(getMaxEquipId);
-    const result = await equipments.create({
-      id: getMaxEquipId.dataValues.maxEquipId !== null ? helper.SKUincrementer(getMaxEquipId.dataValues.maxEquipId) : "BNPT0000001",
+    const getMaxPromoId = await promotions.findOne({ attributes: [[Sequelize.fn('MAX', Sequelize.col('id')), "maxPromoId"]] })
+    console.log(getMaxPromoId);
+    const result = await promotions.create({
+      id: getMaxPromoId.dataValues.maxPromoId !== null ? helper.SKUincrementer(getMaxPromoId.dataValues.maxPromoId) : "BNPPM0000001",
       name: name,
-      stock_in: stock_in
+      discount: discount
     });
     res.json({
       response: "OK",
@@ -54,11 +54,11 @@ exports.Create_New_Equipments = async (req, res) => {
   }
 };
 
-/* List Equipment to Edit */
-exports.List_Equipments_to_Edit = async (req, res) => {
+/* List Promotion to Edit */
+exports.List_Promotion_to_Edit = async (req, res) => {
   try {
-    const result = await equipments.findAll({
-      attributes: ["id", "name", "stock_in"],
+    const result = await promotions.findAll({
+      attributes: ["id", "name", "discount"],
       where: {
         id: req.body.id,
         is_active: 1,
@@ -79,16 +79,13 @@ exports.List_Equipments_to_Edit = async (req, res) => {
   }
 };
 
-/* Edit Equipment */
-exports.Edit_Equipment = async (req, res) => {
-  const { id, name, stock_in } = req.body;
+/* Edit Promotion */
+exports.Edit_Promotion = async (req, res) => {
+  const { id, name, discount } = req.body;
   try {
-    const checkStockOut = await equipments.findOne({ attributes: ['stock_out'], where: { id: id } });
-    console.log(checkStockOut);
-    if (checkStockOut.dataValues.stock_out <= stock_in) {
-      const result = await equipments.update({
+      const result = await promotions.update({
         name: name,
-        stock_in: stock_in
+        discount: discount
       }, {
         where: {
           id: id,
@@ -100,19 +97,17 @@ exports.Edit_Equipment = async (req, res) => {
         response: "OK",
         result: result,
       });
-    } else {
-      res.json({ response: "FAILED", result: "ไม่สามารถแก้ไข 'จำนวนอุปกรณ์ทั้งหมด' ให้น้อยกว่า 'จำนวนที่ถูกใช้' ได้" });
-    }
+    
   } catch (error) {
     console.log(error);
     res.json({ response: "FAILED", result: error });
   }
 };
 
-/* Delete Equipment (Update is_delete) */
-exports.Delete_Equipment = async (req, res) => {
+/* Delete Promotion (Update is_delete) */
+exports.Delete_Promotion = async (req, res) => {
   try {
-    const result = await equipments.update({
+    const result = await promotions.update({
       is_delete: 1
     }, {
       where: {

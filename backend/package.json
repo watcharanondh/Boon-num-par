@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "cross-env NODE_ENV=development PORT=5001 nodemon index",
-    "local": "cross-env NODE_ENV=localhost PORT=5001 nodemon index"
+    "local": "cross-env NODE_ENV=localhost PORT=5001 nodemon index",
+    "prod": "cross-env NODE_ENV=production PORT=5001 node index"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +17,7 @@
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "invoice-number": "^1.0.6",
     "jsonwebtoken": "^8.5.1",

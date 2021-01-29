@@ -33,18 +33,18 @@ exports.List_All_Customer = async (req, res) => {
       attributes: [
         "id",
         "name",
-        "updated_at",
+        [Sequelize.fn("date_format", Sequelize.col("`customers`.`updated_at`"), "%d.%m.%Y"), "update"],
         [Sequelize.fn("date_format", Sequelize.col("`customers`.`created_at`"), "%b %d, %Y"), "created_at_date"],
         [Sequelize.fn("date_format", Sequelize.col("`customers`.`created_at`"), "%h:%i %p"), "created_at_datetime"],
       ],
       include: [
         {
           model: customer_tax_invoices,
-          attributes: ["title", "updated_at"],
+          attributes: ["title",[Sequelize.fn("date_format", Sequelize.col("`customer_tax_invoices`.`updated_at`"), "%d.%m.%Y"), "update"]],
         },
         {
           model: customer_types,
-          attributes: ["name", "updated_at"],
+          attributes: ["name", [Sequelize.fn("date_format", Sequelize.col("`customer_type`.`updated_at`"), "%d.%m.%Y"), "update"]],
         },
       ],
       where: {
@@ -90,6 +90,38 @@ exports.Create_customer = async (req, res) => {
     res.json({ response: "FAILED", result: error });
   }
 };
+/* List Customer to Edit*/
+exports.List_Customer_to_Edit = async (req, res) => {
+  try {
+    const result = await customers.findAll({
+      attributes: [
+        "id",
+        "name",
+        "telephone_number",
+        "mobile_phone_number",
+        "line_id",
+        "address",
+        "district_id",
+      ],
+      where: {
+        id: req.body.id,
+        is_active: 1,
+        is_delete: 0
+      }
+    });
+    if (result != '' && result !== null) {
+      res.json({
+        response: "OK",
+        result: result,
+      });
+    } else {
+      res.json({ response: "FAILED", result: "Not Found." });
+    }
+  } catch (error) {
+    console.log(error);
+    res.json({ response: "FAILED", result: error });
+  }
+};
 /* Edit Customer */
 exports.Edit_customer = async (req, res) => {
   const { id, name, telephone_number, mobile_phone_number, line_id, address, district_id } = req.body;
@@ -127,10 +159,17 @@ exports.Delete_customer = async (req, res) => {
         id: req.body.id
       }
     });
-    res.json({
-      response: "OK",
-      result: result,
-    });
+    if (result == 1) {
+      res.json({
+        response: "OK",
+        result: req.body.id + ": Deleted. Result: " + result,
+      });
+    } else {
+      res.json({
+        response: "FAILED",
+        result: req.body.id + ": Not Found. Result: " + result,
+      });
+    }
   } catch (error) {
     console.log(error);
     res.json({ response: "FAILED", result: error });
@@ -225,10 +264,17 @@ exports.Delete_customers_tax_invoice = async (req, res) => {
         id: req.body.id
       }
     });
-    res.json({
-      response: "OK",
-      result: result,
-    });
+    if (result == 1) {
+      res.json({
+        response: "OK",
+        result: req.body.id + ": Deleted. Result: " + result,
+      });
+    } else {
+      res.json({
+        response: "FAILED",
+        result: req.body.id + ": Not Found. Result: " + result,
+      });
+    }
   } catch (error) {
     console.log(error);
     res.json({ response: "FAILED", result: error });
