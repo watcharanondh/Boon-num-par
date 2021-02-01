@@ -1,46 +1,71 @@
 <template>
-  <v-dialog transition="dialog-top-transition" max-width="500">
+  <v-dialog
+    :retain-focus="false"
+    transition="dialog-top-transition"
+    persistent
+    width="25%"
+  >
     <template v-slot:activator="{ on, attrs }">
-      <v-btn v-bind="attrs" v-on="on" fab icon outlined small>
-        <v-icon>visibility</v-icon>
-        </v-btn>
+      <v-btn v-bind="attrs" v-on="on" block rounded outlined small>
+        <span>อัพเดทสถานะ</span>
+      </v-btn>
     </template>
+
     <template v-slot:default="dialogSelectStatus">
       <v-card>
-        <v-card-text>
-          <div class="pa-3 mr-15 font-weight-bold black--text">
-            <h2>ปรับเปลี่ยนสถานะ</h2>
-          </div>
-          <v-select
-            v-model="SelectStatus"
-            :items="StatusType"
-            item-text="name"
-            item-value="value"
-            return-object
-            solo
-            outlined
-          >
-          </v-select>
-        </v-card-text>
-
-        <v-card-actions class="justify-center">
+        <v-card-title>
           <v-row>
-          <v-col cols="2">
-            <v-btn
-              color="#29CC97"
-              rounded
-              @click="selectPage(SelectStatus.value)"><span class="font-weight-bold white--text">ตกลง</span></v-btn>
+            <v-col>
+              <div class="black--text">
+                ปรับเปลี่ยนสถานะ
+              </div>
             </v-col>
-            <v-col cols="2">
-            <v-btn
-              rounded
-              outlined
-              color="warning"
-              @click="dialogSelectStatus.value = false">ปิด</v-btn>
-          </v-col>
           </v-row>
-        </v-card-actions>
-                   
+        </v-card-title>
+        <v-card-text>
+          <v-row class="justify-center">
+            <v-col class="justify-center">
+              <v-select
+                v-model="SelectCustomerType"
+                :items="CustomerTypePage"
+                item-text="name"
+                item-value="value"
+                return-object
+                solo
+                dense
+                outlined
+              >
+              </v-select>
+
+              <v-card-actions class="justify-center pa-0 mb-0">
+                <v-col lg="6" md="6" sm="12" cols="12">
+                  <v-btn
+                    color="#29CC97"
+                    block
+                    large
+                    rounded
+                    @click="selectPage(SelectCustomerType.value)"
+                    ><span class=" white--text">ตกลง</span></v-btn
+                  >
+                </v-col>
+              </v-card-actions>
+              <v-card-actions class="justify-center pa-0">
+                <v-col lg="6" md="6" sm="12" cols="12">
+                  <v-btn
+                    block
+                    large
+                    rounded
+                    outlined
+                    color="warning"
+                    @click="dialogSelectStatus.value = false"
+                  >
+                    ปิด
+                  </v-btn>
+                </v-col>
+              </v-card-actions>
+            </v-col>
+          </v-row>
+        </v-card-text>
       </v-card>
     </template>
   </v-dialog>
@@ -65,4 +90,4 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped></style>

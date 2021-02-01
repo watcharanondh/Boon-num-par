@@ -4,15 +4,37 @@ export const NETWORK_TIMEOUT_MESSAGE = "A network timeout has occurred, Please t
 export const UPLOAD_PHOTO_FAIL_MESSAGE = "An error has occurred. The photo was unable to upload.";
 export const NOT_CONNECT_NETWORK = "NOT_CONNECT_NETWORK";
 
-export const apiUrl = "http://localhost:8081/api/v2";
-export const imageUrl = "http://localhost:8081/images";
+export const apiUrl = `${process.env.VUE_APP_NODE_URL}`;
+//export const imageUrl = "http://localhost:8081/images";
 
 export const server = {
-  LOGIN_URL: `login`,
-  REGISTER_URL: `register`,
-  PRODUCT_URL: `product`,
-  TRANSACTION_URL: `transaction`,
-  REPORT_URL: `report`,
+  //LoginPage
+  REGISTER_URL: `users/regis`,
+  LOGIN_URL: `users/login`,
   TOKEN_KEY: `token`,
-  USERNAME: `username`
+  USERNAME: `username`,
+
+  //HomePage
+  DASHBOARD_URL: `dashboard/showall`,
+  
+  //CustomerPage
+  CUSTOMERTYPESELECTOR_URL: `customers/customertypeselector`,
+  LISTALLCUSTOMERS_URL: `customers/listallcustomers`,
+
+  NEWCUSTOMER_URL: `customers/newcustomer`,
+  NEWCUSTOMER_TAX_INVOICE_URL: `customers/newcustomertaxinv`,
+  LIST_CUSTOMER_EDIT_URL: `customers/listcustomer`,
+
+  CUSTOMER_EDIT_URL: `customers/editcustomer`,
+  LISTCUSTOMER_DELETE_URL: `customers/delcustomer`,
+
+  //Province, Amphoe, Districts
+  LIST_FIND_PROVINCE_URL: `districts/findprovince`,
+  LIST_FIND_AMPHOE_URL: `districts/findamphoe`,
+  LIST_FIND_DISTRICT_URL: `districts/finddistrict`,
+
+
+  
+
+  
 };

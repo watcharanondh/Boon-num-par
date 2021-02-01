@@ -4,7 +4,7 @@
       <v-col>
         <v-card flat color="#E5E5E5">
           <div class="sizetitle">
-            สร้างใบเสนอราคา
+            สร้างแพ็คเกจ
           </div>
         </v-card>
       </v-col>
@@ -14,7 +14,7 @@
     </v-col>
 
     <v-card class="mx-10 pa-5 rounded-lg" outlined>
-      <!--Tap เมนูเลือกโปรโมชั่น -->
+      <!--Tap เมนูอุปกรณ์แพ็คเกจ -->
       <v-row justify="center">
         <v-col lg="6" md="12" sm="12" cols="12">
           <v-row>
@@ -32,41 +32,25 @@
             </v-col>
           </v-row>
 
-          <!-- ค้นหาอุปกรณ์ -->
-          <v-row>
-            <v-col lg="12" md="12" sm="12" cols="12">
-              <v-row class="no-gutters">
-                <v-text-field
-                  v-model="searchEquipment"
-                  clearable
-                  solo
-                  rounded
-                  prepend-inner-icon="mdi-magnify"
-                  label="ค้นหาอุปกรณ์"
-                ></v-text-field>
-              </v-row>
-            </v-col>
-          </v-row>
-
-          <!-- รายการโปรโมชั่น -->
+          <!-- รายการอุปกรณ์ -->
           <v-row>
             <v-col lg="6" md="6" sm="12" cols="12">
               <v-row class="no-gutters">
-                <h3>รายการโปรโมชั่น</h3>
+                <h3>รายการอุปกรณ์</h3>
                 <span class="text-caption grey--text mt-2">193 รายการ</span>
               </v-row>
             </v-col>
 
-            <!-- โปรโมชั่นที่เลือก -->
+            <!-- อุปกรณ์ที่เลือก -->
             <v-col lg="6" md="6" sm="12" cols="12">
               <v-row class="no-gutters">
-                <h3>โปรโมชั่นที่เลือก</h3>
+                <h3>อุปกรณ์ที่เลือก</h3>
                 <span class="text-caption grey--text mt-2">2 รายการ</span>
               </v-row>
             </v-col>
           </v-row>
 
-          <!-- ตารางโปรโมชั่น -->
+          <!-- รายการอุปกรณ์ -->
           <v-row>
             <v-col lg="6" md="6" sm="12" cols="12">
               <v-row class="no-gutters">
@@ -88,7 +72,7 @@
               </v-row>
             </v-col>
 
-            <!-- โปรโมชั่นที่เลือก -->
+            <!-- อุปกรณ์ที่เลือก -->
             <v-col lg="6" md="6" sm="12" cols="12">
               <v-row class="no-gutters">
                 <v-data-table
@@ -144,26 +128,24 @@
 import axios from "axios";
 
 export default {
-  name: "QuotationCreateSelectPromotion",
+  name: "CreatePackageSelectEquipment",
 
   data: () => ({
     links: [
-      { text: "ข้อมูลลูกค้า", route: "/QuotationCreate" },
-      { text: "เลือกแพ็กเกจ", route: "/QuotationCreateSelectPackage" },
-      { text: "เลือกโปรโมชั่น", route: "/QuotationCreateSelectPromotion" },
+      { text: "ข้อมูลแพ็กเกจ", route: "/CreateEquipment" },
+      { text: "อุปกรณ์แพ็กเกจ", route: "/CreatePackageSelectEquipment" },
     ],
 
-    searchEquipment:'',
 
     //รายการโปรโมชั่น
-    promotion_item: [],
+    equipment_item: [],
     headers_promotion_item: [
-      { text: "รายการโปรโมชั่น", value: "promotion_item", sortable: false, align: "start", color: "black"},
+      { text: "รายการอุปกรณ์", value: "equipment_item", sortable: false, align: "start", color: "black"},
     ],
     //โปรโมชั่นที่เลือก
-    promotion_select_item: [],
-    headers_promotion_select_item: [
-      { text: "โปรโมชั่นที่เลือก", value: "promotion_select_item", sortable: false, align: "start", color: "black"},
+    equipment_select_item: [],
+    headers_equipment_select_item: [
+      { text: "อุปกรณ์ที่เลือก", value: "equipment_select_item", sortable: false, align: "start", color: "black"},
       { text: "เลือก", value: "select", sortable: false, align: "start", color: "black"},
     ],
   }),

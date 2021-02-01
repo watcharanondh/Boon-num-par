@@ -1,33 +1,44 @@
 <template>
   <v-container style="background:#E5E5E5;color:white;height:100%">
-    <v-col class="ma-9">
-      <v-row>
+    <v-row>
+      <v-col>
         <v-card flat color="#E5E5E5">
-          <h1 class="headline font-weight-bold text--black">
+          <div class="sizetitle">
             สร้างรายชื่อลูกค้าประเภทบุคคล
-          </h1>
+          </div>
         </v-card>
-      </v-row>
+      </v-col>
+    </v-row>
+    <v-col>
+      <v-row> </v-row>
     </v-col>
 
     <v-card class="mx-10 pa-5 rounded-lg" outlined>
-      <!-- สร้างรายชื่อลูกค้าประเภทบุคคล -->
+      
       <v-row justify="center">
         <v-col lg="6" md="12" sm="12" cols="12">
-      
-      <v-tabs left color="orange accent-4">
-        <v-tab v-for="link in links" :key="link.text" router :to="link.route">
-          <h3>{{ link.text }}</h3>
-        </v-tab>
-      </v-tabs>
-
+          <!-- Tap เมนู ข้อมูลลูกค้า -->
+          <v-row>
+            <v-col>
+              <v-tabs left color="black">
+                <v-tab
+                  v-for="link in links"
+                  :key="link.text"
+                  router
+                  :to="link.route"
+                >
+                  <div class="sizehead">{{ link.text }}</div>
+                </v-tab>
+              </v-tabs>
+            </v-col>
+          </v-row>
           <!-- ชื่อ-นามสกุล -->
           <v-row>
             <v-col lg="6" md="6" sm="12" cols="12">
-              <h3>ชื่อ-นามสกุล</h3>
+              <div class="sizehead">ชื่อ-นามสกุล</div>
               <v-row class="no-gutters">
                 <v-text-field
-                  v-model="name"
+                  v-model="fullname"
                   dense
                   solo
                   outlined
@@ -38,7 +49,7 @@
 
             <!-- โทรศัพท์ -->
             <v-col lg="6" md="6" sm="12" cols="12">
-              <h3>โทรศัพท์</h3>
+              <div class="sizehead">โทรศัพท์</div>
               <v-row class="no-gutters">
                 <v-text-field
                   v-model="telephone_number"
@@ -54,7 +65,7 @@
           <!-- มือถือ -->
           <v-row>
             <v-col lg="6" md="6" sm="12" cols="12">
-              <h3>มือถือ</h3>
+              <div class="sizehead">มือถือ</div>
               <v-row class="no-gutters">
                 <v-text-field
                   v-model="mobile_phone_number"
@@ -68,10 +79,10 @@
 
             <!-- ไอดีไลน์ -->
             <v-col lg="6" md="6" sm="12" cols="12">
-              <h3>ID Line</h3>
+              <div class="sizehead">ID Line</div>
               <v-row class="no-gutters">
                 <v-text-field
-                  v-model="type_id"
+                  v-model="line_id"
                   dense
                   solo
                   outlined
@@ -84,10 +95,10 @@
           <!-- ที่อยู่ -->
           <v-row>
             <v-col lg="12" md="12" sm="12" cols="12">
-              <h3>ที่อยู่</h3>
+              <div class="sizehead">ที่อยู่</div>
               <v-row class="no-gutters">
                 <v-text-field
-                  v-model="mobile_phone_number"
+                  v-model="address"
                   dense
                   solo
                   outlined
@@ -100,10 +111,10 @@
           <!-- จังหวัด -->
           <v-row>
             <v-col lg="6" md="6" sm="12" cols="12">
-              <h3>จังหวัด</h3>
+              <div class="sizehead">จังหวัด</div>
               <v-row class="no-gutters">
                 <v-text-field
-                  v-model="mobile_phone_number"
+                  v-model="province"
                   dense
                   solo
                   outlined
@@ -114,10 +125,10 @@
 
             <!-- เขต/อำเภอ -->
             <v-col lg="6" md="6" sm="12" cols="12">
-              <h3>เขต/อำเภอ</h3>
+              <div class="sizehead">เขต/อำเภอ</div>
               <v-row class="no-gutters">
                 <v-text-field
-                  v-model="type_id"
+                  v-model="amphoe"
                   dense
                   solo
                   outlined
@@ -130,10 +141,10 @@
           <!-- แขวง/ตำบล -->
           <v-row>
             <v-col lg="6" md="6" sm="12" cols="12">
-              <h3>แขวง/ตำบล</h3>
+              <div class="sizehead">แขวง/ตำบล</div>
               <v-row class="no-gutters">
                 <v-text-field
-                  v-model="mobile_phone_number"
+                  v-model="district"
                   dense
                   solo
                   outlined
@@ -144,10 +155,10 @@
 
             <!-- รหัสไปรษณีย์ -->
             <v-col lg="6" md="6" sm="12" cols="12">
-              <h3>รหัสไปรษณีย์</h3>
+              <div class="sizehead">รหัสไปรษณีย์</div>
               <v-row class="no-gutters">
                 <v-text-field
-                  v-model="type_id"
+                  v-model="zipcode"
                   dense
                   solo
                   outlined
@@ -175,8 +186,8 @@
                 dark
                 large
                 rounded
-                @click="selectPage(SelectCustomerType.value)"
-                ><span class="font-weight-bold white--text">ตกลง</span></v-btn
+                @click="submit"
+                ><span class="white--text">บันทึก</span></v-btn
               >
             </v-col>
           </v-row>
@@ -187,36 +198,53 @@
 </template>
 
 <script>
-import axios from "axios";
+import api from "@/services/api";
 
 export default {
-  name: "Companytype",
+  name: "Personneltype",
+
+  async mounted() {
+    this.loadDataProvince();
+    
+    //console.log(this.$route.path);
+    this.$store.dispatch({
+          type: "inputRoutepath",
+          RT: this.$route.path,
+        });  
+  },
 
   data: () => ({
-     links: [
+    links: [
       { text: "ข้อมูลลูกค้า", route: "/Personneltype" },
       { text: "ข้อมูลใบกำกับภาษี", route: "/PersonalCreateQuotation" },
     ],
+    fullname:'',
+    telephone_number:'',
+    mobile_phone_number:'',
+    line_id:'',
+    address:'',
+    province:'',
+    amphoe:'',
+    district:'',
+    zipcode:'',
+
   }),
 
   methods: {
-    //บันทึกทั้งหมดตอนสุดท้าย หน้าเพิ่มทรัพยากร
+     async loadDataProvince(){
+      let result = await api.getProvince();
+      console.log(result.data);
+       
+
+    },
+
     submit() {
-      if (this.inModul.length <= 1) {
-        alert("กรุณากรอกข้อมูลให้ครบ");
-      } else {
-        axios.post(`${process.env.VUE_APP_API_URL}/bibdata/bulkadd`, this.inModul)
-          .then((res) => {
-            alert("บันทึกข้อมูลเรียบร้อยแล้ว", res);
-          });
-      }
+
     },
   },
 };
 </script>
 
 <style scoped>
-.pointer {
-  cursor: pointer;
-}
+
 </style>

@@ -4,8 +4,7 @@
       <v-row>
         <v-card flat color="#E5E5E5">
           <div class="sizetitle">
-            รายชื่อลูกค้าทั้งหมด
-            <v-icon> keyboard_arrow_down</v-icon>
+            แพ็คเกจ
           </div>
         </v-card>
       </v-row>
@@ -15,7 +14,13 @@
     </v-col>
     <v-row>
       <v-col>
-        <ModalCreateCustomers />
+        <v-btn
+          color="#29CC97"
+          @click="$router.push('/CreatePackage')"
+          rounded
+        >
+          <span class="white--text">สร้างแพ็คเกจ</span></v-btn
+        >
       </v-col>
     </v-row>
     <v-col>
@@ -23,7 +28,7 @@
     </v-col>
     <v-row>
       <v-col lg="12" md="12" sm="12" cols="12">
-        <!-- รายชื่อลูกค้าทั้งหมด -->
+        <!-- รายการแพ็คเกจ -->
         <v-card>
           <v-data-table
             :headers="headers_table_customer"
@@ -34,7 +39,7 @@
             <!-- table top section -->
             <template v-slot:top>
               <v-toolbar flat>
-                <v-toolbar-title><span>รายชื่อลูกค้า</span></v-toolbar-title>
+                <v-toolbar-title><span>รายการแพ็คเกจ</span></v-toolbar-title>
                 <v-toolbar-title
                   ><span class="text-caption grey--text"
                     >1024</span
@@ -96,21 +101,14 @@
                   <br />
                   update {{ item.update }}
                 </td>
-                <td>
-                  {{ item.customer_type }}
-                  <br />
-                  update {{ item.update }}
-                </td>
-                <td>
-                  {{ item.created_at_date }} <br />
-                  {{ item.created_at_datetime }}
-                </td>
+
+
                 <td>
                   <v-row>
-                    <v-btn fab icon outlined small>
+                    <v-btn v-bind="attrs" v-on="on" fab icon outlined small>
                       <v-icon>visibility</v-icon>
                     </v-btn>
-                    <v-btn fab icon outlined small>
+                    <v-btn v-bind="attrs" v-on="on" fab icon outlined small>
                       <v-icon>edit</v-icon>
                     </v-btn>
                     <v-btn fab icon outlined small>
@@ -119,7 +117,7 @@
                   </v-row>
                 </td>
                 <td>
-                  <v-btn icon>
+                  <v-btn icon v-bind="attrs" v-on="on">
                     <v-icon>mdi-dots-vertical</v-icon>
                   </v-btn>
                 </td>
@@ -133,42 +131,36 @@
 </template>
 
 <script>
-import ModalCreateCustomers from "@/components/dialog/ModalCreateCustomers.vue";
-import api from "@/services/api";
+import axios from "axios";
 export default {
-  name: "Customer",
-  components: {
-    ModalCreateCustomers,
-  },
-async mounted() {
-    this.loadCustomers();
-    //console.log(this.$route.path);
+  name: "Package",
+
+  mounted() {
+    console.log(this.$route.path);
     this.$store.dispatch({
           type: "inputRoutepath",
           RT: this.$route.path,
-        });  
+        });
+    axios
+      .get(`${process.env.VUE_APP_NODE_URL}/customers/listallcustomers`)
+      .then((response) => {
+        console.log(response.data.result);
+        this.table_customer = response.data.result;
+      });
   },
 
   data: () => ({
     table_customer: [],
     headers_table_customer: [
-      { text: "รหัสลูกค้า", value: "id", sortable: false, align: "start", color: "black"},
-      { text: "ชื่อลูกค้า", value: "name", sortable: false, align: "start" },
-      { text: "ชื่อออกใบกำกับภาษี", value: "customer_tax_invoices", sortable: false, align: "start"},
-      { text: "ประเภทลูกค้า", value: "customer_type", sortable: false, align: "start"},
-      { text: "วันเวลาที่สร้าง",  value: "created_at_date", sortable: false, align: "start"},
+      { text: "รหัสแพ็คเกจ", value: "id", sortable: false, align: "start", color: "black"},
+      { text: "ชื่อแพ็คเกจ", value: "name", sortable: false, align: "start" },
+      { text: "รายละเอียด", value: "customer_tax_invoices", sortable: false, align: "start"},
       { text: "", value: "", sortable: false, align: "start" },
       { text: "", value: "", sortable: false, align: "start" },
     ],
   }),
 
-  methods: {
-    async loadCustomers(){
-      let result = await api.getListallcustomers();
-      this.table_customer = result.data.result;
-
-    }
-  },
+  methods: {},
 };
 </script>
 

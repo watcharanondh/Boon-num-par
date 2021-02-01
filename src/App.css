@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Mitr:wght@200;300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@200;300;400;500;600;700;800;900&display=swap');
+
+*{
+    font-family: 'Mitr', sans-serif;
+  }
+
+  .sizetitle {
+    font-size: 30px;
+  }
+  
+  .sizehead {
+    font-size: 16px;
+  }
+  
+  #app {
+    font-family: 'Mitr', sans-serif;
+  }
+
+  

@@ -65,7 +65,7 @@
 import { required } from "vuelidate/lib/validators";
 
 export default {
-  name: "Homemenu",
+  name: "Login",
   // mounted() {
   //   if (api.isLoggedIn()) {
   //     this.$router.push("/stock");
@@ -107,12 +107,13 @@ export default {
     submit() {
       this.$v.account.$touch();
       if(this.$v.account.$invalid == false){
-        this.$router.push("/Homemenu")
+        
         this.$store.dispatch({
         type: "doLogin",
         username: this.account.username,
         password: this.account.password,
       });
+      this.$router.push("/Homemenu")
       } 
     },
      clear () {

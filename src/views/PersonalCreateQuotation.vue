@@ -1,30 +1,40 @@
 <template>
   <v-container style="background:#E5E5E5;color:white;height:100%">
-    <v-col class="ma-9">
-      <v-row>
+    <v-row>
+      <v-col>
         <v-card flat color="#E5E5E5">
-          <h1 class="headline font-weight-bold text--black">
-            ข้อมูลใบกำกับภาษี
-          </h1>
+          <div class="sizetitle">
+            สร้างรายชื่อลูกค้าประเภทบุคคล
+          </div>
         </v-card>
-      </v-row>
+      </v-col>
+    </v-row>
+    <v-col>
+      <v-row> </v-row>
     </v-col>
 
     <v-card class="mx-10 pa-5 rounded-lg" outlined>
-      <!-- ข้อมูลใบกำกับภาษี -->
+      <!-- Tap เมนู ข้อมูลใบกำกับภาษี --> 
       <v-row justify="center">
         <v-col lg="6" md="12" sm="12" cols="12">
-      
-      <v-tabs left color="orange accent-4">
-        <v-tab v-for="link in links" :key="link.text" router :to="link.route">
-          <h3>{{ link.text }}</h3>
-        </v-tab>
-      </v-tabs>
-
+          <v-row>
+            <v-col>
+              <v-tabs left color="black">
+                <v-tab
+                  v-for="link in links"
+                  :key="link.text"
+                  router
+                  :to="link.route"
+                >
+                  <div class="sizehead">{{ link.text }}</div>
+                </v-tab>
+              </v-tabs>
+            </v-col>
+          </v-row>
           <!-- ชื่อใบกำกับภาษี -->
           <v-row>
             <v-col lg="6" md="6" sm="12" cols="12">
-              <h3>ชื่อใบกำกับภาษี</h3>
+              <div class="sizehead">ชื่อใบกำกับภาษี</div>
               <v-row class="no-gutters">
                 <v-text-field
                   v-model="name"
@@ -38,7 +48,7 @@
 
             <!-- รหัสประจำตัวผู้เสียภาษี -->
             <v-col lg="6" md="6" sm="12" cols="12">
-              <h3>รหัสประจำตัวผู้เสียภาษี</h3>
+              <div class="sizehead">รหัสประจำตัวผู้เสียภาษี</div>
               <v-row class="no-gutters">
                 <v-text-field
                   v-model="telephone_number"
@@ -54,7 +64,7 @@
           <!-- แฟลช -->
           <v-row>
             <v-col lg="6" md="6" sm="12" cols="12">
-              <h3>แฟลช</h3>
+              <div class="sizehead">แฟลช</div>
               <v-row class="no-gutters">
                 <v-text-field
                   v-model="mobile_phone_number"
@@ -68,7 +78,7 @@
 
             <!-- อีเมล์ -->
             <v-col lg="6" md="6" sm="12" cols="12">
-              <h3>อีเมล์</h3>
+              <div class="sizehead">อีเมล์</div>
               <v-row class="no-gutters">
                 <v-text-field
                   v-model="type_id"
@@ -84,7 +94,7 @@
           <!-- โทรศัพท์ -->
           <v-row>
             <v-col lg="6" md="6" sm="12" cols="12">
-              <h3>โทรศัพท์</h3>
+              <div class="sizehead">โทรศัพท์</div>
               <v-row class="no-gutters">
                 <v-text-field
                   v-model="mobile_phone_number"
@@ -98,7 +108,7 @@
 
             <!-- มือถือ -->
             <v-col lg="6" md="6" sm="12" cols="12">
-              <h3>มือถือ</h3>
+              <div class="sizehead">มือถือ</div>
               <v-row class="no-gutters">
                 <v-text-field
                   v-model="type_id"
@@ -114,7 +124,7 @@
           <!-- ที่อยู่ -->
           <v-row>
             <v-col lg="12" md="12" sm="12" cols="12">
-              <h3>ที่อยู่</h3>
+              <div class="sizehead">ที่อยู่</div>
               <v-row class="no-gutters">
                 <v-text-field
                   v-model="mobile_phone_number"
@@ -130,7 +140,7 @@
           <!-- จังหวัด -->
           <v-row>
             <v-col lg="6" md="6" sm="12" cols="12">
-              <h3>จังหวัด</h3>
+              <div class="sizehead">จังหวัด</div>
               <v-row class="no-gutters">
                 <v-text-field
                   v-model="mobile_phone_number"
@@ -144,7 +154,7 @@
 
             <!-- เขต/อำเภอ -->
             <v-col lg="6" md="6" sm="12" cols="12">
-              <h3>เขต/อำเภอ</h3>
+              <div class="sizehead">เขต/อำเภอ</div>
               <v-row class="no-gutters">
                 <v-text-field
                   v-model="type_id"
@@ -160,7 +170,7 @@
           <!-- แขวง/ตำบล -->
           <v-row>
             <v-col lg="6" md="6" sm="12" cols="12">
-              <h3>แขวง/ตำบล</h3>
+              <div class="sizehead">แขวง/ตำบล</div>
               <v-row class="no-gutters">
                 <v-text-field
                   v-model="mobile_phone_number"
@@ -174,7 +184,7 @@
 
             <!-- รหัสไปรษณีย์ -->
             <v-col lg="6" md="6" sm="12" cols="12">
-              <h3>รหัสไปรษณีย์</h3>
+              <div class="sizehead">รหัสไปรษณีย์</div>
               <v-row class="no-gutters">
                 <v-text-field
                   v-model="type_id"
@@ -206,7 +216,7 @@
                 large
                 rounded
                 @click="selectPage(SelectCustomerType.value)"
-                ><span class="font-weight-bold white--text">ตกลง</span></v-btn
+                ><span class="white--text">บันทึก</span></v-btn
               >
             </v-col>
           </v-row>
@@ -220,22 +230,22 @@
 import axios from "axios";
 
 export default {
-  name: "Companytype",
+  name: "PersonalCreateQuotation",
 
   data: () => ({
-     links: [
+    links: [
       { text: "ข้อมูลลูกค้า", route: "/Personneltype" },
-      { text: "ข้อมูลใบกำกับภาษี", route: "/LoginUsers" },
+      { text: "ข้อมูลใบกำกับภาษี", route: "/PersonalCreateQuotation" },
     ],
   }),
 
   methods: {
-    //บันทึกทั้งหมดตอนสุดท้าย หน้าเพิ่มทรัพยากร
     submit() {
       if (this.inModul.length <= 1) {
         alert("กรุณากรอกข้อมูลให้ครบ");
       } else {
-        axios.post(`${process.env.VUE_APP_API_URL}/bibdata/bulkadd`, this.inModul)
+        axios
+          .post(`${process.env.VUE_APP_API_URL}/bibdata/bulkadd`, this.inModul)
           .then((res) => {
             alert("บันทึกข้อมูลเรียบร้อยแล้ว", res);
           });
@@ -246,7 +256,5 @@ export default {
 </script>
 
 <style scoped>
-.pointer {
-  cursor: pointer;
-}
+
 </style>

@@ -1,22 +1,32 @@
 <template>
   <v-container style="background:#E5E5E5;color:white;height:100%">
-    <v-col class="ma-9">
+    <v-col>
       <v-row>
-        <v-card flat color="#E5E5E5"> 
-          <h1 class="headline font-weight-bold text--black">
+        <v-card flat color="#E5E5E5">
+          <div class="sizetitle">
             ใบเสนอราคา
-          </h1>
+          </div>
         </v-card>
       </v-row>
     </v-col>
-    <v-col class="ma-9">
-      <v-row>
-    <v-btn color="#29CC97" @click="$router.push('/QuotationCreate')" rounded>
-        <span class="font-weight-bold white--text">สร้างใบเสนอราคา</span></v-btn>
-      </v-row>
+    <v-col>
+      <v-row> </v-row>
     </v-col>
-
-    <v-row class="ma-9">
+    <v-row>
+      <v-col>
+        <v-btn
+          color="#29CC97"
+          @click="$router.push('/QuotationCreate')"
+          rounded
+        >
+          <span class="white--text">สร้างใบเสนอราคา</span></v-btn
+        >
+      </v-col>
+    </v-row>
+    <v-col>
+      <v-row> </v-row>
+    </v-col>
+    <v-row>
       <v-col lg="12" md="12" sm="12" cols="12">
         <!-- ใบเสนอราคา -->
         <v-card>
@@ -24,17 +34,32 @@
             <!-- table top section -->
             <template v-slot:top>
               <v-toolbar flat>
-                <v-toolbar-title class="headline font-weight-bold text--black"
-                  >ใบเสนอราคา</v-toolbar-title
+                <v-toolbar-title><span>ใบเสนอราคา</span></v-toolbar-title>
+                <v-toolbar-title
+                  ><span class="text-caption grey--text"
+                    >1024
+                  </span></v-toolbar-title
                 >
-                <h5 class="gray--text mt-2">1024 รายการ</h5>
+                <v-toolbar-title
+                  ><span class="text-caption grey--text"
+                    >รายการ</span
+                  ></v-toolbar-title
+                >
               </v-toolbar>
             </template>
             <!-- <template v-slot:item="{ item }"> -->
             <tr>
               <td>BNPQU0000001</td>
-              <td>บริษัท ทวีสตูดิโอ จำกัด, คุณพรีม <div>update 24.05.2019</div></td>
-              <td>วันที่จัดงาน <div>May 26, 2019 6:30 PM</div> วันนัดดูพื้นที่ <div>May 26, 2019 6:30 PM</div></td>
+              <td>
+                บริษัท ทวีสตูดิโอ จำกัด, คุณพรีม
+                <div>update 24.05.2019</div>
+              </td>
+              <td>
+                วันที่จัดงาน
+                <div>May 26, 2019 6:30 PM</div>
+                วันนัดดูพื้นที่
+                <div>May 26, 2019 6:30 PM</div>
+              </td>
               <td>คอนเฟิร์ม</td>
               <td><ModalCreateQuotation /></td>
             </tr>
@@ -49,11 +74,17 @@
 <script>
 import ModalCreateQuotation from "@/components/dialog/ModalCreateQuotation.vue";
 export default {
-  name: "Customer",
+  name: "Quotation",
   components: {
     ModalCreateQuotation,
   },
-
+    mounted() {
+    console.log(this.$route.path);
+    this.$store.dispatch({
+          type: "inputRoutepath",
+          RT: this.$route.path,
+        });
+    },
   data: () => ({
     table_customer: [],
     headers_table_customer: [
@@ -72,4 +103,6 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+
+</style>

@@ -22,9 +22,7 @@
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title
-              ><h4>{{ title }}</h4></v-list-item-title
-            >
+            <v-list-item-title>{{ title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
@@ -41,7 +39,7 @@
       </v-list-item-icon>
 
       <v-list-item-content>
-        <v-list-item-title>{{ title }}</v-list-item-title>
+        <v-list-item-title><span>{{ title }}</span></v-list-item-title>
       </v-list-item-content>
     </v-list-item>
   </v-navigation-drawer>
@@ -52,7 +50,7 @@
 export default {
   methods: {
     onClickMenu(link) {
-      this.$router.push(link).catch((err) => {});
+      this.$router.push(link).catch(() => {});
     },
   },
   // mounted() {
@@ -64,15 +62,15 @@ export default {
     return {
       selectedMenu: 0,
       menus: [
-        ["รายการอุปกรณ์", "/Homemenu"],
-        ["รายการแพ็คเกจ", "/Homemenu"],
-        ["รายการโปรโมชั่น", "/Homemenu"],
+        ["รายการอุปกรณ์", "/Equipment"],
+        ["รายการแพ็คเกจ", "/Package"],
+        ["รายการโปรโมชั่น", "/Promotion"],
       ],
       Backmenu: [["ย้อนกลับ", "/Homemenu"]],
     };
   },
   watch: {
-    $route(to, from) {
+    $route(to) {
       this.selectedMenu = this.menus.findIndex((menu) => menu[1] == to.path);
     },
   },

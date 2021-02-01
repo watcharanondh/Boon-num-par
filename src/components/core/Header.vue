@@ -37,25 +37,55 @@
       </v-btn>
 
   </v-app-bar>
-  
-<!-- <div v-if="Manu=='sale'"></div> -->
-  <MenuSalesData v-if="drawer" />
-<!-- <div v-if="Manu=='manage'"><MenuManageSystem v-if="drawer" /></div>  -->
+
+<div v-if="RouterPath!=='/Homemenu'">
+    <div v-if="RouterPath==true">
+      <MenuSalesData v-if="drawer" />
+    </div>
+    <div v-else>
+      <MenuManageSystem v-if="drawer" />
+    </div>
+</div>
+
+<!-- <div v-if="RouterPath!=='/Homemenu'" v-if="drawer" >
+</div> -->
+<!-- <div v-if="RouterPath!=='/Home'&&'/Customer'&&'/Quotation'" >
+      <MenuSalesData  />
+
+</div> 
+<div v-else-if="RouterPath!=='/Equipment'&&'/Package'&&'/Promotion'">
+      <MenuManageSystem  />
+
+</div>  -->
+
 </v-card>
 </template>
 
 <script>
-  import MenuSalesData from "@/components/Menu/MenuSalesData"
-// import MenuManageSystem from "@/components/Menu/MenuManageSystem"
+
+import MenuSalesData from "@/components/Menu/MenuSalesData"
+import MenuManageSystem from "@/components/Menu/MenuManageSystem"
 
 export default {
   name: "Header",
   components: {
     MenuSalesData,
-    //MenuManageSystem,
+    MenuManageSystem,
+  },
+   mounted() {
+
+   this.RouterPath = this.$store.getters['Route_path'];
+
+   if(this.RouterPath=='/Home' || this.RouterPath=='/Customer' || this.RouterPath=='/Quotation' ){
+        return this.RouterPath =true
+    }else if(this.RouterPath=='/Equipment' || this.RouterPath=='/Package' || this.RouterPath=='/Promotion'){
+         return this.RouterPath =false
+    }
+
   },
   data(){
     return{
+      RouterPath:true,
       Manu:'sale',
       drawer:false
     }

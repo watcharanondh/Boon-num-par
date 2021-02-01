@@ -12,6 +12,14 @@ import Quotation from "@/views/Quotation.vue";
 import QuotationCreate from "@/views/QuotationCreate.vue";
 import QuotationCreateSelectPackage from "@/views/QuotationCreateSelectPackage.vue";
 import QuotationCreateSelectPromotion from "@/views/QuotationCreateSelectPromotion.vue";
+import QuotationPrint from "@/views/QuotationPrint.vue"; 
+import Package from "@/views/Package.vue"; 
+import CreatePackage from "@/views/CreatePackage.vue"; 
+import CreatePackageSelectEquipment from "@/views/CreatePackageSelectEquipment.vue"; 
+import Promotion from "@/views/Promotion.vue";
+import CreatePromotion from "@/views/CreatePromotion.vue";
+import Equipment from "@/views/Equipment.vue";
+import CreateEquipment from "@/views/CreateEquipment.vue";
 
 Vue.use(VueRouter);
 
@@ -75,6 +83,46 @@ const routes = [
     path: "/QuotationCreateSelectPromotion",
     name: "/QuotationCreateSelectPromotion",
     component: QuotationCreateSelectPromotion
+  },
+  {
+    path: "/QuotationPrint",
+    name: "/QuotationPrint",
+    component: QuotationPrint
+  },
+  {
+    path: "/Package",
+    name: "/Package",
+    component: Package
+  },
+  {
+    path: "/CreatePackage",
+    name: "/CreatePackage",
+    component: CreatePackage
+  },
+  {
+    path: "/CreatePackageSelectEquipment",
+    name: "/CreatePackageSelectEquipment",
+    component: CreatePackageSelectEquipment
+  },
+  {
+    path: "/Promotion",
+    name: "/Promotion",
+    component: Promotion
+  },
+  {
+    path: "/CreatePromotion",
+    name: "/CreatePromotion",
+    component: CreatePromotion
+  },
+  {
+    path: "/Equipment",
+    name: "/Equipment",
+    component: Equipment
+  },
+  {
+    path: "/CreateEquipment",
+    name: "/CreateEquipment",
+    component: CreateEquipment
   },
   {
     path: "/",

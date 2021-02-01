@@ -22,7 +22,7 @@
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title><span>{{ title }}</span></v-list-item-title>
+            <v-list-item-title>{{ title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
@@ -79,8 +79,6 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css? family=Oxygen:300,400,700&display=swap');
-@import url('https://fonts.googleapis.com/css? family=Comfortaa&display=swap');
 /* .v-list-item-group .v-list-item--active{
   color: #fff !important;
   font-weight: bold;
@@ -90,13 +88,14 @@ export default {
   opacity: 0.7;
 } */
 
-.tile{
+/* .tile{
     font-family: Mulish;
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
     line-height: 20px;
-}
+    letter-spacing: 0.2px;
+} */
 
 /* .tile:hover {
   background:  white;

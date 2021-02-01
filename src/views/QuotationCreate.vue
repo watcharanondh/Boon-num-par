@@ -1,30 +1,40 @@
 <template>
   <v-container style="background:#E5E5E5;color:white;height:100%">
-    <v-col class="ma-9">
-      <v-row>
+   <v-row>
+      <v-col>
         <v-card flat color="#E5E5E5">
-          <h1 class="headline font-weight-bold text--black">
+          <div class="sizetitle">
             สร้างใบเสนอราคา
-          </h1>
+          </div>
         </v-card>
-      </v-row>
+      </v-col>
+    </v-row>
+    <v-col>
+      <v-row> </v-row>
     </v-col>
 
     <v-card class="mx-10 pa-5 rounded-lg" outlined>
       <!-- สร้างใบเสนอราคา -->
       <v-row justify="center">
         <v-col lg="6" md="12" sm="12" cols="12">
-      
-      <v-tabs left color="orange accent-4">
-        <v-tab v-for="link in links" :key="link.text" router :to="link.route">
-          <h3>{{ link.text }}</h3>
-        </v-tab>
-      </v-tabs>
-
+          <v-row>
+            <v-col>
+              <v-tabs left color="black">
+                <v-tab
+                  v-for="link in links"
+                  :key="link.text"
+                  router
+                  :to="link.route"
+                >
+                  <div>{{ link.text }}</div>
+                </v-tab>
+              </v-tabs>
+            </v-col>
+          </v-row>
           <!-- ค้นหารายชื่อลูกค้า หรือ ค้นหาหมายเลขลูกค้า -->
           <v-row>
             <v-col lg="12" md="12" sm="12" cols="12">
-              <h3>ค้นหารายชื่อลูกค้า หรือ ค้นหาหมายเลขลูกค้า</h3>
+              <div class="sizehead">ค้นหารายชื่อลูกค้า หรือ ค้นหาหมายเลขลูกค้า</div>
               <v-row class="no-gutters">
                 <v-text-field
                   v-model="SearchNames_Codes"
@@ -35,12 +45,12 @@
                 ></v-text-field>
               </v-row>
             </v-col>
-        </v-row>
+          </v-row>
 
-            <!-- หมายเลขผู้เสียภาษี -->
-        <v-row>
+          <!-- หมายเลขผู้เสียภาษี -->
+          <v-row>
             <v-col lg="6" md="6" sm="12" cols="12">
-              <h3>หมายเลขผู้เสียภาษี</h3>
+              <div class="sizehead">หมายเลขผู้เสียภาษี</div>
               <v-row class="no-gutters">
                 <v-text-field
                   v-model="Taxpayer_Number"
@@ -51,11 +61,10 @@
                 ></v-text-field>
               </v-row>
             </v-col>
-          
 
-          <!-- ชื่อผู้เสียภาษี -->
+            <!-- ชื่อผู้เสียภาษี -->
             <v-col lg="6" md="6" sm="12" cols="12">
-              <h3>ชื่อผู้เสียภาษี</h3>
+              <div class="sizehead">ชื่อผู้เสียภาษี</div>
               <v-row class="no-gutters">
                 <v-text-field
                   v-model="Taxpayer_Name"
@@ -66,12 +75,12 @@
                 ></v-text-field>
               </v-row>
             </v-col>
-        </v-row>
+          </v-row>
 
-            <!-- แฟลช -->
-            <v-row>
+          <!-- แฟลช -->
+          <v-row>
             <v-col lg="6" md="6" sm="12" cols="12">
-              <h3>แฟลช</h3>
+              <div class="sizehead">แฟลช</div>
               <v-row class="no-gutters">
                 <v-text-field
                   v-model="flash"
@@ -82,11 +91,10 @@
                 ></v-text-field>
               </v-row>
             </v-col>
-          
 
-          <!-- อีเมล์ -->
+            <!-- อีเมล์ -->
             <v-col lg="6" md="6" sm="12" cols="12">
-              <h3>อีเมล์</h3>
+              <div class="sizehead">อีเมล์</div>
               <v-row class="no-gutters">
                 <v-text-field
                   v-model="Email"
@@ -102,7 +110,7 @@
           <!-- โทรศัพท์ -->
           <v-row>
             <v-col lg="6" md="6" sm="12" cols="12">
-              <h3>โทรศัพท์</h3>
+              <div class="sizehead">โทรศัพท์</div>
               <v-row class="no-gutters">
                 <v-text-field
                   v-model="phone"
@@ -116,7 +124,7 @@
 
             <!-- มือถือ -->
             <v-col lg="6" md="6" sm="12" cols="12">
-              <h3>มือถือ</h3>
+              <div class="sizehead">มือถือ</div>
               <v-row class="no-gutters">
                 <v-text-field
                   v-model="mobile_phone"
@@ -132,7 +140,7 @@
           <!-- วันจัดงาน -->
           <v-row>
             <v-col lg="6" md="6" sm="12" cols="12">
-              <h3>วันจัดงาน</h3>
+              <div class="sizehead">วันจัดงาน</div>
               <v-row class="no-gutters">
                 <v-text-field
                   v-model="eventdate"
@@ -146,7 +154,7 @@
 
             <!-- วันนัดดูพื้นที่ -->
             <v-col lg="6" md="6" sm="12" cols="12">
-              <h3>วันนัดดูพื้นที่</h3>
+              <div class="sizehead">วันนัดดูพื้นที่</div>
               <v-row class="no-gutters">
                 <v-text-field
                   v-model="areaviewingdate"
@@ -162,7 +170,7 @@
           <!-- ที่อยู่ -->
           <v-row>
             <v-col lg="12" md="12" sm="12" cols="12">
-              <h3>ที่อยู่</h3>
+              <div class="sizehead">ที่อยู่</div>
               <v-row class="no-gutters">
                 <v-text-field
                   v-model="Address"
@@ -178,7 +186,7 @@
           <!-- จังหวัด -->
           <v-row>
             <v-col lg="6" md="6" sm="12" cols="12">
-              <h3>จังหวัด</h3>
+              <div class="sizehead">จังหวัด</div>
               <v-row class="no-gutters">
                 <v-text-field
                   v-model="province"
@@ -192,7 +200,7 @@
 
             <!-- เขต/อำเภอ -->
             <v-col lg="6" md="6" sm="12" cols="12">
-              <h3>เขต/อำเภอ</h3>
+              <div class="sizehead">เขต/อำเภอ</div>
               <v-row class="no-gutters">
                 <v-text-field
                   v-model="county"
@@ -208,7 +216,7 @@
           <!-- แขวง/ตำบล -->
           <v-row>
             <v-col lg="6" md="6" sm="12" cols="12">
-              <h3>แขวง/ตำบล</h3>
+              <div class="sizehead">แขวง/ตำบล</div>
               <v-row class="no-gutters">
                 <v-text-field
                   v-model="district"
@@ -222,7 +230,7 @@
 
             <!-- รหัสไปรษณีย์ -->
             <v-col lg="6" md="6" sm="12" cols="12">
-              <h3>รหัสไปรษณีย์</h3>
+              <div class="sizehead">รหัสไปรษณีย์</div>
               <v-row class="no-gutters">
                 <v-text-field
                   v-model="postalcode"
@@ -242,7 +250,7 @@
                 rounded
                 outlined
                 @click="$router.push('/Customer')"
-                >ปิด</v-btn
+                >ยกเลิก</v-btn
               >
             </v-col>
             <v-spacer></v-spacer>
@@ -254,7 +262,7 @@
                 large
                 rounded
                 @click="selectPage(SelectCustomerType.value)"
-                ><span class="font-weight-bold white--text">ตกลง</span></v-btn
+                ><span class="white--text">บันทึก</span></v-btn
               >
             </v-col>
           </v-row>
@@ -268,10 +276,10 @@
 import axios from "axios";
 
 export default {
-  name: "Companytype",
+  name: "QuotationCreate",
 
   data: () => ({
-     links: [
+    links: [
       { text: "ข้อมูลลูกค้า", route: "/QuotationCreate" },
       { text: "เลือกแพ็กเกจ", route: "/QuotationCreateSelectPackage" },
       { text: "เลือกโปรโมชั่น", route: "/QuotationCreateSelectPromotion" },
@@ -279,23 +287,19 @@ export default {
   }),
 
   methods: {
-    //บันทึกทั้งหมดตอนสุดท้าย หน้าเพิ่มทรัพยากร
     submit() {
-      if (this.inModul.length <= 1) {
-        alert("กรุณากรอกข้อมูลให้ครบ");
-      } else {
-        axios.post(`${process.env.VUE_APP_API_URL}/bibdata/bulkadd`, this.inModul)
+
+        axios
+          .post(`${process.env.VUE_APP_API_URL}/bibdata/bulkadd`, this.inModul)
           .then((res) => {
             alert("บันทึกข้อมูลเรียบร้อยแล้ว", res);
           });
-      }
+      
     },
   },
 };
 </script>
 
 <style scoped>
-.pointer {
-  cursor: pointer;
-}
+
 </style>

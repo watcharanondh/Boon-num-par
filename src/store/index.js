@@ -2,13 +2,15 @@ import Vue from "vue";
 import Vuex from "vuex";
 import api from "@/services/api";
 import { server } from "@/services/constants";
+import router from "@/router";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     isLogged: false,
-    username: ""
+    username: "",
+    Routepath:""
   },  
   getters: {
     isLogin(state) {
@@ -16,6 +18,9 @@ export default new Vuex.Store({
     },
     username(state) {
       return state.username;
+    },
+    Route_path(state) {
+      return state.Routepath;
     }
   },
   mutations: {
@@ -27,15 +32,21 @@ export default new Vuex.Store({
     },
     SET_USERNAME(state, value){
       state.username = value
+    },
+    SET_ROUTE_PATH(state, route){
+      state.Routepath = route
     }
   },
   actions: {
-     doLogin({ commit, dispatch }, { username, password }) {
-      let result = api.login({username, password}) //await api.login({ username, password }); async
+    inputRoutepath({ commit }, { RT }) {
+      commit("SET_ROUTE_PATH", RT);
+    },
+  async doLogin({ commit, dispatch }, { username, password }) {
+      let result = await api.login({ username, password });
       if (result == true) {
         commit("SET_LOGGED_IN");
         commit("SET_USERNAME", username);
-        
+        router.push("/Homemenu");
       } else {
         dispatch("doLogout", {});
       }
