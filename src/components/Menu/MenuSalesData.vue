@@ -1,12 +1,23 @@
 <template>
-  <v-navigation-drawer app>
+  <v-navigation-drawer 
+      app  
+      v-model="drawer"
+     
+  >
     <router-link to="/Homemenu" exact>
       <!-- (Logo) -->
-      <v-img
-        src="https://cdn.logo.com/hotlink-ok/logo-social.png"
+      <div class="justify-center d-flex" >
+
+        <v-img
+        :src="require('@/assets/AWLogoBoonumpar.svg')"
         alt=""
-        width="100%"
+       max-height="100%"
+       max-width="60%"
+        
       />
+
+      </div>
+      
     </router-link>
 
     <v-list flat>
@@ -61,6 +72,7 @@ export default {
   // },
   data() {
     return {
+      drawer:true,
       selectedMenu: 0,
       menus: [
         ["แสดงผลรวม", "/Home"],

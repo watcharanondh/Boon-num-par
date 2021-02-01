@@ -114,16 +114,16 @@
 
 <script>
 import StockCard from "@/components/cards/StockCard";
-import api from "@/services/api";
-//import axios from "axios";
+//import api from "@/services/api";
+import axios from "axios";
 export default {
   name: "Home",
   components: {
     StockCard,
   },
 
- async mounted() {
-    this.loadDatas();
+  mounted() {
+    //this.loadDatas();
 
     //console.log(this.$route.path);
 
@@ -132,19 +132,20 @@ export default {
           RT: this.$route.path,
         });
 
+let url = `${process.env.VUE_APP_NODE_URL}/dashboard/showall`
 
-    // axios
-    //   .get(`${process.env.VUE_APP_NODE_URL}/dashboard/showall`)
-    //   .then((response) => {
-    //     this.total = response.data.result.header[0].total;
-    //     this.confirm = response.data.result.header[1].confirm;
-    //     this.unconfirm = response.data.result.header[2].unconfirm;
-    //     this.cancel = response.data.result.header[3].cancel;
+    axios.get(url,{ headers: {'Authorization': 'Basic BNP*1234'}})
+      .then((response) => {
+        console.log(response);
+        this.total = response.data.result.header[0].total;
+        this.confirm = response.data.result.header[1].confirm;
+        this.unconfirm = response.data.result.header[2].unconfirm;
+        this.cancel = response.data.result.header[3].cancel;
 
-    //     this.Latest_quotation = response.data.result.latestquotation;
-    //     this.Latest_customer_list = response.data.result.latestcustomer;
+        this.Latest_quotation = response.data.result.latestquotation;
+        this.Latest_customer_list = response.data.result.latestcustomer;
 
-    //   });
+      });
   },
 
   data: () => ({
@@ -168,16 +169,16 @@ export default {
     ],
   }),
   methods: {
-   async loadDatas(){
-      let result = await api.getDashboard();
-        this.total = result.data.result.header[0].total;
-        this.confirm = result.data.result.header[1].confirm;
-        this.unconfirm = result.data.result.header[2].unconfirm;
-        this.cancel = result.data.result.header[3].cancel;
+  //  async loadDatas(){
+  //     let result = await api.getDashboard();
+  //       this.total = result.data.result.header[0].total;
+  //       this.confirm = result.data.result.header[1].confirm;
+  //       this.unconfirm = result.data.result.header[2].unconfirm;
+  //       this.cancel = result.data.result.header[3].cancel;
 
-        this.Latest_quotation = result.data.result.latestquotation;
-        this.Latest_customer_list = result.data.result.latestcustomer;
-    }
+  //       this.Latest_quotation = result.data.result.latestquotation;
+  //       this.Latest_customer_list = result.data.result.latestcustomer;
+  //   }
   },
 };
 </script>

@@ -8,6 +8,7 @@ import Vuelidate from 'vuelidate'
 import './App.css'
 import VueHtmlToPaper from 'vue-html-to-paper';
 
+
 const options = {
   name: '_blank',
   specs: [

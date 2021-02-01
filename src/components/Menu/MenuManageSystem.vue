@@ -1,11 +1,15 @@
 <template>
-  <v-navigation-drawer app>
+  <v-navigation-drawer 
+      app       
+      absolute
+      bottom
+      temporary>
     <router-link to="/Homemenu" exact>
       <!-- (Logo) -->
       <v-img
         src="https://cdn.logo.com/hotlink-ok/logo-social.png"
-        alt=""
-        width="100%"
+        max-height="300"
+        max-width="186"
       />
     </router-link>
 
@@ -73,6 +77,7 @@ export default {
     $route(to) {
       this.selectedMenu = this.menus.findIndex((menu) => menu[1] == to.path);
     },
+    
   },
 };
 </script>

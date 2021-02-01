@@ -40,7 +40,55 @@
 
 <div v-if="RouterPath!=='/Homemenu'">
     <div v-if="RouterPath==true">
-      <MenuSalesData v-if="drawer" />
+      <!-- <v-navigation-drawer 
+      v-model="drawer"
+      app
+  >
+    <router-link to="/Homemenu" exact>
+      <v-img
+        src="AW Logo Boonumpar.svg"
+        alt=""
+        width="100%"
+      />
+    </router-link>
+
+    <v-list dense >
+      <v-list-item-group 
+  color="primary">
+        <v-list-item
+          class="tile"
+          v-for="([title, route], index) in menus"
+          :key="index"
+          @click="onClickMenu(route)"
+        >
+          <v-list-item-icon>
+            <v-icon color="white"></v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>{{ title }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+    </v-list>
+    <v-divider></v-divider>
+ <v-list flat>
+    <v-list-item
+      v-for="([title, route], index) in Backmenu"
+      :key="index"
+      @click="onClickMenu(route)"
+    >
+      <v-list-item-icon>
+        <v-icon color="white"></v-icon>
+      </v-list-item-icon>
+
+      <v-list-item-content>
+        <v-list-item-title><span>{{ title }}</span></v-list-item-title>
+      </v-list-item-content>
+    </v-list-item>
+    </v-list>
+  </v-navigation-drawer> -->
+      <MenuSalesData v-if="drawer" /> 
     </div>
     <div v-else>
       <MenuManageSystem v-if="drawer" />
@@ -90,6 +138,7 @@ export default {
       drawer:false
     }
   },
+  
   computed: {
     version(){
       return process.env.VUE_APP_VERSION
@@ -102,7 +151,13 @@ export default {
       onClickLogOff(){
         this.$store.dispatch('doLogout')
       }
-    }
+    },
+  
+  watch: {
+      group () {
+        this.drawer = false
+      },
+  },
 };
 
 </script>
