@@ -1,10 +1,11 @@
 const { users, districts } = require("../models");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const fs = require('fs') ;
 // const { Op } = require("sequelize");
-// const jwt = require("jsonwebtoken");
 
 /* User Loging In */
-exports.User_login = async (req, res) => {
+exports.userLogin = async (req, res) => {
   console.log("login: " + JSON.stringify(req.body));
   const { username, password } = req.body;
   const result = await users.findOne({ where: { username: username } });
@@ -12,9 +13,11 @@ exports.User_login = async (req, res) => {
     if (result) {
       if (bcrypt.compareSync(password, result.password)) {
         if (result.is_active == 1 && result.is_delete == 0) {
+          const accessToken = jwt.sign({ result }, fs.readFileSync(__dirname + '/../middleware/private.key'))
           res.json({
             response: "OK",
-            result: result,
+            accessToken: accessToken,
+            result: result
           });
         } else {
           res.json({
@@ -35,7 +38,7 @@ exports.User_login = async (req, res) => {
 };
 
 /* User Regis */
-exports.User_Register = async (req, res) => {
+exports.userRegister = async (req, res) => {
   try {
     console.log("register: " + JSON.stringify(req.body));
     req.body.password = await bcrypt.hash(req.body.password, 8);
@@ -43,16 +46,5 @@ exports.User_Register = async (req, res) => {
     res.json({ response: "Registered.", result: result });
   } catch (error) {
     res.json({ response: "Regis Failed", result: error });
-  }
-};
-
-exports.finddistricts = (req, res) => {
-  try {
-    districts.findAll({ where: { id: req.params.id } }).then(data => {
-      res.json(data);
-    });
-  } catch (e) {
-    console.log(e);
-    throw e;
   }
 };

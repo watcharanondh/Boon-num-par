@@ -4,7 +4,7 @@ const helper = require("../helper/sku");
 
 
 /* List All Packages */
-exports.List_All_Packages = async (req, res) => {
+exports.listAllPackages = async (req, res) => {
   try {
     const result = await packages.findAll({
       attributes: [
@@ -37,7 +37,7 @@ exports.List_All_Packages = async (req, res) => {
 };
 
 /* List All Equipments to PackageUse */
-exports.List_All_Equipments_to_PackageUse = async (req, res) => {
+exports.listAllEquipmentsToPackageUse = async (req, res) => {
   try {
     const result = await equipments.findAll({
       attributes: [
@@ -65,7 +65,7 @@ exports.List_All_Equipments_to_PackageUse = async (req, res) => {
 };
 
 /* Create New Packages */
-exports.Create_New_Packages = async (req, res) => {
+exports.createNewPackage = async (req, res) => {
   const { name, price, amount_savory_food, amount_sweet_food, amount_drink, package_equip } = req.body;
   try {
     const getMaxPackId = await packages.findOne({ attributes: [[Sequelize.fn('MAX', Sequelize.col('id')), "maxPackId"]] })
@@ -98,7 +98,7 @@ exports.Create_New_Packages = async (req, res) => {
 };
 
 /* List Packages to Edit */
-exports.List_Packages_to_Edit = async (req, res) => {
+exports.listPackagesToEdit = async (req, res) => {
   try {
     const result = await packages.findAll({
       attributes: ["id", "name", "price", "amount_savory_food", "amount_sweet_food", "amount_drink"],
@@ -137,7 +137,7 @@ exports.List_Packages_to_Edit = async (req, res) => {
 };
 
 /* Edit Packages */
-exports.Edit_Packages = async (req, res) => {
+exports.editPackage = async (req, res) => {
   const { id, name, price, amount_savory_food, amount_sweet_food, amount_drink, package_equip } = req.body;
   try {
 
@@ -187,7 +187,7 @@ exports.Edit_Packages = async (req, res) => {
 };
 
 /* Delete Packages (Update is_delete) */
-exports.Delete_Packages = async (req, res) => {
+exports.deletePackage = async (req, res) => {
   try {
     const result = await packages.update({
       is_delete: 1
@@ -196,7 +196,7 @@ exports.Delete_Packages = async (req, res) => {
         id: req.body.id
       }
     });
-    if (result == 1) {
+    if (result != 0) {
       res.json({
         response: "OK",
         result: req.body.id + ": Deleted. Result: " + result,

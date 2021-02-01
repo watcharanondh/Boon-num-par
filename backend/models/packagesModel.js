@@ -58,7 +58,7 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
   packages.associate = models => {
-    packages.hasMany(models.quotation_packages, { foreignKey: "package_id" });
+    packages.hasMany(models.quotation_packages, { foreignKey: "id" });
     packages.hasMany(models.package_equipments, { foreignKey: "package_id" });
   };
 

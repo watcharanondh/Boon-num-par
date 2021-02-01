@@ -4,7 +4,7 @@ const helper = require("../helper/sku");
 
 
 /* List All Promotions */
-exports.List_All_Promotions = async (req, res) => {
+exports.listAllPromotions = async (req, res) => {
   try {
     const result = await promotions.findAll({
       attributes: [
@@ -34,7 +34,7 @@ exports.List_All_Promotions = async (req, res) => {
 };
 
 /* Create New Promotions */
-exports.Create_New_Promotions = async (req, res) => {
+exports.createNewPromotion = async (req, res) => {
   const { name, discount } = req.body;
   try {
     const getMaxPromoId = await promotions.findOne({ attributes: [[Sequelize.fn('MAX', Sequelize.col('id')), "maxPromoId"]] })
@@ -55,7 +55,7 @@ exports.Create_New_Promotions = async (req, res) => {
 };
 
 /* List Promotion to Edit */
-exports.List_Promotion_to_Edit = async (req, res) => {
+exports.listPromotionToEdit = async (req, res) => {
   try {
     const result = await promotions.findAll({
       attributes: ["id", "name", "discount"],
@@ -80,7 +80,7 @@ exports.List_Promotion_to_Edit = async (req, res) => {
 };
 
 /* Edit Promotion */
-exports.Edit_Promotion = async (req, res) => {
+exports.editPromotion = async (req, res) => {
   const { id, name, discount } = req.body;
   try {
       const result = await promotions.update({
@@ -105,7 +105,7 @@ exports.Edit_Promotion = async (req, res) => {
 };
 
 /* Delete Promotion (Update is_delete) */
-exports.Delete_Promotion = async (req, res) => {
+exports.deletePromotion = async (req, res) => {
   try {
     const result = await promotions.update({
       is_delete: 1
@@ -114,7 +114,7 @@ exports.Delete_Promotion = async (req, res) => {
         id: req.body.id
       }
     });
-    if (result == 1) {
+    if (result != 0) {
       res.json({
         response: "OK",
         result: req.body.id + ": Deleted. Result: " + result,

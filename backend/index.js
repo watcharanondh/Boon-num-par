@@ -5,6 +5,10 @@ const DB = require("./models");
 const app = express();
 const logger = require("./middleware/logger");
 
+var http = require('http');
+var https = require('https');
+var fs = require('fs');
+
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -47,8 +51,14 @@ app.use(START_PART_WITH + "/promotions", require("./routes/Promotions"));
 app.use(START_PART_WITH + "/users", require("./routes/Users"));
 
 
+// var sslOptions = {
+//   key: fs.readFileSync('key.pem'),
+//   cert: fs.readFileSync('cert.pem')
+// };
+// https.createServer(sslOptions, app).listen(8443)
+
 DB.sequelize.sync().then(() => {
-  app.listen(PORT, err => {
+  http.createServer(app).listen(PORT, err => {
     if (err) return console.log(`Cannot lisening at port: ${PORT}`);
     console.log(`Server listening on port: ${PORT}`);
   });

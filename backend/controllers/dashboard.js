@@ -2,7 +2,7 @@ const { quotations, quotation_statuses, customers, customer_tax_invoices } = req
 const { Op, Sequelize } = require("sequelize");
 
 /* List Customer Type */
-exports.List_All_Dashboard = async (req, res) => {
+exports.listAllDashboard = async (req, res) => {
   try {
     /* Header Count total,confirm,unconfirm,cancel */
     const Totals = await quotations.findOne({
@@ -38,7 +38,7 @@ exports.List_All_Dashboard = async (req, res) => {
     });
 
     /* List Latest Quotations */
-    const Lastquotation = await quotations.findAll({
+    var Lastquotation = await quotations.findAll({
       attributes: ['id'],
       include: [
         {
@@ -58,9 +58,17 @@ exports.List_All_Dashboard = async (req, res) => {
         is_delete: 0
       },
       order: [["created_at", "DESC"]]
+    }).then(quotadata=>{
+      quotadata.map((data)=>{
+        data.dataValues.customer_tax_invoices = data.dataValues.customer.customer_tax_invoices[0].title
+        data.dataValues.quotation_status = data.dataValues.quotation_status.name
+        delete data.dataValues.customer;
+      });
+      return quotadata;
     });
+
     /* List Latest Customers */
-    const LastCustomers = await customers.findAll({
+    var LastCustomers = await customers.findAll({
       attributes: ['id', [Sequelize.fn("date_format", Sequelize.col("`customers`.`created_at`"), "%d-%m-%Y"), "created_at_date"]],
       include: [
         {
@@ -73,6 +81,11 @@ exports.List_All_Dashboard = async (req, res) => {
         is_delete: 0
       },
       order: [["created_at", "DESC"]]
+    }).then(custdata=>{
+      custdata.map((data)=>{
+        data.dataValues.customer_tax_invoices = data.dataValues.customer_tax_invoices != '' ? data.dataValues.customer_tax_invoices[0].title : "ไม่พบข้อมูล";
+      });
+      return custdata;
     });
     res.json({
       response: "OK",

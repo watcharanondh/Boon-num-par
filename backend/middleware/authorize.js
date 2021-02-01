@@ -27,8 +27,12 @@ const authorization = (req, res, next) => {
       req.datauser = data;
       next();
     });
-  } else if (isBearer == "Basic" && token == "abcd1234") {
+
+    /* --------------------- only On development ---------------------*/
+  } else if (isBearer == "Basic" && token == "BNP*1234") {
     next();
+    /* ---------------------------------------------------------------*/
+
   } else {
     return res.status(401).json({
       status: 401,

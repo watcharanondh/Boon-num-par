@@ -46,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
   promotions.associate = models => {
-    promotions.hasMany(models.quotation_promotions, { foreignKey: "id" });
+    promotions.hasMany(models.quotation_promotions, { foreignKey: "promotion_id" });
   };
   return promotions;
 };

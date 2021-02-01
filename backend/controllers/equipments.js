@@ -4,7 +4,7 @@ const helper = require("../helper/sku");
 
 
 /* List All Equipments */
-exports.List_All_Equipments = async (req, res) => {
+exports.listAllEquipments = async (req, res) => {
   try {
     const result = await equipments.findAll({
       attributes: [
@@ -34,7 +34,7 @@ exports.List_All_Equipments = async (req, res) => {
 };
 
 /* Create New Equipments */
-exports.Create_New_Equipments = async (req, res) => {
+exports.createNewEquipment = async (req, res) => {
   const { name, stock_in } = req.body;
   try {
     const getMaxEquipId = await equipments.findOne({ attributes: [[Sequelize.fn('MAX', Sequelize.col('id')), "maxEquipId"]] })
@@ -55,7 +55,7 @@ exports.Create_New_Equipments = async (req, res) => {
 };
 
 /* List Equipment to Edit */
-exports.List_Equipments_to_Edit = async (req, res) => {
+exports.listEquipmentsToEdit = async (req, res) => {
   try {
     const result = await equipments.findAll({
       attributes: ["id", "name", "stock_in"],
@@ -80,7 +80,7 @@ exports.List_Equipments_to_Edit = async (req, res) => {
 };
 
 /* Edit Equipment */
-exports.Edit_Equipment = async (req, res) => {
+exports.editEquipment = async (req, res) => {
   const { id, name, stock_in } = req.body;
   try {
     const checkStockOut = await equipments.findOne({ attributes: ['stock_out'], where: { id: id } });
@@ -110,7 +110,7 @@ exports.Edit_Equipment = async (req, res) => {
 };
 
 /* Delete Equipment (Update is_delete) */
-exports.Delete_Equipment = async (req, res) => {
+exports.deleteEquipment = async (req, res) => {
   try {
     const result = await equipments.update({
       is_delete: 1
@@ -119,7 +119,7 @@ exports.Delete_Equipment = async (req, res) => {
         id: req.body.id
       }
     });
-    if (result == 1) {
+    if (result != 0) {
       res.json({
         response: "OK",
         result: req.body.id + ": Deleted. Result: " + result,

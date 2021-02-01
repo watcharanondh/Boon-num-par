@@ -7,29 +7,29 @@ const CustomerContrllers = require("../controllers/customers");
 
 /*------------------------------ Customer ------------------------------*/
 /* List Customer Type Selector */
-router.get("/customertypeselector", CustomerContrllers.List_Customer_type);
+router.get("/customertypeselector", CustomerContrllers.listCustomerType);
 
 /* List All Customer */
-router.get("/listallcustomers", CustomerContrllers.List_All_Customer);
+router.get("/listallcustomers", CustomerContrllers.listAllCustomer);
 /* Create New Customer */
-router.post("/newcustomer", CustomerContrllers.Create_customer);
+router.post("/newcustomer", CustomerContrllers.createCustomer);
 /* List Customer to Edit */
-router.post("/listcustomer", CustomerContrllers.List_Customer_to_Edit);
+router.post("/listcustomer", CustomerContrllers.listCustomerToEdit);
 /* Edit Customer */
-router.put("/editcustomer", CustomerContrllers.Edit_customer);
+router.put("/editcustomer", CustomerContrllers.editCustomer);
 /* Delete Customer */
-router.put("/delcustomer", CustomerContrllers.Delete_customer);
+router.put("/delcustomer", CustomerContrllers.deleteCustomer);
 
 
 
 /*------------------------------ Customer Tax Invoice ------------------------------*/
 /* Create New Customer Tax Invoice*/
-router.post("/newcustomertaxinv", CustomerContrllers.Create_customers_tax_invoice);
+router.post("/newcustomertaxinv", CustomerContrllers.createCustomersTaxInvoice);
 /* List Customer Tax Invoice to Edit */
-router.get("/listcustomertaxinv", CustomerContrllers.List_customers_tax_invoice_to_Edit);
+router.get("/listcustomertaxinv", CustomerContrllers.listCustomersTaxInvoiceToEdit);
 /* Edit Customer Tax Invoice */
-router.put("/editcustomertaxinv", CustomerContrllers.Edit_customers_tax_invoice);
+router.put("/editcustomertaxinv", CustomerContrllers.editCustomersTaxInvoice);
 /* Delete Customer Tax Invoice */
-router.put("/delcustomertaxinv", CustomerContrllers.Delete_customers_tax_invoice);
+router.put("/delcustomertaxinv", CustomerContrllers.deleteCustomersTaxInvoice);
 
 module.exports = router;

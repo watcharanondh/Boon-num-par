@@ -4,7 +4,7 @@ const helper = require("../helper/sku");
 
 /*------------------------------ Customer ------------------------------*/
 /* List Customer Type Selector */
-exports.List_Customer_type = async (req, res) => {
+exports.listCustomerType = async (req, res) => {
   try {
     const result = await customer_types.findAll({
       attributes: ["id", "name"],
@@ -27,7 +27,7 @@ exports.List_Customer_type = async (req, res) => {
   }
 };
 /* List All Customer */
-exports.List_All_Customer = async (req, res) => {
+exports.listAllCustomer = async (req, res) => {
   try {
     const result = await customers.findAll({
       attributes: [
@@ -52,6 +52,12 @@ exports.List_All_Customer = async (req, res) => {
         is_delete: 0
       },
       order: [["created_at", "DESC"]]
+    }).then(customers_data=>{
+      customers_data.map((data)=>{
+        data.dataValues.customer_tax_invoices = data.dataValues.customer_tax_invoices != '' ? data.dataValues.customer_tax_invoices[0].title : "ไม่พบข้อมูล";
+        data.dataValues.customer_type = data.dataValues.customer_type.name
+      });
+      return customers_data;
     });
     if (result != '' && result !== null) {
       res.json({
@@ -67,7 +73,7 @@ exports.List_All_Customer = async (req, res) => {
   }
 };
 /* Create Customer */
-exports.Create_customer = async (req, res) => {
+exports.createCustomer = async (req, res) => {
   const { name, telephone_number, mobile_phone_number, line_id, type_id, address, district_id } = req.body;
   const getMaxCustomerId = await customers.findOne({ attributes: [[Sequelize.fn('MAX', Sequelize.col('id')), "maxCustomerId"]] })
   try {
@@ -91,7 +97,7 @@ exports.Create_customer = async (req, res) => {
   }
 };
 /* List Customer to Edit*/
-exports.List_Customer_to_Edit = async (req, res) => {
+exports.listCustomerToEdit = async (req, res) => {
   try {
     const result = await customers.findAll({
       attributes: [
@@ -123,7 +129,7 @@ exports.List_Customer_to_Edit = async (req, res) => {
   }
 };
 /* Edit Customer */
-exports.Edit_customer = async (req, res) => {
+exports.editCustomer = async (req, res) => {
   const { id, name, telephone_number, mobile_phone_number, line_id, address, district_id } = req.body;
   try {
     const result = await customers.update({
@@ -150,7 +156,7 @@ exports.Edit_customer = async (req, res) => {
   }
 };
 /* Delete Customer (update is_delete) */
-exports.Delete_customer = async (req, res) => {
+exports.deleteCustomer = async (req, res) => {
   try {
     const result = await customers.update({
       is_delete: 1
@@ -159,7 +165,7 @@ exports.Delete_customer = async (req, res) => {
         id: req.body.id
       }
     });
-    if (result == 1) {
+    if (result != 0) {
       res.json({
         response: "OK",
         result: req.body.id + ": Deleted. Result: " + result,
@@ -178,7 +184,7 @@ exports.Delete_customer = async (req, res) => {
 
 /*------------------------------ Customer Tax Invoice ------------------------------*/
 /* Create Customer Tax Invoice */
-exports.Create_customers_tax_invoice = async (req, res) => {
+exports.createCustomersTaxInvoice = async (req, res) => {
   const { id, title, tax_id, flash_number, email, telephone_number, mobile_phone_number, address, district_id } = req.body;
   try {
     const result = await customer_tax_invoices.create({
@@ -202,7 +208,7 @@ exports.Create_customers_tax_invoice = async (req, res) => {
   }
 };
 /* List Customer Tax Invoice to Edit */
-exports.List_customers_tax_invoice_to_Edit = async (req, res) => {
+exports.listCustomersTaxInvoiceToEdit = async (req, res) => {
   try {
     const result = await customer_tax_invoices.findAll({
       attributes: ['title', 'tax_id', 'flash_number', 'email', 'telephone_number', 'mobile_phone_number', 'address', 'district_id'],
@@ -226,7 +232,7 @@ exports.List_customers_tax_invoice_to_Edit = async (req, res) => {
   }
 };
 /* Edit Customer Tax Invoice */
-exports.Edit_customers_tax_invoice = async (req, res) => {
+exports.editCustomersTaxInvoice = async (req, res) => {
   const { id, tax_id, title, flash_number, email, telephone_number, mobile_phone_number, address, district_id } = req.body;
   try {
     const result = await customer_tax_invoices.update({
@@ -255,7 +261,7 @@ exports.Edit_customers_tax_invoice = async (req, res) => {
   }
 };
 /* Delete Customer Tax Invoice  (update is_delete) */
-exports.Delete_customers_tax_invoice = async (req, res) => {
+exports.deleteCustomersTaxInvoice = async (req, res) => {
   try {
     const result = await customer_tax_invoices.update({
       is_delete: 1
@@ -264,7 +270,7 @@ exports.Delete_customers_tax_invoice = async (req, res) => {
         id: req.body.id
       }
     });
-    if (result == 1) {
+    if (result != 0) {
       res.json({
         response: "OK",
         result: req.body.id + ": Deleted. Result: " + result,

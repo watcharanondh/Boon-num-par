@@ -76,8 +76,8 @@ module.exports = (sequelize, DataTypes) => {
   quotations.associate = models => {
     quotations.belongsTo(models.customers, { foreignKey: "customer_id" });
     quotations.belongsTo(models.quotation_statuses, { foreignKey: "quotation_status_id" });
-    quotations.hasMany(models.quotation_packages, { foreignKey: "id" });
-    quotations.hasMany(models.quotation_promotions, { foreignKey: "id" });
+    quotations.hasMany(models.quotation_packages, { foreignKey: "quotation_id" });
+    quotations.hasMany(models.quotation_promotions, { foreignKey: "quotation_id" });
   };
 
   return quotations;

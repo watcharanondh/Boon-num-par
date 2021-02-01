@@ -4,18 +4,18 @@ const router = express.Router();
 const PromotionsContrllers = require("../controllers/promotions");
 
 /* List All Equipment */
-router.get("/listallpromotions", PromotionsContrllers.List_All_Promotions);
+router.get("/listallpromotions", PromotionsContrllers.listAllPromotions);
 
 /* Create New Equipment */
-router.post("/addnewpromotion", PromotionsContrllers.Create_New_Promotions);
+router.post("/addnewpromotion", PromotionsContrllers.createNewPromotion);
 
 /* List Equipment to Edit*/
-router.post("/listpromotions", PromotionsContrllers.List_Promotion_to_Edit);
+router.post("/listpromotions", PromotionsContrllers.listPromotionToEdit);
 
 /* Edit Equipment */
-router.put("/editpromotion", PromotionsContrllers.Edit_Promotion);
+router.put("/editpromotion", PromotionsContrllers.editPromotion);
 
 /* Delete Equipment */
-router.put("/delpromotion", PromotionsContrllers.Delete_Promotion);
+router.put("/delpromotion", PromotionsContrllers.deletePromotion);
 
 module.exports = router;
