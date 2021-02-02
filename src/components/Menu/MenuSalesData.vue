@@ -7,15 +7,12 @@
     <router-link to="/Homemenu" exact>
       <!-- (Logo) -->
       <div class="justify-center d-flex" >
-
         <v-img
         :src="require('@/assets/AWLogoBoonumpar.svg')"
         alt=""
-       max-height="100%"
-       max-width="60%"
-        
+        max-height="100%"
+        max-width="60%"
       />
-
       </div>
       
     </router-link>

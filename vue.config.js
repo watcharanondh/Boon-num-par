@@ -6,7 +6,8 @@ module.exports = {
   //   https: true,
   //   hotOnly: false,
   // },
-  //lintOnSave: false,
+  //lintOnSave: false
+  
   transpileDependencies: ["vuetify"],
   publicPath: process.env.NODE_ENV === 'production'
   ? '/bnp/'

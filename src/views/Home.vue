@@ -41,9 +41,10 @@
             :headers="headers_latest_quotation"
             :items="Latest_quotation"
             :items-per-page="10"
-            hide-default-header
+
             hide-default-footer
             class="elevation-1"
+            mobile-breakpoint="0"
           >
             <!-- table top section -->
             <template v-slot:top>
@@ -60,17 +61,17 @@
                 <td>
                   <div
                     v-if="item.quotation_status == 'คอนเฟิร์ม'"
-                    class="success--text text--darken-2"
+                    class="success--text "
                   >
                     {{ item.quotation_status }}
                   </div>
                   <div
                     v-else-if="item.quotation_status == 'ไม่คอนเฟิร์ม'"
-                    class="warning--text text--darken-2"
+                    class="warning--text "
                   >
                     {{ item.quotation_status }}
                   </div>
-                  <div v-else class="error--text text--darken-2">
+                  <div v-else class="error--text ">
                     {{ item.quotation_status }}
                   </div>
                 </td>
@@ -89,13 +90,12 @@
             hide-default-header
             hide-default-footer
             class="elevation-1"
+            mobile-breakpoint="0"
           >
-             table top section
+             <!-- table top section -->
             <template v-slot:top>
               <v-toolbar flat>
-                <v-toolbar-title class="text--black"
-                  >รายชื่อลูกค้าล่าสุด</v-toolbar-title
-                >
+                <v-toolbar-title class="text--black">รายชื่อลูกค้าล่าสุด</v-toolbar-title>
               </v-toolbar>
             </template>
             <template v-slot:item="{ item }">
