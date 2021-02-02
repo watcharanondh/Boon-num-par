@@ -1,20 +1,21 @@
 const express = require("express");
 const router = express.Router();
+const authorize = require('../middleware/authorize');
 
 const EquipmentContrllers = require("../controllers/equipments");
 
 /* List All Equipment */
-router.get("/listallequipment", EquipmentContrllers.listAllEquipments);
+router.get("/listallequipment", authorize, EquipmentContrllers.listAllEquipments);
 
 /* Create New Equipment */
-router.post("/addnewequipment", EquipmentContrllers.createNewEquipment);
+router.post("/addnewequipment", authorize, EquipmentContrllers.createNewEquipment);
 
 /* List Equipment to Edit*/
-router.post("/listequipment", EquipmentContrllers.listEquipmentsToEdit);
+router.post("/listequipment", authorize, EquipmentContrllers.listEquipmentsToEdit);
 
 /* Edit Equipment */
-router.put("/editequipment", EquipmentContrllers.editEquipment);
+router.put("/editequipment", authorize, EquipmentContrllers.editEquipment);
 /* Delete Equipment */
-router.put("/delequipment", EquipmentContrllers.deleteEquipment);
+router.put("/delequipment", authorize, EquipmentContrllers.deleteEquipment);
 
 module.exports = router;

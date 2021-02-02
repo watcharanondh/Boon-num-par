@@ -4,6 +4,7 @@ const cors = require("cors");
 const DB = require("./models");
 const app = express();
 const logger = require("./middleware/logger");
+const authorize = require("./middleware/authorize");
 
 var http = require('http');
 var https = require('https');
@@ -22,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //Init MiddleWare
 app.use(logger);
 
-app.get(START_PART_WITH + "/", (req, res) => {
+app.get(START_PART_WITH + "/", authorize, (req, res) => {
   res.send("Hello World");
 });
 

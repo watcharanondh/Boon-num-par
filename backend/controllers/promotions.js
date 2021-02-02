@@ -6,6 +6,13 @@ const helper = require("../helper/sku");
 /* List All Promotions */
 exports.listAllPromotions = async (req, res) => {
   try {
+    let count_total =  await promotions.findOne({
+      attributes: [[Sequelize.fn('COUNT', Sequelize.col('*')), 'total']],
+      where: {
+        is_active: 1,
+        is_delete: 0
+      }
+    });
     const result = await promotions.findAll({
       attributes: [
         "id",
@@ -22,6 +29,7 @@ exports.listAllPromotions = async (req, res) => {
     if (result != '' && result !== null) {
       res.json({
         response: "OK",
+        count_total: count_total.dataValues.total + " รายการ",
         result: result,
       });
     } else {

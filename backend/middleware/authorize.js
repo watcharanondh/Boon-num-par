@@ -15,7 +15,6 @@ const authorization = (req, res, next) => {
       status: 401,
       message: "Unauthorized",
     });
-  console.log(token);
   if (isBearer == "Bearer") {
     const privateKey = fs.readFileSync(__dirname + "/private.key");
     jwt.verify(token, privateKey, function (error, data) {

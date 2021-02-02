@@ -70,12 +70,8 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
   customer_tax_invoices.associate = models => {
-    customer_tax_invoices.belongsTo(models.customers, {
-      foreignKey: "id",
-    });
-    customer_tax_invoices.belongsTo(models.districts, {
-      foreignKey: "district_id",
-    });
+    customer_tax_invoices.belongsTo(models.customers, { foreignKey: "id", });
+    customer_tax_invoices.belongsTo(models.districts, { foreignKey: "district_id", });
   };
 
   return customer_tax_invoices;

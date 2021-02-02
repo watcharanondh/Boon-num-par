@@ -1,24 +1,25 @@
 const express = require("express");
 const router = express.Router();
+const authorize = require('../middleware/authorize');
 
 const PackagesContrllers = require("../controllers/packages");
 
 /* List All Packages */
-router.get("/listallpackage", PackagesContrllers.listAllPackages);
+router.get("/listallpackage", authorize, PackagesContrllers.listAllPackages);
 
 /* List All Equipments to PackageUse*/
-router.get("/listallequiptopackuse", PackagesContrllers.listAllEquipmentsToPackageUse);
+router.get("/listallequiptopackuse", authorize, PackagesContrllers.listAllEquipmentsToPackageUse);
 
 /* Create Packages */
-router.post("/addnewpackage", PackagesContrllers.createNewPackage);
+router.post("/addnewpackage", authorize, PackagesContrllers.createNewPackage);
 
 /* List Packages to Edit*/
-router.post("/listpackages", PackagesContrllers.listPackagesToEdit);
+router.post("/listpackages", authorize, PackagesContrllers.listPackagesToEdit);
 
 /* Edit Packages */
-router.put("/editpackage", PackagesContrllers.editPackage);
+router.put("/editpackage", authorize, PackagesContrllers.editPackage);
 
 /* Delete Packages */
-router.put("/delpackage", PackagesContrllers.deletePackage);
+router.put("/delpackage", authorize, PackagesContrllers.deletePackage);
 
 module.exports = router;
