@@ -24,10 +24,13 @@ router.put("/delcustomer", authorize, CustomerContrllers.deleteCustomer);
 
 
 /*------------------------------ Customer Tax Invoice ------------------------------*/
+
+/* List All Customer */
+router.get("/listallcustomerstaxinv", authorize, CustomerContrllers.listAllCustomersTaxInvoice);
 /* Create New Customer Tax Invoice*/
 router.post("/newcustomertaxinv", authorize, CustomerContrllers.createCustomersTaxInvoice);
 /* List Customer Tax Invoice to Edit */
-router.get("/listcustomertaxinv", authorize, CustomerContrllers.listCustomersTaxInvoiceToEdit);
+router.post("/listcustomertaxinv", authorize, CustomerContrllers.listCustomersTaxInvoiceToEdit);
 /* Edit Customer Tax Invoice */
 router.put("/editcustomertaxinv", authorize, CustomerContrllers.editCustomersTaxInvoice);
 /* Delete Customer Tax Invoice */

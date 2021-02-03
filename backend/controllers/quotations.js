@@ -137,7 +137,7 @@ exports.selectPackage = async (req, res) => {
         "amount_sweet_food",
         "amount_drink",
         [Sequelize.fn("date_format", Sequelize.col("`packages`.`updated_at`"), "%d-%m-%Y"), "update"],
-        [Sequelize.fn("CONCAT", "อาหารคาว ", Sequelize.col("`packages`.`amount_savory_food`"), ", อาหารหวาน ", Sequelize.col("`packages`.`amount_sweet_food`"), ", เครื่องดื่ม ", Sequelize.col("`packages`.`amount_sweet_food`")), "food_des"],
+        [Sequelize.fn("CONCAT", "อาหารคาว ", Sequelize.col("`packages`.`amount_savory_food`"), ", อาหารหวาน ", Sequelize.col("`packages`.`amount_sweet_food`"), ", เครื่องดื่ม ", Sequelize.col("`packages`.`amount_drink`")), "food_des"],
       ],
       where: {
         id: req.body.id,
@@ -576,6 +576,7 @@ exports.printOutQuotation = async (req, res) => {
       pack_data.map(data => {
         Object.assign(data.dataValues, data.package.dataValues);
         total = total + parseFloat(data.dataValues.package_price)
+        data.dataValues.package_price = Number(data.dataValues.package_price).toLocaleString("th-TH");
         delete data.package.dataValues;
       })
       return pack_data;
@@ -599,12 +600,13 @@ exports.printOutQuotation = async (req, res) => {
     }).then(prom_data => {
       prom_data.map(data => {
         Object.assign(data.dataValues, data.promotion.dataValues);
-        discount = discount + parseFloat(data.dataValues.promotion_discount)
+        discount = discount + parseFloat(data.dataValues.promotion_discount);
+        data.dataValues.promotion_discount = Number(data.dataValues.promotion_discount).toLocaleString("th-TH");
         delete data.promotion.dataValues;
       })
       return prom_data;
     });
-    body_packages.push.apply(body_packages,body_promotions)
+    // body_packages.push.apply(body_packages,body_promotions)
     /* ------------------------------------------------------- Footer ------------------------------------------------------- */
     const note_footer = await quotations.findAll({
       attributes: ["note"],
@@ -619,12 +621,13 @@ exports.printOutQuotation = async (req, res) => {
       "total": total.toLocaleString("th-TH"),
       "discount": discount.toLocaleString("th-TH"),
       "amount": (total - discount).toLocaleString("th-TH"),
+      "signature_date": new Date().toLocaleDateString("th-TH", { day: '2-digit', month: '2-digit', year: '2-digit' })
     }
     res.json({
       response: "OK",
       result: {
         "header": header[0],
-        "body": body_packages,
+        "body": { "packages": body_packages, "promotions": body_promotions },
         "footer": footer
       }
     });

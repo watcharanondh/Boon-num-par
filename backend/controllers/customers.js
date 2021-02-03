@@ -1,4 +1,4 @@
-const { customers, customer_types, customer_tax_invoices } = require("../models");
+const { customers, customer_types, customer_tax_invoices, districts } = require("../models");
 const Sequelize = require("sequelize");
 const helper = require("../helper/sku");
 
@@ -136,11 +136,21 @@ exports.listCustomerToEdit = async (req, res) => {
       include: [
         {
           model: customer_tax_invoices,
-          attributes: ["title", "tax_id", "flash_number", "email", "telephone_number", "mobile_phone_number", "address", "district_id",],
+          attributes: [["title", "cti_title"], ["tax_id", "cti_tax_id"], ["flash_number", "cti_flash_number"], ["email", "cti_email"], ["telephone_number", "cti_telephone_number"], ["mobile_phone_number", "cti_mobile_phone_number"], ["address", "cti_address"], ["district_id", "cti_district_id"],],
+          include: [
+            {
+              model: districts,
+              attributes: [["district", "cti_district"], ["amphoe", "cti_amphoe"], ["province", "cti_province"], ["zipcode", "cti_zipcode"], ["district_code", "cti_district_code"], ["amphoe_code", "cti_amphoe_code"], ["province_code", "cti_province_code"]]
+            }
+          ],
           where: {
             is_active: 1,
             is_delete: 0
           }
+        },
+        {
+          model: districts,
+          attributes: ["district", "amphoe", "province", "zipcode", "district_code", "amphoe_code", "province_code"]
         }
       ],
       where: {
@@ -149,15 +159,12 @@ exports.listCustomerToEdit = async (req, res) => {
         is_delete: 0
       }
     })
-    .then(all_customers => {
-        for (const [key, value] of Object.entries(all_customers[0].customer_tax_invoices[0].dataValues)) {
-          let keys = "cti_" + `${key}`; /// set keyObject เพิ่ม cti_ ต่อด้านหน้า ///
-          let vals = `${value}`;
-          Object.assign(all_customers[0].dataValues,{[keys] : vals})
-        }
+      .then(all_customers => {
+        all_customers[0].dataValues = { ...all_customers[0].dataValues, ...all_customers[0].district.dataValues, ...all_customers[0].customer_tax_invoices[0].district.dataValues, ...all_customers[0].customer_tax_invoices[0].dataValues }
+        delete all_customers[0].dataValues.district;
         delete all_customers[0].dataValues.customer_tax_invoices;
-      return all_customers;
-    });
+        return all_customers;
+      });
 
     if (result != '' && result !== null) {
       res.json({
@@ -175,7 +182,7 @@ exports.listCustomerToEdit = async (req, res) => {
 /* Edit Customer */
 exports.editCustomer = async (req, res) => {
   try {
-  /* Customers */
+    /* Customers */
     const { id, name, telephone_number, mobile_phone_number, line_id, address, district_id } = req.body;
     const customers_result = await customers.update({
       name: name,
@@ -191,7 +198,7 @@ exports.editCustomer = async (req, res) => {
         is_delete: 0
       }
     });
-  /* Customers Tax Invoices */
+    /* Customers Tax Invoices */
     // cti = customer tax invoice //
     const { cti_title, cti_tax_id, cti_flash_number, cti_email, cti_telephone_number, cti_mobile_phone_number, cti_address, cti_district_id } = req.body;
     const customer_tax_invoices_result = await customer_tax_invoices.update({
@@ -257,6 +264,43 @@ exports.deleteCustomer = async (req, res) => {
 };
 
 /*------------------------------ *ยังไม้ได้ใช้* Customer Tax Invoice ------------------------------*/
+/* List All Customer Tax Invoice */
+exports.listAllCustomersTaxInvoice = async (req, res) => {
+  try {
+    let count_total = 0;
+    const result = await customer_tax_invoices.findAll({
+      attributes: [
+        "id",
+        "title",
+        [Sequelize.fn("date_format", Sequelize.col("`customer_tax_invoices`.`updated_at`"), "%d.%m.%Y"), "update"],
+        [Sequelize.fn("date_format", Sequelize.col("`customer_tax_invoices`.`created_at`"), "%b %d, %Y"), "created_at_date"],
+        [Sequelize.fn("date_format", Sequelize.col("`customer_tax_invoices`.`created_at`"), "%h:%i %p"), "created_at_datetime"],
+      ],
+      where: {
+        is_active: 1,
+        is_delete: 0
+      },
+      order: [["created_at", "DESC"]]
+    }).then(customers_tax_invoice_data => {
+      customers_tax_invoice_data.map((data) => {
+        count_total++
+      });
+      return customers_tax_invoice_data;
+    });
+    if (result != '' && result !== null) {
+      res.json({
+        response: "OK",
+        total: count_total + " รายการ",
+        result: result
+      });
+    } else {
+      res.json({ response: "FAILED", result: "Not Found." });
+    }
+  } catch (error) {
+    console.log(error);
+    res.json({ response: "FAILED", result: error });
+  }
+};
 /* Create Customer Tax Invoice */
 exports.createCustomersTaxInvoice = async (req, res) => {
   const { id, title, tax_id, flash_number, email, telephone_number, mobile_phone_number, address, district_id } = req.body;
@@ -286,11 +330,20 @@ exports.listCustomersTaxInvoiceToEdit = async (req, res) => {
   try {
     const result = await customer_tax_invoices.findAll({
       attributes: ['title', 'tax_id', 'flash_number', 'email', 'telephone_number', 'mobile_phone_number', 'address', 'district_id'],
+      include: [
+        {
+          model: districts,
+          attributes: ["district", "amphoe", "province", "zipcode", "district_code", "amphoe_code", "province_code"]
+        }
+      ],
       where: {
         id: req.body.id,
         is_active: 1,
         is_delete: 0
       }
+    }).then(all_customer_tax_invoice => {
+      all_customer_tax_invoice[0].dataValues = { ...all_customer_tax_invoice[0].dataValues, ...all_customer_tax_invoice[0].district.dataValues }
+      return all_customer_tax_invoice;
     });
     if (result != '' && result !== null) {
       res.json({
