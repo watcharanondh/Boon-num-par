@@ -121,6 +121,7 @@ export default {
 
   mounted() {
     this.loadDatas();
+    
 
     this.$store.dispatch({
       type: "inputRoutepath",
@@ -137,38 +138,19 @@ export default {
     Latest_quotation: [],
     headers_latest_quotation: [
       { text: "id", value: "id", sortable: false, align: "start" },
-      {
-        text: "customer_tax_invoices",
-        value: "customer_tax_invoices",
-        sortable: false,
-        align: "start",
-      },
-      {
-        text: "quotation_status",
-        value: "quotation_status",
-        sortable: false,
-        align: "start",
-      },
+      { text: "customer_tax_invoices",value: "customer_tax_invoices", sortable: false, align: "start"},
+      { text: "quotation_status", value: "quotation_status", sortable: false, align: "start",},
     ],
 
     Latest_customer_list: [],
     headers_latest_customer_list: [
       { text: "id", value: "id", sortable: false, align: "start" },
-      {
-        text: "customer_tax_invoices",
-        value: "customer_tax_invoices",
-        sortable: false,
-        align: "start",
-      },
-      {
-        text: "created_at_date",
-        value: "created_at_date",
-        sortable: false,
-        align: "start",
-      },
+      { text: "customer_tax_invoices",  value: "customer_tax_invoices", sortable: false, align: "start", },
+      { text: "created_at_date",value: "created_at_date",  sortable: false, align: "start" },
     ],
   }),
   methods: {
+
     async loadDatas() {
       let result = await api.getDashboard();
       this.total = result.data.result.header[0].total;
@@ -179,6 +161,7 @@ export default {
       this.Latest_quotation = result.data.result.latestquotation;
       this.Latest_customer_list = result.data.result.latestcustomer;
     },
+   
   },
 };
 </script>

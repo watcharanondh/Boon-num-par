@@ -93,6 +93,7 @@ import api from "@/services/api";
 export default {
   name: "Homemenu",
   mounted() {
+    this.loadAlert();
     if (api.isLoggedIn()) {
       this.$router.push("/Homemenu").catch(()=>{});
     }

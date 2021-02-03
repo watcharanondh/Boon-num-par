@@ -4,6 +4,7 @@ import api from "@/services/api";
 import { server } from "@/services/constants";
 import router from "@/router";
 
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({

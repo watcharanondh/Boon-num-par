@@ -37,8 +37,9 @@
       </v-btn>
     </v-app-bar>
 
-    <div v-if="RouterPath !== '/Homemenu'">
-      <div v-if="RouterPath == true">
+
+
+      <div v-if="RouterPath == 1">
         <!-- MenuSalesData -->
         <v-navigation-drawer v-model="drawer" app>
             <div @click="onClickHome" class="justify-center d-flex">
@@ -79,27 +80,22 @@
               </v-list-item-icon>
 
               <v-list-item-content>
-                <v-list-item-title
-                  ><span>{{ title }}</span></v-list-item-title
-                >
+                <v-list-item-title><span>{{ title }}</span></v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list>
         </v-navigation-drawer>
       </div>
-      <div v-else>
+      <div v-else-if="RouterPath == 2" >
         <!-- MenuManageSystem -->
         <v-navigation-drawer v-model="drawer" app>
-          <router-link to="/Homemenu" exact>
-            <div class="justify-center d-flex">
+            <div @click="onClickHome" class="justify-center d-flex">
               <v-img
                 :src="require('@/assets/AWLogoBoonumpar.svg')"
-                alt=""
                 max-height="100%"
                 max-width="60%"
               />
             </div>
-          </router-link>
 
           <v-list>
             <v-list-item-group v-model="selectedMenu" mandatory color="primary">
@@ -131,14 +127,16 @@
             </v-list-item-icon>
 
             <v-list-item-content>
-              <v-list-item-title
-                ><span>{{ title }}</span></v-list-item-title
-              >
+              <v-list-item-title><span>{{ title }}</span></v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-navigation-drawer>
       </div>
-    </div>
+
+      <div v-else>
+        
+        </div> 
+
   </v-card>
 </template>
 
@@ -148,6 +146,7 @@ export default {
   name: "Header",
   async mounted() {
     this.RouterPath = this.$store.getters["Route_path"];
+
     if (
       this.RouterPath == "/Home" ||
       this.RouterPath == "/Customer" ||
@@ -157,8 +156,9 @@ export default {
       this.RouterPath == "/QuotationCreateSelectPackage" ||
       this.RouterPath == "/QuotationCreateSelectPromotion"
     ) {
-      return (this.RouterPath = true);
+      return this.RouterPath = 1;
     } else if (
+      this.RouterPath == "/Equipment" ||
       this.RouterPath == "/CreateEquipment" ||
       this.RouterPath == "/Promotion" ||
       this.RouterPath == "/Package" ||
@@ -167,13 +167,15 @@ export default {
       this.RouterPath == "/Promotion" ||
       this.RouterPath == "/CreatePromotion"
     ) {
-      return (this.RouterPath = false);
+      return this.RouterPath = 2;
+    }else{
+      return this.RouterPath = -1;
     }
+
   },
   data() {
     return {
       RouterPath: true,
-      Manu: "sale",
 
       drawer: true,
       selectedMenu: 0,
@@ -214,7 +216,8 @@ export default {
     onClickBack(){
        this.$router.push('/Homemenu');
        window.location.reload();
-    }
+    },
+
 
   },
 
