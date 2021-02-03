@@ -131,7 +131,6 @@
 </template>
 
 <script>
-import axios from "axios";
 export default {
   name: "Promotion",
 
@@ -141,12 +140,6 @@ export default {
           type: "inputRoutepath",
           RT: this.$route.path,
         });
-    axios
-      .get(`${process.env.VUE_APP_NODE_URL}/customers/listallcustomers`)
-      .then((response) => {
-        console.log(response.data.result);
-        this.table_promotion = response.data.result;
-      });
   },
 
   data: () => ({
