@@ -61,16 +61,16 @@
 </template>
 
 <script>
-//import api from "@/services/api";
+import api from "@/services/api";
 import { required } from "vuelidate/lib/validators";
 
 export default {
   name: "Login",
-  // mounted() {
-  //   if (api.isLoggedIn()) {
-  //     this.$router.push("/stock");
-  //   }
-  // },
+  mounted() {
+    if (api.isLoggedIn()) {
+      this.$router.push("/Homemenu");
+    }
+  },
   data() {
     return {
       isShowPassword: false,
@@ -107,14 +107,14 @@ export default {
     submit() {
       this.$v.account.$touch();
       if(this.$v.account.$invalid == false){
-        
         this.$store.dispatch({
         type: "doLogin",
         username: this.account.username,
         password: this.account.password,
+        
       });
-      this.$router.push("/Homemenu")
-      } 
+      }
+
     },
      clear () {
         this.$v.account.$reset()

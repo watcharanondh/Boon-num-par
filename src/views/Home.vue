@@ -41,7 +41,6 @@
             :headers="headers_latest_quotation"
             :items="Latest_quotation"
             :items-per-page="10"
-
             hide-default-footer
             class="elevation-1"
             mobile-breakpoint="0"
@@ -87,12 +86,10 @@
             :headers="headers_latest_customer_list"
             :items="Latest_customer_list"
             :items-per-page="10"
-            hide-default-header
             hide-default-footer
             class="elevation-1"
             mobile-breakpoint="0"
           >
-             <!-- table top section -->
             <template v-slot:top>
               <v-toolbar flat>
                 <v-toolbar-title class="text--black">รายชื่อลูกค้าล่าสุด</v-toolbar-title>
@@ -114,8 +111,8 @@
 
 <script>
 import StockCard from "@/components/cards/StockCard";
-//import api from "@/services/api";
-import axios from "axios";
+import api from "@/services/api";
+
 export default {
   name: "Home",
   components: {
@@ -123,29 +120,12 @@ export default {
   },
 
   mounted() {
-    //this.loadDatas();
-
-    //console.log(this.$route.path);
+    this.loadDatas();
 
     this.$store.dispatch({
-          type: "inputRoutepath",
-          RT: this.$route.path,
-        });
-
-let url = `${process.env.VUE_APP_NODE_URL}/dashboard/showall`
-
-    axios.get(url,{ headers: {'Authorization': 'Basic BNP*1234'}})
-      .then((response) => {
-        console.log(response);
-        this.total = response.data.result.header[0].total;
-        this.confirm = response.data.result.header[1].confirm;
-        this.unconfirm = response.data.result.header[2].unconfirm;
-        this.cancel = response.data.result.header[3].cancel;
-
-        this.Latest_quotation = response.data.result.latestquotation;
-        this.Latest_customer_list = response.data.result.latestcustomer;
-
-      });
+      type: "inputRoutepath",
+      RT: this.$route.path,
+    });
   },
 
   data: () => ({
@@ -157,30 +137,52 @@ let url = `${process.env.VUE_APP_NODE_URL}/dashboard/showall`
     Latest_quotation: [],
     headers_latest_quotation: [
       { text: "id", value: "id", sortable: false, align: "start" },
-      { text: "customer_tax_invoices",value: "customer_tax_invoices", sortable: false, align: "start",},
-      { text: "quotation_status", value: "quotation_status", sortable: false, align: "start" },
+      {
+        text: "customer_tax_invoices",
+        value: "customer_tax_invoices",
+        sortable: false,
+        align: "start",
+      },
+      {
+        text: "quotation_status",
+        value: "quotation_status",
+        sortable: false,
+        align: "start",
+      },
     ],
 
     Latest_customer_list: [],
     headers_latest_customer_list: [
       { text: "id", value: "id", sortable: false, align: "start" },
-      { text: "customer_tax_invoices", value: "customer_tax_invoices", sortable: false, align: "start" },
-      { text: "created_at_date", value: "created_at_date", sortable: false, align: "start" },
+      {
+        text: "customer_tax_invoices",
+        value: "customer_tax_invoices",
+        sortable: false,
+        align: "start",
+      },
+      {
+        text: "created_at_date",
+        value: "created_at_date",
+        sortable: false,
+        align: "start",
+      },
     ],
   }),
   methods: {
-  //  async loadDatas(){
-  //     let result = await api.getDashboard();
-  //       this.total = result.data.result.header[0].total;
-  //       this.confirm = result.data.result.header[1].confirm;
-  //       this.unconfirm = result.data.result.header[2].unconfirm;
-  //       this.cancel = result.data.result.header[3].cancel;
+    async loadDatas() {
+      let result = await api.getDashboard();
+      this.total = result.data.result.header[0].total;
+      this.confirm = result.data.result.header[1].confirm;
+      this.unconfirm = result.data.result.header[2].unconfirm;
+      this.cancel = result.data.result.header[3].cancel;
 
-  //       this.Latest_quotation = result.data.result.latestquotation;
-  //       this.Latest_customer_list = result.data.result.latestcustomer;
-  //   }
+      this.Latest_quotation = result.data.result.latestquotation;
+      this.Latest_customer_list = result.data.result.latestcustomer;
+    },
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>

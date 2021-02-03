@@ -94,7 +94,7 @@ export default {
   name: "Homemenu",
   mounted() {
     if (api.isLoggedIn()) {
-      this.$router.push("/Homemenu");
+      this.$router.push("/Homemenu").catch(()=>{});
     }
 
     this.$store.dispatch({

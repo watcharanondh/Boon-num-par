@@ -6,15 +6,13 @@ const isAbsoluteURLRegex = /^(?:\w+:)\/\//;
 
 axios.interceptors.request.use(async config => {
   if (!isAbsoluteURLRegex.test(config.url)) {
-    const userToken = localStorage.getItem(server.TOKEN_KEY);
-    console.log(userToken);
+    const userToken = 'Bearer ' + localStorage.getItem(server.TOKEN_KEY);
     if (userToken) {
       config.headers = { "Authorization": userToken };
     }
     config.url = apiUrl + "/" + config.url;
-    console.log(config.url);
   }
-  config.timeout = 10000; // 10 Second
+  config.timeout = 1000; // 1 Second
   return config;
 });
 
@@ -23,7 +21,7 @@ axios.interceptors.response.use(
     return response;
   },
   error => {
-    console.log(JSON.stringify(error, undefined, 2));
+    //console.log(JSON.stringify(error, undefined, 2));
     router.push("/");
     if (axios.isCancel(error)) {
       return Promise.reject(error);

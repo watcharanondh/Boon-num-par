@@ -93,14 +93,14 @@
               <tr>
                 <td>{{ item.id }}</td>
                 <td>{{ item.name }}</td>
-                <td>{{ item.customer_tax_invoices }}</td>
-                <td>{{ item.customer_tax_invoices }}</td>
+                <td>{{ item.stock_out }}</td>
+                <td>{{ item.balance_stock }}</td>
                 <td>
                   <v-row>
-                    <v-btn v-bind="attrs" v-on="on" fab icon outlined small>
+                    <v-btn fab icon outlined small>
                       <v-icon>visibility</v-icon>
                     </v-btn>
-                    <v-btn v-bind="attrs" v-on="on" fab icon outlined small>
+                    <v-btn fab icon outlined small>
                       <v-icon>edit</v-icon>
                     </v-btn>
                     <v-btn fab icon outlined small>
@@ -109,7 +109,7 @@
                   </v-row>
                 </td>
                 <td>
-                  <v-btn icon v-bind="attrs" v-on="on">
+                  <v-btn icon>
                     <v-icon>mdi-dots-vertical</v-icon>
                   </v-btn>
                 </td>
@@ -123,22 +123,18 @@
 </template>
 
 <script>
-import axios from "axios";
+import api from "@/services/api";
 export default {
   name: "Equipment",
 
-  mounted() {
-    console.log(this.$route.path);
+
+async mounted() {
+    this.loadEquipment();
     this.$store.dispatch({
           type: "inputRoutepath",
           RT: this.$route.path,
     });
-    axios
-      .get(`${process.env.VUE_APP_NODE_URL}/customers/listallcustomers`)
-      .then((response) => {
-        console.log(response.data.result);
-        this.table_customer = response.data.result;
-      });
+
   },
 
   data: () => ({
@@ -146,14 +142,23 @@ export default {
     headers_table_customer: [
       { text: "หมายเลขอุปกรณ์", value: "id", sortable: false, align: "start", color: "black"},
       { text: "รายชื่ออุปกรณ์", value: "name", sortable: false, align: "start" },
-      { text: "ถูกใช้", value: "customer_tax_invoices", sortable: false, align: "start"},
-      { text: "คงเหลือ", value: "customer_tax_invoices", sortable: false, align: "start"},
+      { text: "ถูกใช้", value: "stock_out", sortable: false, align: "start"},
+      { text: "คงเหลือ", value: "balance_stock", sortable: false, align: "start"},
       { text: "", value: "", sortable: false, align: "start" },
       { text: "", value: "", sortable: false, align: "start" },
     ],
   }),
 
-  methods: {},
+  methods: {
+    async loadEquipment(){
+          let result = await api.getEquipment();
+          //console.log(result.data.result);
+          this.table_customer = result.data.result;
+
+        },
+
+
+  },
 };
 </script>
 

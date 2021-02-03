@@ -9,32 +9,34 @@ export const apiUrl = `${process.env.VUE_APP_NODE_URL}`;
 
 export const server = {
   //LoginPage
-  REGISTER_URL: `users/regis`,
-  LOGIN_URL: `users/login`,
-  TOKEN_KEY: `token`,
-  USERNAME: `username`,
+  REGISTER_URL:`users/regis`,
+  LOGIN_URL:`users/login`,
+  TOKEN_KEY:`token`,
+  USERNAME:`username`,
 
   //HomePage
-  DASHBOARD_URL: `dashboard/showall`,
+  DASHBOARD_URL:`dashboard/showall`,
   
   //CustomerPage
-  CUSTOMERTYPESELECTOR_URL: `customers/customertypeselector`,
-  LISTALLCUSTOMERS_URL: `customers/listallcustomers`,
+  CUSTOMERTYPESELECTOR_URL:`customers/customertypeselector`,
+  LISTALLCUSTOMERS_URL:`customers/listallcustomers`,
 
-  NEWCUSTOMER_URL: `customers/newcustomer`,
-  NEWCUSTOMER_TAX_INVOICE_URL: `customers/newcustomertaxinv`,
-  LIST_CUSTOMER_EDIT_URL: `customers/listcustomer`,
+  NEWCUSTOMER_URL:`customers/newcustomer`,
+  NEWCUSTOMER_TAX_INVOICE_URL:`customers/newcustomertaxinv`,
+  LIST_CUSTOMER_EDIT_URL:`customers/listcustomer`,
 
-  CUSTOMER_EDIT_URL: `customers/editcustomer`,
-  LISTCUSTOMER_DELETE_URL: `customers/delcustomer`,
+  CUSTOMER_EDIT_URL:`customers/editcustomer`,
+  LISTCUSTOMER_DELETE_URL:`customers/delcustomer`,
 
   //Province, Amphoe, Districts
-  LIST_FIND_PROVINCE_URL: `districts/findprovince`,
-  LIST_FIND_AMPHOE_URL: `districts/findamphoe`,
-  LIST_FIND_DISTRICT_URL: `districts/finddistrict`,
+  LIST_FIND_PROVINCE_URL:`districts/findprovince`,
 
+  LIST_FIND_AMPHOE_URL:`districts/findamphoe`,
 
-  
+  LIST_FIND_DISTRICT_URL:`districts/finddistrict`,
+
+  //List All Equipment
+  LIST_ALL_EQUIPMENT_URL:`equipments/listallequipment`,
 
   
 };

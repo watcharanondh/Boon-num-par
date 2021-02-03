@@ -72,9 +72,9 @@
 export default {
   data() {
     return {
-      SelectCustomerType: { name: "บุคคล", value: "Personneltype" },
+      SelectCustomerType: { name: "บุคคล", value: "Personeltype" },
       CustomerTypePage: [
-        { name: "บุคคล", value: "Personneltype" },
+        { name: "บุคคล", value: "Personeltype" },
         { name: "บริษัท", value: "Companytype" },
       ],
     };

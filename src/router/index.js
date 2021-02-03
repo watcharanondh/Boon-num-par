@@ -4,7 +4,7 @@ import Login from "@/views/Login.vue";
 import Homemenu from "@/views/Homemenu.vue";
 import Home from "@/views/Home.vue";
 import Customer from "@/views/Customer.vue";
-import Personneltype from "@/views/Personneltype.vue";
+import Personeltype from "@/views/Personeltype.vue";
 import PersonalCreateQuotation from "@/views/PersonalCreateQuotation.vue";
 import Companytype from "@/views/Companytype.vue";
 import CompanyCreateQuotation from "@/views/CompanyCreateQuotation.vue";
@@ -45,9 +45,9 @@ const routes = [
     component: Customer
   },
   {
-    path: "/Personneltype",
-    name: "/Personneltype",
-    component: Personneltype
+    path: "/Personeltype",
+    name: "/Personeltype",
+    component: Personeltype
   },
   {
     path: "/PersonalCreateQuotation",

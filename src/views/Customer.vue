@@ -35,16 +35,7 @@
             <template v-slot:top>
               <v-toolbar flat>
                 <v-toolbar-title><span>รายชื่อลูกค้า</span></v-toolbar-title>
-                <v-toolbar-title
-                  ><span class="text-caption grey--text"
-                    >1024</span
-                  ></v-toolbar-title
-                >
-                <v-toolbar-title
-                  ><span class="text-caption grey--text"
-                    >รายการ</span
-                  ></v-toolbar-title
-                >
+                <v-toolbar-title><span class="text-caption grey--text">{{ total}}</span></v-toolbar-title>
                 <v-spacer></v-spacer>
 
                 <div>
@@ -142,7 +133,6 @@ export default {
   },
 async mounted() {
     this.loadCustomers();
-    //console.log(this.$route.path);
     this.$store.dispatch({
           type: "inputRoutepath",
           RT: this.$route.path,
@@ -150,6 +140,7 @@ async mounted() {
   },
 
   data: () => ({
+    total:'',
     table_customer: [],
     headers_table_customer: [
       { text: "รหัสลูกค้า", value: "id", sortable: false, align: "start", color: "black"},
@@ -166,6 +157,7 @@ async mounted() {
     async loadCustomers(){
       let result = await api.getListallcustomers();
       this.table_customer = result.data.result;
+      this.total = result.data.total;
 
     }
   },
