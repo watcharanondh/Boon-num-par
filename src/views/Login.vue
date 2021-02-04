@@ -81,7 +81,7 @@ export default {
     };
   },
 
-  validations: {
+ validations: {
     account:{
       username: { required },
       password: { required },
@@ -102,6 +102,7 @@ export default {
       return errors;
     },
   },
+
 
   methods: {
     submit() {

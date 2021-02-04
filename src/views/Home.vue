@@ -137,16 +137,16 @@ export default {
 
     Latest_quotation: [],
     headers_latest_quotation: [
-      { text: "id", value: "id", sortable: false, align: "start" },
-      { text: "customer_tax_invoices",value: "customer_tax_invoices", sortable: false, align: "start"},
-      { text: "quotation_status", value: "quotation_status", sortable: false, align: "start",},
+      { text: "เลขที่ใบเสนอราคา", value: "id", sortable: false, align: "start" },
+      { text: "ชื่อลูกค้า",value: "customer_tax_invoices", sortable: false, align: "start"},
+      { text: "สถานะ", value: "quotation_status", sortable: false, align: "start",},
     ],
 
     Latest_customer_list: [],
     headers_latest_customer_list: [
-      { text: "id", value: "id", sortable: false, align: "start" },
-      { text: "customer_tax_invoices",  value: "customer_tax_invoices", sortable: false, align: "start", },
-      { text: "created_at_date",value: "created_at_date",  sortable: false, align: "start" },
+      { text: "รหัสลูกค้า", value: "id", sortable: false, align: "start" },
+      { text: "ชื่อลูกค้า",  value: "customer_tax_invoices", sortable: false, align: "start", },
+      { text: "วันที่สร้าง",value: "created_at_date",  sortable: false, align: "start" },
     ],
   }),
   methods: {

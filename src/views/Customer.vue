@@ -35,10 +35,10 @@
             <template v-slot:top>
               <v-toolbar flat>
                 <v-toolbar-title><span>รายชื่อลูกค้า</span></v-toolbar-title>
-                <v-toolbar-title><span class="text-caption grey--text">{{ total}}</span></v-toolbar-title>
+                <v-toolbar-title><span class="text-caption grey--text">{{total}}</span></v-toolbar-title>
                 <v-spacer></v-spacer>
 
-                <div>
+                <!-- <div>
                   <v-btn icon>
                     <svg
                       width="14"
@@ -72,7 +72,7 @@
                     </svg>
                   </v-btn>
                   Filter
-                </div>
+                </div> -->
               </v-toolbar>
             </template>
             <template v-slot:item="{ item }">

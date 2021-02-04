@@ -43,7 +43,7 @@
                     block
                     large
                     rounded
-                    @click="selectPage(SelectCustomerType.value)"
+                    @click="selectPage(SelectCustomerType)"
                     ><span class=" white--text">ตกลง</span></v-btn>
                 </v-col>
               </v-card-actions>
@@ -69,19 +69,40 @@
 </template>
 
 <script>
+import api from "@/services/api";
 export default {
+  mounted() {
+    this.loadData();
+  },
   data() {
     return {
-      SelectCustomerType: { name: "บุคคล", value: "Personeltype" },
-      CustomerTypePage: [
-        { name: "บุคคล", value: "Personeltype" },
-        { name: "บริษัท", value: "Companytype" },
-      ],
+      dialogSelectCustomer:false,
+      type:null,
+      SelectCustomerType:[],
+      CustomerTypePage: [],
     };
   },
   methods: {
+     async loadData(){
+      let result = await api.getListcustomertypeselector();
+      result.data.result.forEach(element => {
+        this.CustomerTypePage.push({"name":element.name ,"id": element.id })
+      });
+      this.SelectCustomerType = this.CustomerTypePage[0];
+    },
+
     selectPage() {
-      this.$router.push(`/${this.SelectCustomerType.value}`);
+      // console.log(this.SelectCustomerType.name);
+      // console.log(this.SelectCustomerType.id);
+      this.type = this.SelectCustomerType.id
+      if(this.SelectCustomerType.id == '1'){
+          this.$store.dispatch({ type:"doTypeCreate", type_id: this.type });
+          this.$router.push('/PersoneltypeCreate');
+      }else{
+          this.$store.dispatch({ type:"doTypeCreate", type_id: this.type});
+          this.$router.push('/CompanytypeCreate');
+      }
+
     },
   },
 };

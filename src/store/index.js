@@ -12,11 +12,8 @@ export default new Vuex.Store({
     isLogged: false,
     username: "",
     Routepath:"",
-    
 
-    currentUser: {},
-
-    type_id:'',
+    type_id:null,
     name:'',
     telephone_number:'',
     mobile_phone_number: '',
@@ -56,9 +53,7 @@ export default new Vuex.Store({
     Newpersonal_district_id(state) {
       return state.district_id;
     },
-    currentUser(state) {
-      return state.currentUser;
-    },
+
 
 
   },
@@ -97,9 +92,6 @@ export default new Vuex.Store({
     SET_district_id(state, district_id){
       state.district_id = district_id
     },
-    setCurrentUser(state, currentUser) {
-      state.currentUser = Object.assign ({}, currentUser);
-    }
   },
   actions: {
     inputRoutepath({ commit }, { RT }) {
@@ -129,8 +121,7 @@ export default new Vuex.Store({
         commit("SET_USERNAME", username);
       }
     },
-    fromPersonneltype({ commit }, {type_id, name, telephone_number, mobile_phone_number, line_id, address, district_id }) {
-      commit("SET_type_id", type_id);
+    fromPersonneltype({ commit }, { name, telephone_number, mobile_phone_number, line_id, address, district_id }) {
       commit("SET_name", name);
       commit("SET_telephone_number", telephone_number);
       commit("SET_mobile_phone_number", mobile_phone_number);
@@ -138,8 +129,8 @@ export default new Vuex.Store({
       commit("SET_address", address);
       commit("SET_district_id", district_id);
     },
-    testsss({ commit }, data) {
-      commit('setCurrentUser', data);
+    doTypeCreate({ commit }, type_id) {
+      commit('SET_type_id', type_id);
     }
   },
   modules: {}

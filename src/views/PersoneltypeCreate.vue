@@ -1,0 +1,553 @@
+<template>
+  <v-container style="background:#E5E5E5;color:white;height:100%">
+    <v-row>
+      <v-col>
+        <v-card flat color="#E5E5E5">
+          <div class="sizetitle">
+            สร้างรายชื่อลูกค้าประเภทบุคคล
+          </div>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-col>
+      <v-row> </v-row>
+    </v-col>
+
+    <v-card class="mx-10 pa-5 rounded-lg" outlined>
+     <v-form
+        ref="form"
+        v-model="valid"
+        lazy-validation
+     >
+      <v-row justify="center">
+        <v-col lg="6" md="12" sm="12" cols="12">
+          <v-row>
+            <v-col>
+             <div class="sizetitle">ข้อมูลลูกค้าประเภทบุคคล</div>
+            </v-col>
+          </v-row>
+
+          <!-- ชื่อ-นามสกุล -->
+          <v-row>
+            <v-col lg="6" md="6" sm="12" cols="12">
+              <div class="sizehead">ชื่อ-นามสกุล</div>
+              <v-row class="no-gutters">
+                <v-text-field
+                  v-model="Newpersonal_fullname"
+                  placeholder="ชื่อ และ นามสกุล"
+                  dense
+                  solo
+                  outlined
+                  clearable
+                  :rules="Newpersonal_fullnameRules"
+                  required
+                ></v-text-field>
+              </v-row>
+            </v-col>
+
+            <!-- โทรศัพท์ -->
+            <v-col lg="6" md="6" sm="12" cols="12">
+              <div class="sizehead">โทรศัพท์</div>
+              <v-row class="no-gutters">
+                <v-text-field
+                  v-model="Newpersonal_telephone_number"
+                  placeholder="02-1234567"
+                  dense
+                  solo
+                  outlined
+                  clearable
+                  :rules="Newpersonal_telephone_numberRules"
+                  required
+                ></v-text-field>
+              </v-row>
+            </v-col>
+          </v-row>
+
+          <!-- มือถือ -->
+          <v-row>
+            <v-col lg="6" md="6" sm="12" cols="12">
+              <div class="sizehead">มือถือ</div>
+              <v-row class="no-gutters">
+                <v-text-field
+                  v-model="Newpersonal_mobile_phone_number"
+                  placeholder="081-2345678"
+                  dense
+                  solo
+                  outlined
+                  clearable
+                ></v-text-field>
+              </v-row>
+            </v-col>
+
+            <!-- ไอดีไลน์ -->
+            <v-col lg="6" md="6" sm="12" cols="12">
+              <div class="sizehead">ID Line</div>
+              <v-row class="no-gutters">
+                <v-text-field
+                  v-model="Newpersonal_line_id"
+                  dense
+                  solo
+                  outlined
+                  clearable
+                ></v-text-field>
+              </v-row>
+            </v-col>
+          </v-row>
+
+          <!-- ที่อยู่ -->
+          <v-row>
+            <v-col lg="12" md="12" sm="12" cols="12">
+              <div class="sizehead">ที่อยู่</div>
+              <v-row class="no-gutters">
+                <v-text-field
+                  v-model="Newpersonal_address"
+                  placeholder="หมู่บ้าน/อาคาร เลขที่ 99 ถนน. ซอย. "
+                  dense
+                  solo
+                  outlined
+                  clearable
+                  :rules="Newpersonal_addressRules"
+                  required
+                ></v-text-field>
+              </v-row>
+            </v-col>
+          </v-row>
+
+          <!-- จังหวัด -->
+          <v-row>
+            <v-col lg="6" md="6" sm="12" cols="12">
+              <div class="sizehead">จังหวัด</div>
+              <v-row class="no-gutters">
+                <v-select
+                  v-model="Newpersonal_SelectProvinces"
+                  :items="GatProvince"
+                  item-text="province_Name"
+                  item-value="province_Code"
+                  placeholder="เลือกจังหวัด"
+                  v-on:change="FindAmphoeSelected()"
+                  return-object
+                  filled
+                  dense
+                  solo
+                  outlined
+                >
+                </v-select>
+              </v-row>
+            </v-col>
+
+            <!-- เขต/อำเภอ -->
+            <v-col lg="6" md="6" sm="12" cols="12">
+              <div class="sizehead">เขต/อำเภอ</div>
+              <v-row class="no-gutters">
+                <v-select
+                  v-model="Newpersonal_SelectAmphoe"
+                  :items="GatAmphoe"
+                  item-text="amphoe_Name"
+                  item-value="amphoe_Code"
+                  placeholder="เลือกอำเภอ"
+                  v-on:change="FindDistrict_Zipcode_Selected()"
+                  return-object
+                  filled
+                  dense
+                  solo
+                  outlined
+                >
+                </v-select>
+              </v-row>
+            </v-col>
+          </v-row>
+
+          <!-- แขวง/ตำบล -->
+          <v-row>
+            <v-col lg="6" md="6" sm="12" cols="12">
+              <div class="sizehead">แขวง/ตำบล</div>
+              <v-row class="no-gutters">
+                <v-select
+                  v-model="Newpersonal_SelectDistrict"
+                  :items="GatDistrict"
+                  item-text="district_Name"
+                  placeholder="เลือกแขวง/ตำบล"
+                  v-on:change="FindProv_idSelected()"
+                  return-object
+                  filled
+                  dense
+                  solo
+                  outlined
+                >
+                </v-select>
+              </v-row>
+            </v-col>
+
+            <!-- รหัสไปรษณีย์ -->
+            <v-col lg="6" md="6" sm="12" cols="12">
+              <div class="sizehead">รหัสไปรษณีย์</div>
+              <v-row class="no-gutters">
+                <v-text-field
+                  v-model="Newpersonal_SelectZipcode"
+                  placeholder="รหัสไปรษณีย์"
+                  dense
+                  solo
+                  outlined
+                  disabled
+                ></v-text-field>
+              </v-row>
+            </v-col>
+          </v-row>
+          
+          <!-- VAT 7% -->
+           <!-- <v-row>
+            <v-col lg="12" md="12" sm="12" cols="12">
+              <v-row class="no-gutters">
+                  <v-checkbox
+                    v-model="vat"
+                    label="ต้องการ VAT 7%"
+                  ></v-checkbox>
+              </v-row>
+            </v-col>
+          </v-row> -->
+             
+        <!-- <v-card class=" rounded-lg" outlined>
+        <v-row justify="center">
+        <v-col lg="6" md="12" sm="12" cols="12">
+          <v-row>
+            <v-col>
+
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col lg="6" md="6" sm="12" cols="12">
+              <div class="sizehead">ชื่อใบกำกับภาษี</div>
+              <v-row class="no-gutters">
+                <v-text-field
+                  v-model="Taxinvoiceinfo_name"
+                  dense
+                  solo
+                  outlined
+                  clearable
+                ></v-text-field>
+              </v-row>
+            </v-col>
+            <v-col lg="6" md="6" sm="12" cols="12">
+              <div class="sizehead">รหัสประจำตัวผู้เสียภาษี</div>
+              <v-row class="no-gutters">
+                <v-text-field
+                  v-model="Taxinvoiceinfo_id"
+                  dense
+                  solo
+                  outlined
+                  clearable
+                ></v-text-field>
+              </v-row>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col lg="6" md="6" sm="12" cols="12">
+              <div class="sizehead">แฟลช</div>
+              <v-row class="no-gutters">
+                <v-text-field
+                  v-model="Taxinvoiceinfo_flash"
+                  dense
+                  solo
+                  outlined
+                  clearable
+                ></v-text-field>
+              </v-row>
+            </v-col>
+            <v-col lg="6" md="6" sm="12" cols="12">
+              <div class="sizehead">อีเมล์</div>
+              <v-row class="no-gutters">
+                <v-text-field
+                  v-model="Taxinvoiceinfo_email"
+                  dense
+                  solo
+                  outlined
+                  clearable
+                ></v-text-field>
+              </v-row>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col lg="6" md="6" sm="12" cols="12">
+              <div class="sizehead">โทรศัพท์</div>
+              <v-row class="no-gutters">
+                <v-text-field
+                  v-model="Taxinvoiceinfo_telephone_number"
+                  dense
+                  solo
+                  outlined
+                  clearable
+                ></v-text-field>
+              </v-row>
+            </v-col>
+            <v-col lg="6" md="6" sm="12" cols="12">
+              <div class="sizehead">มือถือ</div>
+              <v-row class="no-gutters">
+                <v-text-field
+                  v-model="Taxinvoiceinfo_mobile_phone_number"
+                  dense
+                  solo
+                  outlined
+                  clearable
+                ></v-text-field>
+              </v-row>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col lg="12" md="12" sm="12" cols="12">
+              <div class="sizehead">ที่อยู่</div>
+              <v-row class="no-gutters">
+                <v-text-field
+                  v-model="Taxinvoiceinfo_address"
+                  dense
+                  solo
+                  outlined
+                  clearable
+                ></v-text-field>
+              </v-row>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col lg="6" md="6" sm="12" cols="12">
+              <div class="sizehead">จังหวัด</div>
+              <v-row class="no-gutters">
+                <v-select
+                  v-model="SelectProvinces"
+                  :items="GatProvince"
+                  item-text="province_Name"
+                  item-value="province_Code"
+                  placeholder="เลือกจังหวัด"
+                  v-on:change="FindAmphoeSelected()"
+                  return-object
+                  filled
+                  dense
+                  solo
+                  outlined
+                >
+                </v-select>
+              </v-row>
+            </v-col>
+            <v-col lg="6" md="6" sm="12" cols="12">
+              <div class="sizehead">เขต/อำเภอ</div>
+              <v-row class="no-gutters">
+                <v-select
+                  v-model="SelectAmphoe"
+                  :items="GatAmphoe"
+                  item-text="amphoe_Name"
+                  item-value="amphoe_Code"
+                  placeholder="เลือกอำเภอ"
+                  v-on:change="FindDistrict_Zipcode_Selected()"
+                  return-object
+                  filled
+                  dense
+                  solo
+                  outlined
+                >
+                </v-select>
+              </v-row>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col lg="6" md="6" sm="12" cols="12">
+              <div class="sizehead">แขวง/ตำบล</div>
+              <v-row class="no-gutters">
+                <v-select
+                  v-model="SelectDistrict"
+                  :items="GatDistrict"
+                  item-text="district_Name"
+                  item-value="zipcode"
+                  placeholder="เลือกแขวง/ตำบล"
+                  v-on:change="FindProv_idSelected()"
+                  return-object
+                  filled
+                  dense
+                  solo
+                  outlined
+                >
+                </v-select>
+              </v-row>
+            </v-col>
+           <v-col lg="6" md="6" sm="12" cols="12">
+              <div class="sizehead">รหัสไปรษณีย์</div>
+              <v-row class="no-gutters">
+                <v-text-field
+                  v-model="SelectZipcode"
+                  placeholder="รหัสไปรษณีย์"
+                  dense
+                  solo
+                  outlined
+                  disabled
+                ></v-text-field>
+              </v-row>
+            </v-col>
+          </v-row>
+        </v-col>
+        </v-row>
+        </v-card> -->
+          <v-row>
+            <v-col cols="3">
+              <v-btn block large rounded outlined @click="$router.push('/Customer')"
+                >ปิด</v-btn
+              >
+            </v-col>
+            <v-spacer></v-spacer>
+            <v-col cols="3">
+              <v-btn block color="#29CC97" dark large rounded @click="submit"
+                ><span class="white--text">บันทึก</span></v-btn>
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+    </v-form>
+    </v-card>
+  </v-container>
+</template>
+
+<script>
+import api from "@/services/api";
+
+export default {
+  name: "Personneltype",
+  mounted() {
+    this.loadDataProvince();
+    this.$store.dispatch({
+      type: "inputRoutepath",
+      RT: this.$route.path,
+    });
+  },
+
+  data: () => ({
+    links: [
+      { text: "ข้อมูลลูกค้า", route: "/Personeltype" },
+      { text: "ข้อมูลใบกำกับภาษี", route: "/PersonalCreateQuotation" },
+    ],
+    vat:false,
+    valid: true,
+    Newpersonal_type_id: "",
+    Newpersonal_fullname: "",
+    Newpersonal_telephone_number: "",
+    Newpersonal_mobile_phone_number: "",
+    Newpersonal_line_id: "",
+    Newpersonal_address: "",
+    Newpersonal_district_id: "",
+
+    Newpersonal_SelectProvinces: [],
+    GatProvince: [],
+    Newpersonal_SelectAmphoe: [],
+    GatAmphoe: [],
+    Newpersonal_SelectDistrict: [],
+    GatDistrict: [],
+    Newpersonal_SelectZipcode: null,
+
+    Newpersonal_fullnameRules:[v1=>!!v1 || "กรุณากรอกชื่อและนามสกุล",],
+    Newpersonal_telephone_numberRules:[v1=>!!v1 || "กรุณากรอกเบอร์โทรศัพท์",],
+    Newpersonal_addressRules:[v1=>!!v1 || "กรุณากรอกที่อยู่",],
+
+    
+
+  }),
+
+
+  methods: {
+    async loadDataProvince() {
+      this.Newpersonal_type_id = this.$store.getters["Newpersonal_type_id"].type_id
+      let result = await api.getProvinces();
+      let provinces = result.data.result;
+      let _this = this;
+      provinces.forEach(function(value) {
+        _this.GatProvince.push({
+          province_Name: `${value.province}`,
+          province_Code: `${value.province_code}`,
+        });
+      });
+    },
+
+    async FindAmphoeSelected() {
+      this.GatAmphoe = [];
+      this.GatDistrict = [];
+      let Prov = {
+        province_code: this.Newpersonal_SelectProvinces.province_Code,
+        province: this.Newpersonal_SelectProvinces.province_Name,
+      };
+      let result = await api.getAmphoe(Prov);
+      let Amphoe = result.data.result;
+      let _this = this;
+      Amphoe.forEach(function(value) {
+        _this.GatAmphoe.push({
+          amphoe_Name: `${value.amphoe}`,
+          amphoe_Code: `${value.amphoe_code}`,
+        });
+      });
+    },
+
+    async FindDistrict_Zipcode_Selected() {
+      this.GatDistrict = [];
+      this.Newpersonal_SelectZipcode = [];
+
+      let Amphoe = {
+        amphoe_code: this.Newpersonal_SelectAmphoe.amphoe_Code,
+        amphoe: this.Newpersonal_SelectAmphoe.amphoe_Name,
+      };
+      let result = await api.getDistrict(Amphoe);
+      let District = result.data.result;
+      let _this = this;
+      District.forEach(function(value) {
+        _this.GatDistrict.push({
+          district_Name: `${value.district}`,
+          zipcode: `${value.zipcode}`,
+          prov_id: `${value.id}`,
+        });
+      });
+    },
+
+    FindProv_idSelected() {
+      this.Newpersonal_SelectZipcode = this.Newpersonal_SelectDistrict.zipcode;
+      this.Newpersonal_district_id = this.Newpersonal_SelectDistrict.prov_id;
+      //console.log(this.Newpersonal_SelectZipcode);
+      //console.log(this.Newpersonal_district_id);
+    },
+
+    BackpageCustomer() {
+      this.$router.push("/Customer");
+    },
+
+
+async submit() {
+      //console.log(this.$refs.form.validate());
+      if(this.$refs.form.validate() == true){
+        let DataNewPersonel = {
+            type_id: this.Newpersonal_type_id,
+            name: this.Newpersonal_fullname,
+            telephone_number: this.Newpersonal_telephone_number,
+            mobile_phone_number: this.Newpersonal_mobile_phone_number,
+            line_id: this.Newpersonal_line_id,
+            address: this.Newpersonal_address,
+            district_id: this.Newpersonal_district_id,
+            cti_title:null,
+            cti_tax_id:null,
+            cti_flash_number:null,
+            cti_email:null,
+            cti_telephone_number:null,
+            cti_mobile_phone_number:null,
+            cti_address:null,
+            cti_district_id:null,
+       };
+
+          let result = await api.addNewpersonnal(DataNewPersonel);
+          if (result.data.response =='OK'){
+            alert('บันทึกข้อมูลเรียบร้อยแล้ว')
+            this.$router.push('/Customer')
+          }
+
+          // <v-alert type="success">บันทึกข้อมูลลูกค้าสำเร็จ</v-alert>;
+
+      }
+      
+      
+
+
+    },
+  },
+};
+</script>
+
+<style scoped></style>

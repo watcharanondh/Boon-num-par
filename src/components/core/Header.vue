@@ -17,7 +17,7 @@
       </v-btn>
 
       <div class="ma-4">
-        <v-btn icon>
+        <v-btn v-if="false" icon>
           <v-badge bordered dot>
             <v-icon>notifications</v-icon>
           </v-badge>

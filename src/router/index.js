@@ -4,9 +4,9 @@ import Login from "@/views/Login.vue";
 import Homemenu from "@/views/Homemenu.vue";
 import Home from "@/views/Home.vue";
 import Customer from "@/views/Customer.vue";
-import Personeltype from "@/views/Personeltype.vue";
+import PersoneltypeCreate from "@/views/PersoneltypeCreate.vue";
 import PersonalCreateQuotation from "@/views/PersonalCreateQuotation.vue";
-import Companytype from "@/views/Companytype.vue";
+import CompanytypeCreate from "@/views/CompanytypeCreate.vue";
 import CompanyCreateQuotation from "@/views/CompanyCreateQuotation.vue";
 import Quotation from "@/views/Quotation.vue";
 import QuotationCreate from "@/views/QuotationCreate.vue";
@@ -45,9 +45,9 @@ const routes = [
     component: Customer
   },
   {
-    path: "/Personeltype",
-    name: "/Personeltype",
-    component: Personeltype
+    path: "/PersoneltypeCreate",
+    name: "/PersoneltypeCreate",
+    component: PersoneltypeCreate
   },
   {
     path: "/PersonalCreateQuotation",
@@ -55,9 +55,9 @@ const routes = [
     component: PersonalCreateQuotation
   },
   {
-    path: "/Companytype",
-    name: "/Companytype",
-    component: Companytype
+    path: "/CompanytypeCreate",
+    name: "/CompanytypeCreate",
+    component: CompanytypeCreate
   },
   {
     path: "/CompanyCreateQuotation",

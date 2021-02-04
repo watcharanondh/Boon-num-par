@@ -1,12 +1,14 @@
 import axios from "axios";
-import { server, apiUrl, NOT_CONNECT_NETWORK, NETWORK_CONNECTION_MESSAGE } from "@/services/constants";
+// import { server apiUrl, NOT_CONNECT_NETWORK, NETWORK_CONNECTION_MESSAGE } from "@/services/constants";
+import {  apiUrl, NOT_CONNECT_NETWORK, NETWORK_CONNECTION_MESSAGE } from "@/services/constants";
 import router from "@/router";
 
 const isAbsoluteURLRegex = /^(?:\w+:)\/\//;
 
 axios.interceptors.request.use(async config => {
   if (!isAbsoluteURLRegex.test(config.url)) {
-    const userToken = 'Bearer ' + localStorage.getItem(server.TOKEN_KEY);
+    //const userToken = 'Bearer ' + localStorage.getItem(server.TOKEN_KEY);
+    const userToken = 'Basic BNP*1234'
     if (userToken) {
       config.headers = { "Authorization": userToken };
     }

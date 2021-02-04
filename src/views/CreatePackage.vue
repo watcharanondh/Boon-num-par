@@ -151,7 +151,7 @@ export default {
 
   data: () => ({
     links: [
-      { text: "ข้อมูลแพ็กเกจ", route: "/CreateEquipment" },
+      { text: "ข้อมูลแพ็กเกจ", route: "/CreatePackage" },
       { text: "อุปกรณ์แพ็กเกจ", route: "/CreatePackageSelectEquipment" },
     ],
 
