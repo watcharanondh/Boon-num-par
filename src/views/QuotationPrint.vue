@@ -57,17 +57,17 @@
                 218 หมู่ 1 ถ. ฝ่ายท่าหนองหัดไท ต.พงษ์ประศาสน์ อ.บางสะพาน รหัสไปรษณีย์ 77140 <br>
                 โทร. 012-345-678, 098-787-6656, 095-234-1231 Fax. 09876543 E-mail:SALE@boonnumpar.co.th
               </div>
-              <table style="width:100%;" border="solid 1px gray">
+              <table style="width:100%; border-bottom:white;border-left:white;" border="none" cellspacing="0" cellpadding="0">
                 <thead>
-                  <tr>
-                    <th COLSPAN="10" style="text-align:center; background-color: gainsboro !important;" >
+                  <tr style="border-bottom:black;border-left:black;">
+                    <th COLSPAN="10" style="text-align:center; background-color: gainsboro;" >
                       <h2>ใบเสนอราคา / Quotation</h2>
                     </th>
                   </tr>
                 </thead>
                 <tbody class="t-body">
-                  <tr>
-                    <td COLSPAN="6" style="width:60%">
+                  <tr style="border-bottom:black;border-left:black;">
+                    <td COLSPAN="6" style="width:60%;">
                       <div>
                       <v-row>
                         <v-col cols="2" class="ma-2" style="padding-left: 1.5em">
@@ -115,15 +115,54 @@
                       </div>
                     </td>
                   </tr>
-                  <tr align="center">
+                  <tr align="center" style="border-bottom:black;border-left:black;">
                     <td COLSPAN="1">ลำดับ<br />item</td>
                     <td COLSPAN="5">รายการ<br />Description</td>
                     <td COLSPAN="1">จำนวน<br />Qtz.</td>
                     <td COLSPAN="1">ราคา/หน่วย<br />Unit Price</td>
                     <td COLSPAN="1">ราคารวม<br />Total Price</td>
                   </tr>
-                  <tr align="center" style="border-bottom:white !important;">
+
+                  <tr align="center" style="border-left:black;">
                     <td COLSPAN="1">1</td>
+                    <td COLSPAN="5" align="start">
+                      <div cols="7" class="ma-2" style="">
+                        Package บุญนำพา5 วันจันทร์ที่ 8 มิ.ย 63 (พระเพล) <br />
+                        ติดต่อวัดและนิมนต์คณะพระภิกษุสงฆ์ 9 รูป
+                        (รวมนิมนต์พระและรับ-ส่งพระ) <br />
+                        ชุดโต๊ะหมู่บูชาและพระประธาน <br />
+                        ชุดอาสนะพระภิกษุสงฆ์ จำนวน 9 ตัว <br />
+                        เครื่องใช้และอุปกรณ์ประกอบพิธีสงฆ์ครบถ้วน
+                      </div>
+                    </td>
+                    <td COLSPAN="1">1.000</td>
+                    <td COLSPAN="1">29,999.00</td>
+                    <td COLSPAN="1">29,999.00</td>
+                  </tr>
+                  <tr align="center" style="border-left:black;">
+                    <td COLSPAN="1">2</td>
+                    <td COLSPAN="5" align="start">
+                      <div cols="7" class="ma-2">
+                       โปรโมชั่น*** แถมชุดโต๊ะ เก้าอี้ที่นั่งสำหรับแขก จำนวน 5 ชุด มูลค่า 2,000 บาท ฟรี
+                      </div>
+                    </td>
+                    <td COLSPAN="1">1.000</td>
+                    <td COLSPAN="1"></td>
+                    <td COLSPAN="1"></td>
+                  </tr>
+                  <tr align="center" style="border-left:black;">
+                    <td COLSPAN="1">3</td>
+                    <td COLSPAN="5" align="start">
+                      <div cols="7" class="ma-2">
+                       โปรโมชั่น ฟรี ค่าขนส่งเหมาติดตั้งและเก็บกลับ 1,500 บาท
+                      </div>
+                    </td>
+                    <td COLSPAN="1">1.000</td>
+                    <td COLSPAN="1"></td>
+                    <td COLSPAN="1"></td>
+                  </tr>
+                  <tr align="center" style="border-left:black;">
+                    <td COLSPAN="1">4</td>
                     <td COLSPAN="5" align="start">
                       <div cols="7" class="ma-2">
                         Package บุญนำพา5 วันจันทร์ที่ 8 มิ.ย 63 (พระเพล) <br />
@@ -138,8 +177,8 @@
                     <td COLSPAN="1">29,999.00</td>
                     <td COLSPAN="1">29,999.00</td>
                   </tr>
-                  <tr align="center" style="border-bottom:white !important;">
-                    <td COLSPAN="1">2</td>
+                  <tr align="center" style="border-left:black;">
+                    <td COLSPAN="1">5</td>
                     <td COLSPAN="5" align="start">
                       <div cols="7" class="ma-2">
                        โปรโมชั่น*** แถมชุดโต๊ะ เก้าอี้ที่นั่งสำหรับแขก จำนวน 5 ชุด มูลค่า 2,000 บาท ฟรี
@@ -149,8 +188,8 @@
                     <td COLSPAN="1"></td>
                     <td COLSPAN="1"></td>
                   </tr>
-                  <tr align="center">
-                    <td COLSPAN="1">3</td>
+                  <tr align="center" style="border-left:black;">
+                    <td COLSPAN="1">6</td>
                     <td COLSPAN="5" align="start">
                       <div cols="7" class="ma-2">
                        โปรโมชั่น ฟรี ค่าขนส่งเหมาติดตั้งและเก็บกลับ 1,500 บาท
@@ -160,17 +199,54 @@
                     <td COLSPAN="1"></td>
                     <td COLSPAN="1"></td>
                   </tr>
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <td COLSPAN="1" class="widthzero" align="start" style="border-bottom:none !important;">หมายเหตุ</td>
-                    <td COLSPAN="5" align="start" style="border-bottom:none !important;">
-                      <v-col cols="9" class="ma-2">
+                  <tr align="center" style="border-left:black;">
+                    <td COLSPAN="1">7</td>
+                    <td COLSPAN="5" align="start">
+                      <div cols="7" class="ma-2">
+                        Package บุญนำพา5 วันจันทร์ที่ 8 มิ.ย 63 (พระเพล) <br />
+                        ติดต่อวัดและนิมนต์คณะพระภิกษุสงฆ์ 9 รูป
+                        (รวมนิมนต์พระและรับ-ส่งพระ) <br />
+                        ชุดโต๊ะหมู่บูชาและพระประธาน <br />
+                        ชุดอาสนะพระภิกษุสงฆ์ จำนวน 9 ตัว <br />
+                        เครื่องใช้และอุปกรณ์ประกอบพิธีสงฆ์ครบถ้วน
+                      </div>
+                    </td>
+                    <td COLSPAN="1">1.000</td>
+                    <td COLSPAN="1">29,999.00</td>
+                    <td COLSPAN="1">29,999.00</td>
+                  </tr>
+                  <tr align="center" style="border-left:black;">
+                    <td COLSPAN="1">8</td>
+                    <td COLSPAN="5" align="start">
+                      <div cols="7" class="ma-2">
+                       โปรโมชั่น*** แถมชุดโต๊ะ เก้าอี้ที่นั่งสำหรับแขก จำนวน 5 ชุด มูลค่า 2,000 บาท ฟรี
+                      </div>
+                    </td>
+                    <td COLSPAN="1">1.000</td>
+                    <td COLSPAN="1"></td>
+                    <td COLSPAN="1"></td>
+                  </tr>
+                  <tr align="center" style="border-bottom:black;border-left:black;">
+                    <td COLSPAN="1">9</td>
+                    <td COLSPAN="5" align="start">
+                      <div cols="7" class="ma-2">
+                       โปรโมชั่น ฟรี ค่าขนส่งเหมาติดตั้งและเก็บกลับ 1,500 บาท
+                      </div>
+                    </td>
+                    <td COLSPAN="1">1.000</td>
+                    <td COLSPAN="1"></td>
+                    <td COLSPAN="1"></td>
+                  </tr>
+
+                  <tr align="center" style="border-bottom:black;">
+                    <td COLSPAN="1" class="widthzero" align="start" style="border-bottom:white !important;border-left:white !important;border-right: white;">หมายเหตุ <br><br><br><br><br></td>
+                    <td COLSPAN="5" align="start" style="border-bottom:white !important;border-left:white !important;">
+                      <v-col cols="10" class="ma-2">
                         มัดจำล่วงหน้า 5,000 บาท ณ วันออกสัญญาจัดงาน
                         ส่วนที่เหลือจ่าย ณ วันเสร็จสิ้นงาน
                         สิ้นที่จะไม่รวมในเพ็กเกจ 1.ปัจจัยใส่ซองถวายพระ
                         2.โต๊ะเก้าอี้นั่งสำหรับแขก 3.เต็นท์ 4.พัดลม หมายเหตุ
-                        ***ทองบริษัทของสงวนสิทธิ์ไม่คืนมัดจำหากลูกค้ายกเลิกการจัดงาน***
+                        ***ทางบริษัทของสงวนสิทธิ์ไม่คืนมัดจำหากลูกค้ายกเลิกการจัดงาน***
                         **สงวนสิทธิ์ให้คิวบริการลูกค้าที่โอนมัดจำชำระเงินก่อน**
                       </v-col>
                     </td>
@@ -186,7 +262,7 @@
                       0.00 <br /><br />29,999.00 <br /><br />
                     </td>
                   </tr>
-                </tfoot>
+                </tbody>
               </table>
             </v-row>
           </v-col>
@@ -241,7 +317,7 @@
             <v-col class="text-end" md="1" style="text-align:right">
               ( 
             </v-col>
-            <v-col class="text-center" md="2" style="text-align:center"> ณัฐกานต์ ณัฐกานต์ ณัฐกานต์ </v-col>
+            <v-col class="text-center" md="2" style="text-align:center"> ณัฐกานต์ หทัยราษฎร์ </v-col>
             <v-col md="1" style="text-align:left">
               )
             </v-col>
@@ -275,6 +351,7 @@ export default {
 </script>
 
 <style scoped>
+/* table {border: none;} */
 table,
 th,
 td {
