@@ -20,7 +20,7 @@
         lazy-validation
      >
       <v-row justify="center">
-        <v-col lg="6" md="12" sm="12" cols="12">
+        <v-col lg="6" md="6" sm="12" cols="12">
           <v-row>
             <v-col>
              <div class="sizetitle">ข้อมูลลูกค้าประเภทบุคคล</div>
@@ -406,8 +406,8 @@
 import api from "@/services/api";
 
 export default {
-  name: "Personneltype",
-  mounted() {
+  name: "PersonneltypeCreate",
+async mounted() {
     this.loadDataProvince();
     this.$store.dispatch({
       type: "inputRoutepath",
@@ -416,10 +416,6 @@ export default {
   },
 
   data: () => ({
-    links: [
-      { text: "ข้อมูลลูกค้า", route: "/Personeltype" },
-      { text: "ข้อมูลใบกำกับภาษี", route: "/PersonalCreateQuotation" },
-    ],
     vat:false,
     valid: true,
     Newpersonal_type_id: "",
@@ -530,6 +526,7 @@ async submit() {
             cti_mobile_phone_number:null,
             cti_address:null,
             cti_district_id:null,
+            cti_vat_type: null,
        };
 
           let result = await api.addNewpersonnal(DataNewPersonel);

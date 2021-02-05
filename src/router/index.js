@@ -5,9 +5,7 @@ import Homemenu from "@/views/Homemenu.vue";
 import Home from "@/views/Home.vue";
 import Customer from "@/views/Customer.vue";
 import PersoneltypeCreate from "@/views/PersoneltypeCreate.vue";
-import PersonalCreateQuotation from "@/views/PersonalCreateQuotation.vue";
 import CompanytypeCreate from "@/views/CompanytypeCreate.vue";
-import CompanyCreateQuotation from "@/views/CompanyCreateQuotation.vue";
 import Quotation from "@/views/Quotation.vue";
 import QuotationCreate from "@/views/QuotationCreate.vue";
 import QuotationCreateSelectPackage from "@/views/QuotationCreateSelectPackage.vue";
@@ -50,19 +48,9 @@ const routes = [
     component: PersoneltypeCreate
   },
   {
-    path: "/PersonalCreateQuotation",
-    name: "/PersonalCreateQuotation",
-    component: PersonalCreateQuotation
-  },
-  {
     path: "/CompanytypeCreate",
     name: "/CompanytypeCreate",
     component: CompanytypeCreate
-  },
-  {
-    path: "/CompanyCreateQuotation",
-    name: "/CompanyCreateQuotation",
-    component: CompanyCreateQuotation
   },
   {
     path: "/Quotation",

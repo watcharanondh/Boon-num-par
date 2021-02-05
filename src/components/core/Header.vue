@@ -150,8 +150,8 @@ export default {
     if (
       this.RouterPath == "/Home" ||
       this.RouterPath == "/Customer" ||
-      this.RouterPath == "/Personeltype" ||
-      this.RouterPath == "/PersonalCreateQuotation" ||
+      this.RouterPath == "/PersoneltypeCreate" ||
+      this.RouterPath == "/CompanytypeCreate" ||
       this.RouterPath == "/Quotation" ||
       this.RouterPath == "/QuotationCreateSelectPackage" ||
       this.RouterPath == "/QuotationCreateSelectPromotion"

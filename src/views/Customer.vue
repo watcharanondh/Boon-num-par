@@ -38,7 +38,8 @@
                 <v-toolbar-title><span class="text-caption grey--text">{{total}}</span></v-toolbar-title>
                 <v-spacer></v-spacer>
 
-                <!-- <div>
+                <!-- ปุ่มเรียง
+                  <div>
                   <v-btn icon>
                     <svg
                       width="14"
@@ -104,7 +105,7 @@
                     <v-btn fab icon outlined small>
                       <v-icon>edit</v-icon>
                     </v-btn>
-                    <v-btn fab icon outlined small>
+                    <v-btn @click="DeleteCustomer(item)" fab icon outlined small>
                       <v-icon>delete</v-icon>
                     </v-btn>
                   </v-row>
@@ -158,6 +159,16 @@ async mounted() {
       let result = await api.getListallcustomers();
       this.table_customer = result.data.result;
       this.total = result.data.total;
+    },
+
+    EditCustomer(item){
+        console.log('ชื่อลูกค้า',item.name);
+        console.log(item.id);
+    },
+
+    DeleteCustomer(item){
+      console.log('ชื่อลูกค้า',item.name);
+      console.log(item.id);
 
     }
   },
