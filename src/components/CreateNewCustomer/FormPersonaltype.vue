@@ -4,7 +4,7 @@
       <v-col>
         <v-card flat color="#E5E5E5">
           <div class="sizetitle">
-            สร้างรายชื่อลูกค้าประเภทบริษัท
+            สร้างรายชื่อลูกค้าประเภท{{formTitle}}
           </div>
         </v-card>
       </v-col>
@@ -23,7 +23,7 @@
         <v-col lg="6" md="6" sm="12" cols="12">
           <v-row>
             <v-col>
-             <div class="sizetitle">ข้อมูลลูกค้าประเภทบริษัท</div>
+             <div class="sizetitle">ข้อมูลลูกค้าประเภท{{formTitle}}</div>
             </v-col>
           </v-row>
 
@@ -193,7 +193,8 @@
               </v-row>
             </v-col>
             </v-row>
-
+        
+        <div v-if="types">
           <!-- VAT 7% -->
            <v-row>
               <v-col lg="6" md="6" sm="12" cols="12">
@@ -207,7 +208,7 @@
           </v-row>
         
         <!-- ข้อมูลใบกำกับภาษี -->
-        <v-card class="rounded-lg" outlined>
+      <v-card class="rounded-lg" outlined>
         <v-row justify="center">
         <v-col lg="11" md="12" sm="12" cols="12">
           <v-row>
@@ -411,8 +412,8 @@
           </div>
         </v-col>
         </v-row>
-        </v-card>
-
+      </v-card>
+    </div>
         <v-row>
           <v-col></v-col>
         </v-row>
@@ -441,10 +442,11 @@
               >
             </v-col>
           </v-row>
-        </v-col>
-      </v-row>
-    </v-form>
-  </v-card>
+      </v-col>
+          </v-row>
+        </v-form>
+    </v-card>
+ 
 </v-container>
 </template>
 
@@ -452,17 +454,22 @@
 import api from "@/services/api";
 
 export default {
-  name: "CompanytypeCreate",
+  name: "FormPersonaltype",
+  props: ["title"],
 
 async mounted() {
-    this.loadDataProvince();
-    this.$store.dispatch({
-      type: "inputRoutepath",
-      RT: this.$route.path,
-    });
+  await this.loadDataType();
+        this.loadDataProvince();
+        this.$store.dispatch({
+          type: "inputRoutepath",
+          RT: this.$route.path,
+        });
   },
 
   data: () => ({
+    pasoneltype:null,
+    types:null,
+
     vat:false,
     vattype:'0',
     valid:true,
@@ -516,10 +523,26 @@ async mounted() {
 
   }),
 
+  computed: {
+      formTitle () {
+        return this.types===false ? 'บุคคล' : 'บริษัท'
+      },
+    },
+
 
   methods: {
+    loadDataType(){
+        this.pasoneltype = this.$store.getters["Newpersonal_type_id"].type_id
+        if(this.pasoneltype == 1){
+            this.types=false;
+        }else{
+            this.types=true;
+        }
+
+    },
+
     async loadDataProvince() {
-      this.Newcompanytype_type_id = this.$store.getters["Newpersonal_type_id"].type_id
+      this.Newcompanytype_type_id = this.types
       
       let result = await api.getProvinces();
       let provinces = result.data.result;

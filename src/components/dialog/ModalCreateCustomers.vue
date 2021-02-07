@@ -97,10 +97,10 @@ export default {
       this.type = this.SelectCustomerType.id
       if(this.SelectCustomerType.id == '1'){
           this.$store.dispatch({ type:"doTypeCreate", type_id: this.type });
-          this.$router.push('/PersoneltypeCreate');
+          this.$router.push('/CreatePersoneltype');
       }else{
           this.$store.dispatch({ type:"doTypeCreate", type_id: this.type});
-          this.$router.push('/CompanytypeCreate');
+          this.$router.push('/CreateCompanytype');
       }
 
     },
