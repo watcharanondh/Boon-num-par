@@ -6,7 +6,7 @@ const helper = require("../helper/sku");
 /* List All Promotions */
 exports.listAllPromotions = async (req, res) => {
   try {
-    let count_total =  await promotions.findOne({
+    let count_total = await promotions.findOne({
       attributes: [[Sequelize.fn('COUNT', Sequelize.col('*')), 'total']],
       where: {
         is_active: 1,
@@ -43,14 +43,15 @@ exports.listAllPromotions = async (req, res) => {
 
 /* Create New Promotions */
 exports.createNewPromotion = async (req, res) => {
-  const { name, discount } = req.body;
+  const { name, discount, discount_type } = req.body;
   try {
     const getMaxPromoId = await promotions.findOne({ attributes: [[Sequelize.fn('MAX', Sequelize.col('id')), "maxPromoId"]] })
     console.log(getMaxPromoId);
     const result = await promotions.create({
       id: getMaxPromoId.dataValues.maxPromoId !== null ? helper.SKUincrementer(getMaxPromoId.dataValues.maxPromoId) : "BNPPM0000001",
       name: name,
-      discount: discount
+      discount: discount,
+      discount_type: discount_type
     });
     res.json({
       response: "OK",
@@ -66,7 +67,7 @@ exports.createNewPromotion = async (req, res) => {
 exports.listPromotionToEdit = async (req, res) => {
   try {
     const result = await promotions.findAll({
-      attributes: ["id", "name", "discount"],
+      attributes: ["id", "name", "discount", "discount_type"],
       where: {
         id: req.body.id,
         is_active: 1,
@@ -89,23 +90,24 @@ exports.listPromotionToEdit = async (req, res) => {
 
 /* Edit Promotion */
 exports.editPromotion = async (req, res) => {
-  const { id, name, discount } = req.body;
+  const { id, name, discount, discount_type } = req.body;
   try {
-      const result = await promotions.update({
-        name: name,
-        discount: discount
-      }, {
-        where: {
-          id: id,
-          is_active: 1,
-          is_delete: 0
-        }
-      });
-      res.json({
-        response: "OK",
-        result: result,
-      });
-    
+    const result = await promotions.update({
+      name: name,
+      discount: discount,
+      discount_type: discount_type
+    }, {
+      where: {
+        id: id,
+        is_active: 1,
+        is_delete: 0
+      }
+    });
+    res.json({
+      response: "OK",
+      result: result,
+    });
+
   } catch (error) {
     console.log(error);
     res.json({ response: "FAILED", result: error });

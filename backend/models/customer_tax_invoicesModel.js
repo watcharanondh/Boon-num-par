@@ -37,6 +37,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER(10),
       allowNull: false,
     },
+    vat_type: {
+      type: DataTypes.INTEGER(1),
+      allowNull: false,
+      defaultValue: 0,
+    },
     createdAt: {
       field: "created_at",
       type: DataTypes.DATE,

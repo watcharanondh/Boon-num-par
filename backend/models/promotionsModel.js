@@ -13,6 +13,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
+    discount_type: {
+      type: DataTypes.INTEGER(1),
+      allowNull: false,
+      defaultValue: 1,
+    },
     createdAt: {
       field: "created_at",
       type: DataTypes.DATE,

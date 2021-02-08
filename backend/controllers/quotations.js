@@ -489,6 +489,7 @@ exports.deleteQuotation = async (req, res) => {
 /*------------------------------ Print Quatation  ------------------------------*/
 exports.printOutQuotation = async (req, res) => {
   try {
+    var is_check_vat_type;
     /* ------------------------------------------------------- Header ------------------------------------------------------- */
     const header = await quotations.findAll({
       attributes: [
@@ -503,7 +504,7 @@ exports.printOutQuotation = async (req, res) => {
           include: [
             {
               model: customer_tax_invoices,
-              attributes: [["address", "cti_address"], ["email", "cti_email"], ["telephone_number", "cti_telephone_number"]],
+              attributes: [["address", "cti_address"], ["email", "cti_email"], ["telephone_number", "cti_telephone_number"],["vat_type", "cti_vat_type"]],
               include: [
                 {
                   model: districts,
@@ -526,6 +527,7 @@ exports.printOutQuotation = async (req, res) => {
           data.dataValues.customer_name = data.dataValues.customer.dataValues.customer_name;
           Object.assign(data.dataValues, data.dataValues.customer_tax_invoices.district.dataValues);
           Object.assign(data.dataValues, data.dataValues.customer_tax_invoices.dataValues);
+          is_check_vat_type = data.dataValues.cti_vat_type;
           delete data.dataValues.customer;
           delete data.dataValues.customer_tax_invoices;
           delete data.dataValues.district;
@@ -575,8 +577,10 @@ exports.printOutQuotation = async (req, res) => {
     }).then(pack_data => {
       pack_data.map(data => {
         Object.assign(data.dataValues, data.package.dataValues);
-        total = total + parseFloat(data.dataValues.package_price)
-        data.dataValues.package_price = Number(data.dataValues.package_price).toLocaleString("th-TH");
+        total = total + (parseFloat(data.dataValues.package_price) * parseFloat(data.dataValues.packages_amount))
+        data.dataValues.package_total = Intl.NumberFormat('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2, }).format((parseFloat(data.dataValues.package_price) * parseFloat(data.dataValues.packages_amount)));
+        data.dataValues.package_price = Intl.NumberFormat('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2, }).format(data.dataValues.package_price);
+        data.dataValues.packages_amount = data.dataValues.packages_amount.toFixed(3);
         delete data.package.dataValues;
       })
       return pack_data;
@@ -584,12 +588,13 @@ exports.printOutQuotation = async (req, res) => {
 
     /* Promotions Data  */
     let discount = 0;
+    let discount_percent;
     const body_promotions = await quotation_promotions.findAll({
       attributes: ["quotation_id", "promotion_id"],
       include: [
         {
           model: promotions,
-          attributes: [["name", "promotion_name"], ["discount", "promotion_discount"]]
+          attributes: [["name", "promotion_name"], ["discount", "promotion_discount"] ,["discount_type", "promotion_discount_type"]]
         }
       ],
       where: {
@@ -600,9 +605,18 @@ exports.printOutQuotation = async (req, res) => {
     }).then(prom_data => {
       prom_data.map(data => {
         Object.assign(data.dataValues, data.promotion.dataValues);
-        discount = discount + parseFloat(data.dataValues.promotion_discount);
-        data.dataValues.promotion_discount = Number(data.dataValues.promotion_discount).toLocaleString("th-TH");
-        delete data.promotion.dataValues;
+        if (parseInt(data.dataValues.promotion_discount_type) == 1) {
+          discount = discount + parseFloat(data.dataValues.promotion_discount);
+          data.dataValues.promotion_discount = Intl.NumberFormat('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2, }).format(data.dataValues.promotion_discount);
+          delete data.promotion.dataValues;
+        }else if (parseInt(data.dataValues.promotion_discount_type) == 2) {
+          /*คำนวน ส่วนลดเป็นเปอร์เซนต์ (discount_type:2)*/
+          let cal_discount = (total * parseFloat(data.dataValues.promotion_discount)) / 100;
+          discount_percent = Number(data.dataValues.promotion_discount).toFixed(0);
+          discount = discount + parseFloat(cal_discount);
+          data.dataValues.promotion_discount = Intl.NumberFormat('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2, }).format(cal_discount);
+          delete data.promotion.dataValues;
+        }
       })
       return prom_data;
     });
@@ -616,12 +630,28 @@ exports.printOutQuotation = async (req, res) => {
         is_delete: 0
       }
     });
+
+    let _discount = discount;
+    let _total = total;
+    let _amount = total - discount;
+
     var footer = {
       "note": note_footer[0].note,
-      "total": total.toLocaleString("th-TH"),
-      "discount": discount.toLocaleString("th-TH"),
-      "amount": (total - discount).toLocaleString("th-TH"),
+      "total": Intl.NumberFormat('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2, }).format(_total),
+      "discount": Intl.NumberFormat('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2, }).format(_discount),
+      "discount_percent": discount_percent ? discount_percent + "%" : null,
+      "amount": Intl.NumberFormat('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2, }).format((_amount)),
       "signature_date": new Date().toLocaleDateString("th-TH", { day: '2-digit', month: '2-digit', year: '2-digit' })
+    }
+    /* Check VAT Type */
+    if (is_check_vat_type == 1) {
+      let cal_vat = (_amount * 7) / 100;
+      let amount_after_vat = _amount + cal_vat;
+      footer = {
+        ...footer,
+        "vat": Intl.NumberFormat('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2, }).format((cal_vat)),
+        "amount": Intl.NumberFormat('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2, }).format((amount_after_vat))
+      }
     }
     res.json({
       response: "OK",

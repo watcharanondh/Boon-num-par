@@ -52,12 +52,6 @@ app.use(START_PART_WITH + "/promotions", require("./routes/Promotions"));
 app.use(START_PART_WITH + "/users", require("./routes/Users"));
 
 
-// var sslOptions = {
-//   key: fs.readFileSync('key.pem'),
-//   cert: fs.readFileSync('cert.pem')
-// };
-// https.createServer(sslOptions, app).listen(8443)
-
 DB.sequelize.sync().then(() => {
   http.createServer(app).listen(PORT, err => {
     if (err) return console.log(`Cannot lisening at port: ${PORT}`);

@@ -69,7 +69,7 @@ exports.listAllDashboard = async (req, res) => {
 
     /* List Latest Customers */
     var LastCustomers = await customers.findAll({
-      attributes: ['id', [Sequelize.fn("date_format", Sequelize.col("`customers`.`created_at`"), "%d-%m-%Y"), "created_at_date"]],
+      attributes: ['id','name', [Sequelize.fn("date_format", Sequelize.col("`customers`.`created_at`"), "%d-%m-%Y"), "created_at_date"]],
       include: [
         {
           model: customer_tax_invoices,
@@ -83,7 +83,7 @@ exports.listAllDashboard = async (req, res) => {
       order: [["created_at", "DESC"]]
     }).then(custdata=>{
       custdata.map((data)=>{
-        data.dataValues.customer_tax_invoices = data.dataValues.customer_tax_invoices != '' ? data.dataValues.customer_tax_invoices[0].title : "ไม่พบข้อมูล";
+        data.dataValues.customer_tax_invoices = data.dataValues.customer_tax_invoices != '' ? data.dataValues.customer_tax_invoices[0].title : "ไม่พบข้อมูลนิติบุคคล";
       });
       return custdata;
     });
