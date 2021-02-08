@@ -92,15 +92,13 @@ export default {
     },
 
     selectPage() {
-      // console.log(this.SelectCustomerType.name);
-      // console.log(this.SelectCustomerType.id);
       this.type = this.SelectCustomerType.id
       if(this.SelectCustomerType.id == '1'){
           this.$store.dispatch({ type:"doTypeCreate", type_id: this.type });
           this.$router.push('/CreatePersoneltype');
       }else{
           this.$store.dispatch({ type:"doTypeCreate", type_id: this.type});
-          this.$router.push('/CreateCompanytype');
+          this.$router.push('/CreatePersoneltype');
       }
 
     },

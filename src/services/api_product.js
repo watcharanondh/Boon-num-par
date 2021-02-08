@@ -15,16 +15,20 @@ export const getListallcustomers = () => {
   return httpClient.get(server.LISTALLCUSTOMERS_URL);
 };
 
+export const getListEditcustomers = data => {
+  return httpClient.post(server.LIST_CUSTOMER_EDIT_URL, data);
+};
+
 export const addNewpersonnal = data => {
   return httpClient.post(server.NEWCUSTOMER_URL, data);
 };
 
-export const getNewcustomertaxinv = data => {
-  return httpClient.post(server.NEWCUSTOMER_TAX_INVOICE_URL, data);
+export const putEditcustomer = data => {
+  return httpClient.put(server.EDIT_CUSTOMER_URL, data);
 };
 
-export const getListcustomer = data => {
-  return httpClient.post(server.LIST_CUSTOMER_EDIT_URL, data);
+export const delCustomer = data => {
+  return httpClient.put(server.DELETE_CUSTOMER_URL, data);
 };
 
 //GetProvince

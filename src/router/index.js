@@ -4,10 +4,9 @@ import Login from "@/views/Login.vue";
 import Homemenu from "@/views/Homemenu.vue";
 import Home from "@/views/Home.vue";
 import Customer from "@/views/Customer.vue";
+import MonitorPersonltype from "@/views/MonitorPersonltype.vue";
 import CreatePersoneltype from "@/views/CreatePersoneltype.vue";
 import EditPersoneltype from "@/views/EditPersoneltype.vue";
-import CreateCompanytype from "@/views/CreateCompanytype.vue";
-import EditCompanytype from "@/views/EditCompanytype.vue";
 import Quotation from "@/views/Quotation.vue";
 import QuotationCreate from "@/views/QuotationCreate.vue";
 import QuotationCreateSelectPackage from "@/views/QuotationCreateSelectPackage.vue";
@@ -45,25 +44,21 @@ const routes = [
     component: Customer
   },
   {
+    path: "/MonitorPersonltype",
+    name: "/MonitorPersonltype",
+    component: MonitorPersonltype
+  },
+  {
     path: "/CreatePersoneltype",
     name: "Create/Personeltype",
     component: CreatePersoneltype
-  },
-  {
-    path: "/CreateCompanytype",
-    name: "/CreateCompanytype",
-    component: CreateCompanytype
   },
   {
     path: "/EditPersoneltype",
     name: "/EditPersoneltype",
     component: EditPersoneltype
   },
-  {
-    path: "/EditCompanytype",
-    name: "/EditCompanytype",
-    component: EditCompanytype
-  },
+
   {
     path: "/Quotation",
     name: "/Quotation",

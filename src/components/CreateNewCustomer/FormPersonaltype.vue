@@ -13,7 +13,7 @@
       <v-row> </v-row>
     </v-col>
 
-    <v-card class="mx-10 pa-5 rounded-lg" outlined>
+    <v-card class="mx-10 pa-5 rounded-lg" outlined >
       <v-form
         ref="form"
         v-model="valid"
@@ -33,13 +33,14 @@
               <div class="sizehead">ชื่อ-นามสกุล</div>
               <v-row class="no-gutters">
                 <v-text-field
-                  v-model="Newcompanytype_fullname"
+                  v-model="Personaltype_fullname"
                   placeholder="ชื่อ และ นามสกุล"
                   dense
                   solo
                   outlined
                   clearable
-                  :rules="Newcompanytype_fullnameRules"
+                  :rules="Personaltype_fullnameRules"
+                  :disabled="btn"
                   required
                 ></v-text-field>
               </v-row>
@@ -50,13 +51,14 @@
               <div class="sizehead">โทรศัพท์</div>
               <v-row class="no-gutters">
                 <v-text-field
-                  v-model="Newcompanytype_telephone_number"
+                  v-model="Personaltype_telephone_number"
                   placeholder="02-1234567"
                   dense
                   solo
                   outlined
                   clearable
-                  :rules="Newcompanytype_telephone_numberRules"
+                  :rules="Personaltype_telephone_numberRules"
+                  :disabled="btn"
                   required
                 ></v-text-field>
               </v-row>
@@ -69,12 +71,13 @@
               <div class="sizehead">มือถือ</div>
               <v-row class="no-gutters">
                 <v-text-field
-                  v-model="Newcompanytype_mobile_phone_number"
+                  v-model="Personaltype_mobile_phone_number"
                   placeholder="081-2345678"
                   dense
                   solo
                   outlined
                   clearable
+                  :disabled="btn"
                 ></v-text-field>
               </v-row>
             </v-col>
@@ -84,11 +87,12 @@
               <div class="sizehead">ID Line</div>
               <v-row class="no-gutters">
                 <v-text-field
-                  v-model="Newcompanytype_line_id"
+                  v-model="Personaltype_line_id"
                   dense
                   solo
                   outlined
                   clearable
+                  :disabled="btn"
                 ></v-text-field>
               </v-row>
             </v-col>
@@ -100,13 +104,14 @@
               <div class="sizehead">ที่อยู่</div>
               <v-row class="no-gutters">
                 <v-text-field
-                  v-model="Newcompanytype_address"
+                  v-model="Personaltype_address"
                   placeholder="หมู่บ้าน/อาคาร เลขที่ 99 ถนน. ซอย. "
                   dense
                   solo
                   outlined
                   clearable
-                  :rules="Newcompanytype_addressRules"
+                  :rules="Personaltype_addressRules"
+                  :disabled="btn"
                   required
                 ></v-text-field>
               </v-row>
@@ -119,8 +124,8 @@
               <div class="sizehead">จังหวัด</div>
               <v-row class="no-gutters">
                 <v-select
-                  v-model="Newcompanytype_SelectProvinces"
-                  :items="Newcompanytype_GatProvince"
+                  v-model="Personaltype_SelectProvinces"
+                  :items="Personaltype_GatProvince"
                   item-text="province_Name"
                   item-value="province_Code"
                   placeholder="เลือกจังหวัด"
@@ -130,6 +135,7 @@
                   dense
                   solo
                   outlined
+                  :disabled="btn"
                 >
                 </v-select>
               </v-row>
@@ -140,8 +146,8 @@
               <div class="sizehead">เขต/อำเภอ</div>
               <v-row class="no-gutters">
                 <v-select
-                  v-model="Newcompanytype_SelectAmphoe"
-                  :items="Newcompanytype_GatAmphoe"
+                  v-model="Personaltype_SelectAmphoe"
+                  :items="Personaltype_GatAmphoe"
                   item-text="amphoe_Name"
                   item-value="amphoe_Code"
                   placeholder="เลือกอำเภอ"
@@ -151,6 +157,7 @@
                   dense
                   solo
                   outlined
+                  :disabled="btn"
                 >
                 </v-select>
               </v-row>
@@ -163,8 +170,8 @@
               <div class="sizehead">แขวง/ตำบล</div>
               <v-row class="no-gutters">
                 <v-select
-                  v-model="Newcompanytype_SelectDistrict"
-                  :items="Newcompanytype_GatDistrict"
+                  v-model="Personaltype_SelectDistrict"
+                  :items="Personaltype_GatDistrict"
                   item-text="district_Name"
                   placeholder="เลือกแขวง/ตำบล"
                   v-on:change="FindProv_idSelected()"
@@ -173,6 +180,7 @@
                   dense
                   solo
                   outlined
+                  :disabled="btn"
                 >
                 </v-select>
               </v-row>
@@ -183,7 +191,7 @@
               <div class="sizehead">รหัสไปรษณีย์</div>
               <v-row class="no-gutters">
                <v-text-field
-                  v-model="Newcompanytype_SelectZipcode"
+                  v-model="Personaltype_SelectZipcode"
                   placeholder="รหัสไปรษณีย์"
                   dense
                   solo
@@ -194,14 +202,17 @@
             </v-col>
             </v-row>
         
-        <div v-if="types">
+        <div v-if="pasoneltype==2">
           <!-- VAT 7% -->
            <v-row>
               <v-col lg="6" md="6" sm="12" cols="12">
                 <v-row class="no-gutters">
                     <v-checkbox
-                      @click="OnVat"
-                      label="ต้องการ VAT 7%"
+                      v-model="vat_selected"
+                      label="ต้องการ VAT 7%" 
+                      :true-value="1" 
+                      :false-value="0"
+                      :disabled="btn"
                     ></v-checkbox>
                 </v-row>
               </v-col>
@@ -226,9 +237,8 @@
                   dense
                   solo
                   outlined
+                  :disabled="btn"
                   clearable
-                  :rules="Taxinvoiceinfo_fullnameRules"
-                  required
                 ></v-text-field>
               </v-row>
             </v-col>
@@ -241,9 +251,8 @@
                   dense
                   solo
                   outlined
+                  :disabled="btn"
                   clearable
-                  :rules="Taxinvoiceinfo_idRules"
-                  required
                 ></v-text-field>
               </v-row>
             </v-col>
@@ -257,6 +266,7 @@
                   dense
                   solo
                   outlined
+                  :disabled="btn"
                   clearable
                 ></v-text-field>
               </v-row>
@@ -271,6 +281,7 @@
                   dense
                   solo
                   outlined
+                  :disabled="btn"
                   clearable
                 ></v-text-field>
               </v-row>
@@ -287,8 +298,7 @@
                   solo
                   outlined
                   clearable
-                  :rules="Taxinvoiceinfo_telephone_numberRules"
-                  required
+                  :disabled="btn"
                 ></v-text-field>
               </v-row>
             </v-col>
@@ -302,6 +312,7 @@
                   solo
                   outlined
                   clearable
+                  :disabled="btn"
                 ></v-text-field>
               </v-row>
             </v-col>
@@ -312,16 +323,18 @@
               <v-col lg="6" md="6" sm="12" cols="12">
                 <v-row class="no-gutters">
                     <v-checkbox
-                      input-value="true"
+                      v-model="Same_address"
                       label="ใช้ที่อยู่เดียวกับข้อมูลลูกค้าประเภทบริษัท"
-                      @click="Same_address = !Same_address"
+                      :true-value="0" 
+                      :false-value="1"
+                      :disabled="btn"
                     ></v-checkbox>
                 </v-row>
               </v-col>
             </v-row>
 
             <!--ใช้ที่อยู่ข้อมูลใบกำกับภาษี -->
-            <div v-if="Same_address">
+            <div v-if="Same_address == 1">
             <v-row>
             <v-col lg="12" md="12" sm="12" cols="12">
               <div class="sizehead">ที่อยู่</div>
@@ -332,6 +345,7 @@
                   solo
                   outlined
                   clearable
+                  :disabled="btn"
                 ></v-text-field>
               </v-row>
             </v-col>
@@ -352,6 +366,7 @@
                   dense
                   solo
                   outlined
+                  :disabled="btn"
                 >
                 </v-select>
               </v-row>
@@ -371,6 +386,7 @@
                   dense
                   solo
                   outlined
+                  :disabled="btn"
                 >
                 </v-select>
               </v-row>
@@ -391,6 +407,7 @@
                   dense
                   solo
                   outlined
+                  :disabled="btn"
                 >
                 </v-select>
               </v-row>
@@ -437,8 +454,9 @@
                 dark
                 large
                 rounded
+                :disabled="btn"
                 @click="submit"
-                ><span class="white--text">บันทึก</span></v-btn
+                ><span class="white--text">{{Changesubmit}}</span></v-btn
               >
             </v-col>
           </v-row>
@@ -455,100 +473,134 @@ import api from "@/services/api";
 
 export default {
   name: "FormPersonaltype",
-  props: ["title"],
+  
+  props: ['monitortype','CreateorEdittype','type_id','Edits_fullname','Edits_telephone_number','Edits_mobile_phone_number','Edits_line_id','Edits_address','Edits_province','Edits_province_code','Edits_amphoe','Edits_amphoe_code','Edits_district','Edits_district_code','Edits_zipcode','Edits_district_id',
+          'Taxinvoiceinfo_Edits_vat_type','Taxinvoiceinfo_Edits_company','Taxinvoiceinfo_Edits_tax_id','Taxinvoiceinfo_Edits_fax_number','Taxinvoiceinfo_Edits_email','Taxinvoiceinfo_Edits_telephone_number','Taxinvoiceinfo_Edits_mobile_phone_number','Taxinvoiceinfo_Edits_address','Taxinvoiceinfo_Edits_province','Taxinvoiceinfo_Edits_province_code','Taxinvoiceinfo_Edits_amphoe' ,'Taxinvoiceinfo_Edits_amphoe_code','Taxinvoiceinfo_Edits_district' ,'Taxinvoiceinfo_Edits_district_code' ,'Taxinvoiceinfo_Edits_zipcode','Taxinvoiceinfo_Edits_district_id'],
 
-async mounted() {
-  await this.loadDataType();
-        this.loadDataProvince();
-        this.$store.dispatch({
+async created() {
+          await this.loadDataProvince();
+          await this.loadDataType();
+          await this.$store.dispatch({
           type: "inputRoutepath",
           RT: this.$route.path,
         });
+
   },
 
   data: () => ({
-    pasoneltype:null,
-    types:null,
-
-    vat:false,
-    vattype:'0',
     valid:true,
-    Same_address:false,
+    btn:false,
 
-    //ข้อมูลลูกค้าประเภทบริษัท
-    Newcompanytype_fullname: "",
-    Newcompanytype_type_id: "",
-    Newcompanytype_telephone_number: "",
-    Newcompanytype_mobile_phone_number: "",
-    Newcompanytype_line_id: "",
-    Newcompanytype_address: "",
-    Newcompanytype_district_id: "",
+    pasoneltype:null,
+    CreateorEdit:true,
+
+    vat_selected:0,
+    Same_address:0,
+
+    //ข้อมูลลูกค้า ประเภทบุคคลและนิติบุคคล
+    Personaltype_fullname: "",
+    Personaltype_type_id: "",
+    Personaltype_telephone_number: "",
+    Personaltype_mobile_phone_number: "",
+    Personaltype_line_id: "",
+    Personaltype_address: "",
+    Personaltype_district_id: "",
 
     //ข้อมูลใบกำกับภาษี ประเภทบริษัท
-    Taxinvoiceinfo_fullname: "",
-    Taxinvoiceinfo_id:"",
-    Taxinvoiceinfo_fax:"",
-    Taxinvoiceinfo_email:"",
+    Taxinvoiceinfo_fullname:null,
+    Taxinvoiceinfo_id:null,
+    Taxinvoiceinfo_fax:null,
+    Taxinvoiceinfo_email:null,
     Taxinvoiceinfo_telephone_number:null,
     Taxinvoiceinfo_mobile_phone_number: null,
-    Taxinvoiceinfo_address:"",
+    Taxinvoiceinfo_address:null,
     Taxinvoiceinfo_district_id: null,
 
-    //ข้อมูลจังหวัดลูกค้าประเภทบริษัท
-    Newcompanytype_SelectProvinces: [],
-    Newcompanytype_GatProvince: [],
-    Newcompanytype_SelectAmphoe: [],
-    Newcompanytype_GatAmphoe: [],
-    Newcompanytype_SelectDistrict: [],
-    Newcompanytype_GatDistrict: [],
-    Newcompanytype_SelectZipcode: null,
+    //ข้อมูลจังหวัดลูกค้า ประเภทบุคคลและนิติบุคคล
+    Personaltype_SelectProvinces:{},
+    Personaltype_GatProvince: [],
+    Personaltype_SelectAmphoe: {},
+    Personaltype_GatAmphoe: [],
+    Personaltype_SelectDistrict: {},
+    Personaltype_GatDistrict: [],
+    Personaltype_SelectZipcode: null,
 
     //ข้อมูลจังหวัดใบกำกับภาษี ประเภทบริษัท
-    Taxinvoiceinfo_SelectProvinces: [],
+    Taxinvoiceinfo_SelectProvinces:{},
     Taxinvoiceinfo_GatProvince: [],
-    Taxinvoiceinfo_SelectAmphoe: [],
+    Taxinvoiceinfo_SelectAmphoe: {},
     Taxinvoiceinfo_GatAmphoe: [],
-    Taxinvoiceinfo_SelectDistrict: [],
+    Taxinvoiceinfo_SelectDistrict: {},
     Taxinvoiceinfo_GatDistrict: [],
     Taxinvoiceinfo_SelectZipcode: null,
 
 
-    Newcompanytype_fullnameRules:[v1=>!!v1 || "กรุณากรอกชื่อและนามสกุล",],
-    Newcompanytype_telephone_numberRules:[v1=>!!v1 || "กรุณากรอกเบอร์โทรศัพท์",],
-    Newcompanytype_addressRules:[v1=>!!v1 || "กรุณากรอกที่อยู่",],
+    Personaltype_fullnameRules:[v1=>!!v1 || "กรุณากรอกชื่อและนามสกุล",],
+    Personaltype_telephone_numberRules:[v1=>!!v1 || "กรุณากรอกเบอร์โทรศัพท์",],
+    Personaltype_addressRules:[v1=>!!v1 || "กรุณากรอกที่อยู่",],
 
-    Taxinvoiceinfo_fullnameRules:[v1=>!!v1 || "กรุณากรอกชื่อและนามสกุลใบกำกับภาษี",],
-    Taxinvoiceinfo_idRules:[v1=>!!v1 || "กรุณากรอกรหัสประจำตัวผู้เสียภาษี",],
-    Taxinvoiceinfo_telephone_numberRules:[v1=>!!v1 || "กรุณากรอกเบอร์โทรศัพท์ใบกำกับภาษี",],
+    // Taxinvoiceinfo_fullnameRules:[v1=>!!v1 || "กรุณากรอกชื่อและนามสกุลใบกำกับภาษี",],
+    // Taxinvoiceinfo_idRules:[v1=>!!v1 || "กรุณากรอกรหัสประจำตัวผู้เสียภาษี",],
+    // Taxinvoiceinfo_telephone_numberRules:[v1=>!!v1 || "กรุณากรอกเบอร์โทรศัพท์ใบกำกับภาษี",],
 
   }),
 
   computed: {
       formTitle () {
-        return this.types===false ? 'บุคคล' : 'บริษัท'
+        return this.pasoneltype===1 ? 'บุคคล' : 'บริษัท'
+      },
+      Changesubmit () {
+        return this.CreateorEdit==true ? 'บันทึก' : 'แก้ไข'
       },
     },
 
 
   methods: {
-    loadDataType(){
-        this.pasoneltype = this.$store.getters["Newpersonal_type_id"].type_id
-        if(this.pasoneltype == 1){
-            this.types=false;
-        }else{
-            this.types=true;
-        }
+   async loadDataType(){
+        this.pasoneltype = this.type_id
+        this.CreateorEdit = this.CreateorEdittype
+        this.btn = this.monitortype
+        console.log('ประเภท',this.type_id);
+
+    if(this.CreateorEdit == false){
+        this.Personaltype_fullname= this.Edits_fullname,
+        this.Personaltype_type_id= this.type_id,
+        this.Personaltype_telephone_number= this.Edits_telephone_number,
+        this.Personaltype_mobile_phone_number= this.Edits_mobile_phone_number,
+        this.Personaltype_line_id= this.Edits_line_id,
+        this.Personaltype_address= this.Edits_address,
+        this.Personaltype_SelectProvinces = {province_Name: this.Edits_province ,province_Code: this.Edits_province_code};
+        this.Personaltype_GatAmphoe.push({amphoe_Name: this.Edits_amphoe ,amphoe_Code: this.Edits_amphoe_code});
+        this.Personaltype_SelectAmphoe= {amphoe_Name: this.Edits_amphoe ,amphoe_Code: this.Edits_amphoe_code};
+        this.Personaltype_GatDistrict.push({district_Name: this.Edits_district ,amphoe_Code: this.Edits_district_code});
+        this.Personaltype_SelectDistrict= {district_Name: this.Edits_district ,amphoe_Code: this.Edits_district_code};
+        this.Personaltype_SelectZipcode= this.Edits_zipcode,
+        this.Personaltype_district_id = this.Edits_district_id,
+        this.Taxinvoiceinfo_fullname= this.Taxinvoiceinfo_Edits_company,
+        this.Taxinvoiceinfo_id= this.Taxinvoiceinfo_Edits_tax_id,
+        this.Taxinvoiceinfo_fax= this.Taxinvoiceinfo_Edits_fax_number,
+        this.Taxinvoiceinfo_email= this.Taxinvoiceinfo_Edits_email,
+        this.Taxinvoiceinfo_telephone_number= this.Taxinvoiceinfo_Edits_telephone_number,
+        this.Taxinvoiceinfo_mobile_phone_number= this.Taxinvoiceinfo_Edits_mobile_phone_number,
+        this.Taxinvoiceinfo_address= this.Taxinvoiceinfo_Edits_address,
+        this.vat_selected = this.Taxinvoiceinfo_Edits_vat_type
+        this.Taxinvoiceinfo_SelectProvinces = {province_Name: this.Taxinvoiceinfo_Edits_province ,province_Code: this.Taxinvoiceinfo_Edits_province_code};
+        this.Taxinvoiceinfo_GatAmphoe.push({amphoe_Name: this.Taxinvoiceinfo_Edits_amphoe ,amphoe_Code: this.Taxinvoiceinfo_Edits_amphoe_code});
+        this.Taxinvoiceinfo_SelectAmphoe= {amphoe_Name: this.Taxinvoiceinfo_Edits_amphoe ,amphoe_Code: this.Taxinvoiceinfo_Edits_amphoe_code};
+        this.Taxinvoiceinfo_GatDistrict.push({district_Name: this.Taxinvoiceinfo_Edits_district ,amphoe_Code: this.Taxinvoiceinfo_Edits_district_code});
+        this.Taxinvoiceinfo_SelectDistrict= {district_Name: this.Taxinvoiceinfo_Edits_district ,amphoe_Code: this.Taxinvoiceinfo_Edits_district_code};
+        this.Taxinvoiceinfo_SelectZipcode= this.Taxinvoiceinfo_Edits_zipcode,
+        this.Taxinvoiceinfo_district_id = this.Taxinvoiceinfo_Edits_district_id
+    }
 
     },
 
     async loadDataProvince() {
-      this.Newcompanytype_type_id = this.types
-      
       let result = await api.getProvinces();
       let provinces = result.data.result;
       let _this = this;
       provinces.forEach(function(value) {
-        _this.Newcompanytype_GatProvince.push({
+        _this.Personaltype_GatProvince.push({
           province_Name: `${value.province}`,
           province_Code: `${value.province_code}`,
         });
@@ -562,17 +614,20 @@ async mounted() {
     },
 
     async FindAmphoeSelected() {
-      this.Newcompanytype_GatAmphoe=[],
-      this.Newcompanytype_GatDistrict=[]
-      let NewcompanytypeProv = {
-          province_code: this.Newcompanytype_SelectProvinces.province_Code,
-          province: this.Newcompanytype_SelectProvinces.province_Name,
+      this.Personaltype_GatAmphoe=[],
+      this.Personaltype_GatDistrict=[]
+
+      //console.log( this.Personaltype_SelectProvinces.province_Code);
+      //console.log( this.Personaltype_SelectProvinces.province_Name);
+      let PersonaltypeProv = {
+          province_code: this.Personaltype_SelectProvinces.province_Code,
+          province: this.Personaltype_SelectProvinces.province_Name,
       };
-      let resultNewcompanytypeProv = await api.getAmphoe(NewcompanytypeProv);
-      let AmphoeNewcompanytype = resultNewcompanytypeProv.data.result;
+      let resultPersonaltypeProv = await api.getAmphoe(PersonaltypeProv);
+      let AmphoePersonaltype = resultPersonaltypeProv.data.result;
       let _this = this;
-        AmphoeNewcompanytype.forEach(function(value) {
-          _this.Newcompanytype_GatAmphoe.push({
+        AmphoePersonaltype.forEach(function(value) {
+          _this.Personaltype_GatAmphoe.push({
               amphoe_Name: `${value.amphoe}`,
               amphoe_Code: `${value.amphoe_code}`,
         });
@@ -598,18 +653,17 @@ async mounted() {
     },
 
     async FindDistrict_Zipcode_Selected() {
-      this.Newcompanytype_GatDistrict = [];
-      this.Newcompanytype_SelectZipcode = [];
-
-      let NewcompanytypeAmphoe = {
-          amphoe_code: this.Newcompanytype_SelectAmphoe.amphoe_Code,
-          amphoe: this.Newcompanytype_SelectAmphoe.amphoe_Name,
+      this.Personaltype_GatDistrict = [];
+      this.Personaltype_SelectZipcode = [];
+      let PersonaltypeAmphoe = {
+          amphoe_code: this.Personaltype_SelectAmphoe.amphoe_Code,
+          amphoe: this.Personaltype_SelectAmphoe.amphoe_Name,
       };
-      let resultNewcompanytypeAmphoe = await api.getDistrict(NewcompanytypeAmphoe);
-      let DistrictNewcompanytypeAmphoe = resultNewcompanytypeAmphoe.data.result;
+      let resultPersonaltypeAmphoe = await api.getDistrict(PersonaltypeAmphoe);
+      let DistrictPersonaltypeAmphoe = resultPersonaltypeAmphoe.data.result;
       let _this = this;
-          DistrictNewcompanytypeAmphoe.forEach(function(value) {
-            _this.Newcompanytype_GatDistrict.push({
+          DistrictPersonaltypeAmphoe.forEach(function(value) {
+            _this.Personaltype_GatDistrict.push({
               district_Name: `${value.district}`,
               zipcode: `${value.zipcode}`,
               prov_id: `${value.id}`,
@@ -637,10 +691,10 @@ async mounted() {
     },
 
     FindProv_idSelected() {
-      this.Newcompanytype_SelectZipcode = this.Newcompanytype_SelectDistrict.zipcode;
-      this.Newcompanytype_district_id = this.Newcompanytype_SelectDistrict.prov_id;
-      // console.log(this.Newcompanytype_SelectZipcode);
-      // console.log(this.Newcompanytype_district_id);
+      this.Personaltype_SelectZipcode = this.Personaltype_SelectDistrict.zipcode;
+      this.Personaltype_district_id = this.Personaltype_SelectDistrict.prov_id;
+      // console.log(this.Personaltype_SelectZipcode);
+      // console.log(this.Personaltype_district_id);
     },
     FindProv_idSelected_TaxinvoiceinfoSelected(){
       this.Taxinvoiceinfo_SelectZipcode = this.Taxinvoiceinfo_SelectDistrict.zipcode;
@@ -649,88 +703,192 @@ async mounted() {
       // console.log(this.Taxinvoiceinfo_district_id);
     },
 
-    OnVat(){
-        this.vat = !this.vat
-        if(this.vat == true){
-          this.vattype = '1'
-        }else{
-          this.vattype = '0'
-        }
-    },
-
     BackpageCustomer() {
       this.$router.push("/Customer");
     },
 
 
 async submit() {
-      console.log(this.$refs.form.validate());
+      //console.log(this.$refs.form.validate());
       if(this.$refs.form.validate() == true){
-         console.log(this.Same_address);
-        if(this.Same_address==false){
-          console.log('addres',this.Same_address);
-           let DataCompanytypeCreate = {
-            name: this.Newcompanytype_fullname,
-            type_id: this.Newcompanytype_type_id,
-            telephone_number: this.Newcompanytype_telephone_number,
-            mobile_phone_number: this.Newcompanytype_mobile_phone_number,
-            line_id: this.Newcompanytype_line_id,
-            address: this.Newcompanytype_address,
-            district_id: this.Newcompanytype_district_id,
-            cti_title:this.Taxinvoiceinfo_fullname,
-            cti_tax_id:this.Taxinvoiceinfo_id,
-            cti_flash_number:this.Taxinvoiceinfo_fax,
-            cti_email:this.Taxinvoiceinfo_email,
-            cti_telephone_number:this.Taxinvoiceinfo_telephone_number,
-            cti_mobile_phone_number:this.Taxinvoiceinfo_mobile_phone_number,
-            cti_address:this.Newcompanytype_address,
-            cti_district_id:this.Newcompanytype_district_id,
-            cti_vat_type: this.vattype,
-       };
-       console.log(DataCompanytypeCreate);
-
-          let result = await api.addNewpersonnal(DataCompanytypeCreate);
-          console.log(result);
-          if (result.data.response =='OK'){
-            console.log(result);
-            alert('บันทึกข้อมูลเรียบร้อยแล้ว')
-            this.$router.push('/Customer')
-          }
-
+        //สร้างรายชื่อลูกค้าใหม่
+        if(this.CreateorEdit==true){
+            //สร้างลูกค้าประเภทบุคคล
+            if(this.pasoneltype == 1 ){
+              let DataPersonaltypeCreate = {
+                            name: this.Personaltype_fullname,
+                            type_id: this.Personaltype_type_id,
+                            telephone_number: this.Personaltype_telephone_number,
+                            mobile_phone_number: this.Personaltype_mobile_phone_number,
+                            line_id: this.Personaltype_line_id,
+                            address: this.Personaltype_address,
+                            district_id: this.Personaltype_district_id,
+                            cti_title:null,
+                            cti_tax_id:null,
+                            cti_flash_number:null,
+                            cti_email:null,
+                            cti_telephone_number:null,
+                            cti_mobile_phone_number:null,
+                            cti_address:null,
+                            cti_district_id:null,
+                            cti_vat_type:this.vat_selected,
+                          };
+                      //console.log('ที่อยู่แบบเดิม',DataPersonaltypeCreate);
+                      let result = await api.addNewpersonnal(DataPersonaltypeCreate);
+                      //console.log(result);
+                      if (result.data.response =='OK'){
+                            alert('บันทึกข้อมูลลูกค้าประเภทบุคคลเรียบร้อยแล้ว')
+                            this.$router.push('/Customer')
+                          }
+            }else{
+                //สร้างลูกค้าประเภทบริษัท
+                //สร้างลูกค้าประเภทบริษัท สร้างที่อยู่แบบเดิม
+                if(this.Same_address==0){
+                      let DataCompanytypeCreate_Old_address = {
+                            name: this.Personaltype_fullname,
+                            type_id: this.Personaltype_type_id,
+                            telephone_number: this.Personaltype_telephone_number,
+                            mobile_phone_number: this.Personaltype_mobile_phone_number,
+                            line_id: this.Personaltype_line_id,
+                            address: this.Personaltype_address,
+                            district_id: this.Personaltype_district_id,
+                            cti_title:this.Taxinvoiceinfo_fullname,
+                            cti_tax_id:this.Taxinvoiceinfo_id,
+                            cti_flash_number:this.Taxinvoiceinfo_fax,
+                            cti_email:this.Taxinvoiceinfo_email,
+                            cti_telephone_number:this.Taxinvoiceinfo_telephone_number,
+                            cti_mobile_phone_number:this.Taxinvoiceinfo_mobile_phone_number,
+                            //สร้างที่อยู่เดิม,จังหวัดเดิม
+                            cti_address:this.Personaltype_address,
+                            cti_district_id:this.Personaltype_district_id,
+                            cti_vat_type: this.vat_selected,
+                          };
+                      //console.log('สร้างที่อยู่แบบเดิม',DataCompanytypeCreate_Old_address);
+                      let result = await api.addNewpersonnal(DataCompanytypeCreate_Old_address);
+                      //console.log(result);
+                      if (result.data.response =='OK'){
+                            alert('บันทึกข้อมูลลูกค้าประเภทบริษัทเรียบร้อยแล้ว')
+                            this.$router.push('/Customer')
+                          }
+                //สร้างลูกค้าประเภทบริษัท สร้างที่อยู่แบบใหม่
+                }else{
+                      let DataCompanytypeCreate_New_address = {
+                            name: this.Personaltype_fullname,
+                            type_id: this.Personaltype_type_id,
+                            telephone_number: this.Personaltype_telephone_number,
+                            mobile_phone_number: this.Personaltype_mobile_phone_number,
+                            line_id: this.Personaltype_line_id,
+                            address: this.Personaltype_address,
+                            district_id: this.Personaltype_district_id,
+                            cti_title:this.Taxinvoiceinfo_fullname,
+                            cti_tax_id:this.Taxinvoiceinfo_id,
+                            cti_flash_number:this.Taxinvoiceinfo_fax,
+                            cti_email:this.Taxinvoiceinfo_email,
+                            cti_telephone_number:this.Taxinvoiceinfo_telephone_number,
+                            cti_mobile_phone_number:this.Taxinvoiceinfo_mobile_phone_number,
+                            //สร้างที่อยู่ใหม่,จังหวัดใหม่
+                            cti_address:this.Taxinvoiceinfo_address,
+                            cti_district_id:this.Taxinvoiceinfo_district_id,
+                            cti_vat_type: this.vat_selected,
+                          };
+                      //console.log('สร้างที่อยู่แบบใหม่',DataCompanytypeCreate_New_address);
+                      let result = await api.addNewpersonnal(DataCompanytypeCreate_New_address);
+                      if (result.data.response =='OK'){
+                            alert('บันทึกข้อมูลประเภทบริษัทเรียบร้อยแล้ว')
+                            this.$router.push('/Customer')
+                          }
+                }
+            }
         }else{
-          let DataCompanytypeCreate = {
-            name: this.Newcompanytype_fullname,
-            type_id: this.Newcompanytype_type_id,
-            telephone_number: this.Newcompanytype_telephone_number,
-            mobile_phone_number: this.Newcompanytype_mobile_phone_number,
-            line_id: this.Newcompanytype_line_id,
-            address: this.Newcompanytype_address,
-            district_id: this.Newcompanytype_district_id,
-            cti_title:this.Taxinvoiceinfo_fullname,
-            cti_tax_id:this.Taxinvoiceinfo_id,
-            cti_flash_number:this.Taxinvoiceinfo_fax,
-            cti_email:this.Taxinvoiceinfo_email,
-            cti_telephone_number:this.Taxinvoiceinfo_telephone_number,
-            cti_mobile_phone_number:this.Taxinvoiceinfo_mobile_phone_number,
-            cti_address:this.Taxinvoiceinfo_address,
-            cti_district_id:this.Taxinvoiceinfo_district_id,
-            cti_vat_type: this.vattype,
-       };
-
-          let result = await api.addNewpersonnal(DataCompanytypeCreate);
-          if (result.data.response =='OK'){
-            console.log('ล่าง',result);
-            alert('บันทึกข้อมูลเรียบร้อยแล้ว')
-            this.$router.push('/Customer')
-          }
-
-          // <v-alert type="success">บันทึกข้อมูลลูกค้าสำเร็จ</v-alert>;
+            //แก้ไขรายชื่อลูกค้า
+            //แก้ไขลูกค้าประเภทบุคคล 
+            if(this.pasoneltype == 1 ){
+              let DataPersonaltypeEdit = {
+                            name: this.Personaltype_fullname,
+                            type_id: this.Personaltype_type_id,
+                            telephone_number: this.Personaltype_telephone_number,
+                            mobile_phone_number: this.Personaltype_mobile_phone_number,
+                            line_id: this.Personaltype_line_id,
+                            address: this.Personaltype_address,
+                            district_id: this.Personaltype_district_id,
+                            cti_title:null,
+                            cti_tax_id:null,
+                            cti_flash_number:null,
+                            cti_email:null,
+                            cti_telephone_number:null,
+                            cti_mobile_phone_number:null,
+                            cti_address:null,
+                            cti_district_id:null,
+                            cti_vat_type:this.vat_selected,
+                          };
+                      //console.log('แบบที่อยู่เดิม',DataPersonaltypeEdit);
+                      let result = await api.putEditcustomer(DataPersonaltypeEdit);
+                      //console.log(result);
+                      if (result.data.response =='OK'){
+                            alert('แก้ไขข้อมูลลูกค้าประเภทบุคคลเรียบร้อยแล้ว')
+                            this.$router.push('/Customer')
+                          }
+            }else{
+                //แก้ไขลูกค้าประเภทบริษัท
+                //แก้ไขลูกค้าประเภทบริษัท แบบที่อยู่เดิม
+                if(this.Same_address==0){
+                      let DataCompanytypeEdit_Old_address = {
+                            name: this.Personaltype_fullname,
+                            type_id: this.Personaltype_type_id,
+                            telephone_number: this.Personaltype_telephone_number,
+                            mobile_phone_number: this.Personaltype_mobile_phone_number,
+                            line_id: this.Personaltype_line_id,
+                            address: this.Personaltype_address,
+                            district_id: this.Personaltype_district_id,
+                            cti_title:this.Taxinvoiceinfo_fullname,
+                            cti_tax_id:this.Taxinvoiceinfo_id,
+                            cti_flash_number:this.Taxinvoiceinfo_fax,
+                            cti_email:this.Taxinvoiceinfo_email,
+                            cti_telephone_number:this.Taxinvoiceinfo_telephone_number,
+                            cti_mobile_phone_number:this.Taxinvoiceinfo_mobile_phone_number,
+                            //แก้ไขที่อยู่เดิม,จังหวัดเดิม
+                            cti_address:this.Personaltype_address,
+                            cti_district_id:this.Personaltype_district_id,
+                            cti_vat_type: this.vat_selected,
+                          };
+                      //console.log('แก้ไขที่อยู่แบบเดิม',DataCompanytypeEdit_Old_address);
+                      let result = await api.putEditcustomer(DataCompanytypeEdit_Old_address);
+                      //console.log(result);
+                      if (result.data.response =='OK'){
+                            alert('แก้ไขข้อมูลลูกค้าประเภทบริษัทเรียบร้อยแล้ว')
+                            this.$router.push('/Customer')
+                          }
+                //แก้ไขลูกค้าประเภทบริษัท แก้ไขที่อยู่แบบใหม่
+                }else{
+                      let DataCompanytypeEdit_New_address = {
+                            name: this.Personaltype_fullname,
+                            type_id: this.Personaltype_type_id,
+                            telephone_number: this.Personaltype_telephone_number,
+                            mobile_phone_number: this.Personaltype_mobile_phone_number,
+                            line_id: this.Personaltype_line_id,
+                            address: this.Personaltype_address,
+                            district_id: this.Personaltype_district_id,
+                            cti_title:this.Taxinvoiceinfo_fullname,
+                            cti_tax_id:this.Taxinvoiceinfo_id,
+                            cti_flash_number:this.Taxinvoiceinfo_fax,
+                            cti_email:this.Taxinvoiceinfo_email,
+                            cti_telephone_number:this.Taxinvoiceinfo_telephone_number,
+                            cti_mobile_phone_number:this.Taxinvoiceinfo_mobile_phone_number,
+                            //แก้ไขที่อยู่แบบใหม่,จังหวัดใหม่
+                            cti_address:this.Taxinvoiceinfo_address,
+                            cti_district_id:this.Taxinvoiceinfo_district_id,
+                            cti_vat_type: this.vat_selected,
+                          };
+                      //console.log(แก้ไขที่อยู่แบบใหม่',DataCompanytypeEdit_New_address);
+                      let result = await api.putEditcustomer(DataCompanytypeEdit_New_address);
+                      if (result.data.response =='OK'){
+                            alert('แก้ไขข้อมูลประเภทบริษัทเรียบร้อยแล้ว')
+                            this.$router.push('/Customer')
+                          }
+                }
+            }
         }
-       
-
       }
-  
-
     },
   },
 };

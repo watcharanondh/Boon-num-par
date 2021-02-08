@@ -1,5 +1,5 @@
 <template >
-  <FormPersonaltype :CreateorEdittype="CreateorEdittype" :type_id="type_id" :Edits_fullname="Edits_fullname" :Edits_telephone_number="Edits_telephone_number"  :Edits_mobile_phone_number="Edits_mobile_phone_number" :Edits_line_id="Edits_line_id" :Edits_address="Edits_address" :Edits_province="Edits_province" :Edits_province_code="Edits_province_code" :Edits_amphoe="Edits_amphoe" :Edits_amphoe_code="Edits_amphoe_code" :Edits_district="Edits_district"  :Edits_district_code="Edits_district_code" :Edits_zipcode="Edits_zipcode" :Edits_district_id="Edits_district_id"
+  <FormPersonaltype :monitortype="monitortype" :CreateorEdittype="CreateorEdittype" :type_id="type_id" :Edits_fullname="Edits_fullname" :Edits_telephone_number="Edits_telephone_number"  :Edits_mobile_phone_number="Edits_mobile_phone_number" :Edits_line_id="Edits_line_id" :Edits_address="Edits_address" :Edits_province="Edits_province" :Edits_province_code="Edits_province_code" :Edits_amphoe="Edits_amphoe" :Edits_amphoe_code="Edits_amphoe_code" :Edits_district="Edits_district"  :Edits_district_code="Edits_district_code" :Edits_zipcode="Edits_zipcode" :Edits_district_id="Edits_district_id"
                     :Taxinvoiceinfo_Edits_vat_type="Taxinvoiceinfo_Edits_vat_type" :Taxinvoiceinfo_Edits_company="Taxinvoiceinfo_Edits_company" :Taxinvoiceinfo_Edits_tax_id="Taxinvoiceinfo_Edits_tax_id" :Taxinvoiceinfo_Edits_fax_number="Taxinvoiceinfo_Edits_fax_number" :Taxinvoiceinfo_Edits_email="Taxinvoiceinfo_Edits_email" :Taxinvoiceinfo_Edits_telephone_number="Taxinvoiceinfo_Edits_telephone_number" :Taxinvoiceinfo_Edits_mobile_phone_number="Taxinvoiceinfo_Edits_mobile_phone_number" :Taxinvoiceinfo_Edits_address="Taxinvoiceinfo_Edits_address" :Taxinvoiceinfo_Edits_province="Taxinvoiceinfo_Edits_province" :Taxinvoiceinfo_Edits_province_code="Taxinvoiceinfo_Edits_province_code" :Taxinvoiceinfo_Edits_amphoe="Taxinvoiceinfo_Edits_amphoe" :Taxinvoiceinfo_Edits_amphoe_code="Taxinvoiceinfo_Edits_amphoe_code" :Taxinvoiceinfo_Edits_district="Taxinvoiceinfo_Edits_district" :Taxinvoiceinfo_Edits_district_code="Taxinvoiceinfo_Edits_district_code" :Taxinvoiceinfo_Edits_zipcode="Taxinvoiceinfo_Edits_zipcode" :Taxinvoiceinfo_Edits_district_id="Taxinvoiceinfo_Edits_district_id" />
 </template>
 
@@ -7,7 +7,7 @@
 import FormPersonaltype from '@/components/CreateNewCustomer/FormPersonaltype.vue'
 import api from "@/services/api";
 export default {
-  name: "EditPersoneltype",
+  name: "MonitorPersonltype",
   components: { 
     FormPersonaltype 
     },
@@ -16,6 +16,7 @@ export default {
   },
 
   data: () => ({
+    monitortype:true,
     CreateorEdittype:false,
     id: null,
     type_id:'',
@@ -56,7 +57,6 @@ export default {
   methods: {
   async londDataEdit(){
         this.id = this.$store.getters["Newpersonal_BNP_ID"].BNP_ID
-        console.log(this.id );
         let BNP_ID_Edit = { id:this.id }
         let result = await api.getListEditcustomers(BNP_ID_Edit);
         this.type_id=result.data.result[0].type_id
@@ -90,7 +90,9 @@ export default {
         this.Taxinvoiceinfo_Edits_zipcode=result.data.result[0].cti_zipcode
         this.Taxinvoiceinfo_Edits_district_id=result.data.result[0].cti_district_id
     }
+   
   },
+
 }
 </script>
 

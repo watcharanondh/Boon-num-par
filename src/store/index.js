@@ -13,6 +13,8 @@ export default new Vuex.Store({
     username: "",
     Routepath:"",
 
+    BNP_ID:"",
+
     type_id:null,
     name:'',
     telephone_number:'',
@@ -32,9 +34,13 @@ export default new Vuex.Store({
     Route_path(state) {
       return state.Routepath;
     },
+
+
     Newpersonal_type_id(state) {
       return state.type_id;
     },
+
+
     Newpersonal_name(state) {
       return state.name;
     },
@@ -52,6 +58,10 @@ export default new Vuex.Store({
     },
     Newpersonal_district_id(state) {
       return state.district_id;
+    },
+
+    Newpersonal_BNP_ID(state) {
+      return state.BNP_ID;
     },
 
 
@@ -92,6 +102,11 @@ export default new Vuex.Store({
     SET_district_id(state, district_id){
       state.district_id = district_id
     },
+
+    SET_Edit_BNP_ID(state, ID){
+      state.BNP_ID = ID
+    },
+    
   },
   actions: {
     inputRoutepath({ commit }, { RT }) {
@@ -131,6 +146,9 @@ export default new Vuex.Store({
     },
     doTypeCreate({ commit }, type_id) {
       commit('SET_type_id', type_id);
+    },
+    doEditBNPID({ commit }, BNP_ID) {
+      commit('SET_Edit_BNP_ID', BNP_ID);
     }
   },
   modules: {}

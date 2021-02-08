@@ -25,8 +25,8 @@ export const server = {
   NEWCUSTOMER_TAX_INVOICE_URL:`customers/newcustomertaxinv`,
   LIST_CUSTOMER_EDIT_URL:`customers/listcustomer`,
 
-  CUSTOMER_EDIT_URL:`customers/editcustomer`,
-  LISTCUSTOMER_DELETE_URL:`customers/delcustomer`,
+  EDIT_CUSTOMER_URL:`customers/editcustomer`,
+  DELETE_CUSTOMER_URL:`customers/delcustomer`,
 
   //Province, Amphoe, Districts
   LIST_FIND_PROVINCE_URL:`districts/findprovince`,

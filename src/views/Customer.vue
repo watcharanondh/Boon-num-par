@@ -99,10 +99,10 @@
                 </td>
                 <td>
                   <v-row>
-                    <v-btn fab icon outlined small>
+                    <v-btn @click="MonitorCustomer(item)" fab icon outlined small>
                       <v-icon>visibility</v-icon>
                     </v-btn>
-                    <v-btn fab icon outlined small>
+                    <v-btn @click="EditCustomer(item)" fab icon outlined small>
                       <v-icon>edit</v-icon>
                     </v-btn>
                     <v-btn @click="DeleteCustomer(item)" fab icon outlined small>
@@ -161,15 +161,30 @@ async mounted() {
       this.total = result.data.total;
     },
 
-    EditCustomer(item){
-        console.log('ชื่อลูกค้า',item.name);
-        console.log(item.id);
+   async MonitorCustomer(item){
+      await this.$store.dispatch({
+          type: "doEditBNPID",
+          BNP_ID: item.id,
+        });
+      await  this.$router.push('/MonitorPersonltype');
     },
 
-    DeleteCustomer(item){
-      console.log('ชื่อลูกค้า',item.name);
-      console.log(item.id);
+    async EditCustomer(item){
+      await this.$store.dispatch({
+          type: "doEditBNPID",
+          BNP_ID: item.id,
+        });
+      await this.$router.push('/EditPersoneltype');
+    },
 
+    async DeleteCustomer(item){
+      let delCustomer ={"id":item.id}
+      let result = await api.delCustomer(delCustomer);
+       if (result.data.response =='OK'){
+        alert('ลบรายชื่อลูกค้าเรียบร้อยแล้ว')
+        await this.loadCustomers()
+
+      }
     }
   },
 };
