@@ -48,11 +48,9 @@ export const server = {
   //Equipment SET
   LIST_ALL_SET_EQUIPMENT_URL:`equipmentsets/listallequipmentset`,
   LIST_ALL_SET_MINI_EQUIPMENT_URL:`equipmentsets/listallequiptoequipset`,
-  
+  LIST_EDIT_SET_MINI_EQUIPMENT_URL:`equipmentsets/listequipmentset`,
   ADD_SET_EQUIPMENT_URL:`equipmentsets/addnewequipmentset`,
- 
-
-  PUT_EDIT_SET_EQUIPMENT_URL:`equipmentsets/listequipmentset`,
+  PUT_EDIT_SET_EQUIPMENT_URL:`equipmentsets/editequipmentset`,
   DELETE_SET_EQUIPMENT_URL:`equipmentsets/delequipmentset`,
 
   //Package 

@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import FormEquipment from '@/components/CreateNewCustomer/FormEquipment';
+import FormEquipment from '@/components/Form/FormEquipment';
 export default {
   name: "CreateEquipment",
   components: { 

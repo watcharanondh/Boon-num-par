@@ -80,12 +80,13 @@ export const getSetEquipment = () => {
 export const getSetEquipmentmini = () => {
   return httpClient.get(server.LIST_ALL_SET_MINI_EQUIPMENT_URL);
 };
+export const getEditSetEquipmentmini = (data) => {
+  return httpClient.post(server.LIST_EDIT_SET_MINI_EQUIPMENT_URL,data);
+};
 
-
-
-// export const addSetEquipment = (data) => {
-//   return httpClient.post(server.ADD_SET_EQUIPMENT_URL,data);
-// };
+export const addSetEquipment = (data) => {
+  return httpClient.post(server.ADD_SET_EQUIPMENT_URL,data);
+};
 
 export const editSetEquipment = (data) => {
   return httpClient.put(server.PUT_EDIT_SET_EQUIPMENT_URL,data);

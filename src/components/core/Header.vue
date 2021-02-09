@@ -160,12 +160,16 @@ export default {
     } else if (
       this.RouterPath == "/Equipment" ||
       this.RouterPath == "/CreateEquipment" ||
-      this.RouterPath == "/Promotion" ||
+      this.RouterPath == "/EditEquipment" ||
+      this.RouterPath == "/SetEquipment" ||
+      this.RouterPath == "/CreateSetEquipment" ||
+      this.RouterPath == "/EditSetEquipment" ||
       this.RouterPath == "/Package" ||
       this.RouterPath == "/CreatePackage" ||
       this.RouterPath == "/CreatePackageSelectEquipment" ||
       this.RouterPath == "/Promotion" ||
-      this.RouterPath == "/CreatePromotion"
+      this.RouterPath == "/CreatePromotion" ||
+      this.RouterPath == "/EditPromotion"
     ) {
       return this.RouterPath = 2;
     }else{

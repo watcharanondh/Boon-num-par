@@ -84,7 +84,6 @@
               <tr>
                 <td>{{ item.id }}</td>
                 <td>{{ item.name }}</td>
-                <td>{{ item.discount_text }}</td>
                 <td>
                   <v-row>
                     <!-- <v-btn fab icon outlined small>
@@ -131,7 +130,6 @@ async mounted() {
     headers_table_SetEquipment: [
       { text: "รหัสรายการชุดอุปกรณ์", value: "id", sortable: false, align: "start", color: "black"},
       { text: "รายชื่อรายการชุดอุปกรณ์", value: "name", sortable: false, align: "start" },
-      { text: "ลดราคา", value: "discount_text", sortable: false, align: "start"},
       { text: "", value: "", sortable: false, align: "start" },
       { text: "", value: "", sortable: false, align: "start" },
     ],

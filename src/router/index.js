@@ -12,15 +12,22 @@ import QuotationCreate from "@/views/QuotationCreate.vue";
 import QuotationCreateSelectPackage from "@/views/QuotationCreateSelectPackage.vue";
 import QuotationCreateSelectPromotion from "@/views/QuotationCreateSelectPromotion.vue";
 import QuotationPrint from "@/views/QuotationPrint.vue"; 
+import Equipment from "@/views/Equipment.vue";
+import CreateEquipment from "@/views/CreateEquipment.vue";
+import EditEquipment from "@/views/EditEquipment.vue";
+
+import SetEquipment from "@/views/SetEquipment.vue";
+import CreateSetEquipment from "@/views/CreateSetEquipment.vue";
+import EditSetEquipment from "@/views/EditSetEquipment.vue";
+
 import Package from "@/views/Package.vue"; 
 import CreatePackage from "@/views/CreatePackage.vue"; 
 import CreatePackageSelectEquipment from "@/views/CreatePackageSelectEquipment.vue"; 
+
 import Promotion from "@/views/Promotion.vue";
 import CreatePromotion from "@/views/CreatePromotion.vue";
-import Equipment from "@/views/Equipment.vue";
-import SetEquipment from "@/views/SetEquipment.vue";
-import CreateEquipment from "@/views/CreateEquipment.vue";
-import EditEquipment from "@/views/EditEquipment.vue";
+import EditPromotion from "@/views/EditPromotion.vue";
+
 
 Vue.use(VueRouter);
 
@@ -87,6 +94,37 @@ const routes = [
     component: QuotationPrint
   },
   {
+    path: "/Equipment",
+    name: "/Equipment",
+    component: Equipment
+  },
+  {
+    path: "/CreateEquipment",
+    name: "/CreateEquipment",
+    component: CreateEquipment
+  },
+  {
+    path: "/EditEquipment",
+    name: "/EditEquipment",
+    component: EditEquipment
+  },
+  {
+    path: "/SetEquipment",
+    name: "/SetEquipment",
+    component: SetEquipment
+  },
+  {
+    path: "/CreateSetEquipment",
+    name: "/CreateSetEquipment",
+    component: CreateSetEquipment
+  },
+  {
+    path: "/EditSetEquipment",
+    name: "/EditSetEquipment",
+    component: EditSetEquipment
+  },
+  
+  {
     path: "/Package",
     name: "/Package",
     component: Package
@@ -112,25 +150,11 @@ const routes = [
     component: CreatePromotion
   },
   {
-    path: "/Equipment",
-    name: "/Equipment",
-    component: Equipment
+    path: "/EditPromotion",
+    name: "/EditPromotion",
+    component: EditPromotion
   },
-  {
-    path: "/SetEquipment",
-    name: "/SetEquipment",
-    component: SetEquipment
-  },
-  {
-    path: "/CreateEquipment",
-    name: "/CreateEquipment",
-    component: CreateEquipment
-  },
-  {
-    path: "/EditEquipment",
-    name: "/EditEquipment",
-    component: EditEquipment
-  },
+
   {
     path: "/",
     redirect: "Login",

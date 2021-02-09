@@ -5,7 +5,7 @@
 <script>
 import FormPromotion from '@/components/Form/FormPromotion';
 export default {
-  name: "CreatePromotion",
+  name: "EditPromotion",
   components: { 
      FormPromotion
     },

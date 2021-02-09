@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import FormPersonaltype from '@/components/CreateNewCustomer/FormPersonaltype.vue'
+import FormPersonaltype from '@/components/Form/FormPersonaltype.vue'
 import api from "@/services/api";
 export default {
   name: "EditPersoneltype",

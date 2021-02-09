@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import FormPersonaltype from '@/components/CreateNewCustomer/FormPersonaltype.vue';
+import FormPersonaltype from '@/components/Form/FormPersonaltype.vue';
 export default {
   name: "CreatePersoneltype",
   components: { 
