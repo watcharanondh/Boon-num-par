@@ -19,12 +19,18 @@ exports.listAllPromotions = async (req, res) => {
         "name",
         [Sequelize.fn("date_format", Sequelize.col("`promotions`.`updated_at`"), "%d.%m.%Y"), "update"],
         "discount",
+        "discount_type",
       ],
       where: {
         is_active: 1,
         is_delete: 0
       },
       order: [["updated_at", "DESC"]]
+    }).then(promo_data => {
+      promo_data.map((data) => {
+        data.dataValues.discount_text = data.dataValues.discount_type == 1 ? data.dataValues.discount + " บาท" : data.dataValues.discount + " %"
+      });
+      return promo_data;
     });
     if (result != '' && result !== null) {
       res.json({
