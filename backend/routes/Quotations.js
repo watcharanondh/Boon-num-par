@@ -7,6 +7,8 @@ const QuotationsContrllers = require("../controllers/quotations");
 /*------------------------------ Create Quatation ------------------------------*/
 /* List All Quotations */
 router.get("/listallquotations", authorize, QuotationsContrllers.listAllQuotations);
+/* List Status Quotations Selector */
+router.get("/statusquotationtoselect", authorize, QuotationsContrllers.listStatusQuotations);
 /* Update Quotation Confirm Status */
 router.put("/confirmquotstat", authorize, QuotationsContrllers.comfirmQuotationStatus);
 /* List Customer information to Create Quotations */

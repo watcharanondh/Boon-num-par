@@ -58,11 +58,34 @@ exports.listAllQuotations = async (req, res) => {
     res.json({ response: "FAILED", result: error });
   }
 };
+/* List Status Quotations Selector */
+exports.listStatusQuotations = async (req, res) => {
+  try {
+    const result = await quotation_statuses.findAll({
+      attributes: ["id", "name"],
+      where: {
+        is_active: 1,
+        is_delete: 0
+      },
+    });
+    if (result != '' && result !== null) {
+      res.json({
+        response: "OK",
+        result: result,
+      });
+    } else {
+      res.json({ response: "FAILED", result: "Not Found." });
+    }
+  } catch (error) {
+    console.log(error);
+    res.json({ response: "FAILED", result: error });
+  }
+};
 /* Update Quotation Confirm Status  */
 exports.comfirmQuotationStatus = async (req, res) => {
   try {
     const result = await quotations.update({
-      quotation_status_id: 1
+      quotation_status_id: req.body.status
     }, {
       where: {
         id: req.body.id
