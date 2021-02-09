@@ -471,12 +471,12 @@ exports.deleteQuotation = async (req, res) => {
     if (result != 0) {
       res.json({
         response: "OK",
-        result: req.body.id + ": Deleted. Result: " + result,
+        result: "Quotation: " + req.body.id + " Deleted. Result: " + result,
       });
     } else {
       res.json({
         response: "FAILED",
-        result: req.body.id + ": Not Found. Result: " + result,
+        result: "Quotation: " + req.body.id + " Not Found. Result: " + result,
       });
     }
   } catch (error) {
