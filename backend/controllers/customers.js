@@ -220,7 +220,8 @@ exports.listCustomerToEdit = async (req, res) => {
       })
         .then(all_customers => {
           all_customers[0].dataValues = { ...all_customers[0].dataValues, ...all_customers[0].district.dataValues, ...all_customers[0].customer_tax_invoices[0].district.dataValues, ...all_customers[0].customer_tax_invoices[0].dataValues ,...all_customers[0].dataValues.district_personal}
-          all_customers[0].dataValues.district = all_customers[0].dataValues.district_personal; /// set ditrict ทับ เพราะโดนแทนที่ตอน query ///    
+          all_customers[0].dataValues.district = all_customers[0].dataValues.district_personal; /// set ditrict ทับ เพราะโดนแทนที่ตอน query ///  
+          all_customers[0].dataValues.check_same_address = all_customers[0].dataValues.district_id == all_customers[0].dataValues.cti_district_id ? 1 : 0 ;
           delete all_customers[0].dataValues.customer_tax_invoices;
           delete all_customers[0].dataValues.district_personal;
           return all_customers;

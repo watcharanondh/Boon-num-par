@@ -43,6 +43,7 @@ exports.listAllDashboard = async (req, res) => {
       include: [
         {
           model: customers,
+          attributes: ['name'],
           include: {
             model: customer_tax_invoices,
             attributes: ['title']

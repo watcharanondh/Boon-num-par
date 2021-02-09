@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const package_equipments = sequelize.define("package_equipments", {
-    package_id: {
+  const equipment_set_equipments = sequelize.define("equipment_set_equipments", {
+    equipment_set_id: {
       type: DataTypes.STRING(12),
       allowNull: false,
       primaryKey: true,
@@ -43,10 +43,10 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
-  package_equipments.associate = models => {
-    package_equipments.belongsTo(models.packages, { foreignKey: "package_id" });
-    package_equipments.belongsTo(models.equipments, { foreignKey: "equipment_id" });
+  equipment_set_equipments.associate = models => {
+    equipment_set_equipments.belongsTo(models.equipment_sets, { foreignKey: "id" });
+    equipment_set_equipments.belongsTo(models.equipments, { foreignKey: "equipment_id" });
   };
 
-  return package_equipments;
+  return equipment_set_equipments;
 };

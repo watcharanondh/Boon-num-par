@@ -1,29 +1,14 @@
 module.exports = (sequelize, DataTypes) => {
-  const packages = sequelize.define("packages", {
-    id: {
-      type: DataTypes.INTEGER(12),
+  const package_equipment_sets = sequelize.define("package_equipment_sets", {
+    package_id: {
+      type: DataTypes.STRING(12),
       allowNull: false,
       primaryKey: true,
     },
-    name: {
-      type: DataTypes.STRING(255),
+    equipment_set_id: {
+      type: DataTypes.STRING(12),
       allowNull: false,
-    },
-    price: {
-      type: DataTypes.DECIMAL(10, 2),
-      allowNull: false,
-    },
-    amount_savory_food: {
-      type: DataTypes.INTEGER(5),
-      allowNull: false,
-    },
-    amount_sweet_food: {
-      type: DataTypes.INTEGER(5),
-      allowNull: false,
-    },
-    amount_drink: {
-      type: DataTypes.INTEGER(5),
-      allowNull: false,
+      primaryKey: true,
     },
     createdAt: {
       field: "created_at",
@@ -57,10 +42,11 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 0,
     },
   });
-  packages.associate = models => {
-    packages.hasMany(models.quotation_packages, { foreignKey: "id" });
-    packages.hasMany(models.package_equipment_sets, { foreignKey: "package_id" });
+
+  package_equipment_sets.associate = models => {
+    package_equipment_sets.belongsTo(models.packages, { foreignKey: "package_id" });
+    package_equipment_sets.belongsTo(models.equipment_sets, { foreignKey: "equipment_set_id" });
   };
 
-  return packages;
+  return package_equipment_sets;
 };

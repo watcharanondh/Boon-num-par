@@ -1,4 +1,4 @@
-const { packages, equipments, package_equipments } = require("../models");
+const { packages, equipment_sets, package_equipment_sets } = require("../models");
 const { Op, Sequelize } = require("sequelize");
 const helper = require("../helper/sku");
 
@@ -44,10 +44,10 @@ exports.listAllPackages = async (req, res) => {
   }
 };
 
-/* List All Equipments to PackageUse */
-exports.listAllEquipmentsToPackageUse = async (req, res) => {
+/* List All EquipmentSets to PackageUse */
+exports.listAllEquipmentSetsToPackageUse = async (req, res) => {
   try {
-    const result = await equipments.findAll({
+    const result = await equipment_sets.findAll({
       attributes: [
         "id",
         "name",
@@ -74,7 +74,7 @@ exports.listAllEquipmentsToPackageUse = async (req, res) => {
 
 /* Create New Packages */
 exports.createNewPackage = async (req, res) => {
-  const { name, price, amount_savory_food, amount_sweet_food, amount_drink, package_equip } = req.body;
+  const { name, price, amount_savory_food, amount_sweet_food, amount_drink, package_equipset } = req.body;
   try {
     const getMaxPackId = await packages.findOne({ attributes: [[Sequelize.fn('MAX', Sequelize.col('id')), "maxPackId"]] })
     const newPackId = getMaxPackId.dataValues.maxPackId !== null ? helper.SKUincrementer(getMaxPackId.dataValues.maxPackId) : "BNPPK0000001";
@@ -90,14 +90,14 @@ exports.createNewPackage = async (req, res) => {
       amount_drink: amount_drink
     });
 
-    /*สร้างรายการอุปกรณ์ สำหรับ Package นั้นๆ*/
-    var ObjEquip = package_equip.map(equipId => { return { "package_id": newPackId, "equipment_id": equipId } });
-    console.log(ObjEquip);
-    const PackEquipresult = await package_equipments.bulkCreate(ObjEquip);
+    /*สร้างรายการชุดอุปกรณ์ สำหรับ Package นั้นๆ*/
+    var ObjEquipSet = package_equipset.map(equipSetId => { return { "package_id": newPackId, "equipment_set_id": equipSetId } });
+    console.log(ObjEquipSet);
+    const PackEquipSetresult = await package_equipment_sets.bulkCreate(ObjEquipSet);
 
     res.json({
       response: "OK",
-      result: [Packageresult, PackEquipresult]
+      result: [Packageresult, PackEquipSetresult]
     });
   } catch (error) {
     console.log(error);
@@ -112,12 +112,12 @@ exports.listPackagesToEdit = async (req, res) => {
       attributes: ["id", "name", "price", "amount_savory_food", "amount_sweet_food", "amount_drink"],
       include: [
         {
-          model: package_equipments,
-          attributes: ["package_id", "equipment_id"],
+          model: package_equipment_sets,
+          attributes: ["package_id", "equipment_set_id"],
           include: [
             {
-              model: equipments,
-              attributes: ["name", "stock_in", "stock_out"],
+              model: equipment_sets,
+              attributes: ["name"],
               where: { is_active: 1, is_delete: 0 }
             }
           ],
@@ -146,45 +146,43 @@ exports.listPackagesToEdit = async (req, res) => {
 
 /* Edit Packages */
 exports.editPackage = async (req, res) => {
-  const { id, name, price, amount_savory_food, amount_sweet_food, amount_drink, package_equip } = req.body;
+  const { id, name, price, amount_savory_food, amount_sweet_food, amount_drink, package_equipset } = req.body;
   try {
-
-    /*แก้ไข Package*/
-    const Packageresult = await packages.update({
-      name: name,
-      price: price,
-      amount_savory_food: amount_savory_food,
-      amount_sweet_food: amount_sweet_food,
-      amount_drink: amount_drink
-    }, {
-      where: {
-        id: id,
-        is_active: 1,
-        is_delete: 0
-      }
-    });
-
-    /*แก้ไขรายการอุปกรณ์ สำหรับ Package นั้นๆ*/
-    /*ลบ package_equip ที่มีอยู่ก่อน */
-    const delPack_equip = await package_equipments.destroy({
+    /*ลบ package_equipset ที่มีอยู่ก่อน */
+    const delPack_equipset = await package_equipment_sets.destroy({
       where: {
         package_id: id
       }
     });
-    if (delPack_equip) {
-      // ลบสำเร็จ & เพิ่ม Packageใหม่ที่ส่งมา //
-      var ObjEquip = package_equip.map(equipId => { return { "package_id": id, "equipment_id": equipId } });
-      console.log(ObjEquip);
-      const PackEquipresult = await package_equipments.bulkCreate(ObjEquip);
+    if (delPack_equipset) {
+      /* ลบสำเร็จ & แก้ไขรายการอุปกรณ์ สำหรับ Package นั้นๆ*/
+      /*แก้ไข Package*/
+      const Packageresult = await packages.update({
+        name: name,
+        price: price,
+        amount_savory_food: amount_savory_food,
+        amount_sweet_food: amount_sweet_food,
+        amount_drink: amount_drink
+      }, {
+        where: {
+          id: id,
+          is_active: 1,
+          is_delete: 0
+        }
+      });
+      // เพิ่ม Packageใหม่ที่ส่งมา //
+      var ObjEquipSet = package_equipset.map(equipSetId => { return { "package_id": id, "equipment_set_id": equipSetId } });
+      console.log(ObjEquipSet);
+      const PackEquipSetresult = await package_equipment_sets.bulkCreate(ObjEquipSet);
       res.json({
         response: "OK",
-        result: [Packageresult, PackEquipresult],
+        result: [Packageresult, PackEquipSetresult],
       });
     } else {
       /// ลบไม่สำเร็จ ///
       res.json({
         response: "FAILED",
-        result: "Cannot Delete Equipment in Package." + delPack_equip,
+        result: "Cannot Delete Equipment in Package." + delPack_equipset,
       });
     }
 

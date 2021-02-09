@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
   const equipments = sequelize.define("equipments", {
     id: {
-      type: DataTypes.INTEGER(11),
+      type: DataTypes.STRING(11),
       allowNull: false,
       primaryKey: true,
     },
@@ -51,7 +51,7 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
   equipments.associate = models => {
-    equipments.hasMany(models.package_equipments, { foreignKey: "equipment_id" });
+    equipments.hasMany(models.equipment_set_equipments, { foreignKey: "equipment_id" });
   };
   return equipments;
 };

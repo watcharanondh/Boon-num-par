@@ -8,7 +8,7 @@ const PackagesContrllers = require("../controllers/packages");
 router.get("/listallpackage", authorize, PackagesContrllers.listAllPackages);
 
 /* List All Equipments to PackageUse*/
-router.get("/listallequiptopackuse", authorize, PackagesContrllers.listAllEquipmentsToPackageUse);
+router.get("/listallequipsettopackuse", authorize, PackagesContrllers.listAllEquipmentSetsToPackageUse);
 
 /* Create Packages */
 router.post("/addnewpackage", authorize, PackagesContrllers.createNewPackage);
