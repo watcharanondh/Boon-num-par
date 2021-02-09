@@ -40,19 +40,10 @@
             <template v-slot:top>
               <v-toolbar flat>
                 <v-toolbar-title><span>รายการอุปกรณ์</span></v-toolbar-title>
-                <v-toolbar-title
-                  ><span class="text-caption grey--text"
-                    >234</span
-                  ></v-toolbar-title
-                >
-                <v-toolbar-title
-                  ><span class="text-caption grey--text"
-                    >รายการ</span
-                  ></v-toolbar-title
-                >
+                <v-toolbar-title><span class="text-caption grey--text">{{total}}</span></v-toolbar-title>
                 <v-spacer></v-spacer>
 
-                <div>
+                <!-- <div>
                   <v-btn icon>
                     <svg
                       width="14"
@@ -86,7 +77,7 @@
                     </svg>
                   </v-btn>
                   Filter
-                </div>
+                </div> -->
               </v-toolbar>
             </template>
             <template v-slot:item="{ item }">
@@ -97,13 +88,13 @@
                 <td>{{ item.balance_stock }}</td>
                 <td>
                   <v-row>
-                    <v-btn fab icon outlined small>
+                    <!-- <v-btn fab icon outlined small>
                       <v-icon>visibility</v-icon>
-                    </v-btn>
-                    <v-btn fab icon outlined small>
+                    </v-btn> -->
+                    <v-btn @click="EditEquipment(item)" fab icon outlined small>
                       <v-icon>edit</v-icon>
                     </v-btn>
-                    <v-btn fab icon outlined small>
+                    <v-btn @click="DelEquipment(item)" fab icon outlined small>
                       <v-icon>delete</v-icon>
                     </v-btn>
                   </v-row>
@@ -126,8 +117,6 @@
 import api from "@/services/api";
 export default {
   name: "Equipment",
-
-
 async mounted() {
     this.loadEquipment();
     this.$store.dispatch({
@@ -138,6 +127,7 @@ async mounted() {
   },
 
   data: () => ({
+    total:null,
     table_customer: [],
     headers_table_customer: [
       { text: "หมายเลขอุปกรณ์", value: "id", sortable: false, align: "start", color: "black"},
@@ -151,12 +141,28 @@ async mounted() {
 
   methods: {
     async loadEquipment(){
-          let result = await api.getEquipment();
-          //console.log(result.data.result);
-          this.table_customer = result.data.result;
-
-        },
-
+            let result = await api.getEquipment();
+            console.log(result.data);
+            this.table_customer = result.data.result;
+            this.total = result.data.count_total;
+          },
+    async EditEquipment(item){
+          await this.$store.dispatch({
+                  type: "doEditBNPID",
+                  BNP_ID: item.id,
+               });
+          await this.$router.push('/EditEquipment');
+          },
+    async DelEquipment(item){
+              let delEquipment ={id:item.id}
+              let result = await api.delEquipment(delEquipment);
+              console.log(result);
+              if (result.data.response =='OK'){
+                alert('ลบอุปกรณ์เรียบร้อยแล้ว')
+                await this.loadEquipment()
+                location.reload();
+              }
+          },
 
   },
 };

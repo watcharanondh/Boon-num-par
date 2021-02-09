@@ -183,7 +183,6 @@ async mounted() {
        if (result.data.response =='OK'){
         alert('ลบรายชื่อลูกค้าเรียบร้อยแล้ว')
         await this.loadCustomers()
-
       }
     }
   },

@@ -18,7 +18,9 @@ import CreatePackageSelectEquipment from "@/views/CreatePackageSelectEquipment.v
 import Promotion from "@/views/Promotion.vue";
 import CreatePromotion from "@/views/CreatePromotion.vue";
 import Equipment from "@/views/Equipment.vue";
+import SetEquipment from "@/views/SetEquipment.vue";
 import CreateEquipment from "@/views/CreateEquipment.vue";
+import EditEquipment from "@/views/EditEquipment.vue";
 
 Vue.use(VueRouter);
 
@@ -115,9 +117,19 @@ const routes = [
     component: Equipment
   },
   {
+    path: "/SetEquipment",
+    name: "/SetEquipment",
+    component: SetEquipment
+  },
+  {
     path: "/CreateEquipment",
     name: "/CreateEquipment",
     component: CreateEquipment
+  },
+  {
+    path: "/EditEquipment",
+    name: "/EditEquipment",
+    component: EditEquipment
   },
   {
     path: "/",

@@ -1,5 +1,5 @@
 <template>
-  <FormPersonaltype  :type_id="type_id" />
+  <FormPersonaltype  :type_id="type_id" :CreateorEdittype="CreateorEdittype" />
 </template>
 
 <script>

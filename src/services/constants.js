@@ -14,10 +14,10 @@ export const server = {
   TOKEN_KEY:`token`,
   USERNAME:`username`,
 
-  //HomePage
+  //Home
   DASHBOARD_URL:`dashboard/showall`,
   
-  //CustomerPage
+  //Customer
   CUSTOMERTYPESELECTOR_URL:`customers/customertypeselector`,
   LISTALLCUSTOMERS_URL:`customers/listallcustomers`,
 
@@ -35,8 +35,42 @@ export const server = {
 
   LIST_FIND_DISTRICT_URL:`districts/finddistrict`,
 
-  //List All Equipment
+  //Quotation //////////////////////////////////////
+
+  //Equipment
   LIST_ALL_EQUIPMENT_URL:`equipments/listallequipment`,
+  LIST_EDIT_EQUIPMENT_URL:`equipments/listequipment`,
+  
+  ADD_EQUIPMENT_URL:`equipments/addnewequipment`,
+  PUT_EDIT_EQUIPMENT_URL:`equipments/editequipment`,
+  DELETE_EQUIPMENT_URL:`equipments/delequipment`,
+
+  //Equipment SET
+  LIST_ALL_SET_EQUIPMENT_URL:`equipmentsets/listallequipmentset`,
+  LIST_ALL_SET_MINI_EQUIPMENT_URL:`equipmentsets/listallequiptoequipset`,
+  
+  ADD_SET_EQUIPMENT_URL:`equipmentsets/addnewequipmentset`,
+ 
+
+  PUT_EDIT_SET_EQUIPMENT_URL:`equipmentsets/listequipmentset`,
+  DELETE_SET_EQUIPMENT_URL:`equipmentsets/delequipmentset`,
+
+  //Package 
+  LIST_ALL_PACKAGE_URL:`packages/listallpackage`,
+  LIST_ALL_Equipments_PackageUse_URL:`packages/listallequiptopackuse`,
+  LIST_EDIT_PACKAGE_URL:`packages/listpackages`,
+
+  ADD_PACKAGE_URL:`packages/addnewpackage`,
+  PUT_EDIT_PACKAGE_URL:`packages/editpackage`,
+  DELETE_PACKAGE_URL:`packages/delpackage`,
+
+  //Promotion
+  LIST_ALL_PROMOTION_URL:`promotions/listallpromotions`,
+  LIST_EDIT_PROMOTION_URL:`promotions/listpromotions`,
+
+  ADD_PROMOTION_URL:`promotions/addnewpromotion`,
+  PUT_EDIT_PROMOTION_URL:`promotions/editpromotion`,
+  DELETE_PROMOTION_URL:`promotions/delpromotion`,
 
   
 };

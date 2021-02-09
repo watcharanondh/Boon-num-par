@@ -152,8 +152,6 @@ export default {
       this.RouterPath == "/Customer" ||
       this.RouterPath == "/CreatePersoneltype" ||
       this.RouterPath == "/EditPersoneltype" ||
-      this.RouterPath == "/CreateCompanytype" ||
-      this.RouterPath == "/EditCompanytype" ||
       this.RouterPath == "/Quotation" ||
       this.RouterPath == "/QuotationCreateSelectPackage" ||
       this.RouterPath == "/QuotationCreateSelectPromotion"
@@ -188,6 +186,7 @@ export default {
       ],
       menusEquipment: [
         ["รายการอุปกรณ์", "/Equipment"],
+        ["รายการชุดอุปกรณ์", "/SetEquipment"],
         ["รายการแพ็คเกจ", "/Package"],
         ["รายการโปรโมชั่น", "/Promotion"],
       ],

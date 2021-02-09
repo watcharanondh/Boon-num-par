@@ -4,7 +4,7 @@
       <v-row>
         <v-card flat color="#E5E5E5">
           <div class="sizetitle">
-            รายการโปรโมชั่น
+            รายการชุดอุปกรณ์
           </div>
         </v-card>
       </v-row>
@@ -16,10 +16,10 @@
       <v-col>
         <v-btn
           color="#29CC97"
-          @click="$router.push('/CreatePromotion')"
+          @click="$router.push('/CreateSetEquipment')"
           rounded
         >
-          <span class="white--text">สร้างโปรโมชั่น</span></v-btn
+          <span class="white--text">สร้างรายการชุดอุปกรณ์</span></v-btn
         >
       </v-col>
     </v-row>
@@ -28,18 +28,18 @@
     </v-col>
     <v-row>
       <v-col lg="12" md="12" sm="12" cols="12">
-        <!-- รายการโปรโมชั่น -->
+        <!-- รายการรายการชุดอุปกรณ์ -->
         <v-card>
           <v-data-table
-            :headers="headers_table_promtion"
-            :items="table_promtion"
+            :headers="headers_table_SetEquipment"
+            :items="table_SetEquipment"
             :items-per-page="10"
             class="elevation-1"
           >
             <!-- table top section -->
             <template v-slot:top>
               <v-toolbar flat>
-                <v-toolbar-title><span>รายการโปรโมชั่น</span></v-toolbar-title>
+                <v-toolbar-title><span>รายการชุดอุปกรณ์</span></v-toolbar-title>
                 <v-toolbar-title><span class="text-caption grey--text">{{total}}</span></v-toolbar-title>
                 <v-spacer></v-spacer>
 
@@ -90,10 +90,10 @@
                     <!-- <v-btn fab icon outlined small>
                       <v-icon>visibility</v-icon>
                     </v-btn> -->
-                    <v-btn @click="EditPromotion(item)" fab icon outlined small>
+                    <v-btn @click="EditSetEquipment(item)" fab icon outlined small>
                       <v-icon>edit</v-icon>
                     </v-btn>
-                    <v-btn @click="DelPromotion(item)" fab icon outlined small>
+                    <v-btn @click="DelSetEquipment(item)" fab icon outlined small>
                       <v-icon>delete</v-icon>
                     </v-btn>
                   </v-row>
@@ -115,9 +115,9 @@
 <script>
 import api from "@/services/api";
 export default {
-  name: "Promotion",
+  name: "SetEquipment",
 async mounted() {
-    this.loadPromotion();
+    this.loadSetEquipment();
     this.$store.dispatch({
           type: "inputRoutepath",
           RT: this.$route.path,
@@ -127,10 +127,10 @@ async mounted() {
 
   data: () => ({
     total:null,
-    table_promtion: [],
-    headers_table_promtion: [
-      { text: "รหัสโปรโมชั่น", value: "id", sortable: false, align: "start", color: "black"},
-      { text: "รายชื่อโปรโมชั่น", value: "name", sortable: false, align: "start" },
+    table_SetEquipment: [],
+    headers_table_SetEquipment: [
+      { text: "รหัสรายการชุดอุปกรณ์", value: "id", sortable: false, align: "start", color: "black"},
+      { text: "รายชื่อรายการชุดอุปกรณ์", value: "name", sortable: false, align: "start" },
       { text: "ลดราคา", value: "discount_text", sortable: false, align: "start"},
       { text: "", value: "", sortable: false, align: "start" },
       { text: "", value: "", sortable: false, align: "start" },
@@ -138,26 +138,26 @@ async mounted() {
   }),
 
   methods: {
-    async loadPromotion(){
-            let result = await api.getPromotion();
+    async loadSetEquipment(){
+            let result = await api.getSetEquipment();
             console.log(result.data);
-            this.table_promtion = result.data.result;
+            this.table_SetEquipment = result.data.result;
             this.total = result.data.count_total;
           },
-    async EditPromotion(item){
+    async EditSetEquipment(item){
           await this.$store.dispatch({
                   type: "doEditBNPID",
                   BNP_ID: item.id,
                });
-          await this.$router.push('/EditPromotion');
+          await this.$router.push('/EditSetEquipment');
           },
-    async DelPromotion(item){
-              let delPromotion ={id:item.id}
-              let result = await api.delPromotion(delPromotion);
+    async DelSetEquipment(item){
+              let delSetEquipment ={id:item.id}
+              let result = await api.delSetEquipment(delSetEquipment);
               console.log(result);
               if (result.data.response =='OK'){
-                alert('ลบโปรโมชั่นเรียบร้อยแล้ว')
-                await this.loadPromotion()
+                alert('ลบรายการชุดอุปกรณ์เรียบร้อยแล้ว')
+                await this.loadSetEquipment()
                 location.reload();
               }
           },

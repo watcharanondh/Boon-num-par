@@ -325,8 +325,8 @@
                     <v-checkbox
                       v-model="Same_address"
                       label="ใช้ที่อยู่เดียวกับข้อมูลลูกค้าประเภทบริษัท"
-                      :true-value="0" 
-                      :false-value="1"
+                      :true-value="1" 
+                      :false-value="0"
                       :disabled="btn"
                     ></v-checkbox>
                 </v-row>
@@ -334,7 +334,7 @@
             </v-row>
 
             <!--ใช้ที่อยู่ข้อมูลใบกำกับภาษี -->
-            <div v-if="Same_address == 1">
+            <div v-if="Same_address===0">
             <v-row>
             <v-col lg="12" md="12" sm="12" cols="12">
               <div class="sizehead">ที่อยู่</div>
@@ -475,7 +475,7 @@ export default {
   name: "FormPersonaltype",
   
   props: ['monitortype','CreateorEdittype','type_id','Edits_fullname','Edits_telephone_number','Edits_mobile_phone_number','Edits_line_id','Edits_address','Edits_province','Edits_province_code','Edits_amphoe','Edits_amphoe_code','Edits_district','Edits_district_code','Edits_zipcode','Edits_district_id',
-          'Taxinvoiceinfo_Edits_vat_type','Taxinvoiceinfo_Edits_company','Taxinvoiceinfo_Edits_tax_id','Taxinvoiceinfo_Edits_fax_number','Taxinvoiceinfo_Edits_email','Taxinvoiceinfo_Edits_telephone_number','Taxinvoiceinfo_Edits_mobile_phone_number','Taxinvoiceinfo_Edits_address','Taxinvoiceinfo_Edits_province','Taxinvoiceinfo_Edits_province_code','Taxinvoiceinfo_Edits_amphoe' ,'Taxinvoiceinfo_Edits_amphoe_code','Taxinvoiceinfo_Edits_district' ,'Taxinvoiceinfo_Edits_district_code' ,'Taxinvoiceinfo_Edits_zipcode','Taxinvoiceinfo_Edits_district_id'],
+          'Taxinvoiceinfo_Edits_vat_type','Taxinvoiceinfo_Edits_check_same_address','Taxinvoiceinfo_Edits_company','Taxinvoiceinfo_Edits_tax_id','Taxinvoiceinfo_Edits_fax_number','Taxinvoiceinfo_Edits_email','Taxinvoiceinfo_Edits_telephone_number','Taxinvoiceinfo_Edits_mobile_phone_number','Taxinvoiceinfo_Edits_address','Taxinvoiceinfo_Edits_province','Taxinvoiceinfo_Edits_province_code','Taxinvoiceinfo_Edits_amphoe' ,'Taxinvoiceinfo_Edits_amphoe_code','Taxinvoiceinfo_Edits_district' ,'Taxinvoiceinfo_Edits_district_code' ,'Taxinvoiceinfo_Edits_zipcode','Taxinvoiceinfo_Edits_district_id'],
 
 async created() {
           await this.loadDataProvince();
@@ -560,7 +560,8 @@ async created() {
         this.pasoneltype = this.type_id
         this.CreateorEdit = this.CreateorEdittype
         this.btn = this.monitortype
-        console.log('ประเภท',this.type_id);
+        //console.log('ประเภท',this.type_id);
+        
 
     if(this.CreateorEdit == false){
         this.Personaltype_fullname= this.Edits_fullname,
@@ -583,14 +584,15 @@ async created() {
         this.Taxinvoiceinfo_telephone_number= this.Taxinvoiceinfo_Edits_telephone_number,
         this.Taxinvoiceinfo_mobile_phone_number= this.Taxinvoiceinfo_Edits_mobile_phone_number,
         this.Taxinvoiceinfo_address= this.Taxinvoiceinfo_Edits_address,
-        this.vat_selected = this.Taxinvoiceinfo_Edits_vat_type
+        this.vat_selected = this.Taxinvoiceinfo_Edits_vat_type,
         this.Taxinvoiceinfo_SelectProvinces = {province_Name: this.Taxinvoiceinfo_Edits_province ,province_Code: this.Taxinvoiceinfo_Edits_province_code};
         this.Taxinvoiceinfo_GatAmphoe.push({amphoe_Name: this.Taxinvoiceinfo_Edits_amphoe ,amphoe_Code: this.Taxinvoiceinfo_Edits_amphoe_code});
         this.Taxinvoiceinfo_SelectAmphoe= {amphoe_Name: this.Taxinvoiceinfo_Edits_amphoe ,amphoe_Code: this.Taxinvoiceinfo_Edits_amphoe_code};
         this.Taxinvoiceinfo_GatDistrict.push({district_Name: this.Taxinvoiceinfo_Edits_district ,amphoe_Code: this.Taxinvoiceinfo_Edits_district_code});
         this.Taxinvoiceinfo_SelectDistrict= {district_Name: this.Taxinvoiceinfo_Edits_district ,amphoe_Code: this.Taxinvoiceinfo_Edits_district_code};
         this.Taxinvoiceinfo_SelectZipcode= this.Taxinvoiceinfo_Edits_zipcode,
-        this.Taxinvoiceinfo_district_id = this.Taxinvoiceinfo_Edits_district_id
+        this.Taxinvoiceinfo_district_id = this.Taxinvoiceinfo_Edits_district_id,
+        this.Same_address = this.Taxinvoiceinfo_Edits_check_same_address
     }
 
     },
@@ -599,13 +601,13 @@ async created() {
       let result = await api.getProvinces();
       let provinces = result.data.result;
       let _this = this;
-      provinces.forEach(function(value) {
+      provinces.forEach((value) => {
         _this.Personaltype_GatProvince.push({
           province_Name: `${value.province}`,
           province_Code: `${value.province_code}`,
         });
       });
-      provinces.forEach(function(value) {
+      provinces.forEach((value) => {
         _this.Taxinvoiceinfo_GatProvince.push({
           province_Name: `${value.province}`,
           province_Code: `${value.province_code}`,
@@ -626,7 +628,7 @@ async created() {
       let resultPersonaltypeProv = await api.getAmphoe(PersonaltypeProv);
       let AmphoePersonaltype = resultPersonaltypeProv.data.result;
       let _this = this;
-        AmphoePersonaltype.forEach(function(value) {
+        AmphoePersonaltype.forEach((value) =>  {
           _this.Personaltype_GatAmphoe.push({
               amphoe_Name: `${value.amphoe}`,
               amphoe_Code: `${value.amphoe_code}`,
@@ -644,7 +646,7 @@ async created() {
       let resultTaxinvoiceinfoProv = await api.getAmphoe(TaxinvoiceinfoProv);
       let AmphoeTaxinvoiceinfoProv = resultTaxinvoiceinfoProv.data.result;
       let _this = this;
-        AmphoeTaxinvoiceinfoProv.forEach(function(value) {
+        AmphoeTaxinvoiceinfoProv.forEach((value) =>  {
           _this.Taxinvoiceinfo_GatAmphoe.push({
               amphoe_Name: `${value.amphoe}`,
               amphoe_Code: `${value.amphoe_code}`,
@@ -662,7 +664,7 @@ async created() {
       let resultPersonaltypeAmphoe = await api.getDistrict(PersonaltypeAmphoe);
       let DistrictPersonaltypeAmphoe = resultPersonaltypeAmphoe.data.result;
       let _this = this;
-          DistrictPersonaltypeAmphoe.forEach(function(value) {
+          DistrictPersonaltypeAmphoe.forEach((value) =>  {
             _this.Personaltype_GatDistrict.push({
               district_Name: `${value.district}`,
               zipcode: `${value.zipcode}`,
@@ -681,7 +683,7 @@ async created() {
       let resultTaxinvoiceinfoAmphoe = await api.getDistrict(TaxinvoiceinfoAmphoe);
       let DistrictTaxinvoiceinfoAmphoe = resultTaxinvoiceinfoAmphoe.data.result;
       let _this = this;
-          DistrictTaxinvoiceinfoAmphoe.forEach(function(value) {
+          DistrictTaxinvoiceinfoAmphoe.forEach((value) =>  {
             _this.Taxinvoiceinfo_GatDistrict.push({
               district_Name: `${value.district}`,
               zipcode: `${value.zipcode}`,

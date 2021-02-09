@@ -1,6 +1,6 @@
 <template >
   <FormPersonaltype :CreateorEdittype="CreateorEdittype" :type_id="type_id" :Edits_fullname="Edits_fullname" :Edits_telephone_number="Edits_telephone_number"  :Edits_mobile_phone_number="Edits_mobile_phone_number" :Edits_line_id="Edits_line_id" :Edits_address="Edits_address" :Edits_province="Edits_province" :Edits_province_code="Edits_province_code" :Edits_amphoe="Edits_amphoe" :Edits_amphoe_code="Edits_amphoe_code" :Edits_district="Edits_district"  :Edits_district_code="Edits_district_code" :Edits_zipcode="Edits_zipcode" :Edits_district_id="Edits_district_id"
-                    :Taxinvoiceinfo_Edits_vat_type="Taxinvoiceinfo_Edits_vat_type" :Taxinvoiceinfo_Edits_company="Taxinvoiceinfo_Edits_company" :Taxinvoiceinfo_Edits_tax_id="Taxinvoiceinfo_Edits_tax_id" :Taxinvoiceinfo_Edits_fax_number="Taxinvoiceinfo_Edits_fax_number" :Taxinvoiceinfo_Edits_email="Taxinvoiceinfo_Edits_email" :Taxinvoiceinfo_Edits_telephone_number="Taxinvoiceinfo_Edits_telephone_number" :Taxinvoiceinfo_Edits_mobile_phone_number="Taxinvoiceinfo_Edits_mobile_phone_number" :Taxinvoiceinfo_Edits_address="Taxinvoiceinfo_Edits_address" :Taxinvoiceinfo_Edits_province="Taxinvoiceinfo_Edits_province" :Taxinvoiceinfo_Edits_province_code="Taxinvoiceinfo_Edits_province_code" :Taxinvoiceinfo_Edits_amphoe="Taxinvoiceinfo_Edits_amphoe" :Taxinvoiceinfo_Edits_amphoe_code="Taxinvoiceinfo_Edits_amphoe_code" :Taxinvoiceinfo_Edits_district="Taxinvoiceinfo_Edits_district" :Taxinvoiceinfo_Edits_district_code="Taxinvoiceinfo_Edits_district_code" :Taxinvoiceinfo_Edits_zipcode="Taxinvoiceinfo_Edits_zipcode" :Taxinvoiceinfo_Edits_district_id="Taxinvoiceinfo_Edits_district_id" />
+                    :Taxinvoiceinfo_Edits_vat_type="Taxinvoiceinfo_Edits_vat_type" :Taxinvoiceinfo_Edits_check_same_address="Taxinvoiceinfo_Edits_check_same_address" :Taxinvoiceinfo_Edits_company="Taxinvoiceinfo_Edits_company" :Taxinvoiceinfo_Edits_tax_id="Taxinvoiceinfo_Edits_tax_id" :Taxinvoiceinfo_Edits_fax_number="Taxinvoiceinfo_Edits_fax_number" :Taxinvoiceinfo_Edits_email="Taxinvoiceinfo_Edits_email" :Taxinvoiceinfo_Edits_telephone_number="Taxinvoiceinfo_Edits_telephone_number" :Taxinvoiceinfo_Edits_mobile_phone_number="Taxinvoiceinfo_Edits_mobile_phone_number" :Taxinvoiceinfo_Edits_address="Taxinvoiceinfo_Edits_address" :Taxinvoiceinfo_Edits_province="Taxinvoiceinfo_Edits_province" :Taxinvoiceinfo_Edits_province_code="Taxinvoiceinfo_Edits_province_code" :Taxinvoiceinfo_Edits_amphoe="Taxinvoiceinfo_Edits_amphoe" :Taxinvoiceinfo_Edits_amphoe_code="Taxinvoiceinfo_Edits_amphoe_code" :Taxinvoiceinfo_Edits_district="Taxinvoiceinfo_Edits_district" :Taxinvoiceinfo_Edits_district_code="Taxinvoiceinfo_Edits_district_code" :Taxinvoiceinfo_Edits_zipcode="Taxinvoiceinfo_Edits_zipcode" :Taxinvoiceinfo_Edits_district_id="Taxinvoiceinfo_Edits_district_id" />
 </template>
 
 <script>
@@ -34,6 +34,7 @@ export default {
     Edits_district_id: "",
 
     Taxinvoiceinfo_Edits_vat_type:'',
+    Taxinvoiceinfo_Edits_check_same_address:'',
 
     Taxinvoiceinfo_Edits_company:'',
     Taxinvoiceinfo_Edits_tax_id:'',
@@ -89,6 +90,7 @@ export default {
         this.Taxinvoiceinfo_Edits_district_code=result.data.result[0].cti_district_code,
         this.Taxinvoiceinfo_Edits_zipcode=result.data.result[0].cti_zipcode
         this.Taxinvoiceinfo_Edits_district_id=result.data.result[0].cti_district_id
+        this.Taxinvoiceinfo_Edits_check_same_address=result.data.result[0].check_same_address
     }
   },
 }
