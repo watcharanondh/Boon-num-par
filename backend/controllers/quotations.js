@@ -19,6 +19,7 @@ exports.listAllQuotations = async (req, res) => {
       include: [
         {
           model: customers,
+          attributes: ["name"],
           include: [
             {
               model: customer_tax_invoices,
@@ -38,6 +39,7 @@ exports.listAllQuotations = async (req, res) => {
     }).then(quotation_data => {
       quotation_data.map((data) => {
         data.dataValues.customer_tax_invoices = data.dataValues.customer.customer_tax_invoices[0].title
+        data.dataValues.customer_name = data.dataValues.customer.name
         data.dataValues.quotation_status = data.dataValues.quotation_status.name
         delete data.dataValues.customer;
         count_total++;
@@ -107,23 +109,43 @@ exports.comfirmQuotationStatus = async (req, res) => {
     res.json({ response: "FAILED", result: error });
   }
 };
+/* List All Customer  */
+exports.listAllCustomers = async (req, res) => {
+  try {
+    const result = await customers.findAll({
+      attributes: [
+        "id",
+        "name"
+      ],
+      where: {
+        is_active: 1,
+        is_delete: 0
+      }
+    }).then((cust_data) => {
+      let arr = [];
+      cust_data.map(data => {
+        arr.push(data.dataValues.id, data.dataValues.name);
+      });
+      return arr;
+    });
+    if (result != '' && result !== null) {
+      res.json({
+        response: "OK",
+        result: result
+      });
+    } else {
+      res.json({ response: "FAILED", result: "Not Found." });
+    }
+  } catch (error) {
+    console.log(error);
+    res.json({ response: "FAILED", result: error });
+  }
+};
 /* List Customer information to Create Quotations  */
 exports.listFindCustomerInformation = async (req, res) => {
   try {
-    const result = await customers.findAll({
-      attributes: ["id"],
-      include: [
-        {
-          model: customer_tax_invoices,
-          attributes: ["title", "tax_id", "flash_number", "email", "telephone_number", "mobile_phone_number", "address"],
-          include: [
-            {
-              model: districts,
-              attributes: ["district", "amphoe", "province", "zipcode"],
-            }
-          ]
-        }
-      ],
+    const check_type_id = await customers.findOne({
+      attributes: ['type_id'],
       where: {
         is_active: 1,
         is_delete: 0,
@@ -133,17 +155,77 @@ exports.listFindCustomerInformation = async (req, res) => {
             [Op.substring]: req.body.iden
           },
         }
-      },
-    }).then(cust_data => {
-      cust_data.map((data) => {
-        data.dataValues.customer_tax_invoices = data.dataValues.customer_tax_invoices[0];
-        Object.assign(data.dataValues.customer_tax_invoices.dataValues, data.dataValues.customer_tax_invoices.district.dataValues)
-        Object.assign(data.dataValues, data.dataValues.customer_tax_invoices.dataValues)
-        delete data.dataValues.customer_tax_invoices;
-      });
-      return cust_data;
+      }
     });
-    res.json({ response: "OK", result: result });
+    if (parseInt(check_type_id.dataValues.type_id) === 1) {
+      const result = await customers.findAll({
+        attributes: ["id","name","telephone_number","mobile_phone_number","address"],
+        include: [
+          {
+            model: districts,
+            attributes: [["id", "district_id"], "district", "amphoe", "province", "zipcode", "district_code", "amphoe_code", "province_code"]
+          }
+        ],
+        where: {
+          is_active: 1,
+          is_delete: 0,
+          [Op.or]: {
+            id: req.body.iden,
+            name: {
+              [Op.substring]: req.body.iden
+            },
+          }
+        },
+      }).then(cust_data => {
+        cust_data.map((data) => {
+          data.dataValues = {
+            ...data.dataValues,
+            title: "-",
+            tax_id: "-",
+            flash_number: "-",
+            email: "-",
+            ...data.dataValues.district.dataValues
+          };
+        });
+        res.json({ response: "OK", result: cust_data });
+      });
+    } else if(parseInt(check_type_id.dataValues.type_id) === 2) {
+      const result = await customers.findAll({
+        attributes: ["id","name"],
+        include: [
+          {
+            model: customer_tax_invoices,
+            attributes: ["title", "tax_id", "flash_number", "email", "telephone_number", "mobile_phone_number", "address"],
+            include: [
+              {
+                model: districts,
+                attributes: [["id","district_id"],"district", "amphoe", "province", "zipcode", "district_code", "amphoe_code", "province_code"]
+              }
+            ]
+          }
+        ],
+        where: {
+          is_active: 1,
+          is_delete: 0,
+          [Op.or]: {
+            id: req.body.iden,
+            name: {
+              [Op.substring]: req.body.iden
+            },
+          }
+        },
+      }).then(cust_data => {
+        cust_data.map((data) => {
+            data.dataValues.customer_tax_invoices = data.dataValues.customer_tax_invoices[0];
+            Object.assign(data.dataValues.customer_tax_invoices.dataValues, data.dataValues.customer_tax_invoices.district.dataValues)
+            Object.assign(data.dataValues, data.dataValues.customer_tax_invoices.dataValues)
+            delete data.dataValues.customer_tax_invoices;
+        });
+        res.json({ response: "OK", result: cust_data });
+      });
+    } else {
+      res.json({ response: "FAILED", result: "Unknow: type_id" });
+    }
   } catch (error) {
     console.log(error);
     res.json({ response: "FAILED", result: error });
@@ -214,7 +296,7 @@ exports.listAllPromotions = async (req, res) => {
 /* Create New Quotations */
 exports.createNewQuotation = async (req, res) => {
   try {
-    const { customer_id, package_id, promotion_id, event_date, area_viewing_date, amount_savory_food, amount_sweet_food, amount_drink, quotation_status_id, note } = req.body;
+    const { customer_id, package_id, promotion_id, event_date, area_viewing_date, amount_savory_food, amount_sweet_food, amount_drink, note } = req.body;
     /* สร้างใบเสนอราคา ตาราง quotations */
     const getMaxQuotaId = await quotations.findOne({ attributes: [[Sequelize.fn('MAX', Sequelize.col('id')), "maxQuotaId"]] });
     const newQuotaId = getMaxQuotaId.dataValues.maxQuotaId !== null ? helper.SKUincrementer(getMaxQuotaId.dataValues.maxQuotaId) : "BNPQU0000001"
@@ -226,7 +308,7 @@ exports.createNewQuotation = async (req, res) => {
       amount_savory_food: amount_savory_food,
       amount_sweet_food: amount_sweet_food,
       amount_drink: amount_drink,
-      quotation_status_id: quotation_status_id,
+      quotation_status_id: 2,
       note: note
     });
     /* เลือก Package ตาราง quotation_packages */
@@ -321,7 +403,7 @@ exports.listQuotationsToEdit = async (req, res) => {
 
     /* Customers Data  */
     const quotation_customers_result = await quotations.findAll({
-      attributes: ["id", "event_date", "area_viewing_date", "amount_savory_food", "amount_sweet_food", "amount_drink"],
+      attributes: ["id", "event_date", "area_viewing_date", "amount_savory_food", "amount_sweet_food", "amount_drink","note"],
       include: [
         {
           model: customers,
@@ -332,7 +414,7 @@ exports.listQuotationsToEdit = async (req, res) => {
               include: [
                 {
                   model: districts,
-                  attributes: ["district", "amphoe", "province", "zipcode"]
+                  attributes: [["id","district_id"],"district", "amphoe", "province", "zipcode", "district_code", "amphoe_code", "province_code"]
                 }
               ]
             },
@@ -423,7 +505,7 @@ exports.listQuotationsToEdit = async (req, res) => {
 /* Edit Quotation */
 exports.editQuotation = async (req, res) => {
   try {
-    const { id, customer_id, package_id, promotion_id, event_date, area_viewing_date, amount_savory_food, amount_sweet_food, amount_drink, quotation_status_id, note } = req.body;
+    const { id, customer_id, package_id, promotion_id, event_date, area_viewing_date, amount_savory_food, amount_sweet_food, amount_drink, note } = req.body;
     /* แก้ไขใบเสนอราคา ตาราง quotations */
     const Quotationresult = await quotations.update({
       customer_id: customer_id,
@@ -432,7 +514,6 @@ exports.editQuotation = async (req, res) => {
       amount_savory_food: amount_savory_food,
       amount_sweet_food: amount_sweet_food,
       amount_drink: amount_drink,
-      quotation_status_id: quotation_status_id,
       note: note
     }, {
       where: {

@@ -11,6 +11,8 @@ router.get("/listallquotations", authorize, QuotationsContrllers.listAllQuotatio
 router.get("/statusquotationtoselect", authorize, QuotationsContrllers.listStatusQuotations);
 /* Update Quotation Confirm Status */
 router.put("/confirmquotstat", authorize, QuotationsContrllers.comfirmQuotationStatus);
+/* List All Customer */
+router.get("/listallcustomers", authorize, QuotationsContrllers.listAllCustomers);
 /* List Customer information to Create Quotations */
 router.post("/findcustomerinfo", authorize, QuotationsContrllers.listFindCustomerInformation);
 /* Select Package to Create Quotations */
