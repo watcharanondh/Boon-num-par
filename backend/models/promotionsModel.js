@@ -1,9 +1,15 @@
 module.exports = (sequelize, DataTypes) => {
   const promotions = sequelize.define("promotions", {
     id: {
-      type: DataTypes.INTEGER(12),
+      type: DataTypes.INTEGER(11),
       allowNull: false,
       primaryKey: true,
+      autoIncrement: true,
+    },
+    promotion_code: {
+      type: DataTypes.STRING(12),
+      allowNull: false,
+      unique: true,
     },
     name: {
       type: DataTypes.STRING(255),

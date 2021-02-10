@@ -1,9 +1,15 @@
 module.exports = (sequelize, DataTypes) => {
   const equipment_sets = sequelize.define("equipment_sets", {
     id: {
-      type: DataTypes.STRING(12),
+      type: DataTypes.INTEGER(11),
       allowNull: false,
       primaryKey: true,
+      autoIncrement: true,
+    },
+    equipment_set_code: {
+      type: DataTypes.STRING(12),
+      allowNull: false,
+      unique: true,
     },
     name: {
       type: DataTypes.STRING(255),

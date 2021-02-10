@@ -15,7 +15,7 @@ exports.listAllEquipments = async (req, res) => {
     });
     const result = await equipments.findAll({
       attributes: [
-        "id",
+        "equipment_code",
         "name",
         "stock_out",
         [Sequelize.literal("`stock_in`- `stock_out`"), 'balance_stock'],
@@ -45,10 +45,10 @@ exports.listAllEquipments = async (req, res) => {
 exports.createNewEquipment = async (req, res) => {
   const { name, stock_in } = req.body;
   try {
-    const getMaxEquipId = await equipments.findOne({ attributes: [[Sequelize.fn('MAX', Sequelize.col('id')), "maxEquipId"]] })
-    console.log(getMaxEquipId);
+    const getMaxEquipCode = await equipments.findOne({ attributes: [[Sequelize.fn('MAX', Sequelize.col('equipment_code')), "maxEquipCode"]] })
+    console.log(getMaxEquipCode);
     const result = await equipments.create({
-      id: getMaxEquipId.dataValues.maxEquipId !== null ? helper.SKUincrementer(getMaxEquipId.dataValues.maxEquipId) : "BNPT0000001",
+      equipment_code: getMaxEquipCode.dataValues.maxEquipCode !== null ? helper.SKUincrementer(getMaxEquipCode.dataValues.maxEquipCode) : "BNPT0000001",
       name: name,
       stock_in: stock_in
     });
@@ -66,9 +66,9 @@ exports.createNewEquipment = async (req, res) => {
 exports.listEquipmentsToEdit = async (req, res) => {
   try {
     const result = await equipments.findAll({
-      attributes: ["id", "name", "stock_in"],
+      attributes: ["equipment_code", "name", "stock_in"],
       where: {
-        id: req.body.id,
+        equipment_code: req.body.equipment_code,
         is_active: 1,
         is_delete: 0
       }
@@ -89,9 +89,9 @@ exports.listEquipmentsToEdit = async (req, res) => {
 
 /* Edit Equipment */
 exports.editEquipment = async (req, res) => {
-  const { id, name, stock_in } = req.body;
+  const { equipment_code, name, stock_in } = req.body;
   try {
-    const checkStockOut = await equipments.findOne({ attributes: ['stock_out'], where: { id: id } });
+    const checkStockOut = await equipments.findOne({ attributes: ['stock_out'], where: { equipment_code: equipment_code } });
     console.log(checkStockOut);
     if (checkStockOut.dataValues.stock_out <= stock_in) {
       const result = await equipments.update({
@@ -99,7 +99,7 @@ exports.editEquipment = async (req, res) => {
         stock_in: stock_in
       }, {
         where: {
-          id: id,
+          equipment_code: equipment_code,
           is_active: 1,
           is_delete: 0
         }
@@ -124,18 +124,18 @@ exports.deleteEquipment = async (req, res) => {
       is_delete: 1
     }, {
       where: {
-        id: req.body.id
+        equipment_code: req.body.equipment_code
       }
     });
     if (result != 0) {
       res.json({
         response: "OK",
-        result: "Equipment: " + req.body.id + " Deleted. Result: " + result,
+        result: "Equipment: " + req.body.equipment_code + " Deleted. Result: " + result,
       });
     } else {
       res.json({
         response: "FAILED",
-        result: "Equipment: " + req.body.id + " Not Found. Result: " + result,
+        result: "Equipment: " + req.body.equipment_code + " Not Found. Result: " + result,
       });
     }
   } catch (error) {

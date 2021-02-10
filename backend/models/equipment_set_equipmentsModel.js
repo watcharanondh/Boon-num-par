@@ -1,14 +1,18 @@
 module.exports = (sequelize, DataTypes) => {
   const equipment_set_equipments = sequelize.define("equipment_set_equipments", {
-    equipment_set_id: {
-      type: DataTypes.STRING(12),
+    id: {
+      type: DataTypes.INTEGER(11),
       allowNull: false,
       primaryKey: true,
+      autoIncrement: true,
+    },
+    equipment_set_id: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false,
     },
     equipment_id: {
-      type: DataTypes.STRING(11),
+      type: DataTypes.INTEGER(11),
       allowNull: false,
-      primaryKey: true,
     },
     createdAt: {
       field: "created_at",

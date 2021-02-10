@@ -32,7 +32,7 @@ exports.listAllCustomers = async (req, res) => {
     let count_total = 0;
     const result = await customers.findAll({
       attributes: [
-        "id",
+        "customer_code",
         "name",
         [Sequelize.fn("date_format", Sequelize.col("`customers`.`updated_at`"), "%d.%m.%Y"), "update"],
         [Sequelize.fn("date_format", Sequelize.col("`customers`.`created_at`"), "%b %d, %Y"), "created_at_date"],
@@ -78,13 +78,30 @@ exports.listAllCustomers = async (req, res) => {
 /* Create Customer */
 exports.createCustomer = async (req, res) => {
   try {
-    const getMaxCustomerId = await customers.findOne({ attributes: [[Sequelize.fn('MAX', Sequelize.col('id')), "maxCustomerId"]] })
-    const costomer_id = getMaxCustomerId.dataValues.maxCustomerId !== null ? helper.SKUincrementer(getMaxCustomerId.dataValues.maxCustomerId) : "BNP0000001";
+    const getMaxCustomerCode = await customers.findOne({ attributes: [[Sequelize.fn('MAX', Sequelize.col('customer_code')), "maxCustomerCode"]] })
+    const costomer_code = getMaxCustomerCode.dataValues.maxCustomerCode !== null ? helper.SKUincrementer(getMaxCustomerCode.dataValues.maxCustomerCode) : "BNP0000001";
+    
+    /* cal invoice NO */
+    const max_invoice = await customer_tax_invoices.findOne({ attributes: [[Sequelize.fn('MAX', Sequelize.col('customer_tax_invoices_code')), "maxCtiCode"]] });
+    let invoice_no = `INV${new Date().getYear().toString()}${((new Date().getMonth() + 1).toString()).padStart(2, 0)}${new Date().getDate().toString()}001`;
+    if (max_invoice) {
+      let old_date_inv = max_invoice.dataValues.maxCtiCode.substring(3, 10);
+      let now_date_inv = `${new Date().getYear().toString()}${((new Date().getMonth() + 1).toString()).padStart(2, 0)}${new Date().getDate().toString()}`;
+      if (old_date_inv == now_date_inv) {
+        invoice_no = helper.SKUincrementer(max_invoice.dataValues.maxCtiCode);
+      }
+      //  else {
+      //   // letc last3digi = max_invoice.dataValues.maxCtiCode.slice(-3);
+      //   // invoice_no = `INV${new Date().getYear().toString()}${((new Date().getMonth() + 1).toString()).padStart(2, 0)}${new Date().getDate().toString()}${((parseInt(last3digi) + 1).toString()).padStart(3, 0)}`;
+      //   invoice_no = `INV${new Date().getYear().toString()}${((new Date().getMonth() + 1).toString()).padStart(2, 0)}${new Date().getDate().toString()}001`;
+      // }
+    }
+    
     if (parseInt(req.body.type_id) === 1) {
       /* Customers */
       const { name, telephone_number, mobile_phone_number, line_id, type_id, address, district_id } = req.body;
       const customers_result = await customers.create({
-        id: costomer_id,
+        customer_code: costomer_code,
         name: name,
         telephone_number: telephone_number,
         mobile_phone_number: mobile_phone_number,
@@ -123,7 +140,7 @@ exports.createCustomer = async (req, res) => {
 
       /* Customers */
       const customers_result = await customers.create({
-        id: costomer_id,
+        customer_code: costomer_code,
         name: name,
         telephone_number: telephone_number,
         mobile_phone_number: mobile_phone_number,
@@ -135,7 +152,8 @@ exports.createCustomer = async (req, res) => {
 
       /* Customers Tax Invoices */
       const customer_tax_invoices_result = await customer_tax_invoices.create({
-        id: costomer_id,
+        customer_id : customers_result.dataValues.id,
+        customer_tax_invoices_code: invoice_no,
         title: cti_title,
         tax_id: cti_tax_id,
         flash_number: cti_flash_number,
@@ -166,14 +184,13 @@ exports.createCustomer = async (req, res) => {
     res.json({ response: "FAILED", result: error });
   }
 };
-
 /* List Customer to Edit*/
 exports.listCustomerToEdit = async (req, res) => {
   try {
-    const find_customer_type = await customers.findOne({ attributes: ['type_id'], where: { id: req.body.id } })
+    const find_customer_type = await customers.findOne({ attributes: ['type_id'], where: { customer_code: req.body.customer_code } })
     if (parseInt(find_customer_type.type_id) === 1) {
       var result = await customers.findAll({
-        attributes: ["id", "name", "telephone_number", "mobile_phone_number", "line_id", "type_id", "address", "district_id"],
+        attributes: ["customer_code", "name", "telephone_number", "mobile_phone_number", "line_id", "type_id", "address", "district_id"],
         include: [
           {
             model: districts,
@@ -181,7 +198,7 @@ exports.listCustomerToEdit = async (req, res) => {
           }
         ],
         where: {
-          id: req.body.id,
+          customer_code: req.body.customer_code,
           is_active: 1,
           is_delete: 0
         }
@@ -191,7 +208,7 @@ exports.listCustomerToEdit = async (req, res) => {
       });
     } else if(parseInt(find_customer_type.type_id) === 2) {
       var result = await customers.findAll({
-        attributes: ["id", "name", "telephone_number", "mobile_phone_number", "line_id", "type_id", "address", "district_id"],
+        attributes: ["customer_code", "name", "telephone_number", "mobile_phone_number", "line_id", "type_id", "address", "district_id"],
         include: [
           {
             model: customer_tax_invoices,
@@ -213,7 +230,7 @@ exports.listCustomerToEdit = async (req, res) => {
           }
         ],
         where: {
-          id: req.body.id,
+          customer_code: req.body.customer_code,
           is_active: 1,
           is_delete: 0
         }
@@ -246,7 +263,7 @@ exports.editCustomer = async (req, res) => {
   try {
     if (parseInt(req.body.type_id) === 1) {
       /* Customers ประเภทบุคคล */
-      const { id, name, telephone_number, mobile_phone_number, line_id, address, district_id } = req.body;
+      const { customer_code, name, telephone_number, mobile_phone_number, line_id, address, district_id } = req.body;
       const customers_result = await customers.update({
         name: name,
         telephone_number: telephone_number,
@@ -256,7 +273,7 @@ exports.editCustomer = async (req, res) => {
         district_id: district_id
       }, {
         where: {
-          id: id,
+          customer_code: customer_code,
           is_active: 1,
           is_delete: 0
         }
@@ -271,7 +288,7 @@ exports.editCustomer = async (req, res) => {
       }
     } else if (parseInt(req.body.type_id) === 2) {
       /* Customers ประเภทนิติบุคคล */
-      const { id, name, telephone_number, mobile_phone_number, line_id, address, district_id, cti_title, cti_tax_id, cti_flash_number, cti_email, cti_telephone_number, cti_mobile_phone_number, cti_address, cti_district_id } = req.body;
+      const { customer_code, name, telephone_number, mobile_phone_number, line_id, address, district_id, cti_title, cti_tax_id, cti_flash_number, cti_email, cti_telephone_number, cti_mobile_phone_number, cti_address, cti_district_id } = req.body;
       /* Email Check */
       const is_email = await customer_tax_invoices.findOne({ where: { email: cti_email } })
       if (is_email) {
@@ -297,11 +314,12 @@ exports.editCustomer = async (req, res) => {
         district_id: district_id
       }, {
         where: {
-          id: id,
+          customer_code: customer_code,
           is_active: 1,
           is_delete: 0
         }
       });
+      const find_customer_id = await customers.findOne({ attributes: ['id'], where: { customer_code: customer_code } });
       /* Customers Tax Invoices */
       // cti = customer tax invoice //
       const customer_tax_invoices_result = await customer_tax_invoices.update({
@@ -315,7 +333,7 @@ exports.editCustomer = async (req, res) => {
         district_id: cti_district_id
       }, {
         where: {
-          id: id,
+          customer_id: find_customer_id.dataValues.id,
           is_active: 1,
           is_delete: 0
         }
@@ -342,18 +360,18 @@ exports.deleteCustomer = async (req, res) => {
       is_delete: 1
     }, {
       where: {
-        id: req.body.id
+        customer_code: req.body.customer_code
       }
     });
     if (result != 0) {
       res.json({
         response: "OK",
-        result: "Customer: " + req.body.id + " Deleted. Result: " + result,
+        result: "Customer: " + req.body.customer_code + " Deleted. Result: " + result,
       });
     } else {
       res.json({
         response: "FAILED",
-        result: "Customer: " + req.body.id + " Not Found. Result: " + result,
+        result: "Customer: " + req.body.customer_code + " Not Found. Result: " + result,
       });
     }
   } catch (error) {
@@ -370,6 +388,7 @@ exports.listAllCustomersTaxInvoice = async (req, res) => {
     const result = await customer_tax_invoices.findAll({
       attributes: [
         "id",
+        "customer_tax_invoices_code",
         "title",
         [Sequelize.fn("date_format", Sequelize.col("`customer_tax_invoices`.`updated_at`"), "%d.%m.%Y"), "update"],
         [Sequelize.fn("date_format", Sequelize.col("`customer_tax_invoices`.`created_at`"), "%b %d, %Y"), "created_at_date"],
@@ -402,10 +421,12 @@ exports.listAllCustomersTaxInvoice = async (req, res) => {
 };
 /* Create Customer Tax Invoice */
 exports.createCustomersTaxInvoice = async (req, res) => {
-  const { id, title, tax_id, flash_number, email, telephone_number, mobile_phone_number, address, district_id } = req.body;
+  const { title, tax_id, flash_number, email, telephone_number, mobile_phone_number, address, district_id } = req.body;
   try {
+    const getMaxCtiCode = await customer_tax_invoices.findOne({ attributes: [[Sequelize.fn('MAX', Sequelize.col('customer_tax_invoices_code')), "maxCtiCode"]] })
+    const cti_code = getMaxCtiCode.dataValues.maxCtiCode !== null ? helper.SKUincrementer(getMaxCtiCode.dataValues.maxCtiCode) : "BNPINV0000001";
     const result = await customer_tax_invoices.create({
-      id: id,
+      customer_tax_invoices_code:cti_code,
       title: title,
       tax_id: tax_id,
       flash_number: flash_number,
@@ -428,7 +449,7 @@ exports.createCustomersTaxInvoice = async (req, res) => {
 exports.listCustomersTaxInvoiceToEdit = async (req, res) => {
   try {
     const result = await customer_tax_invoices.findAll({
-      attributes: ['title', 'tax_id', 'flash_number', 'email', 'telephone_number', 'mobile_phone_number', 'address', 'district_id'],
+      attributes: ['customer_tax_invoices_code','title', 'tax_id', 'flash_number', 'email', 'telephone_number', 'mobile_phone_number', 'address', 'district_id'],
       include: [
         {
           model: districts,
@@ -436,7 +457,7 @@ exports.listCustomersTaxInvoiceToEdit = async (req, res) => {
         }
       ],
       where: {
-        id: req.body.id,
+        customer_tax_invoices_code:req.body.customer_tax_invoices_code,
         is_active: 1,
         is_delete: 0
       }
@@ -459,7 +480,7 @@ exports.listCustomersTaxInvoiceToEdit = async (req, res) => {
 };
 /* Edit Customer Tax Invoice */
 exports.editCustomersTaxInvoice = async (req, res) => {
-  const { id, tax_id, title, flash_number, email, telephone_number, mobile_phone_number, address, district_id } = req.body;
+  const { customer_tax_invoices_code, tax_id, title, flash_number, email, telephone_number, mobile_phone_number, address, district_id } = req.body;
   try {
     const result = await customer_tax_invoices.update({
       title: title,
@@ -472,7 +493,7 @@ exports.editCustomersTaxInvoice = async (req, res) => {
       district_id: district_id
     }, {
       where: {
-        id: id,
+        customer_tax_invoices_code: customer_tax_invoices_code,
         is_active: 1,
         is_delete: 0
       }
@@ -493,18 +514,18 @@ exports.deleteCustomersTaxInvoice = async (req, res) => {
       is_delete: 1
     }, {
       where: {
-        id: req.body.id
+        customer_tax_invoices_code: req.body.customer_tax_invoices_code
       }
     });
     if (result != 0) {
       res.json({
         response: "OK",
-        result: "Customer Tax Invoice: " +  req.body.id + " Deleted. Result: " + result,
+        result: "Customer Tax Invoice: " +  req.body.customer_tax_invoices_code + " Deleted. Result: " + result,
       });
     } else {
       res.json({
         response: "FAILED",
-        result: "Customer Tax Invoice: " +  req.body.id + " Not Found. Result: " + result,
+        result: "Customer Tax Invoice: " +  req.body.customer_tax_invoices_code + " Not Found. Result: " + result,
       });
     }
   } catch (error) {

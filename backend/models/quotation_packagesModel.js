@@ -1,12 +1,17 @@
 module.exports = (sequelize, DataTypes) => {
   const quotation_packages = sequelize.define("quotation_packages", {
-    quotation_id: {
-      type: DataTypes.STRING(12),
+    id: {
+      type: DataTypes.INTEGER(11),
       allowNull: false,
       primaryKey: true,
+      autoIncrement: true,
+    },
+    quotation_id: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false,
     },
     package_id: {
-      type: DataTypes.STRING(12),
+      type: DataTypes.INTEGER(11),
       allowNull: false,
     },
     amount: {

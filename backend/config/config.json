@@ -20,6 +20,13 @@
     "host": "localhost",
     "dialect": "mysql"
   },
+  "newlocalhost": {
+    "username": "root",
+    "password": null,
+    "database": "dem_bnp",
+    "host": "localhost",
+    "dialect": "mysql"
+  },
   "production": {
     "username": "dem_bnp",
     "password": "kWsfW3YtJ8",

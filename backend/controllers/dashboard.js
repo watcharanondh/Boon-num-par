@@ -39,7 +39,7 @@ exports.listAllDashboard = async (req, res) => {
 
     /* List Latest Quotations */
     var Lastquotation = await quotations.findAll({
-      attributes: ['id'],
+      attributes: ['quotation_code'],
       include: [
         {
           model: customers,
@@ -70,11 +70,11 @@ exports.listAllDashboard = async (req, res) => {
 
     /* List Latest Customers */
     var LastCustomers = await customers.findAll({
-      attributes: ['id','name', [Sequelize.fn("date_format", Sequelize.col("`customers`.`created_at`"), "%d-%m-%Y"), "created_at_date"]],
+      attributes: ['customer_code','name', [Sequelize.fn("date_format", Sequelize.col("`customers`.`created_at`"), "%d-%m-%Y"), "created_at_date"]],
       include: [
         {
           model: customer_tax_invoices,
-          attributes: ['id','title']
+          attributes: ['title']
         }
       ],
       where: {

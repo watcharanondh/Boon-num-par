@@ -9,7 +9,7 @@ exports.listAllQuotations = async (req, res) => {
   try {
     let count_total = 0;
     const result = await quotations.findAll({
-      attributes: ["id", "quotation_status_id",
+      attributes: ["quotation_code", "quotation_status_id",
         [Sequelize.fn("date_format", Sequelize.col("`quotations`.`event_date`"), "%b %d, %Y"), "event_date"],
         [Sequelize.fn("date_format", Sequelize.col("`quotations`.`event_date`"), "%h:%i %p"), "event_date_datetime"],
         [Sequelize.fn("date_format", Sequelize.col("`quotations`.`area_viewing_date`"), "%b %d, %Y"), "area_viewing_date"],
@@ -19,6 +19,7 @@ exports.listAllQuotations = async (req, res) => {
       include: [
         {
           model: customers,
+          attributes: ["name"],
           include: [
             {
               model: customer_tax_invoices,
@@ -39,6 +40,7 @@ exports.listAllQuotations = async (req, res) => {
       quotation_data.map((data) => {
         data.dataValues.customer_tax_invoices = data.dataValues.customer.customer_tax_invoices[0].title
         data.dataValues.quotation_status = data.dataValues.quotation_status.name
+        data.dataValues.customer_name = data.dataValues.customer.name
         delete data.dataValues.customer;
         count_total++;
       });
@@ -88,19 +90,51 @@ exports.comfirmQuotationStatus = async (req, res) => {
       quotation_status_id: req.body.status
     }, {
       where: {
-        id: req.body.id
+        quotation_code: req.body.quotation_code
       }
     });
     if (result == 1) {
       res.json({
         response: "OK",
-        result: req.body.id + ": Updated. Result: " + result,
+        result: req.body.quotation_code + ": Updated. Result: " + result,
       });
     } else {
       res.json({
         response: "FAILED",
-        result: req.body.id + ": Not Found. Result: " + result,
+        result: req.body.quotation_code + ": Not Found. Result: " + result,
       });
+    }
+  } catch (error) {
+    console.log(error);
+    res.json({ response: "FAILED", result: error });
+  }
+};
+/* List All Customer  */
+exports.listAllCustomers = async (req, res) => {
+  try {
+    const result = await customers.findAll({
+      attributes: [
+        "customer_code",
+        "name"
+      ],
+      where: {
+        is_active: 1,
+        is_delete: 0
+      }
+    }).then((cust_data) => {
+      let arr = [];
+      cust_data.map(data => {
+        arr.push(data.dataValues.customer_code, data.dataValues.name);
+      });
+      return arr;
+    });
+    if (result != '' && result !== null) {
+      res.json({
+        response: "OK",
+        result: result
+      });
+    } else {
+      res.json({ response: "FAILED", result: "Not Found." });
     }
   } catch (error) {
     console.log(error);
@@ -110,40 +144,88 @@ exports.comfirmQuotationStatus = async (req, res) => {
 /* List Customer information to Create Quotations  */
 exports.listFindCustomerInformation = async (req, res) => {
   try {
-    const result = await customers.findAll({
-      attributes: ["id"],
-      include: [
-        {
-          model: customer_tax_invoices,
-          attributes: ["title", "tax_id", "flash_number", "email", "telephone_number", "mobile_phone_number", "address"],
-          include: [
-            {
-              model: districts,
-              attributes: ["district", "amphoe", "province", "zipcode"],
-            }
-          ]
-        }
-      ],
+    const check_type_id = await customers.findOne({
+      attributes: ['type_id'],
       where: {
         is_active: 1,
         is_delete: 0,
         [Op.or]: {
-          id: req.body.iden,
+          customer_code: req.body.iden,
           name: {
             [Op.substring]: req.body.iden
           },
         }
-      },
-    }).then(cust_data => {
-      cust_data.map((data) => {
-        data.dataValues.customer_tax_invoices = data.dataValues.customer_tax_invoices[0];
-        Object.assign(data.dataValues.customer_tax_invoices.dataValues, data.dataValues.customer_tax_invoices.district.dataValues)
-        Object.assign(data.dataValues, data.dataValues.customer_tax_invoices.dataValues)
-        delete data.dataValues.customer_tax_invoices;
-      });
-      return cust_data;
+      }
     });
-    res.json({ response: "OK", result: result });
+    if (parseInt(check_type_id.dataValues.type_id) === 1) {
+      const result = await customers.findAll({
+        attributes: ["customer_code", "name", "telephone_number", "mobile_phone_number", "address"],
+        include: [
+          {
+            model: districts,
+            attributes: [["id", "district_id"], "district", "amphoe", "province", "zipcode", "district_code", "amphoe_code", "province_code"]
+          }
+        ],
+        where: {
+          is_active: 1,
+          is_delete: 0,
+          [Op.or]: {
+            customer_code: req.body.iden,
+            name: {
+              [Op.substring]: req.body.iden
+            },
+          }
+        },
+      }).then(cust_data => {
+        cust_data.map((data) => {
+          data.dataValues = {
+            ...data.dataValues,
+            title: "-",
+            tax_id: "-",
+            flash_number: "-",
+            email: "-",
+            ...data.dataValues.district.dataValues
+          };
+        });
+        res.json({ response: "OK", result: cust_data });
+      });
+    } else if (parseInt(check_type_id.dataValues.type_id) === 2) {
+      const result = await customers.findAll({
+        attributes: ["customer_code", "name"],
+        include: [
+          {
+            model: customer_tax_invoices,
+            attributes: ["title", "tax_id", "flash_number", "email", "telephone_number", "mobile_phone_number", "address"],
+            include: [
+              {
+                model: districts,
+                attributes: [["id", "district_id"], "district", "amphoe", "province", "zipcode", "district_code", "amphoe_code", "province_code"]
+              }
+            ]
+          }
+        ],
+        where: {
+          is_active: 1,
+          is_delete: 0,
+          [Op.or]: {
+            customer_code: req.body.iden,
+            name: {
+              [Op.substring]: req.body.iden
+            },
+          }
+        },
+      }).then(cust_data => {
+        cust_data.map((data) => {
+          data.dataValues.customer_tax_invoices = data.dataValues.customer_tax_invoices[0];
+          Object.assign(data.dataValues.customer_tax_invoices.dataValues, data.dataValues.customer_tax_invoices.district.dataValues)
+          Object.assign(data.dataValues, data.dataValues.customer_tax_invoices.dataValues)
+          delete data.dataValues.customer_tax_invoices;
+        });
+        res.json({ response: "OK", result: cust_data });
+      });
+    } else {
+      res.json({ response: "FAILED", result: "Unknow: type_id" });
+    }
   } catch (error) {
     console.log(error);
     res.json({ response: "FAILED", result: error });
@@ -154,7 +236,7 @@ exports.selectPackage = async (req, res) => {
   try {
     const result = await packages.findOne({
       attributes: [
-        "id",
+        "package_code",
         "name",
         "amount_savory_food",
         "amount_sweet_food",
@@ -163,7 +245,7 @@ exports.selectPackage = async (req, res) => {
         [Sequelize.fn("CONCAT", "อาหารคาว ", Sequelize.col("`packages`.`amount_savory_food`"), ", อาหารหวาน ", Sequelize.col("`packages`.`amount_sweet_food`"), ", เครื่องดื่ม ", Sequelize.col("`packages`.`amount_drink`")), "food_des"],
       ],
       where: {
-        id: req.body.id,
+        package_code: req.body.package_code,
         is_active: 1,
         is_delete: 0
       },
@@ -187,7 +269,7 @@ exports.listAllPromotions = async (req, res) => {
   try {
     const result = await promotions.findAll({
       attributes: [
-        "id",
+        "promotion_code",
         "name",
         [Sequelize.fn("date_format", Sequelize.col("`promotions`.`updated_at`"), "%d.%m.%Y"), "update"],
         "discount",
@@ -214,29 +296,39 @@ exports.listAllPromotions = async (req, res) => {
 /* Create New Quotations */
 exports.createNewQuotation = async (req, res) => {
   try {
-    const { customer_id, package_id, promotion_id, event_date, area_viewing_date, amount_savory_food, amount_sweet_food, amount_drink, quotation_status_id, note } = req.body;
+    const { customer_code, package_code, promotion_code, event_date, area_viewing_date, amount_savory_food, amount_sweet_food, amount_drink, note } = req.body;
     /* สร้างใบเสนอราคา ตาราง quotations */
-    const getMaxQuotaId = await quotations.findOne({ attributes: [[Sequelize.fn('MAX', Sequelize.col('id')), "maxQuotaId"]] });
-    const newQuotaId = getMaxQuotaId.dataValues.maxQuotaId !== null ? helper.SKUincrementer(getMaxQuotaId.dataValues.maxQuotaId) : "BNPQU0000001"
+    const findCustomerId = await customers.findOne({ attributes: ['id'], where: { customer_code: customer_code } })
+    const getMaxQuotaCode = await quotations.findOne({ attributes: [[Sequelize.fn('MAX', Sequelize.col('quotation_code')), "maxQuotaCode"]] });
+    const newQuotaCode = getMaxQuotaCode.dataValues.maxQuotaCode !== null ? helper.SKUincrementer(getMaxQuotaCode.dataValues.maxQuotaCode) : "BNPQU0000001"
     const Quotationresult = await quotations.create({
-      id: newQuotaId,
-      customer_id: customer_id,
+      quotation_code: newQuotaCode,
+      customer_id: findCustomerId.dataValues.id,
       event_date: new Date(event_date),
       area_viewing_date: new Date(area_viewing_date),
       amount_savory_food: amount_savory_food,
       amount_sweet_food: amount_sweet_food,
       amount_drink: amount_drink,
-      quotation_status_id: quotation_status_id,
+      quotation_status_id: 2,
       note: note
     });
     /* เลือก Package ตาราง quotation_packages */
+    const findPackageId = await packages.findOne({ attributes: ['id'], where: { package_code: package_code } })
     const selectPackageresult = await quotation_packages.create({
-      quotation_id: newQuotaId,
-      package_id: package_id,
-      amount: parseInt(amount_savory_food) + parseInt(amount_sweet_food) + parseInt(amount_drink)
+      quotation_id: Quotationresult.dataValues.id,
+      package_id: findPackageId.dataValues.id,
+      amount: 1
     });
     /*สร้างรายการโปรโมชั่น สำหรับใบเสนอราคานั้นๆ*/
-    var ObjPromotions = promotion_id.map(promoId => { return { "quotation_id": newQuotaId, "promotion_id": promoId } });
+    const findPromoId = await promotions.findAll({
+      attributes: ['id'],
+      where: {
+        promotion_code: {
+          [Op.in]: promotion_code
+        }
+      }
+    });
+    var ObjPromotions = findPromoId.map(promoId => { return { "quotation_id": Quotationresult.dataValues.id, "promotion_id": promoId.id } });
     console.log(ObjPromotions);
     const selectPromotionresult = await quotation_promotions.bulkCreate(ObjPromotions);
 
@@ -259,69 +351,9 @@ exports.createNewQuotation = async (req, res) => {
 /* List Quotation to Edit */
 exports.listQuotationsToEdit = async (req, res) => {
   try {
-    // const result = await quotations.findAll({
-    //   attributes: ["id", "event_date", "area_viewing_date", "amount_savory_food", "amount_sweet_food", "amount_drink"],
-    //   include: [
-    //     {
-    //       model: customers,
-    //       include: [
-    //         {
-    //           model: customer_tax_invoices,
-    //           attributes: ["title", "tax_id", "flash_number", "email", "telephone_number", "mobile_phone_number", "address"],
-    //           include: [
-    //             {
-    //               model: districts,
-    //               attributes: ["district", "amphoe", "province", "zipcode"]
-    //             }
-    //           ]
-    //         },
-    //       ],
-    //     },
-    //     {
-    //       model: quotation_promotions,
-    //       attributes: ["quotation_id", "promotion_id"],
-    //       include: [
-    //         {
-    //           model: promotions,
-    //           attributes: ["id", "name", "discount"]
-    //         }
-    //       ],
-    //       where: { quotation_id: req.body.id }
-    //     },
-    //     {
-    //       model: quotation_packages,
-    //       attributes: ["quotation_id", "package_id", "amount"],
-    //       include: [
-    //         {
-    //           model: packages,
-    //           attributes: ["id", "name", "price"]
-    //         }
-    //       ]
-    //     }
-    //   ],
-    //   where: {
-    //     id: req.body.id,
-    //     is_active: 1,
-    //     is_delete: 0
-    //   }
-    // }).then(quotation_data => {
-    //   quotation_data.map((data) => {
-    //     /* Customer Data  */
-    //     if (data.dataValues.customer) {
-    //       data.dataValues.customer_tax_invoices = data.dataValues.customer.customer_tax_invoices[0];
-    //       Object.assign(data.dataValues.customer_tax_invoices.dataValues, data.dataValues.customer_tax_invoices.district.dataValues)
-    //       delete data.dataValues.customer;
-    //     } else {
-    //       data.dataValues.customer_tax_invoices = "ไม่พบข้อมูล";
-    //     }
-    //   });
-    //   return quotation_data;
-    // });
-
-
     /* Customers Data  */
     const quotation_customers_result = await quotations.findAll({
-      attributes: ["id", "event_date", "area_viewing_date", "amount_savory_food", "amount_sweet_food", "amount_drink"],
+      attributes: ["id", "quotation_code", "event_date", "area_viewing_date", "amount_savory_food", "amount_sweet_food", "amount_drink", "note"],
       include: [
         {
           model: customers,
@@ -332,7 +364,7 @@ exports.listQuotationsToEdit = async (req, res) => {
               include: [
                 {
                   model: districts,
-                  attributes: ["district", "amphoe", "province", "zipcode"]
+                  attributes: [["id","district_id"],"district", "amphoe", "province", "zipcode", "district_code", "amphoe_code", "province_code"]
                 }
               ]
             },
@@ -340,7 +372,7 @@ exports.listQuotationsToEdit = async (req, res) => {
         },
       ],
       where: {
-        id: req.body.id,
+        quotation_code: req.body.quotation_code,
         is_active: 1,
         is_delete: 0
       }
@@ -360,18 +392,17 @@ exports.listQuotationsToEdit = async (req, res) => {
       return quotation_data;
     });
 
-
     /* Promotions Data  */
     const quotation_promotions_result = await quotation_promotions.findAll({
       attributes: ["quotation_id", "promotion_id"],
       include: [
         {
           model: promotions,
-          attributes: ["id", "name", "discount"]
+          attributes: ["promotion_code", "name", "discount"]
         }
       ],
       where: {
-        quotation_id: req.body.id,
+        quotation_id: quotation_customers_result[0].dataValues.id,
       }
     }).then(promo_data => {
       promo_data.map(data => {
@@ -388,11 +419,11 @@ exports.listQuotationsToEdit = async (req, res) => {
       include: [
         {
           model: packages,
-          attributes: ["id", "name", "price"]
+          attributes: ["package_code", "name", "price"]
         }
       ],
       where: {
-        quotation_id: req.body.id,
+        quotation_id: quotation_customers_result[0].dataValues.id,
       }
     }).then(package_data => {
       package_data.map(data => {
@@ -423,42 +454,52 @@ exports.listQuotationsToEdit = async (req, res) => {
 /* Edit Quotation */
 exports.editQuotation = async (req, res) => {
   try {
-    const { id, customer_id, package_id, promotion_id, event_date, area_viewing_date, amount_savory_food, amount_sweet_food, amount_drink, quotation_status_id, note } = req.body;
+    const { quotation_code, customer_code, package_code, promotion_code, event_date, area_viewing_date, amount_savory_food, amount_sweet_food, amount_drink, note } = req.body;
     /* แก้ไขใบเสนอราคา ตาราง quotations */
+    const findCustomerId = await customers.findOne({ attributes: ['id'], where: { customer_code: customer_code } });
+    const findQuotaId = await quotations.findOne({ attributes: ['id'], where: { quotation_code: quotation_code } });
     const Quotationresult = await quotations.update({
-      customer_id: customer_id,
+      customer_id: findCustomerId.dataValues.id,
       event_date: new Date(event_date),
       area_viewing_date: new Date(area_viewing_date),
       amount_savory_food: amount_savory_food,
       amount_sweet_food: amount_sweet_food,
       amount_drink: amount_drink,
-      quotation_status_id: quotation_status_id,
       note: note
     }, {
       where: {
-        id: id,
+        quotation_code: quotation_code,
         is_active: 1,
         is_delete: 0
       }
     });
     /* ลบ และ เพิ่ม Packageใหม่ ตาราง quotation_packages */
+    const findPackageId = await packages.findOne({ attributes: ['id'], where: { package_code: package_code } })
     const del_pack_quotation = await quotation_packages.destroy({
       where: {
-        quotation_id: id
+        quotation_id: findQuotaId.dataValues.id
       }
     });
     const selectPackageresult = await quotation_packages.create({
-      quotation_id: id,
-      package_id: package_id,
-      amount: parseInt(amount_savory_food) + parseInt(amount_sweet_food) + parseInt(amount_drink)
+      quotation_id: findQuotaId.dataValues.id,
+      package_id: findPackageId.dataValues.id,
+      amount: 1
     });
     /*ลบ และ เพิ่ม รายการโปรโมชั่น สำหรับใบเสนอราคานั้นๆ*/
-    const del_promo_quotation = await quotation_promotions.destroy({
+    const findPromoId = await promotions.findAll({
+      attributes: ['id'],
       where: {
-        quotation_id: id
+        promotion_code: {
+          [Op.in]: promotion_code
+        }
       }
     });
-    var ObjPromotions = promotion_id.map(promoId => { return { "quotation_id": id, "promotion_id": promoId } });
+    const del_promo_quotation = await quotation_promotions.destroy({
+      where: {
+        quotation_id: findQuotaId.dataValues.id,
+      }
+    });
+    var ObjPromotions = findPromoId.map(promoId => { return { "quotation_id": findQuotaId.dataValues.id, "promotion_id": promoId.id } });
     console.log(ObjPromotions);
     const selectPromotionresult = await quotation_promotions.bulkCreate(ObjPromotions);
 
@@ -482,24 +523,23 @@ exports.editQuotation = async (req, res) => {
 /* Delete Quotation */
 exports.deleteQuotation = async (req, res) => {
   try {
-    const { id } = req.body;
     /* ลบใบเสนอราคา ตาราง quotations */
     const result = await quotations.update({
       is_delete: 1
     }, {
       where: {
-        id: req.body.id
+        quotation_code: req.body.quotation_code
       }
     });
     if (result != 0) {
       res.json({
         response: "OK",
-        result: "Quotation: " + req.body.id + " Deleted. Result: " + result,
+        result: "Quotation: " + req.body.quotation_code + " Deleted. Result: " + result,
       });
     } else {
       res.json({
         response: "FAILED",
-        result: "Quotation: " + req.body.id + " Not Found. Result: " + result,
+        result: "Quotation: " + req.body.quotation_code + " Not Found. Result: " + result,
       });
     }
   } catch (error) {
@@ -516,7 +556,8 @@ exports.printOutQuotation = async (req, res) => {
     /* ------------------------------------------------------- Header ------------------------------------------------------- */
     const header = await quotations.findAll({
       attributes: [
-        ["id", "quotation_id"],
+        "id",
+        ["quotation_code", "quotation_id"],
         [Sequelize.fn("date_format", Sequelize.col("`quotations`.`event_date`"), "%d/%m/%Y"), "event_date"],
         [Sequelize.fn("date_format", Sequelize.col("`quotations`.`created_at`"), "%d/%m/%Y"), "created_at"]
       ],
@@ -527,7 +568,7 @@ exports.printOutQuotation = async (req, res) => {
           include: [
             {
               model: customer_tax_invoices,
-              attributes: [["address", "cti_address"], ["email", "cti_email"], ["telephone_number", "cti_telephone_number"],["vat_type", "cti_vat_type"]],
+              attributes: [["address", "cti_address"], ["email", "cti_email"], ["telephone_number", "cti_telephone_number"], ["vat_type", "cti_vat_type"]],
               include: [
                 {
                   model: districts,
@@ -539,7 +580,7 @@ exports.printOutQuotation = async (req, res) => {
         }
       ],
       where: {
-        id: req.body.id,
+        quotation_code: req.body.quotation_code,
         is_active: 1,
         is_delete: 0
       }
@@ -593,7 +634,7 @@ exports.printOutQuotation = async (req, res) => {
         }
       ],
       where: {
-        quotation_id: req.body.id,
+        quotation_id: header[0].dataValues.id,
         is_active: 1,
         is_delete: 0
       }
@@ -617,11 +658,11 @@ exports.printOutQuotation = async (req, res) => {
       include: [
         {
           model: promotions,
-          attributes: [["name", "promotion_name"], ["discount", "promotion_discount"] ,["discount_type", "promotion_discount_type"]]
+          attributes: [["name", "promotion_name"], ["discount", "promotion_discount"], ["discount_type", "promotion_discount_type"]]
         }
       ],
       where: {
-        quotation_id: req.body.id,
+        quotation_id: header[0].dataValues.id,
         is_active: 1,
         is_delete: 0
       }
@@ -632,7 +673,7 @@ exports.printOutQuotation = async (req, res) => {
           discount = discount + parseFloat(data.dataValues.promotion_discount);
           data.dataValues.promotion_discount = Intl.NumberFormat('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2, }).format(data.dataValues.promotion_discount);
           delete data.promotion.dataValues;
-        }else if (parseInt(data.dataValues.promotion_discount_type) == 2) {
+        } else if (parseInt(data.dataValues.promotion_discount_type) == 2) {
           /*คำนวน ส่วนลดเป็นเปอร์เซนต์ (discount_type:2)*/
           let cal_discount = (total * parseFloat(data.dataValues.promotion_discount)) / 100;
           discount_percent = Number(data.dataValues.promotion_discount).toFixed(0);
@@ -648,7 +689,7 @@ exports.printOutQuotation = async (req, res) => {
     const note_footer = await quotations.findAll({
       attributes: ["note"],
       where: {
-        id: req.body.id,
+        quotation_code: req.body.quotation_code,
         is_active: 1,
         is_delete: 0
       }

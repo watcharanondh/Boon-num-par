@@ -15,7 +15,7 @@ exports.listAllPackages = async (req, res) => {
     });
     const result = await packages.findAll({
       attributes: [
-        "id",
+        "package_code",
         "name",
         "amount_savory_food",
         "amount_sweet_food",
@@ -49,7 +49,7 @@ exports.listAllEquipmentSetsToPackageUse = async (req, res) => {
   try {
     const result = await equipment_sets.findAll({
       attributes: [
-        "id",
+        "equipment_set_code",
         "name",
       ],
       where: {
@@ -76,13 +76,13 @@ exports.listAllEquipmentSetsToPackageUse = async (req, res) => {
 exports.createNewPackage = async (req, res) => {
   const { name, price, amount_savory_food, amount_sweet_food, amount_drink, package_equipset } = req.body;
   try {
-    const getMaxPackId = await packages.findOne({ attributes: [[Sequelize.fn('MAX', Sequelize.col('id')), "maxPackId"]] })
-    const newPackId = getMaxPackId.dataValues.maxPackId !== null ? helper.SKUincrementer(getMaxPackId.dataValues.maxPackId) : "BNPPK0000001";
-    // console.log(newPackId);
+    const getMaxPackCode = await packages.findOne({ attributes: [[Sequelize.fn('MAX', Sequelize.col('package_code')), "maxPackCode"]] })
+    const newPackCode = getMaxPackCode.dataValues.maxPackCode !== null ? helper.SKUincrementer(getMaxPackCode.dataValues.maxPackCode) : "BNPPK0000001";
+    // console.log(newPackCode);
 
     /*สร้าง Package*/
     const Packageresult = await packages.create({
-      id: newPackId,
+      package_code: newPackCode,
       name: name,
       price: price,
       amount_savory_food: amount_savory_food,
@@ -91,7 +91,15 @@ exports.createNewPackage = async (req, res) => {
     });
 
     /*สร้างรายการชุดอุปกรณ์ สำหรับ Package นั้นๆ*/
-    var ObjEquipSet = package_equipset.map(equipSetId => { return { "package_id": newPackId, "equipment_set_id": equipSetId } });
+    const findIdEquipSet = await equipment_sets.findAll({
+      attributes: ['id'],
+      where: {
+        equipment_set_code: {
+          [Op.in]: package_equipset
+        }
+      }
+    });
+    var ObjEquipSet = findIdEquipSet.map(equipSetId => { return { "package_id": Packageresult.dataValues.id, "equipment_set_id": equipSetId.id } });
     console.log(ObjEquipSet);
     const PackEquipSetresult = await package_equipment_sets.bulkCreate(ObjEquipSet);
 
@@ -109,7 +117,7 @@ exports.createNewPackage = async (req, res) => {
 exports.listPackagesToEdit = async (req, res) => {
   try {
     const result = await packages.findAll({
-      attributes: ["id", "name", "price", "amount_savory_food", "amount_sweet_food", "amount_drink"],
+      attributes: ["package_code", "name", "price", "amount_savory_food", "amount_sweet_food", "amount_drink"],
       include: [
         {
           model: package_equipment_sets,
@@ -125,7 +133,7 @@ exports.listPackagesToEdit = async (req, res) => {
         }
       ],
       where: {
-        id: req.body.id,
+        package_code: req.body.package_code,
         is_active: 1,
         is_delete: 0
       }
@@ -146,43 +154,61 @@ exports.listPackagesToEdit = async (req, res) => {
 
 /* Edit Packages */
 exports.editPackage = async (req, res) => {
-  const { id, name, price, amount_savory_food, amount_sweet_food, amount_drink, package_equipset } = req.body;
+  const { package_code, name, price, amount_savory_food, amount_sweet_food, amount_drink, package_equipset } = req.body;
   try {
-    /*ลบ package_equipset ที่มีอยู่ก่อน */
-    const delPack_equipset = await package_equipment_sets.destroy({
-      where: {
-        package_id: id
-      }
-    });
-    if (delPack_equipset) {
-      /* ลบสำเร็จ & แก้ไขรายการอุปกรณ์ สำหรับ Package นั้นๆ*/
-      /*แก้ไข Package*/
-      const Packageresult = await packages.update({
-        name: name,
-        price: price,
-        amount_savory_food: amount_savory_food,
-        amount_sweet_food: amount_sweet_food,
-        amount_drink: amount_drink
-      }, {
+    /* get ID ชุดอุปกรณ์ */
+    const get_id_package = await packages.findOne({ attributes: ['id'], where: { package_code: package_code } });
+    if (get_id_package) {
+      /*ลบ package_equipset ที่มีอยู่ก่อน */
+      const delPack_equipset = await package_equipment_sets.destroy({
         where: {
-          id: id,
-          is_active: 1,
-          is_delete: 0
+          package_id: get_id_package.dataValues.id
         }
       });
-      // เพิ่ม Packageใหม่ที่ส่งมา //
-      var ObjEquipSet = package_equipset.map(equipSetId => { return { "package_id": id, "equipment_set_id": equipSetId } });
-      console.log(ObjEquipSet);
-      const PackEquipSetresult = await package_equipment_sets.bulkCreate(ObjEquipSet);
-      res.json({
-        response: "OK",
-        result: [Packageresult, PackEquipSetresult],
-      });
+      if (delPack_equipset) {
+        /* ลบสำเร็จ & แก้ไขรายการอุปกรณ์ สำหรับ Package นั้นๆ*/
+        /*แก้ไข Package*/
+        const Packageresult = await packages.update({
+          name: name,
+          price: price,
+          amount_savory_food: amount_savory_food,
+          amount_sweet_food: amount_sweet_food,
+          amount_drink: amount_drink
+        }, {
+          where: {
+            package_code: package_code,
+            is_active: 1,
+            is_delete: 0
+          }
+        });
+        // เพิ่ม Packageใหม่ที่ส่งมา //
+        const findIdEquipSet = await equipment_sets.findAll({
+          attributes: ['id'],
+          where: {
+            equipment_set_code: {
+              [Op.in]: package_equipset
+            }
+          }
+        });
+        var ObjEquipSet = findIdEquipSet.map(equipSetId => { return { "package_id": get_id_package.dataValues.id, "equipment_set_id": equipSetId.id } });
+        console.log(ObjEquipSet);
+        const PackEquipSetresult = await package_equipment_sets.bulkCreate(ObjEquipSet);
+        res.json({
+          response: "OK",
+          result: [Packageresult, PackEquipSetresult],
+        });
+      } else {
+        /// ลบไม่สำเร็จ ///
+        res.json({
+          response: "FAILED",
+          result: "Cannot Delete Equipment in Package." + delPack_equipset,
+        });
+      }
     } else {
-      /// ลบไม่สำเร็จ ///
+      /// ไม่พบชุดอุปกรณ์นี้ ///
       res.json({
         response: "FAILED",
-        result: "Cannot Delete Equipment in Package." + delPack_equipset,
+        result: "Not Found: " + get_id_package,
       });
     }
 
@@ -199,18 +225,18 @@ exports.deletePackage = async (req, res) => {
       is_delete: 1
     }, {
       where: {
-        id: req.body.id
+        package_code: req.body.package_code
       }
     });
     if (result != 0) {
       res.json({
         response: "OK",
-        result: "Packages: " + req.body.id + " Deleted. Result: " + result,
+        result: "Packages: " + req.body.package_code + " Deleted. Result: " + result,
       });
     } else {
       res.json({
         response: "FAILED",
-        result: "Packages: " + req.body.id + " Not Found. Result: " + result,
+        result: "Packages: " + req.body.package_code + " Not Found. Result: " + result,
       });
     }
   } catch (error) {

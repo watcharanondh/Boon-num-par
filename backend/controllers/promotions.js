@@ -15,7 +15,7 @@ exports.listAllPromotions = async (req, res) => {
     });
     const result = await promotions.findAll({
       attributes: [
-        "id",
+        "promotion_code",
         "name",
         [Sequelize.fn("date_format", Sequelize.col("`promotions`.`updated_at`"), "%d.%m.%Y"), "update"],
         "discount",
@@ -51,10 +51,10 @@ exports.listAllPromotions = async (req, res) => {
 exports.createNewPromotion = async (req, res) => {
   const { name, discount, discount_type } = req.body;
   try {
-    const getMaxPromoId = await promotions.findOne({ attributes: [[Sequelize.fn('MAX', Sequelize.col('id')), "maxPromoId"]] })
-    console.log(getMaxPromoId);
+    const getMaxPromoCode = await promotions.findOne({ attributes: [[Sequelize.fn('MAX', Sequelize.col('promotion_code')), "maxPromoCode"]] })
+    console.log(getMaxPromoCode);
     const result = await promotions.create({
-      id: getMaxPromoId.dataValues.maxPromoId !== null ? helper.SKUincrementer(getMaxPromoId.dataValues.maxPromoId) : "BNPPM0000001",
+      promotion_code: getMaxPromoCode.dataValues.maxPromoCode !== null ? helper.SKUincrementer(getMaxPromoCode.dataValues.maxPromoCode) : "BNPPM0000001",
       name: name,
       discount: discount,
       discount_type: discount_type
@@ -73,9 +73,9 @@ exports.createNewPromotion = async (req, res) => {
 exports.listPromotionToEdit = async (req, res) => {
   try {
     const result = await promotions.findAll({
-      attributes: ["id", "name", "discount", "discount_type"],
+      attributes: ["promotion_code", "name", "discount", "discount_type"],
       where: {
-        id: req.body.id,
+        promotion_code: req.body.promotion_code,
         is_active: 1,
         is_delete: 0
       }
@@ -96,7 +96,7 @@ exports.listPromotionToEdit = async (req, res) => {
 
 /* Edit Promotion */
 exports.editPromotion = async (req, res) => {
-  const { id, name, discount, discount_type } = req.body;
+  const { promotion_code, name, discount, discount_type } = req.body;
   try {
     const result = await promotions.update({
       name: name,
@@ -104,7 +104,7 @@ exports.editPromotion = async (req, res) => {
       discount_type: discount_type
     }, {
       where: {
-        id: id,
+        promotion_code: promotion_code,
         is_active: 1,
         is_delete: 0
       }
@@ -127,18 +127,18 @@ exports.deletePromotion = async (req, res) => {
       is_delete: 1
     }, {
       where: {
-        id: req.body.id
+        promotion_code: req.body.promotion_code
       }
     });
     if (result != 0) {
       res.json({
         response: "OK",
-        result: "Promotion: " + req.body.id + " Deleted. Result: " + result,
+        result: "Promotion: " + req.body.promotion_code + " Deleted. Result: " + result,
       });
     } else {
       res.json({
         response: "FAILED",
-        result: "Promotion: " + req.body.id + " Not Found. Result: " + result,
+        result: "Promotion: " + req.body.promotion_code + " Not Found. Result: " + result,
       });
     }
   } catch (error) {

@@ -15,7 +15,7 @@ exports.listAllEquipmentSets = async (req, res) => {
     });
     const result = await equipment_sets.findAll({
       attributes: [
-        "id",
+        "equipment_set_code",
         "name",
       ],
       where: {
@@ -44,7 +44,7 @@ exports.listAllEquipmentsToEquipmentSet = async (req, res) => {
   try {
     const result = await equipments.findAll({
       attributes: [
-        "id",
+        "equipment_code",
         "name",
       ],
       where: {
@@ -71,18 +71,25 @@ exports.listAllEquipmentsToEquipmentSet = async (req, res) => {
 exports.createNewEquipmentSet = async (req, res) => {
   const { name, equip_in_equipset } = req.body;
   try {
-    const getMaxEquipSetId = await equipment_sets.findOne({ attributes: [[Sequelize.fn('MAX', Sequelize.col('id')), "maxEquipId"]] });
-    const newEquipSetId = getMaxEquipSetId.dataValues.maxEquipId !== null ? helper.SKUincrementer(getMaxEquipSetId.dataValues.maxEquipId) : "BNPTS0000001";
-    console.log(newEquipSetId);
+    const getMaxEquipSetCode = await equipment_sets.findOne({ attributes: [[Sequelize.fn('MAX', Sequelize.col('equipment_set_code')), "maxEquipCode"]] });
+    const newEquipSetCode = getMaxEquipSetCode.dataValues.maxEquipCode !== null ? helper.SKUincrementer(getMaxEquipSetCode.dataValues.maxEquipCode) : "BNPTS0000001";
 
     /*สร้าง EquipmentSets*/
     const equip_set_result = await equipment_sets.create({
-      id: newEquipSetId,
+      equipment_set_code: newEquipSetCode,
       name: name
     });
 
     /*สร้างรายการอุปกรณ์ สำหรับชุดอุปกรณ์นั้นๆ*/
-    var object_equip = equip_in_equipset.map(equipId => { return { "equipment_set_id": newEquipSetId, "equipment_id": equipId } });
+    const findIdEquip = await equipments.findAll({
+      attributes: ['id'],
+      where: {
+        equipment_code: {
+          [Op.in]: equip_in_equipset
+        }
+      }
+    })
+    var object_equip = findIdEquip.map(equipId => { return { "equipment_set_id": equip_set_result.dataValues.id, "equipment_id": equipId.id } });
     console.log(object_equip);
     const equipset_equip_result = await equipment_set_equipments.bulkCreate(object_equip);
 
@@ -100,7 +107,7 @@ exports.createNewEquipmentSet = async (req, res) => {
 exports.listEquipmentSetsToEdit = async (req, res) => {
   try {
     const result = await equipment_sets.findAll({
-      attributes: ["id", "name"],
+      attributes: ["equipment_set_code", "name"],
       include: [
         {
           model: equipment_set_equipments,
@@ -116,7 +123,7 @@ exports.listEquipmentSetsToEdit = async (req, res) => {
         }
       ],
       where: {
-        id: req.body.id,
+        equipment_set_code: req.body.equipment_set_code,
         is_active: 1,
         is_delete: 0
       }
@@ -137,40 +144,59 @@ exports.listEquipmentSetsToEdit = async (req, res) => {
 
 /* Edit EquipmentSets */
 exports.editEquipmentSet = async (req, res) => {
-  const { id, name, equip_in_equipset } = req.body;
+  const { equipment_set_code, name, equip_in_equipset } = req.body;
   try {
-
-    /*ลบ equipment_set_equipments ที่มีอยู่ก่อน */
-    const del_equiptset_equip = await equipment_set_equipments.destroy({
-      where: {
-        equipment_set_id: id
-      }
-    });
-    if (del_equiptset_equip) {
-      /*แก้ไข EquipmentSets*/
-      const equip_set_result = await equipment_sets.update({
-        name: name
-      }, {
+    /* get ID ชุดอุปกรณ์ */
+    const get_id_equipment_set = await equipment_sets.findOne({ attributes: ['id'], where: { equipment_set_code: equipment_set_code } })
+    if (get_id_equipment_set) {
+      /*ลบ equipment_set_equipments ที่มีอยู่ก่อน */
+      const del_equiptset_equip = await equipment_set_equipments.destroy({
         where: {
-          id: id,
-          is_active: 1,
-          is_delete: 0
+          equipment_set_id: get_id_equipment_set.dataValues.id
         }
       });
-      /*แก้ไขรายการอุปกรณ์ สำหรับ EquipmentSets นั้นๆ*/
-      // ลบสำเร็จ & เพิ่ม equipment_set ใหม่ที่ส่งมา //
-      var object_equip = equip_in_equipset.map(equipId => { return { "equipment_set_id": id, "equipment_id": equipId } });
-      console.log(object_equip);
-      const equipset_equip_result = await equipment_set_equipments.bulkCreate(object_equip);
-      res.json({
-        response: "OK",
-        result: [equip_set_result, equipset_equip_result],
-      });
+      if (del_equiptset_equip) {
+        /*แก้ไข EquipmentSets*/
+        const equip_set_result = await equipment_sets.update({
+          name: name
+        }, {
+          where: {
+            equipment_set_code: equipment_set_code,
+            is_active: 1,
+            is_delete: 0
+          }
+        });
+        /*แก้ไขรายการอุปกรณ์ สำหรับ EquipmentSets นั้นๆ*/
+        // ลบสำเร็จ & เพิ่ม equipment_set ใหม่ที่ส่งมา //
+
+        /*สร้างรายการอุปกรณ์ สำหรับชุดอุปกรณ์นั้นๆ*/
+        const findIdEquip = await equipments.findAll({
+          attributes: ['id'],
+          where: {
+            equipment_code: {
+              [Op.in]: equip_in_equipset
+            }
+          }
+        })
+        var object_equip = findIdEquip.map(equipId => { return { "equipment_set_id": get_id_equipment_set.dataValues.id, "equipment_id": equipId.id } });
+        console.log(object_equip);
+        const equipset_equip_result = await equipment_set_equipments.bulkCreate(object_equip);
+        res.json({
+          response: "OK",
+          result: [equip_set_result, equipset_equip_result],
+        });
+      } else {
+        /// ลบไม่สำเร็จ ///
+        res.json({
+          response: "FAILED",
+          result: "Cannot Delete Equipment in EquipmentSet." + del_equiptset_equip,
+        });
+      }
     } else {
-      /// ลบไม่สำเร็จ ///
+      /// ไม่พบชุดอุปกรณ์นี้ ///
       res.json({
         response: "FAILED",
-        result: "Cannot Delete Equipment in EquipmentSet." + del_equiptset_equip,
+        result: "Not Found: " + equipment_set_code,
       });
     }
   } catch (error) {
@@ -186,18 +212,18 @@ exports.deleteEquipmentSet = async (req, res) => {
       is_delete: 1
     }, {
       where: {
-        id: req.body.id
+        equipment_set_code: req.body.equipment_set_code
       }
     });
     if (result != 0) {
       res.json({
         response: "OK",
-        result:"EquipmentSets: " + req.body.id + " Deleted. Result: " + result,
+        result: "EquipmentSets: " + req.body.equipment_set_code + " Deleted. Result: " + result,
       });
     } else {
       res.json({
         response: "FAILED",
-        result:"EquipmentSets: " + req.body.id + " Not Found. Result: " + result,
+        result: "EquipmentSets: " + req.body.equipment_set_code + " Not Found. Result: " + result,
       });
     }
   } catch (error) {

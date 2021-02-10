@@ -13,7 +13,7 @@ var fs = require('fs');
 const dotenv = require("dotenv");
 dotenv.config();
 
-const PORT = process.env.PORT || 5050;
+const PORT = process.env.PORT || 5001;
 const START_PART_WITH = process.env.START_PART_WITH || '';
 
 app.use(cors());

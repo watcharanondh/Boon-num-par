@@ -1,9 +1,19 @@
 module.exports = (sequelize, DataTypes) => {
   const customer_tax_invoices = sequelize.define("customer_tax_invoices", {
     id: {
-      type: DataTypes.INTEGER(10),
+      type: DataTypes.INTEGER(11),
       allowNull: false,
       primaryKey: true,
+      autoIncrement: true,
+    },
+    customer_id: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false,
+    },
+    customer_tax_invoices_code: {
+      type: DataTypes.STRING(13),
+      allowNull: false,
+      unique: true,
     },
     title: {
       type: DataTypes.STRING(255),
@@ -20,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
     email: {
       type: DataTypes.STRING(100),
       allowNull: false,
+      unique: true,
     },
     telephone_number: {
       type: DataTypes.STRING(20),

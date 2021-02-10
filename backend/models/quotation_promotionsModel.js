@@ -1,12 +1,17 @@
 module.exports = (sequelize, DataTypes) => {
   const quotation_promotions = sequelize.define("quotation_promotions", {
-    quotation_id : {
-      type: DataTypes.STRING(12),
+    id : {
+      type: DataTypes.INTEGER(11),
       allowNull: false,
       primaryKey: true,
+      autoIncrement: true,
+    },
+    quotation_id : {
+      type: DataTypes.INTEGER(11),
+      allowNull: false,
     },
     promotion_id : {
-      type: DataTypes.STRING(12),
+      type: DataTypes.INTEGER(11),
       allowNull: false,
     },
     createdAt: {

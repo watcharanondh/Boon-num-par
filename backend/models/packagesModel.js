@@ -1,9 +1,15 @@
 module.exports = (sequelize, DataTypes) => {
   const packages = sequelize.define("packages", {
     id: {
-      type: DataTypes.INTEGER(12),
+      type: DataTypes.INTEGER(11),
       allowNull: false,
       primaryKey: true,
+      autoIncrement: true,
+    },
+    package_code: {
+      type: DataTypes.STRING(20),
+      allowNull: false,
+      unique: true,
     },
     name: {
       type: DataTypes.STRING(255),
