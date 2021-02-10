@@ -48,7 +48,9 @@ export const getDistrict = (data) => {
 
 //Quotation
 
-
+export const getQuotation = () => {
+  return httpClient.get(server.LIST_ALL_QUOTATION_URL,);
+};
 
 
 

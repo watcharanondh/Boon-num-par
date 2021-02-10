@@ -35,7 +35,12 @@ export const server = {
 
   LIST_FIND_DISTRICT_URL:`districts/finddistrict`,
 
-  //Quotation //////////////////////////////////////
+  //Quotation
+  LIST_ALL_QUOTATION_URL:`quotations/listallquotations`,
+  
+  LIST_EDIT_Quotation_URL:`equipments/listequipment`,
+
+ 
 
   //Equipment
   LIST_ALL_EQUIPMENT_URL:`equipments/listallequipment`,

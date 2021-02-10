@@ -203,7 +203,7 @@
               </v-tab-item>
             </v-tabs>
 
-                      <v-row>
+            <v-row>
             <v-col cols="3">
               <v-btn
                 block
