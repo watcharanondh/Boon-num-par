@@ -46,6 +46,7 @@ exports.listAllEquipmentsToEquipmentSet = async (req, res) => {
       attributes: [
         "id",
         "name",
+        "stock_in"
       ],
       where: {
         is_active: 1,
@@ -82,7 +83,7 @@ exports.createNewEquipmentSet = async (req, res) => {
     });
 
     /*สร้างรายการอุปกรณ์ สำหรับชุดอุปกรณ์นั้นๆ*/
-    var object_equip = equip_in_equipset.map(equipId => { return { "equipment_set_id": newEquipSetId, "equipment_id": equipId } });
+    var object_equip = equip_in_equipset.map(equip => { return { "equipment_set_id": newEquipSetId, "equipment_id": equip.id, "amount": equip.amount } });
     console.log(object_equip);
     const equipset_equip_result = await equipment_set_equipments.bulkCreate(object_equip);
 
@@ -104,15 +105,17 @@ exports.listEquipmentSetsToEdit = async (req, res) => {
       include: [
         {
           model: equipment_set_equipments,
-          attributes: ["equipment_set_id", "equipment_id"],
+          attributes: ["equipment_set_id", "equipment_id","amount"],
           include: [
             {
               model: equipments,
-              attributes: ["name", "stock_in", "stock_out"],
-              where: { is_active: 1, is_delete: 0 }
+              attributes: ["id","name"],
+              where: { is_active: 1, is_delete: 0 },
+              required:false
             }
           ],
-          where: { is_active: 1, is_delete: 0 }
+          where: { is_active: 1, is_delete: 0 },
+          required:false
         }
       ],
       where: {
@@ -120,7 +123,12 @@ exports.listEquipmentSetsToEdit = async (req, res) => {
         is_active: 1,
         is_delete: 0
       }
-    })
+    }).then(eqset_data => {
+      eqset_data[0].dataValues.equipment_set_equipments.map(data => {
+        data.dataValues = { ...data.equipment.dataValues, "amount": data.amount };
+      });
+      return eqset_data;
+    });
     if (result != '' && result !== null) {
       res.json({
         response: "OK",
@@ -159,7 +167,7 @@ exports.editEquipmentSet = async (req, res) => {
       });
       /*แก้ไขรายการอุปกรณ์ สำหรับ EquipmentSets นั้นๆ*/
       // ลบสำเร็จ & เพิ่ม equipment_set ใหม่ที่ส่งมา //
-      var object_equip = equip_in_equipset.map(equipId => { return { "equipment_set_id": id, "equipment_id": equipId } });
+      var object_equip = equip_in_equipset.map(equipId => { return { "equipment_set_id": id, "equipment_id": equipId.id, "amount": equipId.amount } });
       console.log(object_equip);
       const equipset_equip_result = await equipment_set_equipments.bulkCreate(object_equip);
       res.json({

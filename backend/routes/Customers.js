@@ -17,9 +17,9 @@ router.post("/newcustomer", authorize, CustomerContrllers.createCustomer);
 /* List Customer to Edit */
 router.post("/listcustomer", authorize, CustomerContrllers.listCustomerToEdit);
 /* Edit Customer */
-router.put("/editcustomer", authorize, CustomerContrllers.editCustomer);
+router.post("/editcustomer", authorize, CustomerContrllers.editCustomer);
 /* Delete Customer */
-router.put("/delcustomer", authorize, CustomerContrllers.deleteCustomer);
+router.post("/delcustomer", authorize, CustomerContrllers.deleteCustomer);
 
 
 
@@ -32,8 +32,8 @@ router.post("/newcustomertaxinv", authorize, CustomerContrllers.createCustomersT
 /* List Customer Tax Invoice to Edit */
 router.post("/listcustomertaxinv", authorize, CustomerContrllers.listCustomersTaxInvoiceToEdit);
 /* Edit Customer Tax Invoice */
-router.put("/editcustomertaxinv", authorize, CustomerContrllers.editCustomersTaxInvoice);
+router.post("/editcustomertaxinv", authorize, CustomerContrllers.editCustomersTaxInvoice);
 /* Delete Customer Tax Invoice */
-router.put("/delcustomertaxinv", authorize, CustomerContrllers.deleteCustomersTaxInvoice);
+router.post("/delcustomertaxinv", authorize, CustomerContrllers.deleteCustomersTaxInvoice);
 
 module.exports = router;

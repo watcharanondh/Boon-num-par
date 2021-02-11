@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //Init MiddleWare
 app.use(logger);
 
-app.get(START_PART_WITH + "/", authorize, (req, res) => {
+app.get(START_PART_WITH + "/", (req, res) => {
   res.send("Hello World");
 });
 

@@ -14,9 +14,9 @@ router.post("/addnewpromotion", authorize, PromotionsContrllers.createNewPromoti
 router.post("/listpromotions", authorize, PromotionsContrllers.listPromotionToEdit);
 
 /* Edit Equipment */
-router.put("/editpromotion", authorize, PromotionsContrllers.editPromotion);
+router.post("/editpromotion", authorize, PromotionsContrllers.editPromotion);
 
 /* Delete Equipment */
-router.put("/delpromotion", authorize, PromotionsContrllers.deletePromotion);
+router.post("/delpromotion", authorize, PromotionsContrllers.deletePromotion);
 
 module.exports = router;

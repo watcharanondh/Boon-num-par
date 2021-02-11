@@ -315,7 +315,7 @@ exports.createNewQuotation = async (req, res) => {
     const selectPackageresult = await quotation_packages.create({
       quotation_id: newQuotaId,
       package_id: package_id,
-      amount: parseInt(amount_savory_food) + parseInt(amount_sweet_food) + parseInt(amount_drink)
+      amount: 1
     });
     /*สร้างรายการโปรโมชั่น สำหรับใบเสนอราคานั้นๆ*/
     var ObjPromotions = promotion_id.map(promoId => { return { "quotation_id": newQuotaId, "promotion_id": promoId } });
@@ -341,66 +341,6 @@ exports.createNewQuotation = async (req, res) => {
 /* List Quotation to Edit */
 exports.listQuotationsToEdit = async (req, res) => {
   try {
-    // const result = await quotations.findAll({
-    //   attributes: ["id", "event_date", "area_viewing_date", "amount_savory_food", "amount_sweet_food", "amount_drink"],
-    //   include: [
-    //     {
-    //       model: customers,
-    //       include: [
-    //         {
-    //           model: customer_tax_invoices,
-    //           attributes: ["title", "tax_id", "flash_number", "email", "telephone_number", "mobile_phone_number", "address"],
-    //           include: [
-    //             {
-    //               model: districts,
-    //               attributes: ["district", "amphoe", "province", "zipcode"]
-    //             }
-    //           ]
-    //         },
-    //       ],
-    //     },
-    //     {
-    //       model: quotation_promotions,
-    //       attributes: ["quotation_id", "promotion_id"],
-    //       include: [
-    //         {
-    //           model: promotions,
-    //           attributes: ["id", "name", "discount"]
-    //         }
-    //       ],
-    //       where: { quotation_id: req.body.id }
-    //     },
-    //     {
-    //       model: quotation_packages,
-    //       attributes: ["quotation_id", "package_id", "amount"],
-    //       include: [
-    //         {
-    //           model: packages,
-    //           attributes: ["id", "name", "price"]
-    //         }
-    //       ]
-    //     }
-    //   ],
-    //   where: {
-    //     id: req.body.id,
-    //     is_active: 1,
-    //     is_delete: 0
-    //   }
-    // }).then(quotation_data => {
-    //   quotation_data.map((data) => {
-    //     /* Customer Data  */
-    //     if (data.dataValues.customer) {
-    //       data.dataValues.customer_tax_invoices = data.dataValues.customer.customer_tax_invoices[0];
-    //       Object.assign(data.dataValues.customer_tax_invoices.dataValues, data.dataValues.customer_tax_invoices.district.dataValues)
-    //       delete data.dataValues.customer;
-    //     } else {
-    //       data.dataValues.customer_tax_invoices = "ไม่พบข้อมูล";
-    //     }
-    //   });
-    //   return quotation_data;
-    // });
-
-
     /* Customers Data  */
     const quotation_customers_result = await quotations.findAll({
       attributes: ["id", "event_date", "area_viewing_date", "amount_savory_food", "amount_sweet_food", "amount_drink","note"],
@@ -531,7 +471,7 @@ exports.editQuotation = async (req, res) => {
     const selectPackageresult = await quotation_packages.create({
       quotation_id: id,
       package_id: package_id,
-      amount: parseInt(amount_savory_food) + parseInt(amount_sweet_food) + parseInt(amount_drink)
+      amount: 1
     });
     /*ลบ และ เพิ่ม รายการโปรโมชั่น สำหรับใบเสนอราคานั้นๆ*/
     const del_promo_quotation = await quotation_promotions.destroy({
@@ -563,7 +503,7 @@ exports.editQuotation = async (req, res) => {
 /* Delete Quotation */
 exports.deleteQuotation = async (req, res) => {
   try {
-    const { id } = req.body;
+    console.log(req.body);
     /* ลบใบเสนอราคา ตาราง quotations */
     const result = await quotations.update({
       is_delete: 1

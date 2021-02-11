@@ -17,9 +17,9 @@ router.post("/addnewpackage", authorize, PackagesContrllers.createNewPackage);
 router.post("/listpackages", authorize, PackagesContrllers.listPackagesToEdit);
 
 /* Edit Packages */
-router.put("/editpackage", authorize, PackagesContrllers.editPackage);
+router.post("/editpackage", authorize, PackagesContrllers.editPackage);
 
 /* Delete Packages */
-router.put("/delpackage", authorize, PackagesContrllers.deletePackage);
+router.post("/delpackage", authorize, PackagesContrllers.deletePackage);
 
 module.exports = router;

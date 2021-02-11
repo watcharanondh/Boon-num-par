@@ -117,11 +117,13 @@ exports.listPackagesToEdit = async (req, res) => {
           include: [
             {
               model: equipment_sets,
-              attributes: ["name"],
-              where: { is_active: 1, is_delete: 0 }
+              attributes: ["id","name"],
+              where: { is_active: 1, is_delete: 0 },
+              required:false
             }
           ],
-          where: { is_active: 1, is_delete: 0 }
+          where: { is_active: 1, is_delete: 0 },
+          required:false
         }
       ],
       where: {
@@ -129,7 +131,12 @@ exports.listPackagesToEdit = async (req, res) => {
         is_active: 1,
         is_delete: 0
       }
-    })
+    }).then(pack_data => {
+      pack_data[0].dataValues.package_equipment_sets.map(data => {
+       data.dataValues = data.equipment_set.dataValues ;
+      });
+      return pack_data;
+    });
     if (result != '' && result !== null) {
       res.json({
         response: "OK",

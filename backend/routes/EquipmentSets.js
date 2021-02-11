@@ -17,8 +17,8 @@ router.post("/addnewequipmentset", authorize, EquipmentSetContrllers.createNewEq
 router.post("/listequipmentset", authorize, EquipmentSetContrllers.listEquipmentSetsToEdit);
 
 /* Edit Equipment */
-router.put("/editequipmentset", authorize, EquipmentSetContrllers.editEquipmentSet);
+router.post("/editequipmentset", authorize, EquipmentSetContrllers.editEquipmentSet);
 /* Delete Equipment */
-router.put("/delequipmentset", authorize, EquipmentSetContrllers.deleteEquipmentSet);
+router.post("/delequipmentset", authorize, EquipmentSetContrllers.deleteEquipmentSet);
 
 module.exports = router;

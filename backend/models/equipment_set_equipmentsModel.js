@@ -10,6 +10,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       primaryKey: true,
     },
+    amount: {
+      type: DataTypes.INTEGER(10),
+      allowNull: false,
+    },
     createdAt: {
       field: "created_at",
       type: DataTypes.DATE,
