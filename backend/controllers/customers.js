@@ -52,7 +52,7 @@ exports.listAllCustomers = async (req, res) => {
         is_active: 1,
         is_delete: 0
       },
-      order: [["created_at", "DESC"]]
+      order: [["id", "DESC"]]
     }).then(customers_data => {
       customers_data.map((data) => {
         data.dataValues.customer_tax_invoices = data.dataValues.customer_tax_invoices != '' ? data.dataValues.customer_tax_invoices[0].title : "ไม่พบข้อมูล";

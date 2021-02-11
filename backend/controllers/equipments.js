@@ -24,7 +24,7 @@ exports.listAllEquipments = async (req, res) => {
         is_active: 1,
         is_delete: 0
       },
-      order: [["updated_at", "DESC"]]
+      order: [["id", "DESC"]]
     });
     if (result != '' && result !== null) {
       res.json({

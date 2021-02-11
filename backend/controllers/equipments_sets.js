@@ -22,7 +22,7 @@ exports.listAllEquipmentSets = async (req, res) => {
         is_active: 1,
         is_delete: 0
       },
-      order: [["updated_at", "DESC"]]
+      order: [["id", "DESC"]]
     });
     if (result != '' && result !== null) {
       res.json({
@@ -147,14 +147,12 @@ exports.listEquipmentSetsToEdit = async (req, res) => {
 exports.editEquipmentSet = async (req, res) => {
   const { id, name, equip_in_equipset } = req.body;
   try {
-
     /*ลบ equipment_set_equipments ที่มีอยู่ก่อน */
     const del_equiptset_equip = await equipment_set_equipments.destroy({
       where: {
         equipment_set_id: id
       }
     });
-    if (del_equiptset_equip) {
       /*แก้ไข EquipmentSets*/
       const equip_set_result = await equipment_sets.update({
         name: name
@@ -174,13 +172,6 @@ exports.editEquipmentSet = async (req, res) => {
         response: "OK",
         result: [equip_set_result, equipset_equip_result],
       });
-    } else {
-      /// ลบไม่สำเร็จ ///
-      res.json({
-        response: "FAILED",
-        result: "Cannot Delete Equipment in EquipmentSet." + del_equiptset_equip,
-      });
-    }
   } catch (error) {
     console.log(error);
     res.json({ response: "FAILED", result: error });

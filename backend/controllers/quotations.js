@@ -36,6 +36,7 @@ exports.listAllQuotations = async (req, res) => {
         is_active: 1,
         is_delete: 0
       },
+      order: [["id", "DESC"]]
     }).then(quotation_data => {
       quotation_data.map((data) => {
         data.dataValues.customer_tax_invoices = data.dataValues.customer.customer_tax_invoices[0].title
@@ -343,7 +344,10 @@ exports.listQuotationsToEdit = async (req, res) => {
   try {
     /* Customers Data  */
     const quotation_customers_result = await quotations.findAll({
-      attributes: ["id", "event_date", "area_viewing_date", "amount_savory_food", "amount_sweet_food", "amount_drink","note"],
+      attributes: ["id",
+        [Sequelize.fn("date_format", Sequelize.col("`quotations`.`event_date`"), "%Y-%m-%d"), "event_date"],
+        [Sequelize.fn("date_format", Sequelize.col("`quotations`.`area_viewing_date`"), "%Y-%m-%d"), "area_viewing_date"],
+        "amount_savory_food", "amount_sweet_food", "amount_drink", "note"],
       include: [
         {
           model: customers,
