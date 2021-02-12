@@ -39,7 +39,7 @@ exports.listAllQuotations = async (req, res) => {
       order: [["id", "DESC"]]
     }).then(quotation_data => {
       quotation_data.map((data) => {
-        data.dataValues.customer_tax_invoices = data.dataValues.customer.customer_tax_invoices != '' ? data.dataValues.customer.customer_tax_invoices[0].title : "ไม่พบข้อมูลนิติบุคคล";
+        data.dataValues.customer_tax_invoices = data.dataValues.customer.customer_tax_invoices != '' ? data.dataValues.customer.customer_tax_invoices[0].title : data.dataValues.customer.name;
         data.dataValues.customer_name = data.dataValues.customer.name
         data.dataValues.quotation_status = data.dataValues.quotation_status.name
         delete data.dataValues.customer;
@@ -344,13 +344,14 @@ exports.listQuotationsToEdit = async (req, res) => {
   try {
     /* Customers Data  */
     const quotation_customers_result = await quotations.findAll({
-      attributes: [[Sequelize.fn("date_format", Sequelize.col("`quotations`.`event_date`"), "%Y-%m-%d"), "event_date"],
+      attributes: ["id",
+        [Sequelize.fn("date_format", Sequelize.col("`quotations`.`event_date`"), "%Y-%m-%d"), "event_date"],
         [Sequelize.fn("date_format", Sequelize.col("`quotations`.`area_viewing_date`"), "%Y-%m-%d"), "area_viewing_date"],
         "amount_savory_food", "amount_sweet_food", "amount_drink", "note"],
       include: [
         {
           model: customers,
-          attributes:['id'],
+          attributes:["id","type_id","name","telephone_number","mobile_phone_number","address"],
           include: [
             {
               model: customer_tax_invoices,
@@ -362,6 +363,10 @@ exports.listQuotationsToEdit = async (req, res) => {
                 }
               ]
             },
+            {
+              model: districts,
+              attributes: [["id", "district_id"], "district", "amphoe", "province", "zipcode", "district_code", "amphoe_code", "province_code"]
+            }
           ],
         },
       ],
@@ -373,15 +378,28 @@ exports.listQuotationsToEdit = async (req, res) => {
     }).then(quotation_data => {
       quotation_data.map((data) => {
         /* Customer Data  */
-        if (data.dataValues.customer) {
+        if (data.dataValues.customer.type_id == 2) {
           data.dataValues.customer_tax_invoices = data.dataValues.customer.customer_tax_invoices[0];
           data.dataValues.customer_id = data.dataValues.customer.id;
+          data.dataValues.name = data.dataValues.customer.name;
           Object.assign(data.dataValues.customer_tax_invoices.dataValues, data.dataValues.customer_tax_invoices.district.dataValues)
           Object.assign(data.dataValues, data.dataValues.customer_tax_invoices.dataValues)
           delete data.dataValues.customer;
           delete data.dataValues.customer_tax_invoices;
-        } else {
-          data.dataValues.customer_tax_invoices = "ไม่พบข้อมูล";
+        } else if (data.dataValues.customer.type_id == 1) {
+          data.dataValues.customer.dataValues = { ...data.dataValues.customer.dataValues, ...data.dataValues.customer.district.dataValues }
+          data.dataValues.customer_id = data.dataValues.customer.id; delete data.dataValues.customer.dataValues.id;
+          data.dataValues = {
+            ...data.dataValues,
+            title: "-",
+            tax_id: "-",
+            flash_number: "-",
+            email: "-",
+            ...data.dataValues.customer.dataValues
+          };
+          delete data.dataValues.customer;
+          delete data.dataValues.customer_tax_invoices;
+          delete data.dataValues.type_id;
         }
       });
       return quotation_data;
@@ -549,7 +567,7 @@ exports.printOutQuotation = async (req, res) => {
       include: [
         {
           model: customers,
-          attributes: [["name", "customer_name"]],
+          attributes: [["name", "customer_name"], "type_id", ["address", "cti_address"], ["telephone_number", "cti_telephone_number"]],
           include: [
             {
               model: customer_tax_invoices,
@@ -560,6 +578,10 @@ exports.printOutQuotation = async (req, res) => {
                   attributes: [["district", "cti_district"], ["amphoe", "cti_amphoe"], ["province", "cti_province"], ["zipcode", "cti_zipcode"]]
                 }
               ]
+            },
+            {
+              model: districts,
+              attributes: [["district", "cti_district"], ["amphoe", "cti_amphoe"], ["province", "cti_province"], ["zipcode", "cti_zipcode"]]
             }
           ]
         }
@@ -571,7 +593,7 @@ exports.printOutQuotation = async (req, res) => {
       }
     }).then(quotation_header => {
       quotation_header.map(data => {
-        if (data.dataValues.customer) {
+        if (data.dataValues.customer.type_id == 2) {
           data.dataValues.customer_tax_invoices = data.dataValues.customer.customer_tax_invoices[0];
           data.dataValues.customer_name = data.dataValues.customer.dataValues.customer_name;
           Object.assign(data.dataValues, data.dataValues.customer_tax_invoices.district.dataValues);
@@ -580,33 +602,25 @@ exports.printOutQuotation = async (req, res) => {
           delete data.dataValues.customer;
           delete data.dataValues.customer_tax_invoices;
           delete data.dataValues.district;
-        } else {
-          data.dataValues = "ไม่พบข้อมูล";
+        } else if(data.dataValues.customer.type_id == 1) {
+          data.dataValues.customer.dataValues = { ...data.dataValues.customer.dataValues, ...data.dataValues.customer.district.dataValues }
+          data.dataValues = {
+            ...data.dataValues,
+            cti_email: "-",
+            cti_vat_type: 0,
+            ...data.dataValues.customer.dataValues
+          };
+          is_check_vat_type = 0;
+          delete data.dataValues.customer;
+          delete data.dataValues.customer_tax_invoices;
+          delete data.dataValues.district;
+          delete data.dataValues.type_id;
         }
       })
       return quotation_header;
     });
 
     /* ------------------------------------------------------- Body ------------------------------------------------------- */
-    // const all_quotation_body = await quotations.findAll({
-    //   attributes: [["id", "quotation_id"]],
-    //   include: [
-    //     {
-    //       model: quotation_promotions,
-    //       attributes: ["quotation_id", "promotion_id"],
-    //       // include: [
-    //       //   {
-    //       //     model: promotions,
-    //       //     attributes: ["id", "name", "discount"],
-    //       //     require:false
-    //       //   }
-    //       // ]
-    //     }
-    //   ],
-    //   where: {
-    //     id: req.body.id
-    //   }
-    // });
     let total = 0;
     const body_packages = await quotation_packages.findAll({
       attributes: [
