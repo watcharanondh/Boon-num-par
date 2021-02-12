@@ -39,7 +39,7 @@ exports.listAllQuotations = async (req, res) => {
       order: [["id", "DESC"]]
     }).then(quotation_data => {
       quotation_data.map((data) => {
-        data.dataValues.customer_tax_invoices = data.dataValues.customer.customer_tax_invoices[0].title
+        data.dataValues.customer_tax_invoices = data.dataValues.customer.customer_tax_invoices != '' ? data.dataValues.customer.customer_tax_invoices[0].title : "ไม่พบข้อมูลนิติบุคคล";
         data.dataValues.customer_name = data.dataValues.customer.name
         data.dataValues.quotation_status = data.dataValues.quotation_status.name
         delete data.dataValues.customer;
