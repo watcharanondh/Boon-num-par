@@ -153,6 +153,7 @@ exports.editEquipmentSet = async (req, res) => {
         equipment_set_id: id
       }
     });
+    if (del_equiptset_equip) {
       /*แก้ไข EquipmentSets*/
       const equip_set_result = await equipment_sets.update({
         name: name
@@ -172,6 +173,9 @@ exports.editEquipmentSet = async (req, res) => {
         response: "OK",
         result: [equip_set_result, equipset_equip_result],
       });
+    } else {
+      res.json({ response: "FAILED", result: "del_equiptset_equip:" + del_equiptset_equip });
+    }
   } catch (error) {
     console.log(error);
     res.json({ response: "FAILED", result: error });
