@@ -274,19 +274,27 @@ exports.editCustomer = async (req, res) => {
       const { id, name, telephone_number, mobile_phone_number, line_id, address, district_id, cti_title, cti_tax_id, cti_flash_number, cti_email, cti_telephone_number, cti_mobile_phone_number, cti_address, cti_district_id } = req.body;
       /* Email Check */
       const is_email = await customer_tax_invoices.findOne({ where: { email: cti_email } })
+      const is_own_email = await customer_tax_invoices.findOne({ where: { email: cti_email, id: id } })
+      console.log('emaili',is_email);
       if (is_email) {
-        res.json({
-          response: "FAILED",
-          result: "Email already exists."
-        });
+        if (!is_own_email) {        
+          res.json({
+            response: "FAILED",
+            result: "Email already exists."
+          });
+        }
       }
       /* TAX ID Check */
-      const is_tax_id = await customer_tax_invoices.findOne({ where: { tax_id: cti_tax_id } })
+      const is_tax_id = await customer_tax_invoices.findOne({ where: { tax_id: cti_tax_id} })
+      const is_own_tax_id = await customer_tax_invoices.findOne({ where: { tax_id: cti_tax_id, id: id } })
+      console.log('tax_id',is_tax_id);
       if (is_tax_id) {
-        res.json({
-          response: "FAILED",
-          result: "Tax ID already exists."
-        });
+        if (!is_own_tax_id) {
+          res.json({
+            response: "FAILED",
+            result: "Tax ID already exists."
+          });          
+        }
       }
       const customers_result = await customers.update({
         name: name,
