@@ -344,13 +344,13 @@ exports.listQuotationsToEdit = async (req, res) => {
   try {
     /* Customers Data  */
     const quotation_customers_result = await quotations.findAll({
-      attributes: ["id",
-        [Sequelize.fn("date_format", Sequelize.col("`quotations`.`event_date`"), "%Y-%m-%d"), "event_date"],
+      attributes: [[Sequelize.fn("date_format", Sequelize.col("`quotations`.`event_date`"), "%Y-%m-%d"), "event_date"],
         [Sequelize.fn("date_format", Sequelize.col("`quotations`.`area_viewing_date`"), "%Y-%m-%d"), "area_viewing_date"],
         "amount_savory_food", "amount_sweet_food", "amount_drink", "note"],
       include: [
         {
           model: customers,
+          attributes:['id'],
           include: [
             {
               model: customer_tax_invoices,
@@ -375,6 +375,7 @@ exports.listQuotationsToEdit = async (req, res) => {
         /* Customer Data  */
         if (data.dataValues.customer) {
           data.dataValues.customer_tax_invoices = data.dataValues.customer.customer_tax_invoices[0];
+          data.dataValues.customer_id = data.dataValues.customer.id;
           Object.assign(data.dataValues.customer_tax_invoices.dataValues, data.dataValues.customer_tax_invoices.district.dataValues)
           Object.assign(data.dataValues, data.dataValues.customer_tax_invoices.dataValues)
           delete data.dataValues.customer;
