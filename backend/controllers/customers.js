@@ -271,7 +271,7 @@ exports.editCustomer = async (req, res) => {
       }
     } else if (parseInt(req.body.type_id) === 2) {
       /* Customers ประเภทนิติบุคคล */
-      const { id, name, telephone_number, mobile_phone_number, line_id, address, district_id, cti_title, cti_tax_id, cti_flash_number, cti_email, cti_telephone_number, cti_mobile_phone_number, cti_address, cti_district_id } = req.body;
+      const { id, name, telephone_number, mobile_phone_number, line_id, address, district_id, cti_title, cti_tax_id, cti_flash_number, cti_email, cti_telephone_number, cti_mobile_phone_number, cti_address, cti_district_id,cti_vat_type } = req.body;
       /* Email Check */
       const is_email = await customer_tax_invoices.findOne({ where: { email: cti_email } })
       const is_own_email = await customer_tax_invoices.findOne({ where: { email: cti_email, id: id } })
@@ -320,7 +320,8 @@ exports.editCustomer = async (req, res) => {
         telephone_number: cti_telephone_number,
         mobile_phone_number: cti_mobile_phone_number,
         address: cti_address,
-        district_id: cti_district_id
+        district_id: cti_district_id,
+        vat_type: cti_vat_type
       }, {
         where: {
           id: id,
