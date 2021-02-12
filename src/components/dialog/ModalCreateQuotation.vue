@@ -26,10 +26,10 @@
           <v-row class="justify-center">
             <v-col class="justify-center">
               <v-select
-                v-model="SelectCustomerType"
-                :items="CustomerTypePage"
+                v-model="SelectStatus"
+                :items="StatusType"
                 item-text="name"
-                item-value="value"
+                item-value="id"
                 return-object
                 solo
                 dense
@@ -44,7 +44,7 @@
                     block
                     large
                     rounded
-                    @click="selectPage(SelectCustomerType.value)"
+                    @click="changeStatus(SelectStatus)"
                     ><span class=" white--text">ตกลง</span></v-btn
                   >
                 </v-col>
@@ -72,20 +72,49 @@
 </template>
 
 <script>
+import api from "@/services/api";
 export default {
+  name:"ModalCreateQuotation",
+  props:['idq'],
+ mounted() {
+      this.getStatus();
+
+  },
   data() {
     return {
-      SelectStatus: { name: "คอนเฟิร์ม", value: "Personneltype" },
-      StatusType: [
-        { name: "ไม่คอนเฟิร์ม", value: "Personneltype" },
-        { name: "ยกเลิก", value: "Companytype" },
-      ],
+      SelectStatus: { name: "คอนเฟิร์ม", id: "1" },
+      StatusType: [],
     };
   },
   methods: {
-    selectPage() {
-      this.$router.push(`/${this.SelectCustomerType.value}`);
+  async  getStatus(){
+      let result = await api.getStatusQuotation();
+      let status = result.data.result
+      let _this = this;
+          status.forEach((value) =>  {
+            _this.StatusType.push({
+              id: `${value.id}`,
+              name: `${value.name}`,
+            });
+          });
     },
+  async changeStatus(SelectStatus) {
+      let StatusID = SelectStatus.id
+      let updateStatus = {id:this.idq ,status:StatusID}
+      console.log(updateStatus);
+      let result = await api.updateStatusQuotation(updateStatus);
+      console.log(result);
+          if (result.data.response =='OK'){
+              window.location.reload()
+
+      }
+  },
+
+  async loadQuotations() {
+    let result = await api.getQuotation();
+      this.table_quotation_item = result.data.result;
+      this.total = result.data.total;
+    }
   },
 };
 </script>

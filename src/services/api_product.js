@@ -1,149 +1,186 @@
-//import { imageUrl } from "./constants";
-import httpClient from "@/services/httpClient";
-import { server } from "@/services/constants";
+import axios from "axios";
+import { apiUrl , server } from "@/services/constants";
+
 
 //Dashboard
 export const getDashboard = () => {
-  return httpClient.get(server.DASHBOARD_URL);
+  return axios.get(apiUrl + server.DASHBOARD_URL ,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
 };
 
 //Customer
 export const getListcustomertypeselector = () => {
-  return httpClient.get(server.CUSTOMERTYPESELECTOR_URL);
+  return axios.get(apiUrl + server.CUSTOMERTYPESELECTOR_URL ,{headers: {"Authorization":`Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
 };
 export const getListallcustomers = () => {
-  return httpClient.get(server.LISTALLCUSTOMERS_URL);
+  return axios.get(apiUrl + server.LISTALLCUSTOMERS_URL,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
 };
 
 export const getListEditcustomers = (data) => {
-  return httpClient.post(server.LIST_CUSTOMER_EDIT_URL, data);
+  return axios.post(apiUrl + server.LIST_CUSTOMER_EDIT_URL, data ,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
 };
 
 export const addNewpersonnal = (data) => {
-  return httpClient.post(server.NEWCUSTOMER_URL, data);
+  return axios.post(apiUrl + server.NEWCUSTOMER_URL, data ,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
 };
 
-export const putEditcustomer = (data) => {
-  return httpClient.put(server.EDIT_CUSTOMER_URL, data);
+export const Editcustomer = (data) => {
+  return axios.post(apiUrl + server.EDIT_CUSTOMER_URL, data ,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
 };
 
 export const delCustomer = (data) => {
-  return httpClient.put(server.DELETE_CUSTOMER_URL, data);
+  return axios.post(apiUrl + server.DELETE_CUSTOMER_URL, data,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
 };
 
 //GetProvince
 export const getProvinces = () => {
-  return httpClient.post(server.LIST_FIND_PROVINCE_URL);
+  return axios.get(apiUrl + server.LIST_FIND_PROVINCE_URL, {headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
 };
 
 //GetAMPHOE
 export const getAmphoe = (data) => {
-  return httpClient.post(server.LIST_FIND_AMPHOE_URL,data);
+  return axios.post(apiUrl + server.LIST_FIND_AMPHOE_URL,data,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
 };
 
 //GetProvince
 export const getDistrict = (data) => {
-  return httpClient.post(server.LIST_FIND_DISTRICT_URL,data);
+  return axios.post(apiUrl + server.LIST_FIND_DISTRICT_URL,data,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
 };
 
 //Quotation
 
 export const getQuotation = () => {
-  return httpClient.get(server.LIST_ALL_QUOTATION_URL,);
+  return axios.get(apiUrl + server.LIST_ALL_QUOTATION_URL,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
+};
+export const getStatusQuotation = () => {
+  return axios.get(apiUrl + server.LIST_STATUS_QUOTATION_SELECTOR_URL,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
+};
+export const getCustomerQuotation = () => {
+  return axios.get(apiUrl + server.LIST_CUSTOMER_QUOTATION_URL,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
+};
+export const getCreateCustomerQuotation = (data) => {
+  return axios.post(apiUrl + server.LIST_CUSTOMER_CREATE_QUOTATION_URL,data,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
+};
+export const getPackageQuotation = () => {
+  return axios.get(apiUrl + server.LIST_ALL_PACKAGE_QUOTATION_URL,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
+};
+export const getPromotionQuotation = () => {
+  return axios.get(apiUrl + server.LIST_ALL_PROMOTION_QUOTATION_URL,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
 };
 
+export const getEditQuotation = (data) => {
+  return axios.post(apiUrl + server.LIST_EDIT_QUOTATION_URL,data,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
+};
 
+export const updateStatusQuotation = (data) => {
+  return axios.post(apiUrl + server.UPDATE_STATUS_QUOTATION_SELECTOR_URL,data,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
+};
+
+export const addQuotation = (data) => {
+  return axios.post(apiUrl + server.ADD_QUOTATION_URL,data,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
+};
+
+export const editQuotation = (data) => {
+  return axios.post(apiUrl + server.PUT_EDIT_SET_QUOTATION_URL,data,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
+};
+
+export const delQuotation = (data) => {
+  return axios.post(apiUrl + server.DELETE_QUOTATION_URL,data,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
+};
+
+export const getPrintQuotation = (data) => {
+  return axios.post(apiUrl + server.PRINT_QUOTATION_URL,data,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
+};
 
 //Equipment
 export const getEquipment = () => {
-  return httpClient.get(server.LIST_ALL_EQUIPMENT_URL);
+  return axios.get(apiUrl + server.LIST_ALL_EQUIPMENT_URL,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
 };
 
 export const getEditequipment = (data) => {
-  return httpClient.post(server.LIST_EDIT_EQUIPMENT_URL,data);
+  return axios.post(apiUrl + server.LIST_EDIT_EQUIPMENT_URL,data,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
 };
 
 export const addEquipment = (data) => {
-  return httpClient.post(server.ADD_EQUIPMENT_URL,data);
+  return axios.post(apiUrl + server.ADD_EQUIPMENT_URL,data,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
 };
 
 export const editEquipment = (data) => {
-  return httpClient.put(server.PUT_EDIT_EQUIPMENT_URL,data);
+  return axios.post(apiUrl + server.PUT_EDIT_EQUIPMENT_URL,data,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
 };
 
 export const delEquipment = (data) => {
-  return httpClient.put(server.DELETE_EQUIPMENT_URL,data);
+  return axios.post(apiUrl + server.DELETE_EQUIPMENT_URL,data,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
 };
 
 //Equipment SET
 export const getSetEquipment = () => {
-  return httpClient.get(server.LIST_ALL_SET_EQUIPMENT_URL);
+  return axios.get(apiUrl + server.LIST_ALL_SET_EQUIPMENT_URL,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
 };
 export const getSetEquipmentmini = () => {
-  return httpClient.get(server.LIST_ALL_SET_MINI_EQUIPMENT_URL);
+  return axios.get(apiUrl + server.LIST_ALL_SET_MINI_EQUIPMENT_URL,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
 };
 export const getEditSetEquipmentmini = (data) => {
-  return httpClient.post(server.LIST_EDIT_SET_MINI_EQUIPMENT_URL,data);
+  return axios.post(apiUrl + server.LIST_EDIT_SET_MINI_EQUIPMENT_URL,data,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
 };
 
 export const addSetEquipment = (data) => {
-  return httpClient.post(server.ADD_SET_EQUIPMENT_URL,data);
+  return axios.post(apiUrl + server.ADD_SET_EQUIPMENT_URL,data,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
 };
 
 export const editSetEquipment = (data) => {
-  return httpClient.put(server.PUT_EDIT_SET_EQUIPMENT_URL,data);
+  return axios.post(apiUrl + server.PUT_EDIT_SET_EQUIPMENT_URL,data,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
 };
 
 export const delSetEquipment = (data) => {
-  return httpClient.put(server.DELETE_SET_EQUIPMENT_URL,data);
+  return axios.post(apiUrl + server.DELETE_SET_EQUIPMENT_URL,data,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
 };
 
 //Package
 export const getPackage = () => {
-  return httpClient.get(server.LIST_ALL_PACKAGE_URL);
+  return axios.get(apiUrl + server.LIST_ALL_PACKAGE_URL,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
 };
 
 export const getlistEquipmentToPackage = () => {
-  return httpClient.get(server.LIST_ALL_Equipments_PackageUse_URL);
+  return axios.get(apiUrl + server.LIST_ALL_Equipments_PackageUse_URL,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
 };
 
 export const addPackage = (data) => {
-  return httpClient.post(server.ADD_PACKAGE_URL,data);
+  return axios.post(apiUrl + server.ADD_PACKAGE_URL,data,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
 };
 
 export const getEditPackage = (data) => {
-  return httpClient.post(server.LIST_EDIT_PACKAGE_URL,data);
+  return axios.post(apiUrl + server.LIST_EDIT_PACKAGE_URL,data,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
 };
 
 export const editPackage = (data) => {
-  return httpClient.put(server.PUT_EDIT_PACKAGE_URL,data);
+  return axios.post(apiUrl + server.PUT_EDIT_PACKAGE_URL,data,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
 };
 
 export const delPackage = (data) => {
-  return httpClient.put(server.DELETE_PACKAGE_URL,data);
+  return axios.post(apiUrl + server.DELETE_PACKAGE_URL,data,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
 };
 
 
 //Promotion
 
 export const getPromotion = () => {
-  return httpClient.get(server.LIST_ALL_PROMOTION_URL);
+  return axios.get(apiUrl + server.LIST_ALL_PROMOTION_URL,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
 };
 
 export const getEditpromotion = (data) => {
-  return httpClient.post(server.LIST_EDIT_PROMOTION_URL,data);
+  return axios.post(apiUrl + server.LIST_EDIT_PROMOTION_URL,data,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
 };
 
 export const addPromotion = (data) => {
-  return httpClient.post(server.ADD_PROMOTION_URL,data);
+  return axios.post(apiUrl + server.ADD_PROMOTION_URL,data,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
 };
 
 export const editPromotion = (data) => {
-  return httpClient.put(server.PUT_EDIT_PROMOTION_URL,data);
+  return axios.post(apiUrl + server.PUT_EDIT_PROMOTION_URL,data,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
 };
 
 export const delPromotion = (data) => {
-  return httpClient.put(server.DELETE_PROMOTION_URL,data);
+  return axios.post(apiUrl + server.DELETE_PROMOTION_URL,data,{headers: {"Authorization": `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}});
 };
 
 

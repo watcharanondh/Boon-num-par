@@ -39,7 +39,7 @@
                   class="ma-2"
                   block
                   color="black"
-                  @click="$router.push('/QuotationCreate')"
+                  @click="$router.push('/Quotation')"
                   rounded
                 >
                   <span class="white--text">ปิด</span></v-btn
@@ -157,124 +157,6 @@
                     <td COLSPAN="1" v-else></td>
                     <td COLSPAN="1"></td>
                   </tr>
-
-<!--     
-                  <tr class="tb-data" align="center" style="border-left:black;border-right:black;">
-                    <td COLSPAN="1">1</td>
-                    <td class="td-body-data" COLSPAN="5" align="start">
-                      <div cols="7" class="ma-2" style="line-height: 1.6;">
-                        Package บุญนำพา5 วันจันทร์ที่ 8 มิ.ย 63 (พระเพล) <br />
-                        ติดต่อวัดและนิมนต์คณะพระภิกษุสงฆ์ 9 รูป
-                        (รวมนิมนต์พระและรับ-ส่งพระ) <br />
-                        ชุดโต๊ะหมู่บูชาและพระประธาน <br />
-                        ชุดอาสนะพระภิกษุสงฆ์ จำนวน 9 ตัว <br />
-                        เครื่องใช้และอุปกรณ์ประกอบพิธีสงฆ์ครบถ้วน
-                      </div>
-                    </td>
-                    <td COLSPAN="1">1.000</td>
-                    <td COLSPAN="1">29,999.00</td>
-                    <td COLSPAN="1">29,999.00</td>
-                  </tr> -->
-
-<!-- 
-                  <tr align="center" style="border-left:black;border-right:black;">
-                    <td COLSPAN="1">2</td>
-                    <td class="td-body-data" COLSPAN="5" align="start">
-                      <div cols="7" class="ma-2">
-                       โปรโมชั่น*** แถมชุดโต๊ะ เก้าอี้ที่นั่งสำหรับแขก จำนวน 5 ชุด มูลค่า 2,000 บาท ฟรี
-                      </div>
-                    </td>
-                    <td COLSPAN="1">1.000</td>
-                    <td COLSPAN="1"></td>
-                    <td COLSPAN="1"></td>
-                  </tr>
-                  <tr align="center" style="border-left:black;border-right:black;">
-                    <td COLSPAN="1">3</td>
-                    <td class="td-body-data" COLSPAN="5" align="start">
-                      <div cols="7" class="ma-2">
-                       โปรโมชั่น ฟรี ค่าขนส่งเหมาติดตั้งและเก็บกลับ 1,500 บาท
-                      </div>
-                    </td>
-                    <td COLSPAN="1">1.000</td>
-                    <td COLSPAN="1"></td>
-                    <td COLSPAN="1"></td>
-                  </tr>
-                  <tr align="center" style="border-left:black;border-right:black;">
-                    <td COLSPAN="1">4</td>
-                    <td class="td-body-data" COLSPAN="5" align="start">
-                      <div cols="7" class="ma-2">
-                        Package บุญนำพา5 วันจันทร์ที่ 8 มิ.ย 63 (พระเพล) <br />
-                        ติดต่อวัดและนิมนต์คณะพระภิกษุสงฆ์ 9 รูป
-                        (รวมนิมนต์พระและรับ-ส่งพระ) <br />
-                        ชุดโต๊ะหมู่บูชาและพระประธาน <br />
-                        ชุดอาสนะพระภิกษุสงฆ์ จำนวน 9 ตัว <br />
-                        เครื่องใช้และอุปกรณ์ประกอบพิธีสงฆ์ครบถ้วน
-                      </div>
-                    </td>
-                    <td COLSPAN="1">1.000</td>
-                    <td COLSPAN="1">29,999.00</td>
-                    <td COLSPAN="1">29,999.00</td>
-                  </tr>
-                  <tr align="center" style="border-left:black;border-right:black;">
-                    <td COLSPAN="1">5</td>
-                    <td class="td-body-data" COLSPAN="5" align="start">
-                      <div cols="7" class="ma-2">
-                       โปรโมชั่น*** แถมชุดโต๊ะ เก้าอี้ที่นั่งสำหรับแขก จำนวน 5 ชุด มูลค่า 2,000 บาท ฟรี
-                      </div>
-                    </td>
-                    <td COLSPAN="1">1.000</td>
-                    <td COLSPAN="1"></td>
-                    <td COLSPAN="1"></td>
-                  </tr>
-                  <tr align="center" style="border-left:black;border-right:black;">
-                    <td COLSPAN="1">6</td>
-                    <td class="td-body-data" COLSPAN="5" align="start">
-                      <div cols="7" class="ma-2">
-                       โปรโมชั่น ฟรี ค่าขนส่งเหมาติดตั้งและเก็บกลับ 1,500 บาท
-                      </div>
-                    </td>
-                    <td COLSPAN="1">1.000</td>
-                    <td COLSPAN="1"></td>
-                    <td COLSPAN="1"></td>
-                  </tr>
-                  <tr align="center" style="border-left:black;border-right:black;">
-                    <td COLSPAN="1">7</td>
-                    <td class="td-body-data" COLSPAN="5" align="start">
-                      <div cols="7" class="ma-2">
-                        Package บุญนำพา5 วันจันทร์ที่ 8 มิ.ย 63 (พระเพล) <br />
-                        ติดต่อวัดและนิมนต์คณะพระภิกษุสงฆ์ 9 รูป
-                        (รวมนิมนต์พระและรับ-ส่งพระ) <br />
-                        ชุดโต๊ะหมู่บูชาและพระประธาน <br />
-                        ชุดอาสนะพระภิกษุสงฆ์ จำนวน 9 ตัว <br />
-                        เครื่องใช้และอุปกรณ์ประกอบพิธีสงฆ์ครบถ้วน
-                      </div>
-                    </td>
-                    <td COLSPAN="1">1.000</td>
-                    <td COLSPAN="1">29,999.00</td>
-                    <td COLSPAN="1">29,999.00</td>
-                  </tr>
-                  <tr align="center" style="border-left:black;border-right:black;">
-                    <td COLSPAN="1">8</td>
-                    <td class="td-body-data" COLSPAN="5" align="start">
-                      <div cols="7" class="ma-2">
-                       โปรโมชั่น*** แถมชุดโต๊ะ เก้าอี้ที่นั่งสำหรับแขก จำนวน 5 ชุด มูลค่า 2,000 บาท ฟรี
-                      </div>
-                    </td>
-                    <td COLSPAN="1">1.000</td>
-                    <td COLSPAN="1"></td>
-                    <td COLSPAN="1"></td>
-                  </tr>
-                  <tr align="center" style="border-bottom:black;border-left:black;border-right:black;">
-                    <td COLSPAN="1">9</td>
-                    <td class="td-body-data" COLSPAN="5" align="start">
-                      <div cols="7" class="ma-2">
-                       โปรโมชั่น ฟรี ค่าขนส่งเหมาติดตั้งและเก็บกลับ 1,500 บาท
-                      </div>
-                    </td>
-                    <td COLSPAN="1">1.000</td>
-                    <td COLSPAN="1"></td>
-                    <td COLSPAN="1"></td>
-                  </tr> -->
                 </tbody>
                 <tfoot>
                   <tr align="center" style="border-bottom:black;border-right:black;">
@@ -372,7 +254,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import api from "@/services/api";
 export default {
   name: "QuotationPrint",
 
@@ -384,18 +266,20 @@ export default {
 
  mounted() {
     this.loadDatas();
+      this.$store.dispatch({
+            type: "inputRoutepath",
+            RT: this.$route.path,
+          });
   },
 
   methods: {
     async loadDatas() {
-        axios
-          .post(`http://localhost:5001/nodejs/bnp/quotations/printquotation`, {id:"BNPQU0000006"},{"headers":{"Authorization":"Basic BNP*1234"}})
-          .then((res) => {
-            this.Header = res.data.result.header;
-            this.Bodys = res.data.result.body;
-            this.Footer = res.data.result.footer;
+      let ID_Quotation ={id:this.$store.getters["Newpersonal_BNP_ID"].BNP_ID}
+      let result = await api.getPrintQuotation(ID_Quotation);
+            this.Header = result.data.result.header
+            this.Bodys = result.data.result.body
+            this.Footer = result.data.result.footer
             console.log(this.Bodys);
-          });
       
     },    
     print () {

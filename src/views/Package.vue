@@ -4,7 +4,7 @@
       <v-row>
         <v-card flat color="#E5E5E5">
           <div class="sizetitle">
-            แพ็คเกจ
+            แพ็คเก็จ
           </div>
         </v-card>
       </v-row>
@@ -19,7 +19,7 @@
           @click="$router.push('/CreatePackage')"
           rounded
         >
-          <span class="white--text">สร้างแพ็คเกจ</span></v-btn
+          <span class="white--text">สร้างแพ็คเก็จ</span></v-btn
         >
       </v-col>
     </v-row>
@@ -28,31 +28,22 @@
     </v-col>
     <v-row>
       <v-col lg="12" md="12" sm="12" cols="12">
-        <!-- รายการแพ็คเกจ -->
+        <!-- รายการแพ็กเก็จ -->
         <v-card>
           <v-data-table
-            :headers="headers_table_customer"
-            :items="table_customer"
+            :headers="headers_table_package"
+            :items="table_package"
             :items-per-page="10"
             class="elevation-1"
           >
             <!-- table top section -->
             <template v-slot:top>
               <v-toolbar flat>
-                <v-toolbar-title><span>รายการแพ็คเกจ</span></v-toolbar-title>
-                <v-toolbar-title
-                  ><span class="text-caption grey--text"
-                    >1024</span
-                  ></v-toolbar-title
-                >
-                <v-toolbar-title
-                  ><span class="text-caption grey--text"
-                    >รายการ</span
-                  ></v-toolbar-title
-                >
+                <v-toolbar-title><span>รายการแพ็กเก็จ</span></v-toolbar-title>
+                <v-toolbar-title><span class="text-caption grey--text">{{total}}</span></v-toolbar-title>
                 <v-spacer></v-spacer>
 
-                <div>
+                <!-- <div>
                   <v-btn icon>
                     <svg
                       width="14"
@@ -86,38 +77,29 @@
                     </svg>
                   </v-btn>
                   Filter
-                </div>
+                </div> -->
               </v-toolbar>
             </template>
             <template v-slot:item="{ item }">
               <tr>
                 <td>{{ item.id }}</td>
-                <td>
-                  {{ item.name }}<br />
-                  update {{ item.update }}
-                </td>
-                <td>
-                  {{ item.customer_tax_invoices }}
-                  <br />
-                  update {{ item.update }}
-                </td>
-
-
+                <td>{{ item.name }}</td>
+                <td>{{ item.food_des }}</td>
                 <td>
                   <v-row>
-                    <v-btn v-bind="attrs" v-on="on" fab icon outlined small>
+                    <!-- <v-btn fab icon outlined small>
                       <v-icon>visibility</v-icon>
-                    </v-btn>
-                    <v-btn v-bind="attrs" v-on="on" fab icon outlined small>
+                    </v-btn> -->
+                    <v-btn @click="EditPackage(item)" fab icon outlined small>
                       <v-icon>edit</v-icon>
                     </v-btn>
-                    <v-btn fab icon outlined small>
+                    <v-btn @click="DelPackage(item)" fab icon outlined small>
                       <v-icon>delete</v-icon>
                     </v-btn>
                   </v-row>
                 </td>
                 <td>
-                  <v-btn icon v-bind="attrs" v-on="on">
+                  <v-btn icon>
                     <v-icon>mdi-dots-vertical</v-icon>
                   </v-btn>
                 </td>
@@ -131,36 +113,55 @@
 </template>
 
 <script>
-//import axios from "axios";
+import api from "@/services/api";
 export default {
   name: "Package",
-
-  mounted() {
-    console.log(this.$route.path);
+  async mounted() {
+    this.loadPackage();
     this.$store.dispatch({
           type: "inputRoutepath",
           RT: this.$route.path,
-        });
-    // axios
-    //   .get(`${process.env.VUE_APP_NODE_URL}/customers/listallcustomers`)
-    //   .then((response) => {
-    //     console.log(response.data.result);
-    //     this.table_customer = response.data.result;
-    //   });
+    });
+
   },
 
   data: () => ({
-    table_customer: [],
-    headers_table_customer: [
-      { text: "รหัสแพ็คเกจ", value: "id", sortable: false, align: "start", color: "black"},
-      { text: "ชื่อแพ็คเกจ", value: "name", sortable: false, align: "start" },
-      { text: "รายละเอียด", value: "customer_tax_invoices", sortable: false, align: "start"},
+    total:null,
+    table_package: [],
+    headers_table_package: [
+      { text: "รหัสแพ็กเก็จ", value: "id", sortable: false, align: "start", color: "black"},
+      { text: "ชื่อแพ็กเก็จ", value: "name", sortable: false, align: "start" },
+      { text: "รายละเอียด", value: "food_des", sortable: false, align: "start"},
       { text: "", value: "", sortable: false, align: "start" },
       { text: "", value: "", sortable: false, align: "start" },
     ],
   }),
 
-  methods: {},
+  methods: {
+    async loadPackage(){
+            let result = await api.getPackage();
+            this.table_package = result.data.result;
+            this.total = result.data.count_total;
+          },
+    async EditPackage(item){
+          await this.$store.dispatch({
+                  type: "doEditBNPID",
+                  BNP_ID: item.id,
+               });
+          await this.$router.push('/EditPackage');
+          },
+    async DelPackage(item){
+              let delPackage ={id:item.id}
+              let result = await api.delPackage(delPackage);
+              console.log(result);
+              if (result.data.response =='OK'){
+                alert('ลบแพ็กเก็จเรียบร้อยแล้ว')
+                await this.loadPackage()
+                location.reload();
+              }
+          },
+
+  },
 };
 </script>
 

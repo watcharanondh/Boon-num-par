@@ -99,9 +99,9 @@
                   </v-row>
                 </td>
                 <td>
-                  <v-btn icon>
+                  <!-- <v-btn icon>
                     <v-icon>mdi-dots-vertical</v-icon>
-                  </v-btn>
+                  </v-btn> -->
                 </td>
               </tr>
             </template>
@@ -140,7 +140,6 @@ async mounted() {
   methods: {
     async loadPromotion(){
             let result = await api.getPromotion();
-            console.log(result.data);
             this.table_promtion = result.data.result;
             this.total = result.data.count_total;
           },

@@ -18,8 +18,7 @@
           <v-col lg="6" md="12" sm="12" cols="12">
             <v-row>
               <v-col>
-                <div class="sizetitle">{{ Changesubmit }}ข้อมูลโปรโมชั่น {{Edit_Promotion_name}}</div>
-              <input type="text" v-model="Promotion_Name">
+                <div class="sizetitle">{{ Changesubmit }}ข้อมูลโปรโมชั่น</div>
               </v-col>
             </v-row>
             <!-- ข้อมูลโปรโมชั่น -->
@@ -103,24 +102,14 @@ import api from "@/services/api";
 export default {
   name: "FormPromotion",
 
-  props: [
-    "CreateorEdittype",
-    "Edit_id",
-    "Edit_Promotion_name",
-    "Edit_stock_in",
-  ],
+  props: ["CreateorEdittype"],
 
-   created() {
-        this.Promotion_Name = this.Edit_Promotion_name;
-        this.Promotion_Stock = this.Edit_stock_in;
-    console.log("ใน-------", this.Promotion_Name);
-    console.log("ใน", this.Edit_stock_in);
-    console.log("ใน", this.Edit_id);
-     this.loadDataEdit();
-    this.$store.dispatch({
-      type: "inputRoutepath",
-      RT: this.$route.path,
-    });
+  async mounted() {
+      await this.loadDataEdit();
+            this.$store.dispatch({
+            type: "inputRoutepath",
+            RT: this.$route.path,
+          });
   },
 
   computed: {
@@ -131,26 +120,45 @@ export default {
 
   data: () => ({
     valid: true,
-    CreateorEdit: null,
-    PromotionEdit_id: null,
-    
+    CreateorEdit:null,
+
+
+    PromotionEdit_ID: null,
+    PromotiontoEdit_ID: null,
+
     Promotion_Name: null,
     Promotion_discount: null,
+
+    Getdiscounttype:null,
+
+  
     Promotion_discount_type_selected:{ text: "บาท", value: "1" },
     Promotion_discount_type:[ { text: "บาท", value: "1" },{text: "%", value: "2"}],
   }),
 
   methods: {
     async loadDataEdit() {
-      this.CreateorEdit = this.CreateorEdittype;
+      this.CreateorEdit = this.CreateorEdittype
       if (this.CreateorEdit == false) {
-        this.Promotion_Name = this.Edit_Promotion_name;
-        this.Promotion_Stock = this.Edit_stock_in;
+        this.PromotionEdit_ID = {id:this.$store.getters["Newpersonal_BNP_ID"].BNP_ID}
+        let result = await api.getEditpromotion(this.PromotionEdit_ID);
+        this.PromotiontoEdit_ID = result.data.result[0].id
+        this.Promotion_Name = result.data.result[0].name
+        this.Promotion_discount = result.data.result[0].discount
+        let discounttype = result.data.result[0].discount_type
+        this.Discounttype(discounttype) 
+      }
+    },
+
+    Discounttype(discounttype){
+      if(discounttype ==1){
+            this.Promotion_discount_type_selected = { text: "บาท", value: "1"}
+      }else{
+            this.Promotion_discount_type_selected = { text: "%", value: "2"}
       }
     },
 
     async submit() {
-      console.log(this.CreateorEdit);
       if (this.CreateorEdit == true) {
         let DataNewPromotion = {
           name: this.Promotion_Name,
@@ -159,16 +167,16 @@ export default {
         };
         console.log(DataNewPromotion);
         let result = await api.addPromotion(DataNewPromotion);
-        console.log(result);
         if (result.data.response == "OK") {
           alert("บันทึกโปรโมชั่นเรียบร้อยแล้ว");
           this.$router.push("/Promotion");
         }
       } else {
         let DataEditPromotion = {
-          id: this.PromotionEdit_id,
+          id: this.PromotiontoEdit_ID,
           name: this.Promotion_Name,
-          stock_in: this.Promotion_Stock_IN,
+          discount: this.Promotion_discount,
+          discount_type: this.Promotion_discount_type_selected.value,
         };
         let result = await api.editPromotion(DataEditPromotion);
         if (result.data.response == "OK") {

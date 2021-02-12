@@ -18,8 +18,7 @@
           <v-col lg="6" md="12" sm="12" cols="12">
             <v-row>
               <v-col>
-                <div class="sizetitle">{{ Changesubmit }}ข้อมูลอุปกรณ์ {{Edit_Equipment_name}}</div>
-              <input type="text" v-model="Equipment_Name">
+                <div class="sizetitle">{{ Changesubmit }}ข้อมูลอุปกรณ์</div>
               </v-col>
             </v-row>
             <!-- ข้อมูลอุปกรณ์ -->
@@ -43,7 +42,7 @@
                 <div class="sizehead">จำนวน</div>
                 <v-row class="no-gutters">
                   <v-text-field
-                    v-model="Equipment_Stock"
+                    v-model="Equipment_Stock_IN"
                     type="number"
                     min="1"
                     dense
@@ -51,7 +50,6 @@
                     outlined
                     clearable
                   ></v-text-field>
-                  {{ Edit_stock_in }}
                 </v-row>
               </v-col>
             </v-row>
@@ -89,19 +87,11 @@ export default {
 
   props: [
     "CreateorEdittype",
-    "Edit_id",
-    "Edit_Equipment_name",
-    "Edit_stock_in",
   ],
 
    created() {
-        this.Equipment_Name = this.Edit_Equipment_name;
-        this.Equipment_Stock = this.Edit_stock_in;
-    console.log("ใน-------", this.Equipment_Name);
-    console.log("ใน", this.Edit_stock_in);
-    console.log("ใน", this.Edit_id);
      this.loadDataEdit();
-    this.$store.dispatch({
+      this.$store.dispatch({
       type: "inputRoutepath",
       RT: this.$route.path,
     });
@@ -115,36 +105,43 @@ export default {
 
   data: () => ({
     valid: true,
+    EditEquipment_ID:null,
     CreateorEdit: null,
     EquipmentEdit_id: null,
     
     Equipment_Name: null,
-    Equipment_Stock: null,
+    Equipment_Stock_IN: null,
   }),
 
   methods: {
     async loadDataEdit() {
       this.CreateorEdit = this.CreateorEdittype;
       if (this.CreateorEdit == false) {
-        this.Equipment_Name = this.Edit_Equipment_name;
-        this.Equipment_Stock = this.Edit_stock_in;
+        this.EditEquipment_ID = this.$store.getters["Newpersonal_BNP_ID"].BNP_ID
+        let Equipment_ID_Edit = { id:this.EditEquipment_ID }
+         let result = await api.getEditequipment(Equipment_ID_Edit);
+                    this.EquipmentEdit_id=result.data.result[0].id
+                    this.Equipment_Name=result.data.result[0].name
+                    this.Equipment_Stock_IN=result.data.result[0].stock_in
       }
     },
 
     async submit() {
       console.log(this.CreateorEdit);
+      //สร้างอุปกรณ์
       if (this.CreateorEdit == true) {
         let DataNewEquipment = {
           name: this.Equipment_Name,
           stock_in: this.Equipment_Stock_IN,
         };
         let result = await api.addEquipment(DataNewEquipment);
-        console.log(result);
         if (result.data.response == "OK") {
           alert("บันทึกอุปกรณ์เรียบร้อยแล้ว");
           this.$router.push("/Equipment");
         }
+
       } else {
+        //แก้ไขอุปกรณ์
         let DataEditEquipment = {
           id: this.EquipmentEdit_id,
           name: this.Equipment_Name,

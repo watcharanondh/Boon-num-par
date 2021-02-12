@@ -153,8 +153,11 @@ export default {
       this.RouterPath == "/CreatePersoneltype" ||
       this.RouterPath == "/EditPersoneltype" ||
       this.RouterPath == "/Quotation" ||
+      this.RouterPath == "/CreateQuotation" ||
+      this.RouterPath == "/EditQuotation" ||
       this.RouterPath == "/QuotationCreateSelectPackage" ||
-      this.RouterPath == "/QuotationCreateSelectPromotion"
+      this.RouterPath == "/QuotationCreateSelectPromotion" ||
+      this.RouterPath == "/QuotationPrint" 
     ) {
       return this.RouterPath = 1;
     } else if (
@@ -166,10 +169,10 @@ export default {
       this.RouterPath == "/EditSetEquipment" ||
       this.RouterPath == "/Package" ||
       this.RouterPath == "/CreatePackage" ||
-      this.RouterPath == "/CreatePackageSelectEquipment" ||
       this.RouterPath == "/Promotion" ||
       this.RouterPath == "/CreatePromotion" ||
-      this.RouterPath == "/EditPromotion"
+      this.RouterPath == "/EditPromotion" 
+      
     ) {
       return this.RouterPath = 2;
     }else{
@@ -222,15 +225,16 @@ export default {
        this.$router.push('/Homemenu');
        window.location.reload();
     },
-
-
   },
 
-  watch: {
-    $route(to) {
-      this.selectedMenu = this.menus.findIndex((menu) => menu[1] == to.path);
-    },
-  },
+  // watch: {
+  //   $route(to) {
+  //     console.log(to);
+  //      this.selectedMenu = this.menus.findIndex((menu) => menu[1] == to.path);
+  //      console.log(this.selectedMenu);
+  //     // this.selectedMenu = 2
+  //   },
+  // },
 };
 </script>
 

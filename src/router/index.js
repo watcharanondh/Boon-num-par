@@ -3,15 +3,17 @@ import VueRouter from "vue-router";
 import Login from "@/views/Login.vue";
 import Homemenu from "@/views/Homemenu.vue";
 import Home from "@/views/Home.vue";
+
 import Customer from "@/views/Customer.vue";
 import MonitorPersonltype from "@/views/MonitorPersonltype.vue";
 import CreatePersoneltype from "@/views/CreatePersoneltype.vue";
 import EditPersoneltype from "@/views/EditPersoneltype.vue";
+
 import Quotation from "@/views/Quotation.vue";
-import QuotationCreate from "@/views/QuotationCreate.vue";
-import QuotationCreateSelectPackage from "@/views/QuotationCreateSelectPackage.vue";
-import QuotationCreateSelectPromotion from "@/views/QuotationCreateSelectPromotion.vue";
+import CreateQuotation from "@/views/CreateQuotation.vue";
+import EditQuotation from "@/views/EditQuotation.vue";
 import QuotationPrint from "@/views/QuotationPrint.vue"; 
+
 import Equipment from "@/views/Equipment.vue";
 import CreateEquipment from "@/views/CreateEquipment.vue";
 import EditEquipment from "@/views/EditEquipment.vue";
@@ -21,8 +23,8 @@ import CreateSetEquipment from "@/views/CreateSetEquipment.vue";
 import EditSetEquipment from "@/views/EditSetEquipment.vue";
 
 import Package from "@/views/Package.vue"; 
-import CreatePackage from "@/views/CreatePackage.vue"; 
-import CreatePackageSelectEquipment from "@/views/CreatePackageSelectEquipment.vue"; 
+import CreatePackage from "@/views/CreatePackage.vue";
+import EditPackage from "@/views/EditPackage.vue";
 
 import Promotion from "@/views/Promotion.vue";
 import CreatePromotion from "@/views/CreatePromotion.vue";
@@ -74,19 +76,14 @@ const routes = [
     component: Quotation
   },
   {
-    path: "/QuotationCreate",
-    name: "/QuotationCreate",
-    component: QuotationCreate
+    path: "/CreateQuotation",
+    name: "/CreateQuotation",
+    component: CreateQuotation
   },
   {
-    path: "/QuotationCreateSelectPackage",
-    name: "/QuotationCreateSelectPackage",
-    component: QuotationCreateSelectPackage
-  },
-  {
-    path: "/QuotationCreateSelectPromotion",
-    name: "/QuotationCreateSelectPromotion",
-    component: QuotationCreateSelectPromotion
+    path: "/EditQuotation",
+    name: "/EditQuotation",
+    component: EditQuotation
   },
   {
     path: "/QuotationPrint",
@@ -123,7 +120,6 @@ const routes = [
     name: "/EditSetEquipment",
     component: EditSetEquipment
   },
-  
   {
     path: "/Package",
     name: "/Package",
@@ -135,9 +131,9 @@ const routes = [
     component: CreatePackage
   },
   {
-    path: "/CreatePackageSelectEquipment",
-    name: "/CreatePackageSelectEquipment",
-    component: CreatePackageSelectEquipment
+    path: "/EditPackage",
+    name: "/EditPackage",
+    component: EditPackage
   },
   {
     path: "/Promotion",

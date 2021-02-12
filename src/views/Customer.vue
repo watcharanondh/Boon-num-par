@@ -26,6 +26,7 @@
         <!-- รายชื่อลูกค้าทั้งหมด -->
         <v-card>
           <v-data-table
+            :search="search"
             :headers="headers_table_customer"
             :items="table_customer"
             :items-per-page="10"
@@ -36,7 +37,15 @@
               <v-toolbar flat>
                 <v-toolbar-title><span>รายชื่อลูกค้า</span></v-toolbar-title>
                 <v-toolbar-title><span class="text-caption grey--text">{{total}}</span></v-toolbar-title>
-                <v-spacer></v-spacer>
+                 <v-spacer></v-spacer>
+                    <v-divider class="mx-4" inset vertical></v-divider>
+                      <v-text-field
+                        v-model="search"
+                        prepend-inner-icon="mdi-magnify"
+                        label="ค้นหาชื่อลูกค้าบุคคล/บริษัท"
+                        single-line
+                        hide-details
+                      ></v-text-field>
 
                 <!-- ปุ่มเรียง
                   <div>
@@ -111,9 +120,9 @@
                   </v-row>
                 </td>
                 <td>
-                  <v-btn icon>
+                  <!-- <v-btn icon>
                     <v-icon>mdi-dots-vertical</v-icon>
-                  </v-btn>
+                  </v-btn> -->
                 </td>
               </tr>
             </template>
@@ -132,7 +141,7 @@ export default {
   components: {
     ModalCreateCustomers,
   },
-async mounted() {
+ mounted() {
     this.loadCustomers();
     this.$store.dispatch({
           type: "inputRoutepath",
@@ -141,6 +150,7 @@ async mounted() {
   },
 
   data: () => ({
+    search:"",
     total:'',
     table_customer: [],
     headers_table_customer: [

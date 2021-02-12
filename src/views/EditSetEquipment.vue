@@ -10,7 +10,7 @@ export default {
      FormSetEquipment
     },
   data: () => ({
-    CreateorEdittype:true
+    CreateorEdittype:false
   }),
 }
 </script>

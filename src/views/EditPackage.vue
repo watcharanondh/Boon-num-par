@@ -5,12 +5,12 @@
 <script>
 import FormPackage from '@/components/Form/FormPackage';
 export default {
-  name: "CreatePackage",
+  name: "EditPackage",
   components: { 
      FormPackage
     },
   data: () => ({
-    CreateorEdittype:true
+    CreateorEdittype:false
   }),
 }
 </script>

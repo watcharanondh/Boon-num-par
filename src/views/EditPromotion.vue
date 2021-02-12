@@ -10,7 +10,7 @@ export default {
      FormPromotion
     },
   data: () => ({
-    CreateorEdittype:true
+    CreateorEdittype:false
   }),
 }
 </script>

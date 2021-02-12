@@ -1,5 +1,5 @@
 <template>
-  <FormPersonaltype  :type_id="type_id" :CreateorEdittype="CreateorEdittype" />
+  <FormPersonaltype :CreateorEdittype="CreateorEdittype" />
 </template>
 
 <script>
@@ -9,20 +9,11 @@ export default {
   components: { 
     FormPersonaltype 
     },
-  async created() {
-   await this.londDataCreate();
-  },
 
   data: () => ({
     CreateorEdittype:true,
-    type_id: null,
 
   }),
-  methods: {
-   async londDataCreate(){
-          this.type_id = this.$store.getters["Newpersonal_type_id"].type_id
-      },
-  },
 
 }
 </script>

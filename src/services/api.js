@@ -1,5 +1,5 @@
-import httpClient from "@/services/httpClient";
-import { server } from "@/services/constants";
+import axios from "axios";
+import {apiUrl , server } from "@/services/constants";
 import router from "@/router";
 import * as productApis from "@/services/api_product.js"
 
@@ -10,7 +10,7 @@ const isLoggedIn = () => {
 };
 
 const login = async values => {
-  let result = await httpClient.post(server.LOGIN_URL, values);
+  let result = await axios.post( apiUrl + server.LOGIN_URL, values);
   if (result.data.response == "OK") {
     localStorage.setItem(server.USERNAME, values.username);
     localStorage.setItem(server.TOKEN_KEY, result.data.accessToken);

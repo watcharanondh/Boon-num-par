@@ -98,9 +98,9 @@
                   </v-row>
                 </td>
                 <td>
-                  <v-btn icon>
+                  <!-- <v-btn icon>
                     <v-icon>mdi-dots-vertical</v-icon>
-                  </v-btn>
+                  </v-btn> -->
                 </td>
               </tr>
             </template>
@@ -138,7 +138,6 @@ async mounted() {
   methods: {
     async loadSetEquipment(){
             let result = await api.getSetEquipment();
-            console.log(result.data);
             this.table_SetEquipment = result.data.result;
             this.total = result.data.count_total;
           },
@@ -152,11 +151,9 @@ async mounted() {
     async DelSetEquipment(item){
               let delSetEquipment ={id:item.id}
               let result = await api.delSetEquipment(delSetEquipment);
-              console.log(result);
               if (result.data.response =='OK'){
                 alert('ลบรายการชุดอุปกรณ์เรียบร้อยแล้ว')
                 await this.loadSetEquipment()
-                location.reload();
               }
           },
 

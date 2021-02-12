@@ -121,7 +121,6 @@ export default {
 
   mounted() {
     this.loadDatas();
-    
 
     this.$store.dispatch({
       type: "inputRoutepath",
@@ -157,7 +156,6 @@ export default {
       this.confirm = result.data.result.header[1].confirm;
       this.unconfirm = result.data.result.header[2].unconfirm;
       this.cancel = result.data.result.header[3].cancel;
-
       this.Latest_quotation = result.data.result.latestquotation;
       this.Latest_customer_list = result.data.result.latestcustomer;
     },
