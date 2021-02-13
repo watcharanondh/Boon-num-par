@@ -601,6 +601,8 @@ export default {
 
         this.Same_address=result.data.result[0].check_same_address
         this.vat_selected = result.data.result[0].cti_vat_type,
+        console.log(result.data.result[0].cti_vat_type);
+        console.log(this.vat_selected);
 
         this.Taxinvoiceinfo_SelectProvinces = {province_Name: result.data.result[0].cti_province ,province_Code: result.data.result[0].cti_province_code};
         this.Taxinvoiceinfo_GatAmphoe.push({amphoe_Name: result.data.result[0].cti_amphoe ,amphoe_Code: result.data.result[0].cti_amphoe_code});
@@ -876,7 +878,7 @@ async submit() {
                             cti_district_id:this.Personaltype_district_id,
                             cti_vat_type: this.vat_selected,
                           };
-                      //console.log('แก้ไขที่อยู่บริษัทแบบเดิม',DataCompanytypeEdit_Old_address);
+                      console.log('แก้ไขที่อยู่บริษัทแบบเดิม',DataCompanytypeEdit_Old_address);
                       let result = await api.Editcustomer(DataCompanytypeEdit_Old_address);
                       //console.log(result);
                       if (result.data.response =='OK'){
@@ -907,7 +909,7 @@ async submit() {
                             cti_district_id:this.Taxinvoiceinfo_district_id,
                             cti_vat_type: this.vat_selected,
                           };
-                      //console.log('แก้ไขที่อยู่บริษัทแบบใหม่',DataCompanytypeEdit_New_address);
+                      console.log('แก้ไขที่อยู่บริษัทแบบใหม่',DataCompanytypeEdit_New_address);
                       let result = await api.Editcustomer(DataCompanytypeEdit_New_address);
                       //console.log(result);
                       if (result.data.response =='OK'){

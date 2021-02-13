@@ -139,7 +139,8 @@ export default {
           type: "doEditBNPID",
           BNP_ID: item.id,
         });
-      await this.$router.push('/QuotationPrint');
+        //console.log(item.id);
+     await this.$router.push('/QuotationPrint');
 
     },
 

@@ -279,7 +279,7 @@ export default {
             this.Header = result.data.result.header
             this.Bodys = result.data.result.body
             this.Footer = result.data.result.footer
-            console.log(this.Bodys);
+            //console.log(this.Bodys);
       
     },    
     print () {

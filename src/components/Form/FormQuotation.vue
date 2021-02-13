@@ -784,6 +784,9 @@ export default {
     Quotation_address: "",
     Quotation_district_id: "",
 
+    //แก้ไขข้อมูลลูกค้าประเภทบุคคลและนิติบุคคล
+    EditQuotation_Name:'',
+
     //ข้อมูลจังหวัดลูกค้าประเภทบุคคลและนิติบุคคล
     Quotation_SelectProvinces:{},
     Quotation_GatProvince: [],
@@ -895,17 +898,21 @@ export default {
             this.EditQuotation_ID = this.$store.getters["Newpersonal_BNP_ID"].BNP_ID
             let DataEditFindCustomer ={id:this.EditQuotation_ID}
             let result = await api.getEditQuotation(DataEditFindCustomer);
-                        //console.log(result);
+                        console.log(result);
             this.Quotation_customer_id = result.data.result.customers_data[0].customer_id;
             this.Quotation_type_id = result.data.result.customers_data[0].id;
             this.Quotation_tax_id = result.data.result.customers_data[0].tax_id;
+
             this.Quotation_fullname = result.data.result.customers_data[0].title;
+            this.EditQuotation_Name = result.data.result.customers_data[0].name;
+            
             this.Quotation_fax= result.data.result.customers_data[0].flash_number;
             this.Quotation_email= result.data.result.customers_data[0].email;
             this.Quotation_telephone_number= result.data.result.customers_data[0].telephone_number;
             this.Quotation_mobile_phone_number= result.data.result.customers_data[0].mobile_phone_number;
             this.Quotation_event_date= result.data.result.customers_data[0].event_date;
             this.Quotation_area_viewing_date= result.data.result.customers_data[0].area_viewing_date;
+
             this.Quotation_address= result.data.result.customers_data[0].address;
             this.Quotation_district_id = result.data.result.customers_data[0].district_id;
             this.Quotation_SelectProvinces= {province_Name: result.data.result.customers_data[0].province ,province_Code: result.data.result.customers_data[0].province_code};
@@ -1109,7 +1116,6 @@ export default {
             }else{
               //แก้ไขใบเสนอราคา
               let EditQuotation ={
-                //ขาด customer_id
                       id:this.EditQuotation_ID,
                       customer_id: this.Quotation_customer_id,
                       package_id: this.Package_ID,

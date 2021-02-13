@@ -46,7 +46,7 @@
                  v-on:keyup.enter="submit"
               />
               <v-col md="12">
-              <span>{{account}}</span>
+              <!-- <span>{{account}}</span> -->
               <v-row class="justify-space-between px-3 pt-5">
                 <v-btn @click="clear">clear</v-btn>
                 <v-btn color="success" @click="submit">Login</v-btn>

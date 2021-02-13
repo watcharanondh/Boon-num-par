@@ -69,6 +69,7 @@
                   <tr>
                     <td>{{item.name}}</td>
                     <!-- <td>{{ counter }}</td> -->
+                    <td>{{item.stock_in}}</td>
                     <td><v-btn small elevation="1" @click="selectedSetEquipment(item)">เพิ่ม</v-btn></td>
                   </tr>
                   </template>
