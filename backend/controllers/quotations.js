@@ -433,7 +433,16 @@ exports.listQuotationsToEdit = async (req, res) => {
       include: [
         {
           model: packages,
-          attributes: ["id", "name", "price"]
+          attributes: [
+            "id",
+           "name",
+          "amount_savory_food",
+          "amount_sweet_food",
+          "amount_drink",
+          [Sequelize.fn("date_format", Sequelize.col("`package`.`updated_at`"), "%d-%m-%Y"), "update"],
+          [Sequelize.fn("CONCAT", "อาหารคาว ", Sequelize.col("`package`.`amount_savory_food`"), ", อาหารหวาน ", Sequelize.col("`package`.`amount_sweet_food`"), ", เครื่องดื่ม ", Sequelize.col("`package`.`amount_drink`")), "food_des"],
+         "price"
+        ]
         }
       ],
       where: {
