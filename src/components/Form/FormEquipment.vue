@@ -118,9 +118,9 @@ export default {
       this.CreateorEdit = this.CreateorEdittype;
       if (this.CreateorEdit == false) {
         this.EditEquipment_ID = this.$store.getters["Newpersonal_BNP_ID"].BNP_ID
-        let Equipment_ID_Edit = { id:this.EditEquipment_ID }
+        let Equipment_ID_Edit = { equipment_code:this.EditEquipment_ID }
          let result = await api.getEditequipment(Equipment_ID_Edit);
-                    this.EquipmentEdit_id=result.data.result[0].id
+                    this.EquipmentEdit_id=result.data.result[0].equipment_code
                     this.Equipment_Name=result.data.result[0].name
                     this.Equipment_Stock_IN=result.data.result[0].stock_in
       }
@@ -145,7 +145,7 @@ export default {
       } else {
         //แก้ไขอุปกรณ์
         let DataEditEquipment = {
-          id: this.EquipmentEdit_id,
+          equipment_code: this.EquipmentEdit_id,
           name: this.Equipment_Name,
           stock_in: this.Equipment_Stock_IN,
         };

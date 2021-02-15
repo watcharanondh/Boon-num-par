@@ -82,7 +82,7 @@
             </template>
             <template v-slot:item="{ item }">
               <tr>
-                <td>{{ item.id }}</td>
+                <td>{{ item.equipment_set_code }}</td>
                 <td>{{ item.name }}</td>
                 <td>
                   <v-row>
@@ -128,7 +128,7 @@ async mounted() {
     total:null,
     table_SetEquipment: [],
     headers_table_SetEquipment: [
-      { text: "รหัสรายการชุดอุปกรณ์", value: "id", sortable: true, align: "start", color: "black"},
+      { text: "รหัสรายการชุดอุปกรณ์", value: "equipment_set_code", sortable: true, align: "start", color: "black"},
       { text: "รายชื่อรายการชุดอุปกรณ์", value: "name", sortable: false, align: "start" },
       { text: "", value: "", sortable: false, align: "start" },
       { text: "", value: "", sortable: false, align: "start" },
@@ -144,7 +144,7 @@ async mounted() {
     async EditSetEquipment(item){
           await this.$store.dispatch({
                   type: "doEditBNPID",
-                  BNP_ID: item.id,
+                  BNP_ID: item.equipment_set_code,
                });
           await this.$router.push('/EditSetEquipment');
           },
@@ -156,7 +156,7 @@ async mounted() {
             denyButtonText: `ยกเลิก`,
           }).then(async (result) => {
             if (result.isConfirmed) {
-                let delSetEquipment ={"id":item.id}
+                let delSetEquipment ={"equipment_set_code":item.equipment_set_code}
                 let resultdel = await api.delSetEquipment(delSetEquipment);
                 if (resultdel.data.response =='OK'){
                   this.$swal.fire('ยืนยันการลบเรียบร้อย', '', 'success')

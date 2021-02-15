@@ -200,25 +200,25 @@ export default {
         let res = await api.getSetEquipmentmini();
         this.SetEquipment_table_item=res.data.result
         this.SetEquipment_table_all_total = this.SetEquipment_table_item.length
-        let EditSetEquipmentID = {id:this.$store.getters["Newpersonal_BNP_ID"].BNP_ID}
+        let EditSetEquipmentID = {equipment_set_code:this.$store.getters["Newpersonal_BNP_ID"].BNP_ID}
         let result = await api.getEditSetEquipmentmini(EditSetEquipmentID);
-            this.SetEquipment_ID = result.data.result[0].id
+            this.SetEquipment_ID = result.data.result[0].equipment_set_code
             this.SetEquipment_Name=result.data.result[0].name
             this.SetEquipment_table_selectd_total = this.SetEquipment_selected_items.length
 
         let DataSeleted = result.data.result[0].equipment_set_equipments
         this.SetEquipment_selected_items=DataSeleted.map( val =>{
-              return {id:val.id ,name:val.name ,quantity:val.amount}
+              return {equipment_code:val.equipment_set_code ,name:val.name ,quantity:val.amount}
         })
       }
     },
 
 
     selectedAddSetEquipment(item){
-      var items = this.SetEquipment_selected_items.find(val => val.id == item.id);
+      var items = this.SetEquipment_selected_items.find(val => val.equipment_code == item.equipment_code);
       if (items){
           this.SetEquipment_selected_items.map(val=>{
-            if (items.id == val.id) {
+            if (items.equipment_code == val.equipment_code) {
                 if(  val.quantity < items.stock_in)
                     //console.log('มีจะเข้านี้');
                       val.quantity++
@@ -226,15 +226,15 @@ export default {
           })
       }else{
           //console.log('ไม่มีจะเข้านี้');
-          this.SetEquipment_selected_items.push({id:item.id ,name:item.name ,stock_in:item.stock_in ,quantity:1})
+          this.SetEquipment_selected_items.push({equipment_code:item.equipment_code ,name:item.name ,stock_in:item.stock_in ,quantity:1})
       
       }
     },
     DeleteSetEquipment(item){
-        var items = this.SetEquipment_selected_items.find(val => val.id == item.id);
+        var items = this.SetEquipment_selected_items.find(val => val.equipment_code == item.equipment_code);
       if (items){
           this.SetEquipment_selected_items.map(val=>{
-            if (items.id == val.id) {
+            if (items.equipment_code == val.equipment_code) {
                if(val.quantity > 1){
                       val.quantity--
                }else{
@@ -252,7 +252,7 @@ export default {
        let SetEquipment_last = []
        this.SetEquipment_selected_items.forEach(value => {
               SetEquipment_last.push({
-              id: `${value.id}`,
+              equipment_code: `${value.equipment_code}`,
               amount: `${value.quantity}`,
         });
        });
@@ -273,12 +273,12 @@ export default {
       let SetEquipment_Edit = []
        this.SetEquipment_selected_items.forEach(value => {
               SetEquipment_Edit.push({
-              id: `${value.id}`,
+              equipment_code: `${value.equipment_code}`,
               amount: `${value.quantity}`,
         });
        });
         let DataEditSetEquipment = {
-          id: this.SetEquipment_ID,
+          equipment_code: this.SetEquipment_ID,
           name: this.SetEquipment_Name,
           equip_in_equipset: SetEquipment_Edit,
         };

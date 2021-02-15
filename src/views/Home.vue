@@ -55,7 +55,7 @@
             </template>
             <template v-slot:item="{ item }">
               <tr>
-                <td>{{ item.id }}</td>
+                <td>{{ item.quotation_code }}</td>
                 <td>{{ item.customer_tax_invoices }}</td>
                 <td>
                   <div
@@ -97,7 +97,7 @@
             </template>
             <template v-slot:item="{ item }">
             <tr>
-              <td>{{ item.id }}</td>
+              <td>{{ item.customer_code}}</td>
               <td>{{ item.name }}</td>
               <td>{{ item.created_at_date }}</td>
             </tr>
@@ -136,14 +136,14 @@ export default {
 
     Latest_quotation: [],
     headers_latest_quotation: [
-      { text: "เลขที่ใบเสนอราคา", value: "id", sortable: false, align: "start" },
+      { text: "เลขที่ใบเสนอราคา", value: "quotation_code", sortable: false, align: "start" },
       { text: "ชื่อลูกค้า",value: "customer_tax_invoices", sortable: false, align: "start"},
       { text: "สถานะ", value: "quotation_status", sortable: false, align: "start",},
     ],
 
     Latest_customer_list: [],
     headers_latest_customer_list: [
-      { text: "รหัสลูกค้า", value: "id", sortable: false, align: "start" },
+      { text: "รหัสลูกค้า", value: "customer_code", sortable: false, align: "start" },
       { text: "ชื่อลูกค้า",  value: "name", sortable: false, align: "start", },
       { text: "วันที่สร้าง",value: "created_at_date",  sortable: false, align: "start" },
     ],
