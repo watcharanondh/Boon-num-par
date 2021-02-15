@@ -34,6 +34,7 @@
             :headers="headers_table_customer"
             :items="table_customer"
             :items-per-page="10"
+            mobile-breakpoint="0"
             class="elevation-1"
           >
             <!-- table top section -->
@@ -130,7 +131,7 @@ async mounted() {
     total:null,
     table_customer: [],
     headers_table_customer: [
-      { text: "หมายเลขอุปกรณ์", value: "id", sortable: false, align: "start", color: "black"},
+      { text: "หมายเลขอุปกรณ์", value: "id", sortable: true, align: "start", color: "black"},
       { text: "รายชื่ออุปกรณ์", value: "name", sortable: false, align: "start" },
       { text: "ถูกใช้", value: "stock_out", sortable: false, align: "start"},
       { text: "คงเหลือ", value: "balance_stock", sortable: false, align: "start"},
@@ -152,17 +153,26 @@ async mounted() {
                });
           await this.$router.push('/EditEquipment');
           },
-    async DelEquipment(item){
-              let delEquipment ={id:item.id}
-              let result = await api.delEquipment(delEquipment);
-              console.log(result);
-              if (result.data.response =='OK'){
-                alert('ลบอุปกรณ์เรียบร้อยแล้ว')
-                await this.loadEquipment()
-                location.reload();
-              }
-          },
 
+    async DelEquipment(item){
+          this.$swal.fire({
+            title:`ต้องการลบอุปกรณ์นี้ใช่หรือไม่ ?`,
+            showDenyButton: true,
+            confirmButtonText: `ยืนยัน`,
+            denyButtonText: `ยกเลิก`,
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+                let delEquipment ={"id":item.id}
+                let resultdel = await api.delEquipment(delEquipment);
+                if (resultdel.data.response =='OK'){
+                  this.$swal.fire('ยืนยันการลบเรียบร้อย', '', 'success')
+                  await this.loadEquipment()
+                }
+            } else if (result.isDenied) {
+              this.$swal.fire('ยกเลิกการลบ', '', 'error')
+            }
+          })
+    }
   },
 };
 </script>

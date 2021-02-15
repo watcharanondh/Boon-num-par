@@ -11,7 +11,7 @@ export default {
     },
   data: () => ({
     monitortype:true,
-    CreateorEdittype:false,
+    CreateorEdittype:3,
   }),
 }
 </script>

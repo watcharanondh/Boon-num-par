@@ -128,7 +128,7 @@ async mounted() {
     total:null,
     table_SetEquipment: [],
     headers_table_SetEquipment: [
-      { text: "รหัสรายการชุดอุปกรณ์", value: "id", sortable: false, align: "start", color: "black"},
+      { text: "รหัสรายการชุดอุปกรณ์", value: "id", sortable: true, align: "start", color: "black"},
       { text: "รายชื่อรายการชุดอุปกรณ์", value: "name", sortable: false, align: "start" },
       { text: "", value: "", sortable: false, align: "start" },
       { text: "", value: "", sortable: false, align: "start" },
@@ -149,14 +149,24 @@ async mounted() {
           await this.$router.push('/EditSetEquipment');
           },
     async DelSetEquipment(item){
-              let delSetEquipment ={id:item.id}
-              let result = await api.delSetEquipment(delSetEquipment);
-              if (result.data.response =='OK'){
-                alert('ลบรายการชุดอุปกรณ์เรียบร้อยแล้ว')
-                await this.loadSetEquipment()
-              }
-          },
-
+          this.$swal.fire({
+            title:`ต้องการลบชุดอุปกรณ์นี้ใช่หรือไม่ ?`,
+            showDenyButton: true,
+            confirmButtonText: `ยืนยัน`,
+            denyButtonText: `ยกเลิก`,
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+                let delSetEquipment ={"id":item.id}
+                let resultdel = await api.delSetEquipment(delSetEquipment);
+                if (resultdel.data.response =='OK'){
+                  this.$swal.fire('ยืนยันการลบเรียบร้อย', '', 'success')
+                  await this.loadSetEquipment()
+                }
+            } else if (result.isDenied) {
+              this.$swal.fire('ยกเลิกการลบ', '', 'error')
+            }
+          })
+    }
   },
 };
 </script>

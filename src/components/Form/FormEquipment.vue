@@ -136,8 +136,10 @@ export default {
         };
         let result = await api.addEquipment(DataNewEquipment);
         if (result.data.response == "OK") {
-          alert("บันทึกอุปกรณ์เรียบร้อยแล้ว");
+          this.$swal.fire("Success", 'บันทึกอุปกรณ์เรียบร้อยแล้ว', "success");
           this.$router.push("/Equipment");
+        }else{
+          this.$swal.fire("error", `บันทึกอุปกรณ์ไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
         }
 
       } else {
@@ -149,8 +151,10 @@ export default {
         };
         let result = await api.editEquipment(DataEditEquipment);
         if (result.data.response == "OK") {
-          alert("แก้ไขอุปกรณ์เรียบร้อยแล้ว");
+          this.$swal.fire("Success", 'แก้ไขอุปกรณ์เรียบร้อยแล้ว', "success");
           this.$router.push("/Equipment");
+        }else{
+          this.$swal.fire("error", `แก้ไขอุปกรณ์ไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
         }
       }
     },

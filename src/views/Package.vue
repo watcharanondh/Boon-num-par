@@ -34,6 +34,7 @@
             :headers="headers_table_package"
             :items="table_package"
             :items-per-page="10"
+            mobile-breakpoint="0"
             class="elevation-1"
           >
             <!-- table top section -->
@@ -129,7 +130,7 @@ export default {
     total:null,
     table_package: [],
     headers_table_package: [
-      { text: "รหัสแพ็กเก็จ", value: "id", sortable: false, align: "start", color: "black"},
+      { text: "รหัสแพ็กเก็จ", value: "id", sortable: true, align: "start", color: "black"},
       { text: "ชื่อแพ็กเก็จ", value: "name", sortable: false, align: "start" },
       { text: "รายละเอียด", value: "food_des", sortable: false, align: "start"},
       { text: "", value: "", sortable: false, align: "start" },
@@ -151,16 +152,24 @@ export default {
           await this.$router.push('/EditPackage');
           },
     async DelPackage(item){
-              let delPackage ={id:item.id}
-              let result = await api.delPackage(delPackage);
-              console.log(result);
-              if (result.data.response =='OK'){
-                alert('ลบแพ็กเก็จเรียบร้อยแล้ว')
-                await this.loadPackage()
-                location.reload();
-              }
-          },
-
+          this.$swal.fire({
+            title:`ต้องการลบแพ็กเก็จนี้ใช่หรือไม่ ?`,
+            showDenyButton: true,
+            confirmButtonText: `ยืนยัน`,
+            denyButtonText: `ยกเลิก`,
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+                let delPackage ={"id":item.id}
+                let resultdel = await api.delPackage(delPackage);
+                if (resultdel.data.response =='OK'){
+                  this.$swal.fire('ยืนยันการลบเรียบร้อย', '', 'success')
+                  await this.loadPackage()
+                }
+            } else if (result.isDenied) {
+              this.$swal.fire('ยกเลิกการลบ', '', 'error')
+            }
+          })
+    }
   },
 };
 </script>

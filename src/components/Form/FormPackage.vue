@@ -171,6 +171,7 @@
                       :items="equipment_data_items"
                       :items-per-page="10"
                       hide-default-header
+                      mobile-breakpoint="0"
                       class="elevation-1"
                     >
                       <template v-slot:item="{ item }">
@@ -193,6 +194,7 @@
                       :items="equipment_selected_items"
                       :items-per-page="10"
                       hide-default-header
+                      mobile-breakpoint="0"
                       class="elevation-1"
                     >
                       <template v-slot:item="{ item }">
@@ -355,10 +357,10 @@ export default {
         };
         let resultCreateNewPackage = await api.addPackage(CreateNewPackage);
         if (resultCreateNewPackage.data.response == "OK") {
-          alert("สร้างแพ็กเก็จสำเร็จเรียบร้อยแล้ว");
+          this.$swal.fire("Success", 'สร้างแพ็กเก็จสำเร็จเรียบร้อยแล้ว', "success");
           this.$router.push("/Package");
         } else {
-          alert("สร้างแพ็กเก็จราคาไม่สำเร็จ");
+          this.$swal.fire("error", `สร้างแพ็กเก็จราคาไม่สำเร็จ ${resultCreateNewPackage.data.response} เนื่องจาก ${resultCreateNewPackage.data.result} `, "error");
         }
       } else {
         //แก้ไขแพ็กเก็จ
@@ -373,10 +375,10 @@ export default {
         };
         let resultEditPackage = await api.editPackage(EditPackage);
         if (resultEditPackage.data.response == "OK") {
-          alert("แก้ไขแพ็กเก็จราคาสำเร็จเรียบร้อยแล้ว");
+          this.$swal.fire("Success", 'แก้ไขแพ็กเก็จราคาสำเร็จเรียบร้อยแล้ว', "success");
           this.$router.push("/Package");
         } else {
-          alert("แก้ไขแพ็กเก็จราคาไม่สำเร็จ");
+          this.$swal.fire("error", `แก้ไขแพ็กเก็จราคาไม่สำเร็จ ${resultEditPackage.data.response} เนื่องจาก ${resultEditPackage.data.result} `, "error");
         }
       }
     },

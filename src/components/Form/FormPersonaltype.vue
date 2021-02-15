@@ -4,7 +4,7 @@
       <v-col>
         <v-card flat color="#E5E5E5">
           <div class="sizetitle">
-            สร้างรายชื่อลูกค้าประเภท{{formTitle}}
+            {{Changesubmit}}รายชื่อลูกค้าประเภท{{formTitle}}
           </div>
         </v-card>
       </v-col>
@@ -551,7 +551,13 @@ export default {
         return this.pasoneltype==1 ? 'บุคคล' : 'บริษัท'
       },
       Changesubmit () {
-        return this.CreateorEdittype==true ? 'บันทึก' : 'แก้ไข'
+        if(this.CreateorEdittype==1){
+          return 'บันทึก'
+        }else if(this.CreateorEdittype==2){
+          return 'แก้ไข'
+        } else{
+          return 'ดู'
+        }
       },
     },
 
@@ -563,9 +569,6 @@ export default {
         //console.log('สร้าง');
         this.pasoneltype = this.$store.getters["Newpersonal_type_id"].type_id
     }else{
-        //console.log('แก้ไข');
-        //เช็คว่าดูเฉยๆ
-        //console.log(this.monitortypes);
         this.btn = this.monitortypes
         //แก้ไขข้อมูล
         this.EditPersonaltype_ID = this.$store.getters["Newpersonal_BNP_ID"].BNP_ID
@@ -616,7 +619,6 @@ export default {
 
     async loadDataProvince() {
       let result = await api.getProvinces();
-      //console.log('terst',result);
       let provinces = result.data.result;
       let _this = this;
       provinces.forEach((value) => {
@@ -757,8 +759,10 @@ async submit() {
                       let result = await api.addNewpersonnal(DataPersonaltypeCreate);
                       //console.log(result);
                       if (result.data.response =='OK'){
-                            alert('บันทึกข้อมูลลูกค้าประเภทบุคคลเรียบร้อยแล้ว')
+                            this.$swal.fire("Success", 'บันทึกข้อมูลลูกค้าประเภทบุคคลเรียบร้อยแล้ว', "success");
                             this.$router.push('/Customer')
+                          }else{
+                            this.$swal.fire("error", `บันทึกข้อมูลลูกค้าประเภทบุคคลไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
                           }
             }else{
                 //สร้างลูกค้าประเภทบริษัท
@@ -787,10 +791,10 @@ async submit() {
                       let result = await api.addNewpersonnal(DataCompanytypeCreate_Old_address);
                       //console.log(result);
                       if (result.data.response =='OK'){
-                            alert('บันทึกข้อมูลลูกค้าประเภทบริษัทเรียบร้อยแล้ว')
+                            this.$swal.fire("Success", 'บันทึกข้อมูลลูกค้าประเภทบริษัทเรียบร้อยแล้ว', "success");
                             this.$router.push('/Customer')
                           }else{ 
-                            alert(`บันทึกข้อมูลลูกค้าประเภทบริษัทไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `)
+                            this.$swal.fire("error", `บันทึกข้อมูลลูกค้าประเภทบริษัทไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
                           }
                 //สร้างลูกค้าประเภทบริษัท สร้างที่อยู่แบบใหม่
                 }else{
@@ -816,12 +820,11 @@ async submit() {
                       //console.log('สร้างที่อยู่แบบใหม่',DataCompanytypeCreate_New_address);
                       let result = await api.addNewpersonnal(DataCompanytypeCreate_New_address);
                       if (result.data.response =='OK'){
-                            alert('บันทึกข้อมูลประเภทบริษัทเรียบร้อยแล้ว')
+                            this.$swal.fire("Success", 'บันทึกข้อมูลประเภทบริษัทเรียบร้อยแล้ว', "success");
                             this.$router.push('/Customer')
                           }else{ 
-                            alert(`บันทึกข้อมูลลูกค้าประเภทบริษัทไม่สำเร็จ  ${result.data.response} เนื่องจาก ${result.data.result} `)
+                            this.$swal.fire("error", `บันทึกข้อมูลลูกค้าประเภทบริษัทไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
                           }
-
                 }
             }
         }else{
@@ -851,8 +854,10 @@ async submit() {
                       let result = await api.Editcustomer(DataPersonaltypeEdit);
                       //console.log('แก้ไขบุคคล',result);
                       if (result.data.response =='OK'){
-                            alert('แก้ไขข้อมูลลูกค้าประเภทบุคคลเรียบร้อยแล้ว')
+                            this.$swal.fire("Success", 'แก้ไขข้อมูลลูกค้าประเภทบุคคลเรียบร้อยแล้ว', "success");
                             this.$router.push('/Customer')
+                          }else{ 
+                            this.$swal.fire("error", `แก้ไขข้อมูลลูกค้าประเภทบุคคลไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
                           }
             }else{
                 //แก้ไขลูกค้าประเภทบริษัท
@@ -882,10 +887,10 @@ async submit() {
                       let result = await api.Editcustomer(DataCompanytypeEdit_Old_address);
                       //console.log(result);
                       if (result.data.response =='OK'){
-                            alert('แก้ไขข้อมูลลูกค้าประเภทบริษัทเรียบร้อยแล้ว')
+                            this.$swal.fire("Success", 'แก้ไขข้อมูลลูกค้าประเภทบริษัทเรียบร้อยแล้ว', "success");
                             this.$router.push('/Customer')
                           }else{
-                            alert(`แก้ไขข้อมูลลูกค้าประเภทบริษัทไม่สำเร็จ  ${result.data.response} เนื่องจาก ${result.data.result} `)
+                            this.$swal.fire("error", `แก้ไขข้อมูลลูกค้าประเภทบริษัทไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
                           }
                 //แก้ไขลูกค้าประเภทบริษัท แก้ไขที่อยู่แบบใหม่
                 }else{
@@ -913,10 +918,10 @@ async submit() {
                       let result = await api.Editcustomer(DataCompanytypeEdit_New_address);
                       //console.log(result);
                       if (result.data.response =='OK'){
-                            alert('แก้ไขข้อมูลประเภทบริษัทเรียบร้อยแล้ว')
+                            this.$swal.fire("Success", 'แก้ไขข้อมูลประเภทบริษัทเรียบร้อยแล้ว', "success");
                             this.$router.push('/Customer')
                           }else{
-                            alert(`แก้ไขข้อมูลลูกค้าประเภทบริษัทไม่สำเร็จ  ${result.data.response} เนื่องจาก ${result.data.result} `)
+                            this.$swal.fire("error", `แก้ไขข้อมูลลูกค้าประเภทบริษัทไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
                           }
                 }
             }

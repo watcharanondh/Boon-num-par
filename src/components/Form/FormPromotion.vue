@@ -168,8 +168,10 @@ export default {
         console.log(DataNewPromotion);
         let result = await api.addPromotion(DataNewPromotion);
         if (result.data.response == "OK") {
-          alert("บันทึกโปรโมชั่นเรียบร้อยแล้ว");
+          this.$swal.fire("Success", 'บันทึกโปรโมชั่นเรียบร้อยแล้ว', "success");
           this.$router.push("/Promotion");
+        }else{
+          this.$swal.fire("error", `บันทึกโปรโมชั่นไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
         }
       } else {
         let DataEditPromotion = {
@@ -180,8 +182,10 @@ export default {
         };
         let result = await api.editPromotion(DataEditPromotion);
         if (result.data.response == "OK") {
-          alert("แก้ไขโปรโมชั่นเรียบร้อยแล้ว");
+          this.$swal.fire("Success", 'แก้ไขโปรโมชั่นเรียบร้อยแล้ว', "success");
           this.$router.push("/Promotion");
+        }else{
+          this.$swal.fire("error", `แก้ไขโปรโมชั่นไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
         }
       }
     },

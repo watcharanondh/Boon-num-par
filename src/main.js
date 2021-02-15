@@ -7,6 +7,8 @@ import "material-design-icons-iconfont/dist/material-design-icons.css";
 import Vuelidate from 'vuelidate'
 import './App.css'
 import VueHtmlToPaper from 'vue-html-to-paper';
+import VueSweetalert2 from "vue-sweetalert2";
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 
 const options = {
@@ -21,7 +23,7 @@ const options = {
     '/css/print_quo.css'
   ]
 }
-
+Vue.use(VueSweetalert2);
 Vue.use(VueHtmlToPaper, options);
 Vue.config.productionTip = false;
 Vue.use(Vuelidate)

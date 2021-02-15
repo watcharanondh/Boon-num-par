@@ -62,15 +62,14 @@
                   :headers="headers_SetEquipment_table_item"
                   :items="SetEquipment_table_item"
                   :items-per-page="10"
-                  
+                  mobile-breakpoint="0"
                   class="elevation-1"
                 >
                   <template v-slot:item="{ item }">
                   <tr>
                     <td>{{item.name}}</td>
-                    <!-- <td>{{ counter }}</td> -->
-                    <td>{{item.stock_in}}</td>
-                    <td><v-btn small elevation="1" @click="selectedSetEquipment(item)">เพิ่ม</v-btn></td>
+                    <td class="info--text">{{item.stock_in}}</td>
+                    <td><v-btn color="success" small elevation="1" @click="selectedAddSetEquipment(item)">เพิ่ม</v-btn></td>
                   </tr>
                   </template>
                 </v-data-table>
@@ -85,13 +84,14 @@
                   :items="SetEquipment_selected_items"
                   :items-per-page="10"
                   hide-default-header
+                  mobile-breakpoint="0"
                   class="elevation-1"
                 >
                   <template v-slot:item="{ item }">
                   <tr>
                     <td>{{item.name}}</td>
-                    <!-- <td>{{item.stock_in}}</td> -->
-                    <td><v-btn small elevation="1" @click="DeleteSetEquipment(item)">ลบ</v-btn></td>
+                    <td class="info--text">{{ item.quantity }}</td>
+                    <td ><v-btn color="error" small elevation="1" @click="DeleteSetEquipment(item)">ลบ</v-btn></td>
                   </tr>
                    </template> 
                   ></v-data-table>
@@ -141,13 +141,18 @@ export default {
     });
   },
 
+ data() {
+    return {
+      quantity: 1 ,
+ 
 
-  data: () => ({
+  // data: () => ({
     CreateorEdit: null,
     searchSetEquipment:'',
     SetEquipmentEdit_id: null,
     editedIndex: -1,
-    counter: 0,
+
+    arrayOrder:[],
 
     SetEquipment_ID:null,
     SetEquipment_Name: null,
@@ -161,22 +166,26 @@ export default {
     SetEquipment_table_item: [],
     headers_SetEquipment_table_item: [
       { text: "ชุดอุปกรณ์", value: "name", sortable: false, align: "start", color: "black"},
-      { text: "จำนวน", value: "stock_in", sortable: false, align: "start", color: "black"},
+      { text: "จำนวนในคลัง", value: "stock_in", sortable: false, align: "start", color: "black"},
       { text: "", value: "", sortable: false, align: "start", color: "black"},
     ],
     //รายการอุปกรณ์ที่เลือก
     SetEquipment_selected_items: [],
     headers_SetEquipment_select_item: [
       { text: "รายการอุปกรณ์ที่เลือก", value: "name", sortable: false, align: "start", color: "black"},
-      { text: "จำนวน", value: "stock_in", sortable: false, align: "start", color: "black"},
+      { text: "จำนวนที่จะใช้", value: "quantity", sortable: false, align: "start", color: "black"},
       { text: "", value: "", sortable: false, align: "start", color: "black"},
     ],
-  }),
+    };
+  },
+ 
+ // }),
 
   computed: {
     Changesubmit() {
       return this.CreateorEdit == true ? "บันทึก" : "แก้ไข";
     },
+
   },
 
   methods: {
@@ -195,63 +204,91 @@ export default {
         let result = await api.getEditSetEquipmentmini(EditSetEquipmentID);
             this.SetEquipment_ID = result.data.result[0].id
             this.SetEquipment_Name=result.data.result[0].name
-            this.SetEquipment_selected_items=result.data.result[0].equipment_set_equipments
             this.SetEquipment_table_selectd_total = this.SetEquipment_selected_items.length
+
         let DataSeleted = result.data.result[0].equipment_set_equipments
-        this.SetEquipment_Stock_IN=DataSeleted.map( val =>{
-              return {id:val.id,amount:val.amount}
+        this.SetEquipment_selected_items=DataSeleted.map( val =>{
+              return {id:val.id ,name:val.name ,quantity:val.amount}
         })
       }
     },
 
-    amountEquipment(item){
-        return  this.test =item.stock_in
-    },
 
-    selectedSetEquipment(item){
-        //this.counter= item.stock_in
-        //this.counter++;
-        this.SetEquipment_selected_items.push(item)
-        this.editedIndex = this.SetEquipment_table_item.indexOf(item)
-        // this.SetEquipment_table_item.splice(this.editedIndex, 1)
-        this.SetEquipment_table_selectd_total = this.SetEquipment_selected_items.length
-        let idSEq = item.id
-        let amoutSEq = 10
-        let DataSeleted ={id:idSEq,amount:amoutSEq}
-        this.SetEquipment_Stock_IN.push(DataSeleted)
+    selectedAddSetEquipment(item){
+      var items = this.SetEquipment_selected_items.find(val => val.id == item.id);
+      if (items){
+          this.SetEquipment_selected_items.map(val=>{
+            if (items.id == val.id) {
+                if(  val.quantity < items.stock_in)
+                    //console.log('มีจะเข้านี้');
+                      val.quantity++
+                  }
+          })
+      }else{
+          //console.log('ไม่มีจะเข้านี้');
+          this.SetEquipment_selected_items.push({id:item.id ,name:item.name ,stock_in:item.stock_in ,quantity:1})
+      
+      }
     },
     DeleteSetEquipment(item){
-        this.editedIndex = this.SetEquipment_selected_items.indexOf(item)
-        this.SetEquipment_selected_items.splice(this.editedIndex, 1)
-        this.SetEquipment_table_item.push(item)
-        this.SetEquipment_table_selectd_total = this.SetEquipment_selected_items.length
+        var items = this.SetEquipment_selected_items.find(val => val.id == item.id);
+      if (items){
+          this.SetEquipment_selected_items.map(val=>{
+            if (items.id == val.id) {
+               if(val.quantity > 1){
+                      val.quantity--
+               }else{
+                  this.editedIndex = this.SetEquipment_selected_items.indexOf(item)
+                  this.SetEquipment_selected_items.splice(this.editedIndex, 1)
+                  this.SetEquipment_table_selectd_total = this.SetEquipment_selected_items.length
+              }    
+            }
+          })
+      }
     },
     
-
     async submit() {
       if (this.CreateorEdit == true) {
+       let SetEquipment_last = []
+       this.SetEquipment_selected_items.forEach(value => {
+              SetEquipment_last.push({
+              id: `${value.id}`,
+              amount: `${value.quantity}`,
+        });
+       });
         let DataNewSetEquipment = {
           name: this.SetEquipment_Name,
-          equip_in_equipset: this.SetEquipment_Stock_IN,
-        };
-        let result = await api.addSetEquipment(DataNewSetEquipment);
-        console.log(result);
-        if (result.data.response == "OK") {
-          alert("บันทึกชุดอุปกรณ์เรียบร้อยแล้ว");
-          this.$router.push("/SetEquipment");
+          equip_in_equipset: SetEquipment_last,
         }
+        let result = await api.addSetEquipment(DataNewSetEquipment);
+        //console.log(result);
+        if (result.data.response == "OK") {
+          this.$swal.fire("Success", 'บันทึกชุดอุปกรณ์เรียบร้อยแล้ว', "success");
+          this.$router.push("/SetEquipment");
+        }else{
+          this.$swal.fire("error", `บันทึกชุดอุปกรณ์ไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
+        }
+
       } else {
+      let SetEquipment_Edit = []
+       this.SetEquipment_selected_items.forEach(value => {
+              SetEquipment_Edit.push({
+              id: `${value.id}`,
+              amount: `${value.quantity}`,
+        });
+       });
         let DataEditSetEquipment = {
           id: this.SetEquipment_ID,
           name: this.SetEquipment_Name,
-          equip_in_equipset: this.SetEquipment_Stock_IN,
+          equip_in_equipset: SetEquipment_Edit,
         };
-        console.log(DataEditSetEquipment);
         let result = await api.editSetEquipment(DataEditSetEquipment);
-        console.log(result);
+        //console.log(result);
         if (result.data.response == "OK") {
-          alert("แก้ไขชุดอุปกรณ์เรียบร้อยแล้ว");
+          this.$swal.fire("Success", 'แก้ไขชุดอุปกรณ์เรียบร้อยแล้ว', "success");
           this.$router.push("/SetEquipment");
+        }else{
+          this.$swal.fire("error", `แก้ไขชุดอุปกรณ์ไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
         }
       }
     },

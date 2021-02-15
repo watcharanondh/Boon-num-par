@@ -117,10 +117,10 @@ export default {
     total:null,
     table_quotation_item: [],
     headers_table_quotation: [
-      { text: "หมายเลขใบเสร็จ", value: "id", align: "start" },
-      { text: "ชื่อใบกำกับภาษี", value: "customer_tax_invoices", align: "start" },
-      { text: "วันเดือนปี", value: "event_date", align: "start" },
-      { text: "สถานะ", value: "quotation_status", align: "start" },
+      { text: "หมายเลขใบเสร็จ", value: "id",sortable: true, align: "start" },
+      { text: "ชื่อใบกำกับภาษี", value: "customer_tax_invoices",sortable: false, align: "start" },
+      { text: "วันเดือนปี", value: "event_date",sortable: true, align: "start" },
+      { text: "สถานะ", value: "quotation_status",sortable: true, align: "start" },
       { text: "", value: "", align: "start" },
       { text: "", value: "", align: "start" },
       { text: "", value: "", align: "start" },
@@ -151,15 +151,25 @@ export default {
         });
       await this.$router.push('/EditQuotation');
     },
-
     async DeleteQuotation(item){
-      let delQuotations ={"id":item.id}
-      let result = await api.delQuotation(delQuotations);
-       if (result.data.response =='OK'){
-        alert('ลบใบเสนอราคาเรียบร้อยแล้ว')
-       await this.loadQuotation()
-      }
-    },
+          this.$swal.fire({
+            title:`ต้องการลบใบเสนอราคานี้ใช่หรือไม่ ?`,
+            showDenyButton: true,
+            confirmButtonText: `ยืนยัน`,
+            denyButtonText: `ยกเลิก`,
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+                let delQuotations ={"id":item.id}
+                let resultdel = await api.delPromotion(delQuotations);
+                if (resultdel.data.response =='OK'){
+                  this.$swal.fire('ยืนยันการลบเรียบร้อย', '', 'success')
+                  await this.loadQuotation()
+                }
+            } else if (result.isDenied) {
+              this.$swal.fire('ยกเลิกการลบ', '', 'error')
+            }
+          })
+    }
 
 
   },

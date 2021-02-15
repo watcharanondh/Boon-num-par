@@ -12,7 +12,7 @@ export default {
     },
 
   data: () => ({
-    CreateorEdittype:false,
+    CreateorEdittype:2,
   }),
 
 }

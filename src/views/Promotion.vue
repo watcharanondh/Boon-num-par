@@ -129,7 +129,7 @@ async mounted() {
     total:null,
     table_promtion: [],
     headers_table_promtion: [
-      { text: "รหัสโปรโมชั่น", value: "id", sortable: false, align: "start", color: "black"},
+      { text: "รหัสโปรโมชั่น", value: "id", sortable: true, align: "start", color: "black"},
       { text: "รายชื่อโปรโมชั่น", value: "name", sortable: false, align: "start" },
       { text: "ลดราคา", value: "discount_text", sortable: false, align: "start"},
       { text: "", value: "", sortable: false, align: "start" },
@@ -151,16 +151,24 @@ async mounted() {
           await this.$router.push('/EditPromotion');
           },
     async DelPromotion(item){
-              let delPromotion ={id:item.id}
-              let result = await api.delPromotion(delPromotion);
-              console.log(result);
-              if (result.data.response =='OK'){
-                alert('ลบโปรโมชั่นเรียบร้อยแล้ว')
-                await this.loadPromotion()
-                location.reload();
-              }
-          },
-
+          this.$swal.fire({
+            title:`ต้องการลบโปรโมชั่นนี้ใช่หรือไม่ ?`,
+            showDenyButton: true,
+            confirmButtonText: `ยืนยัน`,
+            denyButtonText: `ยกเลิก`,
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+                let delPromotion ={"id":item.id}
+                let resultdel = await api.delPromotion(delPromotion);
+                if (resultdel.data.response =='OK'){
+                  this.$swal.fire('ยืนยันการลบเรียบร้อย', '', 'success')
+                  await this.loadPromotion()
+                }
+            } else if (result.isDenied) {
+              this.$swal.fire('ยกเลิกการลบ', '', 'error')
+            }
+          })
+    }
   },
 };
 </script>

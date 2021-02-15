@@ -14,14 +14,7 @@ export default new Vuex.Store({
     Routepath:"",
 
     BNP_ID:"",
-
     type_id:null,
-    name:'',
-    telephone_number:'',
-    mobile_phone_number: '',
-    line_id: '',
-    address: '',
-    district_id: '',
 
   },  
   getters: {
@@ -40,25 +33,6 @@ export default new Vuex.Store({
       return state.type_id;
     },
 
-
-    Newpersonal_name(state) {
-      return state.name;
-    },
-    Newpersonal_telephone_number(state) {
-      return state.telephone_number;
-    },
-    Newpersonal_mobile_phone_number(state) {
-      return state.mobile_phone_number;
-    },
-    Newpersonal_line_id(state) {
-      return state.line_id;
-    },
-    Newpersonal_address(state) {
-      return state.address;
-    },
-    Newpersonal_district_id(state) {
-      return state.district_id;
-    },
 
     Newpersonal_BNP_ID(state) {
       return state.BNP_ID;
@@ -83,24 +57,6 @@ export default new Vuex.Store({
 
     SET_type_id(state, type_id){
       state.type_id = type_id
-    },
-    SET_name(state, name){
-      state.name = name
-    },
-    SET_telephone_number(state, telephone_number){
-      state.telephone_number = telephone_number
-    },
-    SET_mobile_phone_number(state, mobile_phone_number){
-      state.mobile_phone_number = mobile_phone_number
-    },
-    SET_line_id(state, line_id){
-      state.line_id = line_id
-    },
-    SET_address(state, address){
-      state.address = address
-    },
-    SET_district_id(state, district_id){
-      state.district_id = district_id
     },
 
     SET_Edit_BNP_ID(state, ID){
@@ -135,14 +91,6 @@ export default new Vuex.Store({
         commit("SET_LOGGED_IN");
         commit("SET_USERNAME", username);
       }
-    },
-    fromPersonneltype({ commit }, { name, telephone_number, mobile_phone_number, line_id, address, district_id }) {
-      commit("SET_name", name);
-      commit("SET_telephone_number", telephone_number);
-      commit("SET_mobile_phone_number", mobile_phone_number);
-      commit("SET_line_id", line_id);
-      commit("SET_address", address);
-      commit("SET_district_id", district_id);
     },
     doTypeCreate({ commit }, type_id) {
       commit('SET_type_id', type_id);

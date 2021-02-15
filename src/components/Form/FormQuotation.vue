@@ -4,7 +4,7 @@
       <v-col>
         <v-card flat color="#E5E5E5">
           <div class="sizetitle">
-            สร้างใบเสนอราคา
+             {{Changesubmit}}ใบเสนอราคา
           </div>
         </v-card>
       </v-col>
@@ -59,6 +59,25 @@
                       </v-row>
                     </v-col>
                   </v-row>
+                  <!-- ประเภทลูกค้า -->
+                  <v-row>
+                  <v-col lg="6" md="6" sm="12" cols="12">
+                    <div class="sizehead">ประเภทลูกค้า</div>
+                    <v-row class="no-gutters">
+                      <v-select
+                        v-model="Quotation_Person_type"
+                        :items="Quotation_Person_item_type"
+                        item-text="name"
+                        item-value="value"
+                        return-object
+                        filled
+                        dense
+                        solo
+                        outlined
+                      ></v-select>
+                    </v-row>
+                  </v-col>
+                </v-row>
 
                   <!-- หมายเลขผู้เสียภาษี -->
                   <v-row>
@@ -71,7 +90,6 @@
                           solo
                           outlined
                           clearable
-                          disabled
                         ></v-text-field>
                       </v-row>
                     </v-col>
@@ -86,7 +104,6 @@
                           solo
                           outlined
                           clearable
-                          disabled
                         ></v-text-field>
                       </v-row>
                     </v-col>
@@ -103,7 +120,6 @@
                           solo
                           outlined
                           clearable
-                          disabled
                         ></v-text-field>
                       </v-row>
                     </v-col>
@@ -118,7 +134,6 @@
                           solo
                           outlined
                           clearable
-                          disabled
                         ></v-text-field>
                       </v-row>
                     </v-col>
@@ -135,7 +150,6 @@
                           solo
                           outlined
                           clearable
-                          disabled
                         ></v-text-field>
                       </v-row>
                     </v-col>
@@ -150,7 +164,6 @@
                           solo
                           outlined
                           clearable
-                          disabled
                         ></v-text-field>
                       </v-row>
                     </v-col>
@@ -254,7 +267,6 @@
                           solo
                           outlined
                           clearable
-                          disabled
                         ></v-text-field>
                       </v-row>
                     </v-col>
@@ -277,7 +289,7 @@
                             dense
                             solo
                             outlined
-                            disabled
+
                             >
                         </v-select>
                       </v-row>
@@ -299,7 +311,7 @@
                             dense
                             solo
                             outlined
-                            disabled
+
                         >
                         </v-select>
                       </v-row>
@@ -322,7 +334,7 @@
                             dense
                             solo
                             outlined
-                            disabled
+
                         >
                         </v-select>
                       </v-row>
@@ -392,6 +404,7 @@
                 :items="package_data_items"
                 :items-per-page="5"
                 hide-default-header
+                mobile-breakpoint="0"
                 class="elevation-1"
               >
                 <!-- table top section -->
@@ -459,12 +472,13 @@
 
           <v-col lg="12" md="12" sm="12" cols="12">
             <v-row class="no-gutters">
-              <v-data-table
+              <v-data-table 
                 :headers="headers_package_selected_data"
                 :items="package_selected_items"
                 :items-per-page="5"
                 hide-default-header
                 hide-default-footer
+                mobile-breakpoint="0"
                 class="elevation-1"
               >
                 <template v-slot:item="{ item }">
@@ -667,6 +681,7 @@
                       :items="promotion_table_items"
                       :items-per-page="10"
                       hide-default-header
+                      mobile-breakpoint="0"
                       class="elevation-1">
                       <template v-slot:item="{ item }">
                         <tr>
@@ -689,6 +704,7 @@
                       :items-per-page="10"
                       hide-default-header
                       hide-default-footer
+                      mobile-breakpoint="0"
                       class="elevation-1">
                       <template v-slot:item="{ item }">
                         <tr>
@@ -746,6 +762,7 @@ export default {
 
   async created() {
           await this.loadDataCustomer();
+          await this.loadDataProvince();
           await this.loadDataPackage();
           await this.loadDataPromotion();
           await this.$store.dispatch({
@@ -770,8 +787,10 @@ export default {
     //ข้อมูลลูกค้าประเภทบุคคลและนิติบุคคล
     menu_Quotation_event_date: false,
     menu_Quotation_area_viewing_date:false,
+    Quotation_Person_type:{},
+    Quotation_Person_item_type:[],
     Quotation_customer_id: "",
-    Quotation_type_id: "",
+    Quotation_type_id: null,
     Quotation_tax_id: "",
     Quotation_fullname: "",
     Quotation_fax:null,
@@ -892,13 +911,20 @@ export default {
               this.tab='tab-3'
           },
     async loadDataCustomer(){
+            let resultgetListcustomer = await api.getListcustomertypeselector();
+                resultgetListcustomer.data.result.forEach(element => {
+                this.Quotation_Person_item_type.push({"name":element.name ,"id": element.id })
+                });
+            this.Quotation_Person_type = this.Quotation_Person_item_type[0];
+
             let result = await api.getCustomerQuotation();
             this.DataCustomer = result.data.result;
         if(this.CreateorEdittype ==false){
             this.EditQuotation_ID = this.$store.getters["Newpersonal_BNP_ID"].BNP_ID
             let DataEditFindCustomer ={id:this.EditQuotation_ID}
             let result = await api.getEditQuotation(DataEditFindCustomer);
-                        console.log(result);
+
+            this.Quotation_Person_type = {id: result.data.result.customers_data[0].customer_type_id ,name: result.data.result.customers_data[0].customer_type_name};
             this.Quotation_customer_id = result.data.result.customers_data[0].customer_id;
             this.Quotation_type_id = result.data.result.customers_data[0].id;
             this.Quotation_tax_id = result.data.result.customers_data[0].tax_id;
@@ -942,8 +968,7 @@ export default {
             
             this.promotion_table_selected_items.push(result.data.result.promotions_data[0])
             this.promotion_selectd_id.push(result.data.result.promotions_data[0].id)
-            let promotion_total_edit = result.data.result.promotions_data[0]
-            this.promotion_table_select_total = promotion_total_edit.length
+            this.promotion_table_select_total = this.promotion_table_selected_items.length
 
           }
     },
@@ -1023,63 +1048,63 @@ export default {
             this.promotion_table_all_total = this.promotion_table_items.length
             this.promotion_table_select_total = 0
         },
-    // async loadDataProvince() {
-    //     let result = await api.getProvinces();
-    //     let provinces = result.data.result;
-    //     let _this = this;
-    //     provinces.forEach((value) => {
-    //         _this.Quotation_GatProvince.push({
-    //         province_Name: `${value.province}`,
-    //         province_Code: `${value.province_code}`,
-    //         });
-    //     });
-    //     },
+    async loadDataProvince() {
+        let result = await api.getProvinces();
+        let provinces = result.data.result;
+        let _this = this;
+        provinces.forEach((value) => {
+            _this.Quotation_GatProvince.push({
+            province_Name: `${value.province}`,
+            province_Code: `${value.province_code}`,
+            });
+        });
+        },
 
-    // async FindAmphoeSelected() {
-    //   this.Quotation_GatAmphoe=[],
-    //   this.Quotation_GatDistrict=[]
-    //   //console.log( this.Quotation_SelectProvinces.province_Code);
-    //   //console.log( this.Quotation_SelectProvinces.province_Name);
-    //   let QuotationProv = {
-    //       province_code: this.Quotation_SelectProvinces.province_Code,
-    //       province: this.Quotation_SelectProvinces.province_Name,
-    //   };
-    //   let resultQuotationProv = await api.getAmphoe(QuotationProv);
-    //   let AmphoeQuotation = resultQuotationProv.data.result;
-    //   let _this = this;
-    //     AmphoeQuotation.forEach((value) =>  {
-    //       _this.Quotation_GatAmphoe.push({
-    //           amphoe_Name: `${value.amphoe}`,
-    //           amphoe_Code: `${value.amphoe_code}`,
-    //     });
-    //   });
-    // },
+    async FindAmphoeSelected() {
+      this.Quotation_GatAmphoe=[],
+      this.Quotation_GatDistrict=[]
+      //console.log( this.Quotation_SelectProvinces.province_Code);
+      //console.log( this.Quotation_SelectProvinces.province_Name);
+      let QuotationProv = {
+          province_code: this.Quotation_SelectProvinces.province_Code,
+          province: this.Quotation_SelectProvinces.province_Name,
+      };
+      let resultQuotationProv = await api.getAmphoe(QuotationProv);
+      let AmphoeQuotation = resultQuotationProv.data.result;
+      let _this = this;
+        AmphoeQuotation.forEach((value) =>  {
+          _this.Quotation_GatAmphoe.push({
+              amphoe_Name: `${value.amphoe}`,
+              amphoe_Code: `${value.amphoe_code}`,
+        });
+      });
+    },
 
-    // async FindDistrict_Zipcode_Selected() {
-    //   this.Quotation_GatDistrict = [];
-    //   this.Quotation_SelectZipcode = [];
-    //   let QuotationAmphoe = {
-    //       amphoe_code: this.Quotation_SelectAmphoe.amphoe_Code,
-    //       amphoe: this.Quotation_SelectAmphoe.amphoe_Name,
-    //   };
-    //   let resultQuotationAmphoe = await api.getDistrict(QuotationAmphoe);
-    //   let DistrictQuotationAmphoe = resultQuotationAmphoe.data.result;
-    //   let _this = this;
-    //       DistrictQuotationAmphoe.forEach((value) =>  {
-    //         _this.Quotation_GatDistrict.push({
-    //           district_Name: `${value.district}`,
-    //           zipcode: `${value.zipcode}`,
-    //           prov_id: `${value.id}`,
-    //         });
-    //       });
-    // },
+    async FindDistrict_Zipcode_Selected() {
+      this.Quotation_GatDistrict = [];
+      this.Quotation_SelectZipcode = [];
+      let QuotationAmphoe = {
+          amphoe_code: this.Quotation_SelectAmphoe.amphoe_Code,
+          amphoe: this.Quotation_SelectAmphoe.amphoe_Name,
+      };
+      let resultQuotationAmphoe = await api.getDistrict(QuotationAmphoe);
+      let DistrictQuotationAmphoe = resultQuotationAmphoe.data.result;
+      let _this = this;
+          DistrictQuotationAmphoe.forEach((value) =>  {
+            _this.Quotation_GatDistrict.push({
+              district_Name: `${value.district}`,
+              zipcode: `${value.zipcode}`,
+              prov_id: `${value.id}`,
+            });
+          });
+    },
 
-    // FindProv_idSelected() {
-    //   this.Quotation_SelectZipcode = this.Quotation_SelectDistrict.zipcode;
-    //   this.Quotation_district_id = this.Quotation_SelectDistrict.prov_id;
-    //   // console.log(this.Quotation_SelectZipcode);
-    //   // console.log(this.Quotation_district_id);
-    // },
+    FindProv_idSelected() {
+      this.Quotation_SelectZipcode = this.Quotation_SelectDistrict.zipcode;
+      this.Quotation_district_id = this.Quotation_SelectDistrict.prov_id;
+      // console.log(this.Quotation_SelectZipcode);
+      // console.log(this.Quotation_district_id);
+    },
 
       querySelections (v) {
         this.loading = true
@@ -1092,9 +1117,20 @@ export default {
       },
     async submit(){
           //สร้างใบเสนอราคา
+          let Quotation_type_Pid = this.Quotation_Person_type.id
           if(this.CreateorEdittype==true){
               let CreateNewQuotation ={
                       customer_id: this.Quotation_type_id,
+                      type_id: Quotation_type_Pid,
+                      tax_id: this.Quotation_tax_id,
+                      name: this.Quotation_fullname,
+                      flash_number: this.Quotation_fax,
+                      email :this.Quotation_email,
+                      telephone_number: this.Quotation_telephone_number,
+                      mobile_phone_number: this.Quotation_mobile_phone_number,
+                      address: this.Quotation_address,
+                      district_id: this.Quotation_district_id,
+                      note:this.Quotation_note,
                       package_id: this.Package_ID,
                       promotion_id: this.promotion_selectd_id,
                       event_date: this.Quotation_event_date,
@@ -1102,16 +1138,16 @@ export default {
                       amount_savory_food: this.package_amount_savory_food,
                       amount_sweet_food: this.package_amount_sweet_food,
                       amount_drink: this.package_amount_drink,
-                      quotation_status_id: "2",
-                      note:this.Quotation_note
+                      
                   }
+                  console.log(CreateNewQuotation);
                   let resultCreateNewQuotation = await api.addQuotation(CreateNewQuotation);
                   console.log(resultCreateNewQuotation);
                   if (resultCreateNewQuotation.data.response =='OK'){
-                      alert('สร้างใบเสนอราคาสำเร็จเรียบร้อยแล้ว')
+                      this.$swal.fire("Success", 'สร้างใบเสนอราคาสำเร็จเรียบร้อยแล้ว', "success");
                       this.$router.push("/Quotation");
                     }else{
-                      alert('สร้างใบเสนอราคาไม่สำเร็จ')
+                      this.$swal.fire("error", `สร้างใบเสนอราคาสำเร็จไม่สำเร็จ ${resultCreateNewQuotation.data.response} เนื่องจาก ${resultCreateNewQuotation.data.result} `, "error");
                     }
             }else{
               //แก้ไขใบเสนอราคา
@@ -1127,14 +1163,14 @@ export default {
                       amount_drink: this.package_amount_drink,
                       note:this.Quotation_note,
                   }
-                  console.log(EditQuotation);
+                  //console.log('id',EditQuotation);
                   let resultEditQuotation = await api.editQuotation(EditQuotation);
-                  console.log(resultEditQuotation);
+                  //console.log(resultEditQuotation);
                   if (resultEditQuotation.data.response =='OK'){
-                      alert('แก้ไขใบเสนอราคาสำเร็จเรียบร้อยแล้ว')
+                      this.$swal.fire("Success", 'แก้ไขใบเสนอราคาสำเร็จเรียบร้อยแล้ว', "success");
                       this.$router.push("/Quotation");
                     }else{
-                      alert('แก้ไขใบเสนอราคาไม่สำเร็จ')
+                      this.$swal.fire("error", `แก้ไขใบเสนอราคาไม่สำเร็จ ${resultEditQuotation.data.response} เนื่องจาก ${resultEditQuotation.data.result} `, "error");
                     }
             }
     }

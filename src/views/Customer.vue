@@ -30,6 +30,7 @@
             :headers="headers_table_customer"
             :items="table_customer"
             :items-per-page="10"
+            mobile-breakpoint="0"
             class="elevation-1"
           >
             <!-- table top section -->
@@ -154,11 +155,11 @@ export default {
     total:'',
     table_customer: [],
     headers_table_customer: [
-      { text: "รหัสลูกค้า", value: "id", sortable: false, align: "start", color: "black"},
+      { text: "รหัสลูกค้า", value: "id", sortable: true, align: "start", color: "black"},
       { text: "ชื่อลูกค้า", value: "name", sortable: false, align: "start" },
       { text: "ชื่อออกใบกำกับภาษี", value: "customer_tax_invoices", sortable: false, align: "start"},
       { text: "ประเภทลูกค้า", value: "customer_type", sortable: false, align: "start"},
-      { text: "วันเวลาที่สร้าง",  value: "created_at_date", sortable: false, align: "start"},
+      { text: "วันเวลาที่สร้าง",  value: "created_at_date", sortable: true, align: "start"},
       { text: "", value: "", sortable: false, align: "start" },
       { text: "", value: "", sortable: false, align: "start" },
     ],
@@ -188,12 +189,23 @@ export default {
     },
 
     async DeleteCustomer(item){
-      let delCustomer ={"id":item.id}
-      let result = await api.delCustomer(delCustomer);
-       if (result.data.response =='OK'){
-        alert('ลบรายชื่อลูกค้าเรียบร้อยแล้ว')
-        await this.loadCustomers()
-      }
+          this.$swal.fire({
+            title:`ต้องการลบลูกค้ารายนี้ใช่หรือไม่ ?`,
+            showDenyButton: true,
+            confirmButtonText: `ยืนยัน`,
+            denyButtonText: `ยกเลิก`,
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+                let delCustomer ={"id":item.id}
+                let resultdel = await api.delCustomer(delCustomer);
+                if (resultdel.data.response =='OK'){
+                  this.$swal.fire('ยืนยันการลบเรียบร้อย', '', 'success')
+                  this.loadCustomers()
+                }
+            } else if (result.isDenied) {
+              this.$swal.fire('ยกเลิกการลบ', '', 'error')
+            }
+          })
     }
   },
 };

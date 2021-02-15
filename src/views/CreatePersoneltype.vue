@@ -11,7 +11,7 @@ export default {
     },
 
   data: () => ({
-    CreateorEdittype:true,
+    CreateorEdittype:1,
 
   }),
 

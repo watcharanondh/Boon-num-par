@@ -54,7 +54,7 @@
             <v-row>
               <div style="width:100%; display:flex;">
                 <div style="padding:0 20px 10px 20px">
-                <img src="@/assets/AWLogoBoonumpar.svg" width="100" height="120" >
+                <img src="@/assets/AW-Logo-Boonumpar.webp" width="100" height="120" >
                 </div>
                 <div style="padding:10px 0 10px ">
                <h2 style="font-size:22px">บริษัท บุญนำพา (Boon-Num-Par) จำกัด</h2>

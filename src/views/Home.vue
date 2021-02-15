@@ -42,8 +42,8 @@
             :items="Latest_quotation"
             :items-per-page="10"
             hide-default-footer
-            class="elevation-1"
             mobile-breakpoint="0"
+            class="elevation-1"
           >
             <!-- table top section -->
             <template v-slot:top>
@@ -87,8 +87,8 @@
             :items="Latest_customer_list"
             :items-per-page="10"
             hide-default-footer
-            class="elevation-1"
             mobile-breakpoint="0"
+            class="elevation-1"
           >
             <template v-slot:top>
               <v-toolbar flat>

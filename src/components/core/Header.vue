@@ -42,9 +42,9 @@
       <div v-if="RouterPath == 1">
         <!-- MenuSalesData -->
         <v-navigation-drawer v-model="drawer" app>
-            <div @click="onClickHome" class="justify-center d-flex">
+            <div @click="onClickHome" class="justify-center d-flex pointer">
               <v-img
-                :src="require('@/assets/AWLogoBoonumpar.svg')"
+                :src="require('@/assets/AW-Logo-Boonumpar.webp')"
                 max-height="100%"
                 max-width="60%"
               />
@@ -89,9 +89,9 @@
       <div v-else-if="RouterPath == 2" >
         <!-- MenuManageSystem -->
         <v-navigation-drawer v-model="drawer" app>
-            <div @click="onClickHome" class="justify-center d-flex">
+            <div @click="onClickHome" class="justify-center d-flex pointer">
               <v-img
-                :src="require('@/assets/AWLogoBoonumpar.svg')"
+                :src="require('@/assets/AW-Logo-Boonumpar.webp')"
                 max-height="100%"
                 max-width="60%"
               />
@@ -238,4 +238,7 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.pointer {cursor: pointer;}
+</style>
+
