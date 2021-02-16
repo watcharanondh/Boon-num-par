@@ -52,7 +52,7 @@ exports.listAllCustomers = async (req, res) => {
         is_active: 1,
         is_delete: 0
       },
-      order: [["created_at", "DESC"]]
+      order: [["customer_code", "DESC"]]
     }).then(customers_data => {
       customers_data.map((data) => {
         data.dataValues.customer_tax_invoices = data.dataValues.customer_tax_invoices != '' ? data.dataValues.customer_tax_invoices[0].title : "ไม่พบข้อมูล";
@@ -90,11 +90,6 @@ exports.createCustomer = async (req, res) => {
       if (old_date_inv == now_date_inv) {
         invoice_no = helper.SKUincrementer(max_invoice.dataValues.maxCtiCode);
       }
-      //  else {
-      //   // letc last3digi = max_invoice.dataValues.maxCtiCode.slice(-3);
-      //   // invoice_no = `INV${new Date().getYear().toString()}${((new Date().getMonth() + 1).toString()).padStart(2, 0)}${new Date().getDate().toString()}${((parseInt(last3digi) + 1).toString()).padStart(3, 0)}`;
-      //   invoice_no = `INV${new Date().getYear().toString()}${((new Date().getMonth() + 1).toString()).padStart(2, 0)}${new Date().getDate().toString()}001`;
-      // }
     }
     
     if (parseInt(req.body.type_id) === 1) {
@@ -289,21 +284,29 @@ exports.editCustomer = async (req, res) => {
     } else if (parseInt(req.body.type_id) === 2) {
       /* Customers ประเภทนิติบุคคล */
       const { customer_code, name, telephone_number, mobile_phone_number, line_id, address, district_id, cti_title, cti_tax_id, cti_flash_number, cti_email, cti_telephone_number, cti_mobile_phone_number, cti_address, cti_district_id } = req.body;
+      const find_cust_id = await customers.findOne({attributes:['id'],where:{customer_code:customer_code}})
       /* Email Check */
       const is_email = await customer_tax_invoices.findOne({ where: { email: cti_email } })
+      const is_own_email = await customer_tax_invoices.findOne({ where: { email: cti_email, customer_id: find_cust_id.dataValues.id } })
       if (is_email) {
-        res.json({
-          response: "FAILED",
-          result: "Email already exists."
-        });
+        if (!is_own_email) {        
+          res.json({
+            response: "FAILED",
+            result: "Email already exists."
+          });
+        }
       }
       /* TAX ID Check */
       const is_tax_id = await customer_tax_invoices.findOne({ where: { tax_id: cti_tax_id } })
+      const is_own_tax_id = await customer_tax_invoices.findOne({ where: { tax_id: cti_tax_id, customer_id: find_cust_id.dataValues.id } })
+      console.log('tax_id',is_tax_id);
       if (is_tax_id) {
-        res.json({
-          response: "FAILED",
-          result: "Tax ID already exists."
-        });
+        if (!is_own_tax_id) {
+          res.json({
+            response: "FAILED",
+            result: "Tax ID already exists."
+          });          
+        }
       }
       const customers_result = await customers.update({
         name: name,

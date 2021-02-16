@@ -25,7 +25,7 @@ exports.listAllPromotions = async (req, res) => {
         is_active: 1,
         is_delete: 0
       },
-      order: [["updated_at", "DESC"]]
+      order: [["promotion_code", "DESC"]]
     }).then(promo_data => {
       promo_data.map((data) => {
         data.dataValues.discount_text = data.dataValues.discount_type == 1 ? data.dataValues.discount + " บาท" : data.dataValues.discount + " %"

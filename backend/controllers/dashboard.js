@@ -61,7 +61,7 @@ exports.listAllDashboard = async (req, res) => {
       order: [["created_at", "DESC"]]
     }).then(quotadata=>{
       quotadata.map((data)=>{
-        data.dataValues.customer_tax_invoices = data.dataValues.customer.customer_tax_invoices[0].title
+        data.dataValues.customer_tax_invoices = data.dataValues.customer.customer_tax_invoices != '' ? data.dataValues.customer.customer_tax_invoices[0].title : "ไม่พบข้อมูลนิติบุคคล";
         data.dataValues.quotation_status = data.dataValues.quotation_status.name
         delete data.dataValues.customer;
       });
@@ -74,7 +74,7 @@ exports.listAllDashboard = async (req, res) => {
       include: [
         {
           model: customer_tax_invoices,
-          attributes: ['title']
+          attributes: ['customer_tax_invoices_code','title']
         }
       ],
       where: {

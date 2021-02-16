@@ -14,8 +14,8 @@ router.post("/addnewequipment", authorize, EquipmentContrllers.createNewEquipmen
 router.post("/listequipment", authorize, EquipmentContrllers.listEquipmentsToEdit);
 
 /* Edit Equipment */
-router.put("/editequipment", authorize, EquipmentContrllers.editEquipment);
+router.post("/editequipment", authorize, EquipmentContrllers.editEquipment);
 /* Delete Equipment */
-router.put("/delequipment", authorize, EquipmentContrllers.deleteEquipment);
+router.post("/delequipment", authorize, EquipmentContrllers.deleteEquipment);
 
 module.exports = router;

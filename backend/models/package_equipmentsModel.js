@@ -1,17 +1,21 @@
 module.exports = (sequelize, DataTypes) => {
-  const equipment_set_equipments = sequelize.define("equipment_set_equipments", {
+  const package_equipments = sequelize.define("package_equipments", {
     id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
     },
-    equipment_set_id: {
+    package_id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
     },
     equipment_id: {
       type: DataTypes.INTEGER(11),
+      allowNull: false,
+    },
+    amount: {
+      type: DataTypes.INTEGER(10),
       allowNull: false,
     },
     createdAt: {
@@ -47,10 +51,10 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
-  equipment_set_equipments.associate = models => {
-    equipment_set_equipments.belongsTo(models.equipment_sets, { foreignKey: "id" });
-    equipment_set_equipments.belongsTo(models.equipments, { foreignKey: "equipment_id" });
+  package_equipments.associate = models => {
+    package_equipments.belongsTo(models.packages, { foreignKey: "package_id" });
+    package_equipments.belongsTo(models.equipments, { foreignKey: "equipment_id" });
   };
 
-  return equipment_set_equipments;
+  return package_equipments;
 };

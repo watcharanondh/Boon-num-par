@@ -1,4 +1,4 @@
-const { packages, equipment_sets, package_equipment_sets } = require("../models");
+const { packages, equipments, package_equipments } = require("../models");
 const { Op, Sequelize } = require("sequelize");
 const helper = require("../helper/sku");
 
@@ -44,13 +44,15 @@ exports.listAllPackages = async (req, res) => {
   }
 };
 
-/* List All EquipmentSets to PackageUse */
-exports.listAllEquipmentSetsToPackageUse = async (req, res) => {
+/* List All Equipments to PackageUse */
+exports.listAllEquipmentsToPackageUse = async (req, res) => {
   try {
-    const result = await equipment_sets.findAll({
+    const result = await equipments.findAll({
       attributes: [
-        "equipment_set_code",
+        "equipment_code",
         "name",
+        "stock_in",
+        [Sequelize.literal(`stock_in - stock_out`),"stock_balance"]
       ],
       where: {
         is_active: 1,
@@ -74,7 +76,7 @@ exports.listAllEquipmentSetsToPackageUse = async (req, res) => {
 
 /* Create New Packages */
 exports.createNewPackage = async (req, res) => {
-  const { name, price, amount_savory_food, amount_sweet_food, amount_drink, package_equipset } = req.body;
+  const { name, price, amount_savory_food, amount_sweet_food, amount_drink, package_equips } = req.body;
   try {
     const getMaxPackCode = await packages.findOne({ attributes: [[Sequelize.fn('MAX', Sequelize.col('package_code')), "maxPackCode"]] })
     const newPackCode = getMaxPackCode.dataValues.maxPackCode !== null ? helper.SKUincrementer(getMaxPackCode.dataValues.maxPackCode) : "BNPPK0000001";
@@ -91,17 +93,21 @@ exports.createNewPackage = async (req, res) => {
     });
 
     /*สร้างรายการชุดอุปกรณ์ สำหรับ Package นั้นๆ*/
-    const findIdEquipSet = await equipment_sets.findAll({
-      attributes: ['id'],
+    const getEquipmentCode = package_equips.map(equip => { return equip.equipment_code });
+    const findIdEquip = await equipments.findAll({
+      attributes: ['id', 'equipment_code'],
       where: {
-        equipment_set_code: {
-          [Op.in]: package_equipset
+        equipment_code: {
+          [Op.in]: getEquipmentCode
         }
       }
     });
-    var ObjEquipSet = findIdEquipSet.map(equipSetId => { return { "package_id": Packageresult.dataValues.id, "equipment_set_id": equipSetId.id } });
-    console.log(ObjEquipSet);
-    const PackEquipSetresult = await package_equipment_sets.bulkCreate(ObjEquipSet);
+    var new_equips = findIdEquip.map(obj => {
+      let temp_req_equip = package_equips.filter(data => data.equipment_code == obj.equipment_code);
+      return { "id": obj.id, "equipment_code": obj.equipment_code, ...temp_req_equip[0] };
+    });
+    var ObjEquips = new_equips.map(equip => { return { "package_id": Packageresult.dataValues.id, "equipment_id": equip.id, "amount": equip.amount } });
+    const PackEquipSetresult = await package_equipments.bulkCreate(ObjEquips);
 
     res.json({
       response: "OK",
@@ -120,12 +126,12 @@ exports.listPackagesToEdit = async (req, res) => {
       attributes: ["package_code", "name", "price", "amount_savory_food", "amount_sweet_food", "amount_drink"],
       include: [
         {
-          model: package_equipment_sets,
-          attributes: ["package_id", "equipment_set_id"],
+          model: package_equipments,
+          attributes: ["package_id", "equipment_id","amount"],
           include: [
             {
-              model: equipment_sets,
-              attributes: ["name"],
+              model: equipments,
+              attributes: ["equipment_code","name"],
               where: { is_active: 1, is_delete: 0 }
             }
           ],
@@ -137,7 +143,12 @@ exports.listPackagesToEdit = async (req, res) => {
         is_active: 1,
         is_delete: 0
       }
-    })
+    }).then(pack_data => {
+      pack_data[0].dataValues.package_equipments.map(data => {
+        data.dataValues = { ...data.equipment.dataValues, "amount": data.amount };
+      });
+      return pack_data;
+    });
     if (result != '' && result !== null) {
       res.json({
         response: "OK",
@@ -154,13 +165,13 @@ exports.listPackagesToEdit = async (req, res) => {
 
 /* Edit Packages */
 exports.editPackage = async (req, res) => {
-  const { package_code, name, price, amount_savory_food, amount_sweet_food, amount_drink, package_equipset } = req.body;
+  const { package_code, name, price, amount_savory_food, amount_sweet_food, amount_drink, package_equips } = req.body;
   try {
     /* get ID ชุดอุปกรณ์ */
     const get_id_package = await packages.findOne({ attributes: ['id'], where: { package_code: package_code } });
     if (get_id_package) {
-      /*ลบ package_equipset ที่มีอยู่ก่อน */
-      const delPack_equipset = await package_equipment_sets.destroy({
+      /*ลบ package_equips ที่มีอยู่ก่อน */
+      const delPack_equipset = await package_equipments.destroy({
         where: {
           package_id: get_id_package.dataValues.id
         }
@@ -182,17 +193,21 @@ exports.editPackage = async (req, res) => {
           }
         });
         // เพิ่ม Packageใหม่ที่ส่งมา //
-        const findIdEquipSet = await equipment_sets.findAll({
-          attributes: ['id'],
+        const getEquipmentCode = package_equips.map(equip => { return equip.equipment_code });
+        const findIdEquip = await equipments.findAll({
+          attributes: ['id','equipment_code'],
           where: {
-            equipment_set_code: {
-              [Op.in]: package_equipset
+            equipment_code: {
+              [Op.in]: getEquipmentCode
             }
           }
         });
-        var ObjEquipSet = findIdEquipSet.map(equipSetId => { return { "package_id": get_id_package.dataValues.id, "equipment_set_id": equipSetId.id } });
-        console.log(ObjEquipSet);
-        const PackEquipSetresult = await package_equipment_sets.bulkCreate(ObjEquipSet);
+        var new_equips = findIdEquip.map(obj => {
+          let temp_req_equip = package_equips.filter(data => data.equipment_code == obj.equipment_code);
+          return { "id": obj.id, "equipment_code": obj.equipment_code, ...temp_req_equip[0] };
+        });
+        var ObjEquips = new_equips.map(equip => { return { "package_id": get_id_package.dataValues.id, "equipment_id": equip.id, "amount": equip.amount } });
+        const PackEquipSetresult = await package_equipments.bulkCreate(ObjEquips);
         res.json({
           response: "OK",
           result: [Packageresult, PackEquipSetresult],

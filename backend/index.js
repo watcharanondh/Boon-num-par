@@ -44,8 +44,6 @@ app.use(START_PART_WITH + "/districts", require("./routes/Districts"));
 /*---------------------- ADMIN ----------------------*/
 /* Equipment Route */
 app.use(START_PART_WITH + "/equipments", require("./routes/Equipments"));
-/* EquipmentSet Route */
-app.use(START_PART_WITH + "/equipmentsets", require("./routes/EquipmentSets"));
 /* Packages Route */
 app.use(START_PART_WITH + "/packages", require("./routes/Packages"));
 /* Promotions Route */

@@ -10,7 +10,7 @@ router.get("/listallquotations", authorize, QuotationsContrllers.listAllQuotatio
 /* List Status Quotations Selector */
 router.get("/statusquotationtoselect", authorize, QuotationsContrllers.listStatusQuotations);
 /* Update Quotation Confirm Status */
-router.put("/confirmquotstat", authorize, QuotationsContrllers.comfirmQuotationStatus);
+router.post("/confirmquotstat", authorize, QuotationsContrllers.comfirmQuotationStatus);
 /* List All Customer */
 router.get("/listallcustomers", authorize, QuotationsContrllers.listAllCustomers);
 /* List Customer information to Create Quotations */
@@ -26,11 +26,11 @@ router.post("/newquotations", authorize, QuotationsContrllers.createNewQuotation
 /* List Quotations to Edit */
 router.post("/listquotation", authorize, QuotationsContrllers.listQuotationsToEdit);
 /* Edit Quotation */
-router.put("/editquotation", authorize, QuotationsContrllers.editQuotation);
+router.post("/editquotation", authorize, QuotationsContrllers.editQuotation);
 
 /*------------------------------ Edit Quatation ------------------------------*/
 /* Edit Quotation */
-router.put("/delquotation", authorize, QuotationsContrllers.deleteQuotation);
+router.post("/delquotation", authorize, QuotationsContrllers.deleteQuotation);
 
 /*------------------------------ Print Quatation ------------------------------*/
 /* Print Quotation */

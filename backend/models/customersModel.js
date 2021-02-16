@@ -75,7 +75,7 @@ module.exports = (sequelize, DataTypes) => {
   customers.associate = models => {
     customers.belongsTo(models.districts, { foreignKey: "district_id" });
     customers.belongsTo(models.customer_types, { foreignKey: "type_id" });
-    customers.hasMany(models.customer_tax_invoices, { foreignKey: "id" });
+    customers.hasMany(models.customer_tax_invoices, { foreignKey: "customer_id" });
     customers.hasMany(models.quotations, { foreignKey: "id" });
   };
 

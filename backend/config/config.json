@@ -1,8 +1,8 @@
 {
   "development": {
-    "username": "dem_bnp",
-    "password": "kWsfW3YtJ8",
-    "database": "dem_bnp",
+    "username": "dem_bnpdev",
+    "password": "X3UskGzJy",
+    "database": "dem_bnpdev",
     "host": "103.82.248.102",
     "dialect": "mysql"
   },

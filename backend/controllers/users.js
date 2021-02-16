@@ -13,7 +13,14 @@ exports.userLogin = async (req, res) => {
     if (result) {
       if (bcrypt.compareSync(password, result.password)) {
         if (result.is_active == 1 && result.is_delete == 0) {
-          const accessToken = jwt.sign({ result }, fs.readFileSync(__dirname + '/../middleware/private.key'))
+          const _payload = {
+            "username": result.username,
+            "role_id": result.role_id,
+            "profile_url": result.profile_url,
+            "remember_token": result.remember_token,
+            "last_login": result.last_login
+          };
+          const accessToken = jwt.sign(_payload, fs.readFileSync(__dirname + '/../middleware/private.key'),{ expiresIn: '10h' })
           res.json({
             response: "OK",
             accessToken: accessToken,

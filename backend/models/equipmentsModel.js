@@ -57,7 +57,7 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
   equipments.associate = models => {
-    equipments.hasMany(models.equipment_set_equipments, { foreignKey: "equipment_id" });
+    equipments.hasMany(models.package_equipments, { foreignKey: "equipment_id" });
   };
   return equipments;
 };
