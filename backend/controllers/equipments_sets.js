@@ -46,7 +46,8 @@ exports.listAllEquipmentsToEquipmentSet = async (req, res) => {
       attributes: [
         "id",
         "name",
-        "stock_in"
+        "stock_in",
+        [Sequelize.literal(`stock_in - stock_out`),"stock_balance"]
       ],
       where: {
         is_active: 1,
@@ -85,7 +86,20 @@ exports.createNewEquipmentSet = async (req, res) => {
     /*สร้างรายการอุปกรณ์ สำหรับชุดอุปกรณ์นั้นๆ*/
     var object_equip = equip_in_equipset.map(equip => { return { "equipment_set_id": newEquipSetId, "equipment_id": equip.id, "amount": equip.amount } });
     console.log(object_equip);
-    const equipset_equip_result = await equipment_set_equipments.bulkCreate(object_equip);
+    const equipset_equip_result = await equipment_set_equipments.bulkCreate(object_equip)
+    .then(result => {
+      // result.map(val => {
+      //   equipments.update({
+      //     stock_out: Sequelize.literal(`stock_out + ${val.amount}`)
+      //   },
+      //     {
+      //       where: {
+      //         id: val.equipment_id
+      //       }
+      //     })
+      // });
+      return result;
+    });
 
     res.json({
       response: "OK",

@@ -79,12 +79,12 @@ exports.listAllCustomers = async (req, res) => {
 exports.createCustomer = async (req, res) => {
   try {
     const getMaxCustomerId = await customers.findOne({ attributes: [[Sequelize.fn('MAX', Sequelize.col('id')), "maxCustomerId"]] })
-    const costomer_id = getMaxCustomerId.dataValues.maxCustomerId !== null ? helper.SKUincrementer(getMaxCustomerId.dataValues.maxCustomerId) : "BNP0000001";
+    const customer_id = getMaxCustomerId.dataValues.maxCustomerId !== null ? helper.SKUincrementer(getMaxCustomerId.dataValues.maxCustomerId) : "BNP0000001";
     if (parseInt(req.body.type_id) === 1) {
       /* Customers */
       const { name, telephone_number, mobile_phone_number, line_id, type_id, address, district_id } = req.body;
       const customers_result = await customers.create({
-        id: costomer_id,
+        id: customer_id,
         name: name,
         telephone_number: telephone_number,
         mobile_phone_number: mobile_phone_number,
@@ -123,7 +123,7 @@ exports.createCustomer = async (req, res) => {
 
       /* Customers */
       const customers_result = await customers.create({
-        id: costomer_id,
+        id: customer_id,
         name: name,
         telephone_number: telephone_number,
         mobile_phone_number: mobile_phone_number,
@@ -135,7 +135,7 @@ exports.createCustomer = async (req, res) => {
 
       /* Customers Tax Invoices */
       const customer_tax_invoices_result = await customer_tax_invoices.create({
-        id: costomer_id,
+        id: customer_id,
         title: cti_title,
         tax_id: cti_tax_id,
         flash_number: cti_flash_number,
