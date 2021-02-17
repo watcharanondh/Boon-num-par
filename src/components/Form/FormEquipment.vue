@@ -12,10 +12,9 @@
     </v-col>
 
     <v-card class="mx-10 pa-5 rounded-lg" outlined>
-      <!-- ข้อมูลอุปกรณ์ -->
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-row justify="center">
-          <v-col lg="6" md="12" sm="12" cols="12">
+          <v-col lg="9" md="9" sm="12" cols="12">
             <v-row>
               <v-col>
                 <div class="sizetitle">{{ Changesubmit }}ข้อมูลอุปกรณ์</div>
@@ -55,7 +54,7 @@
             </v-row>
 
             <v-row>
-              <v-col cols="3">
+              <v-col xl="3" lg="3" md="6" sm="12" cols="12">
                 <v-btn
                   block
                   large
@@ -66,7 +65,7 @@
                 >
               </v-col>
               <v-spacer></v-spacer>
-              <v-col cols="3">
+              <v-col xl="3" lg="3" md="6" sm="12" cols="12">
                 <v-btn block color="#29CC97" dark large rounded @click="submit"
                   ><span class="white--text">{{ Changesubmit }}</span></v-btn
                 >
@@ -136,10 +135,10 @@ export default {
         };
         let result = await api.addEquipment(DataNewEquipment);
         if (result.data.response == "OK") {
-          this.$swal.fire("Success", 'บันทึกอุปกรณ์เรียบร้อยแล้ว', "success");
+          this.$swal.fire("สำเร็จ", 'บันทึกอุปกรณ์เรียบร้อยแล้ว', "success");
           this.$router.push("/Equipment");
         }else{
-          this.$swal.fire("error", `บันทึกอุปกรณ์ไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
+          this.$swal.fire("เกิดข้อผิดพลาด", `บันทึกอุปกรณ์ไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
         }
 
       } else {
@@ -151,10 +150,10 @@ export default {
         };
         let result = await api.editEquipment(DataEditEquipment);
         if (result.data.response == "OK") {
-          this.$swal.fire("Success", 'แก้ไขอุปกรณ์เรียบร้อยแล้ว', "success");
+          this.$swal.fire("สำเร็จ", 'แก้ไขอุปกรณ์เรียบร้อยแล้ว', "success");
           this.$router.push("/Equipment");
         }else{
-          this.$swal.fire("error", `แก้ไขอุปกรณ์ไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
+          this.$swal.fire("เกิดข้อผิดพลาด", `แก้ไขอุปกรณ์ไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
         }
       }
     },

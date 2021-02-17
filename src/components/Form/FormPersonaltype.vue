@@ -1,5 +1,5 @@
 <template>
-  <v-container style="background:#E5E5E5;color:white;height:100%">
+  <v-container class="main-container" style="background:#E5E5E5;color:white;height:100%">
     <v-row>
       <v-col>
         <v-card flat color="#E5E5E5">
@@ -20,7 +20,7 @@
         lazy-validation
      >
       <v-row justify="center">
-        <v-col lg="6" md="6" sm="12" cols="12">
+        <v-col lg="9" md="9" sm="12" cols="12">
           <v-row>
             <v-col>
              <div class="sizetitle">ข้อมูลลูกค้าประเภท{{formTitle}}</div>
@@ -50,7 +50,8 @@
             <v-col lg="6" md="6" sm="12" cols="12">
               <div class="sizehead">โทรศัพท์</div>
               <v-row class="no-gutters">
-                <v-text-field
+                <!-- <input type="text" v-mask="'9-9999-9999'" > -->
+                <!-- <v-text-field
                   v-model="Personaltype_telephone_number"
                   placeholder="02-1234567"
                   dense
@@ -60,7 +61,27 @@
                   :rules="Personaltype_telephone_numberRules"
                   :disabled="btn"
                   required
-                ></v-text-field>
+                ></v-text-field> -->
+                <v-text-field-simplemask
+                    v-model="Personaltype_telephone_number"
+                    v-bind:properties="{
+                      disabled: btn,
+                      dense: true,
+                      solo: true,
+                      outlined: true,
+                      clearable: true,
+                      placeholder: '02 1234 567 ,0 5312 3456',
+                      rules:Personaltype_telephone_numberRules,
+                      required: true,
+                    }"
+                    v-bind:options="{
+                      inputMask: '# #### ####',
+                      outputMask: '#########',
+                      empty: null,
+                      alphanumeric: true,
+                    }"
+                    class="w-100"
+                  />
               </v-row>
             </v-col>
           </v-row>
@@ -70,7 +91,7 @@
             <v-col lg="6" md="6" sm="12" cols="12">
               <div class="sizehead">มือถือ</div>
               <v-row class="no-gutters">
-                <v-text-field
+                <!-- <v-text-field
                   v-model="Personaltype_mobile_phone_number"
                   placeholder="081-2345678"
                   dense
@@ -78,7 +99,26 @@
                   outlined
                   clearable
                   :disabled="btn"
-                ></v-text-field>
+                ></v-text-field> -->
+                <v-text-field-simplemask
+                    v-model="Personaltype_mobile_phone_number"
+                    v-bind:properties="{
+                      disabled: btn,
+                      dense: true,
+                      solo: true,
+                      outlined: true,
+                      clearable: true,
+                      placeholder: '08 1123 4567',
+                      required: true,
+                    }"
+                    v-bind:options="{
+                      inputMask: '## #### ####',
+                      outputMask: '##########',
+                      empty: null,
+                      alphanumeric: true,
+                    }"
+                    class="w-100"
+                  />
               </v-row>
             </v-col>
 
@@ -221,7 +261,7 @@
         <!-- ข้อมูลใบกำกับภาษี -->
       <v-card class="rounded-lg" outlined>
         <v-row justify="center">
-        <v-col lg="11" md="12" sm="12" cols="12">
+        <v-col lg="11" md="11" sm="11" cols="11">
           <v-row>
             <v-col>
              <div class="sizetitle">ข้อมูลใบกำกับภาษี</div>
@@ -284,6 +324,7 @@
                   :disabled="btn"
                   clearable
                 ></v-text-field>
+                
               </v-row>
             </v-col>
           </v-row>
@@ -291,7 +332,7 @@
             <v-col lg="6" md="6" sm="12" cols="12">
               <div class="sizehead">โทรศัพท์</div>
               <v-row class="no-gutters">
-                <v-text-field
+                <!-- <v-text-field
                   v-model="Taxinvoiceinfo_telephone_number"
                   placeholder="053-123456"
                   dense
@@ -299,13 +340,32 @@
                   outlined
                   clearable
                   :disabled="btn"
-                ></v-text-field>
+                ></v-text-field> -->
+                <v-text-field-simplemask
+                    v-model="Taxinvoiceinfo_telephone_number"
+                    v-bind:properties="{
+                      disabled: btn,
+                      dense: true,
+                      solo: true,
+                      outlined: true,
+                      clearable: true,
+                      placeholder: '02 1234 567 ,0 5312 3456',
+                      required: true,
+                    }"
+                    v-bind:options="{
+                      inputMask: '# #### ####',
+                      outputMask: '#########',
+                      empty: null,
+                      alphanumeric: true,
+                    }"
+                    class="w-100"
+                  />
               </v-row>
             </v-col>
             <v-col lg="6" md="6" sm="12" cols="12">
               <div class="sizehead">มือถือ</div>
               <v-row class="no-gutters">
-                <v-text-field
+                <!-- <v-text-field
                   v-model="Taxinvoiceinfo_mobile_phone_number"
                   placeholder="081-2345678"
                   dense
@@ -313,7 +373,28 @@
                   outlined
                   clearable
                   :disabled="btn"
-                ></v-text-field>
+                ></v-text-field> -->
+                <div>
+                <v-text-field-simplemask
+                    v-model="Taxinvoiceinfo_mobile_phone_number"
+                    v-bind:properties="{
+                      disabled: btn,
+                      dense: true,
+                      solo: true,
+                      outlined: true,
+                      clearable: true,
+                      placeholder: '08 1123 4567',
+                      required: true,
+                    }"
+                    v-bind:options="{
+                      inputMask: '## #### ####',
+                      outputMask: '##########',
+                      empty: null,
+                      alphanumeric: true,
+                    }"
+                    class="w-100"
+                  />
+                  </div>
               </v-row>
             </v-col>
           </v-row>
@@ -436,7 +517,7 @@
         </v-row>
 
           <v-row>
-            <v-col cols="3">
+            <v-col xl="3" lg="3" md="6" sm="12" cols="12">
               <v-btn
                 block
                 large
@@ -447,7 +528,7 @@
               >
             </v-col>
             <v-spacer></v-spacer>
-            <v-col cols="3">
+            <v-col xl="3" lg="3" md="6" sm="12" cols="12">
               <v-btn
                 block
                 color="#29CC97"
@@ -575,7 +656,7 @@ export default {
         this.CreateorEdit = this.CreateorEdittype
       
         //console.log('ข้อมูลแก้ไขลูกค้าไอดี',this.EditPersonaltype_ID);
-        let BNP_ID_Edit = { id:this.EditPersonaltype_ID }
+        let BNP_ID_Edit = { customer_code:this.EditPersonaltype_ID }
         let result = await api.getListEditcustomers(BNP_ID_Edit);
         //console.log('ข้อมูลที่ต้องแก้ไข',result);
         this.pasoneltype = result.data.result[0].type_id
@@ -759,10 +840,10 @@ async submit() {
                       let result = await api.addNewpersonnal(DataPersonaltypeCreate);
                       //console.log(result);
                       if (result.data.response =='OK'){
-                            this.$swal.fire("Success", 'บันทึกข้อมูลลูกค้าประเภทบุคคลเรียบร้อยแล้ว', "success");
+                            this.$swal.fire("สำเร็จ", 'บันทึกข้อมูลลูกค้าประเภทบุคคลเรียบร้อยแล้ว', "success");
                             this.$router.push('/Customer')
                           }else{
-                            this.$swal.fire("error", `บันทึกข้อมูลลูกค้าประเภทบุคคลไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
+                            this.$swal.fire("เกิดข้อผิดพลาด", `บันทึกข้อมูลลูกค้าประเภทบุคคลไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
                           }
             }else{
                 //สร้างลูกค้าประเภทบริษัท
@@ -791,10 +872,10 @@ async submit() {
                       let result = await api.addNewpersonnal(DataCompanytypeCreate_Old_address);
                       //console.log(result);
                       if (result.data.response =='OK'){
-                            this.$swal.fire("Success", 'บันทึกข้อมูลลูกค้าประเภทบริษัทเรียบร้อยแล้ว', "success");
+                            this.$swal.fire("สำเร็จ", 'บันทึกข้อมูลลูกค้าประเภทบริษัทเรียบร้อยแล้ว', "success");
                             this.$router.push('/Customer')
                           }else{ 
-                            this.$swal.fire("error", `บันทึกข้อมูลลูกค้าประเภทบริษัทไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
+                            this.$swal.fire("เกิดข้อผิดพลาด", `บันทึกข้อมูลลูกค้าประเภทบริษัทไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
                           }
                 //สร้างลูกค้าประเภทบริษัท สร้างที่อยู่แบบใหม่
                 }else{
@@ -820,10 +901,10 @@ async submit() {
                       //console.log('สร้างที่อยู่แบบใหม่',DataCompanytypeCreate_New_address);
                       let result = await api.addNewpersonnal(DataCompanytypeCreate_New_address);
                       if (result.data.response =='OK'){
-                            this.$swal.fire("Success", 'บันทึกข้อมูลประเภทบริษัทเรียบร้อยแล้ว', "success");
+                            this.$swal.fire("สำเร็จ", 'บันทึกข้อมูลประเภทบริษัทเรียบร้อยแล้ว', "success");
                             this.$router.push('/Customer')
                           }else{ 
-                            this.$swal.fire("error", `บันทึกข้อมูลลูกค้าประเภทบริษัทไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
+                            this.$swal.fire("เกิดข้อผิดพลาด", `บันทึกข้อมูลลูกค้าประเภทบริษัทไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
                           }
                 }
             }
@@ -832,7 +913,7 @@ async submit() {
             //แก้ไขลูกค้าประเภทบุคคล 
             if(this.pasoneltype == 1 ){
               let DataPersonaltypeEdit = {
-                            id: this.EditPersonaltype_ID, 
+                            customer_code: this.EditPersonaltype_ID, 
                             name: this.Personaltype_fullname,
                             type_id: this.pasoneltype,
                             telephone_number: this.Personaltype_telephone_number,
@@ -854,17 +935,17 @@ async submit() {
                       let result = await api.Editcustomer(DataPersonaltypeEdit);
                       //console.log('แก้ไขบุคคล',result);
                       if (result.data.response =='OK'){
-                            this.$swal.fire("Success", 'แก้ไขข้อมูลลูกค้าประเภทบุคคลเรียบร้อยแล้ว', "success");
+                            this.$swal.fire("สำเร็จ", 'แก้ไขข้อมูลลูกค้าประเภทบุคคลเรียบร้อยแล้ว', "success");
                             this.$router.push('/Customer')
                           }else{ 
-                            this.$swal.fire("error", `แก้ไขข้อมูลลูกค้าประเภทบุคคลไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
+                            this.$swal.fire("เกิดข้อผิดพลาด", `แก้ไขข้อมูลลูกค้าประเภทบุคคลไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
                           }
             }else{
                 //แก้ไขลูกค้าประเภทบริษัท
                 //แก้ไขลูกค้าประเภทบริษัท แบบที่อยู่เดิม
                 if(this.Same_address==1){
                       let DataCompanytypeEdit_Old_address = {
-                            id: this.EditPersonaltype_ID, 
+                            customer_code: this.EditPersonaltype_ID, 
                             name: this.Personaltype_fullname,
                             type_id: this.pasoneltype,
                             telephone_number: this.Personaltype_telephone_number,
@@ -887,15 +968,15 @@ async submit() {
                       let result = await api.Editcustomer(DataCompanytypeEdit_Old_address);
                       //console.log(result);
                       if (result.data.response =='OK'){
-                            this.$swal.fire("Success", 'แก้ไขข้อมูลลูกค้าประเภทบริษัทเรียบร้อยแล้ว', "success");
+                            this.$swal.fire("สำเร็จ", 'แก้ไขข้อมูลลูกค้าประเภทบริษัทเรียบร้อยแล้ว', "success");
                             this.$router.push('/Customer')
                           }else{
-                            this.$swal.fire("error", `แก้ไขข้อมูลลูกค้าประเภทบริษัทไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
+                            this.$swal.fire("เกิดข้อผิดพลาด", `แก้ไขข้อมูลลูกค้าประเภทบริษัทไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
                           }
                 //แก้ไขลูกค้าประเภทบริษัท แก้ไขที่อยู่แบบใหม่
                 }else{
                       let DataCompanytypeEdit_New_address = {
-                            id: this.EditPersonaltype_ID, 
+                            customer_code: this.EditPersonaltype_ID, 
                             name: this.Personaltype_fullname,
                             type_id: this.pasoneltype,
                             telephone_number: this.Personaltype_telephone_number,
@@ -918,10 +999,10 @@ async submit() {
                       let result = await api.Editcustomer(DataCompanytypeEdit_New_address);
                       //console.log(result);
                       if (result.data.response =='OK'){
-                            this.$swal.fire("Success", 'แก้ไขข้อมูลประเภทบริษัทเรียบร้อยแล้ว', "success");
+                            this.$swal.fire("สำเร็จ", 'แก้ไขข้อมูลประเภทบริษัทเรียบร้อยแล้ว', "success");
                             this.$router.push('/Customer')
                           }else{
-                            this.$swal.fire("error", `แก้ไขข้อมูลลูกค้าประเภทบริษัทไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
+                            this.$swal.fire("เกิดข้อผิดพลาด", `แก้ไขข้อมูลลูกค้าประเภทบริษัทไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
                           }
                 }
             }

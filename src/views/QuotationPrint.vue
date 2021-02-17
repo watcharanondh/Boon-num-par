@@ -274,7 +274,7 @@ export default {
 
   methods: {
     async loadDatas() {
-      let ID_Quotation ={id:this.$store.getters["Newpersonal_BNP_ID"].BNP_ID}
+      let ID_Quotation ={quotation_code:this.$store.getters["Newpersonal_BNP_ID"].BNP_ID}
       let result = await api.getPrintQuotation(ID_Quotation);
             this.Header = result.data.result.header
             this.Bodys = result.data.result.body

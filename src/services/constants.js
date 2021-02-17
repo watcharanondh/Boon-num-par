@@ -56,17 +56,9 @@ export const server = {
   PUT_EDIT_EQUIPMENT_URL:`/equipments/editequipment`,
   DELETE_EQUIPMENT_URL:`/equipments/delequipment`,
 
-  //Equipment SET
-  LIST_ALL_SET_EQUIPMENT_URL:`/equipmentsets/listallequipmentset`,
-  LIST_ALL_SET_MINI_EQUIPMENT_URL:`/equipmentsets/listallequiptoequipset`,
-  LIST_EDIT_SET_MINI_EQUIPMENT_URL:`/equipmentsets/listequipmentset`,
-  ADD_SET_EQUIPMENT_URL:`/equipmentsets/addnewequipmentset`,
-  PUT_EDIT_SET_EQUIPMENT_URL:`/equipmentsets/editequipmentset`,
-  DELETE_SET_EQUIPMENT_URL:`/equipmentsets/delequipmentset`,
-
   //Package 
   LIST_ALL_PACKAGE_URL:`/packages/listallpackage`,
-  LIST_ALL_Equipments_PackageUse_URL:`/packages/listallequipsettopackuse`,
+  LIST_ALL_Equipments_PackageUse_URL:`/packages/listallequiptopackuse`,
   LIST_EDIT_PACKAGE_URL:`/packages/listpackages`,
 
   ADD_PACKAGE_URL:`/packages/addnewpackage`,

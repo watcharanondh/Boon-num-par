@@ -41,7 +41,7 @@
             <template v-slot:top>
               <v-toolbar flat>
                 <v-toolbar-title><span>รายการแพ็กเก็จ</span></v-toolbar-title>
-                <v-toolbar-title><span class="text-caption grey--text">{{total}}</span></v-toolbar-title>
+                <v-toolbar-title><span class="text-caption grey--text ml-1">{{total}}</span></v-toolbar-title>
                 <v-spacer></v-spacer>
 
                 <!-- <div>
@@ -83,7 +83,7 @@
             </template>
             <template v-slot:item="{ item }">
               <tr>
-                <td>{{ item.id }}</td>
+                <td>{{ item.package_code }}</td>
                 <td>{{ item.name }}</td>
                 <td>{{ item.food_des }}</td>
                 <td>
@@ -130,7 +130,7 @@ export default {
     total:null,
     table_package: [],
     headers_table_package: [
-      { text: "รหัสแพ็กเก็จ", value: "id", sortable: true, align: "start", color: "black"},
+      { text: "รหัสแพ็กเก็จ", value: "package_code", sortable: true, align: "start", color: "black"},
       { text: "ชื่อแพ็กเก็จ", value: "name", sortable: false, align: "start" },
       { text: "รายละเอียด", value: "food_des", sortable: false, align: "start"},
       { text: "", value: "", sortable: false, align: "start" },
@@ -147,7 +147,7 @@ export default {
     async EditPackage(item){
           await this.$store.dispatch({
                   type: "doEditBNPID",
-                  BNP_ID: item.id,
+                  BNP_ID: item.package_code,
                });
           await this.$router.push('/EditPackage');
           },
@@ -159,7 +159,7 @@ export default {
             denyButtonText: `ยกเลิก`,
           }).then(async (result) => {
             if (result.isConfirmed) {
-                let delPackage ={"id":item.id}
+                let delPackage ={"package_code":item.package_code}
                 let resultdel = await api.delPackage(delPackage);
                 if (resultdel.data.response =='OK'){
                   this.$swal.fire('ยืนยันการลบเรียบร้อย', '', 'success')

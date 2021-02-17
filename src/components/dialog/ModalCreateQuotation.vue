@@ -75,7 +75,7 @@
 import api from "@/services/api";
 export default {
   name:"ModalCreateQuotation",
-  props:['idq'],
+  props:['quotation_code'],
  mounted() {
       this.getStatus();
 
@@ -100,7 +100,7 @@ export default {
     },
   async changeStatus(SelectStatus) {
       let StatusID = SelectStatus.id
-      let updateStatus = {id:this.idq ,status:StatusID}
+      let updateStatus = {quotation_code:this.quotation_code ,status:StatusID}
       console.log(updateStatus);
       let result = await api.updateStatusQuotation(updateStatus);
       console.log(result);

@@ -18,10 +18,6 @@ import Equipment from "@/views/Equipment.vue";
 import CreateEquipment from "@/views/CreateEquipment.vue";
 import EditEquipment from "@/views/EditEquipment.vue";
 
-import SetEquipment from "@/views/SetEquipment.vue";
-import CreateSetEquipment from "@/views/CreateSetEquipment.vue";
-import EditSetEquipment from "@/views/EditSetEquipment.vue";
-
 import Package from "@/views/Package.vue"; 
 import CreatePackage from "@/views/CreatePackage.vue";
 import EditPackage from "@/views/EditPackage.vue";
@@ -104,21 +100,6 @@ const routes = [
     path: "/EditEquipment",
     name: "/EditEquipment",
     component: EditEquipment
-  },
-  {
-    path: "/SetEquipment",
-    name: "/SetEquipment",
-    component: SetEquipment
-  },
-  {
-    path: "/CreateSetEquipment",
-    name: "/CreateSetEquipment",
-    component: CreateSetEquipment
-  },
-  {
-    path: "/EditSetEquipment",
-    name: "/EditSetEquipment",
-    component: EditSetEquipment
   },
   {
     path: "/Package",

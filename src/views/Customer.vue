@@ -37,7 +37,7 @@
             <template v-slot:top>
               <v-toolbar flat>
                 <v-toolbar-title><span>รายชื่อลูกค้า</span></v-toolbar-title>
-                <v-toolbar-title><span class="text-caption grey--text">{{total}}</span></v-toolbar-title>
+                <v-toolbar-title><span class="text-caption grey--text ml-1">{{total}}</span></v-toolbar-title>
                  <v-spacer></v-spacer>
                     <v-divider class="mx-4" inset vertical></v-divider>
                       <v-text-field
@@ -88,7 +88,7 @@
             </template>
             <template v-slot:item="{ item }">
               <tr>
-                <td>{{ item.id }}</td>
+                <td>{{ item.customer_code }}</td>
                 <td>
                   {{ item.name }}<br />
                   update {{ item.update }}
@@ -155,7 +155,7 @@ export default {
     total:'',
     table_customer: [],
     headers_table_customer: [
-      { text: "รหัสลูกค้า", value: "id", sortable: true, align: "start", color: "black"},
+      { text: "รหัสลูกค้า", value: "customer_code", sortable: true, align: "start", color: "black"},
       { text: "ชื่อลูกค้า", value: "name", sortable: false, align: "start" },
       { text: "ชื่อออกใบกำกับภาษี", value: "customer_tax_invoices", sortable: false, align: "start"},
       { text: "ประเภทลูกค้า", value: "customer_type", sortable: false, align: "start"},
@@ -175,7 +175,7 @@ export default {
    async MonitorCustomer(item){
       await this.$store.dispatch({
           type: "doEditBNPID",
-          BNP_ID: item.id,
+          BNP_ID: item.customer_code,
         });
       await  this.$router.push('/MonitorPersonltype');
     },
@@ -183,7 +183,7 @@ export default {
     async EditCustomer(item){
       await this.$store.dispatch({
           type: "doEditBNPID",
-          BNP_ID: item.id,
+          BNP_ID: item.customer_code,
         });
       await this.$router.push('/EditPersoneltype');
     },
@@ -196,7 +196,7 @@ export default {
             denyButtonText: `ยกเลิก`,
           }).then(async (result) => {
             if (result.isConfirmed) {
-                let delCustomer ={"id":item.id}
+                let delCustomer ={"customer_code":item.customer_code}
                 let resultdel = await api.delCustomer(delCustomer);
                 if (resultdel.data.response =='OK'){
                   this.$swal.fire('ยืนยันการลบเรียบร้อย', '', 'success')

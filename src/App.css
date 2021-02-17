@@ -1,19 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700&display=swap');
 
-*{
-    font-family: 'Mulish', sans-serif;
+*:not(.material-icons){
+    font-family: 'Prompt', sans-serif !important;
   }
 
+#app:not(.material-icons) {
+    font-family: 'Prompt', sans-serif !important;
+  }
+
+  /* หน้า Homemenu */
+  .container.container--fluid{
+    height: 100%;
+  }
+
+  .container.menu-container{
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .menu-box{
+    width: 585px;
+  }
+
+
   .sizetitle {
-    font-size: 30px;
+    font-size: 1.5rem;
   }
   
   .sizehead {
     font-size: 16px;
   }
-  
-  #app {
-    font-family: 'Mulish', sans-serif;
-  }
 
-  
+  .w-100{
+    width: 100%;
+  }

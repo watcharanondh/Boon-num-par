@@ -12,10 +12,9 @@
     </v-col>
 
     <v-card class="mx-10 pa-5 rounded-lg" outlined>
-      <!-- ข้อมูลโปรโมชั่น -->
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-row justify="center">
-          <v-col lg="6" md="12" sm="12" cols="12">
+          <v-col lg="9" md="9" sm="12" cols="12">
             <v-row>
               <v-col>
                 <div class="sizetitle">{{ Changesubmit }}ข้อมูลโปรโมชั่น</div>
@@ -72,7 +71,7 @@
             </v-row>
 
             <v-row>
-              <v-col cols="3">
+              <v-col xl="3" lg="3" md="6" sm="12" cols="12">
                 <v-btn
                   block
                   large
@@ -83,7 +82,7 @@
                 >
               </v-col>
               <v-spacer></v-spacer>
-              <v-col cols="3">
+              <v-col xl="3" lg="3" md="6" sm="12" cols="12">
                 <v-btn block color="#29CC97" dark large rounded @click="submit"
                   ><span class="white--text">{{ Changesubmit }}</span></v-btn
                 >
@@ -140,9 +139,9 @@ export default {
     async loadDataEdit() {
       this.CreateorEdit = this.CreateorEdittype
       if (this.CreateorEdit == false) {
-        this.PromotionEdit_ID = {id:this.$store.getters["Newpersonal_BNP_ID"].BNP_ID}
+        this.PromotionEdit_ID = {promotion_code:this.$store.getters["Newpersonal_BNP_ID"].BNP_ID}
         let result = await api.getEditpromotion(this.PromotionEdit_ID);
-        this.PromotiontoEdit_ID = result.data.result[0].id
+        this.PromotiontoEdit_ID = result.data.result[0].promotion_code
         this.Promotion_Name = result.data.result[0].name
         this.Promotion_discount = result.data.result[0].discount
         let discounttype = result.data.result[0].discount_type
@@ -168,24 +167,24 @@ export default {
         console.log(DataNewPromotion);
         let result = await api.addPromotion(DataNewPromotion);
         if (result.data.response == "OK") {
-          this.$swal.fire("Success", 'บันทึกโปรโมชั่นเรียบร้อยแล้ว', "success");
+          this.$swal.fire("สำเร็จ", 'บันทึกโปรโมชั่นเรียบร้อยแล้ว', "success");
           this.$router.push("/Promotion");
         }else{
-          this.$swal.fire("error", `บันทึกโปรโมชั่นไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
+          this.$swal.fire("เกิดข้อผิดพลาด", `บันทึกโปรโมชั่นไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
         }
       } else {
         let DataEditPromotion = {
-          id: this.PromotiontoEdit_ID,
+          promotion_code: this.PromotiontoEdit_ID,
           name: this.Promotion_Name,
           discount: this.Promotion_discount,
           discount_type: this.Promotion_discount_type_selected.value,
         };
         let result = await api.editPromotion(DataEditPromotion);
         if (result.data.response == "OK") {
-          this.$swal.fire("Success", 'แก้ไขโปรโมชั่นเรียบร้อยแล้ว', "success");
+          this.$swal.fire("สำเร็จ", 'แก้ไขโปรโมชั่นเรียบร้อยแล้ว', "success");
           this.$router.push("/Promotion");
         }else{
-          this.$swal.fire("error", `แก้ไขโปรโมชั่นไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
+          this.$swal.fire("เกิดข้อผิดพลาด", `แก้ไขโปรโมชั่นไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
         }
       }
     },

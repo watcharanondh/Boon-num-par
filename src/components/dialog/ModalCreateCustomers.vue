@@ -3,7 +3,7 @@
     :retain-focus="false"
     transition="dialog-top-transition"
     persistent
-    width="25%"
+    max-width="25%"
   >
     <template v-slot:activator="{ on, attrs }">
       <v-btn color="#29CC97" v-bind="attrs" v-on="on" rounded>

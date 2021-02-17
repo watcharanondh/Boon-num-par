@@ -40,7 +40,7 @@
             <template v-slot:top>
               <v-toolbar flat>
                 <v-toolbar-title><span>รายการโปรโมชั่น</span></v-toolbar-title>
-                <v-toolbar-title><span class="text-caption grey--text">{{total}}</span></v-toolbar-title>
+                <v-toolbar-title><span class="text-caption grey--text ml-1">{{total}}</span></v-toolbar-title>
                 <v-spacer></v-spacer>
 
                 <!-- <div>
@@ -82,7 +82,7 @@
             </template>
             <template v-slot:item="{ item }">
               <tr>
-                <td>{{ item.id }}</td>
+                <td>{{ item.promotion_code }}</td>
                 <td>{{ item.name }}</td>
                 <td>{{ item.discount_text }}</td>
                 <td>
@@ -129,7 +129,7 @@ async mounted() {
     total:null,
     table_promtion: [],
     headers_table_promtion: [
-      { text: "รหัสโปรโมชั่น", value: "id", sortable: true, align: "start", color: "black"},
+      { text: "รหัสโปรโมชั่น", value: "promotion_code", sortable: true, align: "start", color: "black"},
       { text: "รายชื่อโปรโมชั่น", value: "name", sortable: false, align: "start" },
       { text: "ลดราคา", value: "discount_text", sortable: false, align: "start"},
       { text: "", value: "", sortable: false, align: "start" },
@@ -146,7 +146,7 @@ async mounted() {
     async EditPromotion(item){
           await this.$store.dispatch({
                   type: "doEditBNPID",
-                  BNP_ID: item.id,
+                  BNP_ID: item.promotion_code,
                });
           await this.$router.push('/EditPromotion');
           },
@@ -158,7 +158,7 @@ async mounted() {
             denyButtonText: `ยกเลิก`,
           }).then(async (result) => {
             if (result.isConfirmed) {
-                let delPromotion ={"id":item.id}
+                let delPromotion ={"promotion_code":item.promotion_code}
                 let resultdel = await api.delPromotion(delPromotion);
                 if (resultdel.data.response =='OK'){
                   this.$swal.fire('ยืนยันการลบเรียบร้อย', '', 'success')

@@ -3,8 +3,8 @@ import Vuex from "vuex";
 import api from "@/services/api";
 import { server } from "@/services/constants";
 import router from "@/router";
-
-
+import VueSweetalert2 from "vue-sweetalert2";
+Vue.use(VueSweetalert2);
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -76,6 +76,12 @@ export default new Vuex.Store({
         router.push("/Homemenu");
         window.location.reload();
       } else {
+        //this.$swal("error", `Login ไม่สำเร็จ`, "error");
+        // this.$swal.fire(
+        //   "error",
+        //   `Login ไม่สำเร็จ`,
+        //   "error"
+        // );
         alert('Login ไม่สำเร็จ');
         dispatch("doLogout", {});
       }

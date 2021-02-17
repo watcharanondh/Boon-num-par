@@ -20,13 +20,4 @@ export default {
 div{
    font-size: 36px;
 }
-
-h1 { 
-    font-family: 'Mulish';
-    font-style: normal;
-    font-weight: bold;
-    font-size: 72px;
-    text-align: center;
-    letter-spacing: 1px;
-  }
 </style>

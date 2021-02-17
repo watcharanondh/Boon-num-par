@@ -6,9 +6,11 @@ import vuetify from "./plugins/vuetify";
 import "material-design-icons-iconfont/dist/material-design-icons.css";
 import Vuelidate from 'vuelidate'
 import './App.css'
+import './responsesive.scss'
 import VueHtmlToPaper from 'vue-html-to-paper';
 import VueSweetalert2 from "vue-sweetalert2";
 import 'sweetalert2/dist/sweetalert2.min.css';
+import VuetifyMask from "vuetify-mask";
 
 
 const options = {
@@ -26,7 +28,9 @@ const options = {
 Vue.use(VueSweetalert2);
 Vue.use(VueHtmlToPaper, options);
 Vue.config.productionTip = false;
-Vue.use(Vuelidate)
+Vue.use(Vuelidate);
+Vue.use(VuetifyMask);
+
 
 new Vue({
   router,

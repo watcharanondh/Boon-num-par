@@ -39,7 +39,7 @@
             <template v-slot:top>
               <v-toolbar flat>
                 <v-toolbar-title><span>ใบเสนอราคา</span></v-toolbar-title>
-                  <v-toolbar-title><span class="text-caption grey--text">{{total}}</span></v-toolbar-title>
+                  <v-toolbar-title><span class="text-caption grey--text ml-1">{{total}}</span></v-toolbar-title>
                   <v-spacer></v-spacer>
                     <v-divider class="mx-4" inset vertical></v-divider>
                       <v-text-field
@@ -53,7 +53,7 @@
             </template>
             <template v-slot:item="{ item }">
             <tr>
-              <td>{{item.id}}</td>
+              <td>{{item.quotation_code}}</td>
               <td>{{item.customer_tax_invoices}}
                 <div>update {{item.update}}</div>
               </td>
@@ -64,7 +64,7 @@
                 <div>{{item.area_viewing_date}} {{item.area_viewing_date_datetime}}</div>
               </td>
               <td>{{item.quotation_status}}</td>
-              <td><ModalCreateQuotation :idq="item.id"/></td>
+              <td><ModalCreateQuotation :quotation_code="item.quotation_code"/></td>
               <td>
                   <v-row>
                     <!-- <v-btn  fab icon outlined small>
@@ -117,7 +117,7 @@ export default {
     total:null,
     table_quotation_item: [],
     headers_table_quotation: [
-      { text: "หมายเลขใบเสร็จ", value: "id",sortable: true, align: "start" },
+      { text: "หมายเลขใบเสร็จ", value: "quotation_code",sortable: true, align: "start" },
       { text: "ชื่อใบกำกับภาษี", value: "customer_tax_invoices",sortable: false, align: "start" },
       { text: "วันเดือนปี", value: "event_date",sortable: true, align: "start" },
       { text: "สถานะ", value: "quotation_status",sortable: true, align: "start" },
@@ -137,9 +137,9 @@ export default {
     async PrintQuotation(item){
         await this.$store.dispatch({
           type: "doEditBNPID",
-          BNP_ID: item.id,
+          BNP_ID: item.quotation_code,
         });
-        //console.log(item.id);
+        //console.log(item.quotation_code);
      await this.$router.push('/QuotationPrint');
 
     },
@@ -147,7 +147,7 @@ export default {
     async EditQuotation(item){
       await this.$store.dispatch({
           type: "doEditBNPID",
-          BNP_ID: item.id,
+          BNP_ID: item.quotation_code,
         });
       await this.$router.push('/EditQuotation');
     },
@@ -159,8 +159,8 @@ export default {
             denyButtonText: `ยกเลิก`,
           }).then(async (result) => {
             if (result.isConfirmed) {
-                let delQuotations ={"id":item.id}
-                let resultdel = await api.delPromotion(delQuotations);
+                let delQuotations ={"quotation_code":item.quotation_code}
+                let resultdel = await api.delQuotation(delQuotations);
                 if (resultdel.data.response =='OK'){
                   this.$swal.fire('ยืนยันการลบเรียบร้อย', '', 'success')
                   await this.loadQuotation()

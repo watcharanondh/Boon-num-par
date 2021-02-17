@@ -41,7 +41,7 @@
             <template v-slot:top>
               <v-toolbar flat>
                 <v-toolbar-title><span>รายการอุปกรณ์</span></v-toolbar-title>
-                <v-toolbar-title><span class="text-caption grey--text">{{total}}</span></v-toolbar-title>
+                <v-toolbar-title><span class="text-caption grey--text ml-1">{{total}}</span></v-toolbar-title>
                 <v-spacer></v-spacer>
 
                 <!-- <div>

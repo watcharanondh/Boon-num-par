@@ -144,7 +144,15 @@
 
 export default {
   name: "Header",
-  async mounted() {
+
+  created() {
+    if(window.innerWidth <= 768){
+      this.drawer= false
+    }
+
+  },
+
+  mounted() {
     this.RouterPath = this.$store.getters["Route_path"];
 
     if (
@@ -155,8 +163,6 @@ export default {
       this.RouterPath == "/Quotation" ||
       this.RouterPath == "/CreateQuotation" ||
       this.RouterPath == "/EditQuotation" ||
-      this.RouterPath == "/QuotationCreateSelectPackage" ||
-      this.RouterPath == "/QuotationCreateSelectPromotion" ||
       this.RouterPath == "/QuotationPrint" 
     ) {
       return this.RouterPath = 1;
@@ -164,9 +170,6 @@ export default {
       this.RouterPath == "/Equipment" ||
       this.RouterPath == "/CreateEquipment" ||
       this.RouterPath == "/EditEquipment" ||
-      this.RouterPath == "/SetEquipment" ||
-      this.RouterPath == "/CreateSetEquipment" ||
-      this.RouterPath == "/EditSetEquipment" ||
       this.RouterPath == "/Package" ||
       this.RouterPath == "/CreatePackage" ||
       this.RouterPath == "/Promotion" ||
@@ -193,7 +196,6 @@ export default {
       ],
       menusEquipment: [
         ["รายการอุปกรณ์", "/Equipment"],
-        ["รายการชุดอุปกรณ์", "/SetEquipment"],
         ["รายการแพ็คเกจ", "/Package"],
         ["รายการโปรโมชั่น", "/Promotion"],
       ],
