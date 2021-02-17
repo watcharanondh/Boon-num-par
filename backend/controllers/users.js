@@ -1,4 +1,4 @@
-const { users, districts } = require("../models");
+const { users } = require("../models");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const fs = require('fs') ;

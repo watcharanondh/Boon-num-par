@@ -1,8 +1,8 @@
 {
   "development": {
-    "username": "dem_bnpdev",
-    "password": "X3UskGzJy",
-    "database": "dem_bnpdev",
+    "username": "dem_bnp",
+    "password": "kWsfW3YtJ8",
+    "database": "dem_bnp",
     "host": "103.82.248.102",
     "dialect": "mysql"
   },
@@ -17,13 +17,6 @@
     "username": "root",
     "password": null,
     "database": "boonnumpar",
-    "host": "localhost",
-    "dialect": "mysql"
-  },
-  "newlocalhost": {
-    "username": "root",
-    "password": null,
-    "database": "dem_bnp",
     "host": "localhost",
     "dialect": "mysql"
   },
