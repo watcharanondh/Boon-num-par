@@ -36,6 +36,7 @@ exports.listAllQuotations = async (req, res) => {
         is_active: 1,
         is_delete: 0
       },
+      order: [["id", "DESC"]]
     }).then(quotation_data => {
       quotation_data.map((data) => {
         data.dataValues.customer_tax_invoices = data.dataValues.customer.customer_tax_invoices != '' ? data.dataValues.customer.customer_tax_invoices[0].title : data.dataValues.customer.name;
@@ -591,6 +592,7 @@ exports.listQuotationsToEdit = async (req, res) => {
         {
           model: packages,
           attributes: ["id",
+          "package_code",
           "name",
           "amount_savory_food",
           "amount_sweet_food",
