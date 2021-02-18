@@ -260,6 +260,7 @@ export default {
   },
 
   data: () => ({
+    valid:true,
     tab: "tab-1",
     Package_Name: "",
     Package_price: null,

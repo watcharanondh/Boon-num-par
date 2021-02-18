@@ -637,7 +637,6 @@
                       v-model="select_drink"
                       :items="drink_items"
                       :search-input.sync="search_drink"
-                      :rules="drinkfoodRules"
                       hide-selected
                       label="เลือกเครื่องดืม"
                       multiple
@@ -726,8 +725,7 @@
                                   small
                                   elevation="1"
                                   @click="selectedPromotion(item)"
-                                  >เลือก</v-btn
-                                >
+                                  >เลือก</v-btn>
                               </td>
                             </tr>
                           </template>
@@ -766,8 +764,7 @@
                                   small
                                   elevation="1"
                                   @click="deletePromotion(item)"
-                                  >ลบ</v-btn
-                                >
+                                  >ลบ</v-btn>
                               </td>
                             </tr>
                           </template>
@@ -1130,6 +1127,10 @@ export default {
     async FindCustomer(selectListCustomer) {
       let DataFindCustomer = { iden: selectListCustomer };
       let result = await api.getCreateCustomerQuotation(DataFindCustomer);
+      this.Quotation_Person_type = {
+          id: result.data.result[0].customer_type_id,
+          name: result.data.result[0].customer_type_name,
+        };
       this.Quotation_customer_id = result.data.result[0].customer_code;
       this.Quotation_tax_id = result.data.result[0].tax_id;
       this.Quotation_fullname = result.data.result[0].name;
