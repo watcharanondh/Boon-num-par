@@ -61,7 +61,7 @@ exports.listAllDashboard = async (req, res) => {
       order: [["created_at", "DESC"]]
     }).then(quotadata=>{
       quotadata.map((data)=>{
-        data.dataValues.customer_tax_invoices = data.dataValues.customer.customer_tax_invoices != '' ? data.dataValues.customer.customer_tax_invoices[0].title : "ไม่พบข้อมูลนิติบุคคล";
+        data.dataValues.customer_tax_invoices = data.dataValues.customer.customer_tax_invoices != '' ? data.dataValues.customer.customer_tax_invoices[0].title : data.dataValues.customer.name;
         data.dataValues.quotation_status = data.dataValues.quotation_status.name
         delete data.dataValues.customer;
       });
