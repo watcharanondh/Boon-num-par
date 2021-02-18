@@ -1,12 +1,15 @@
 import axios from "axios";
 import { apiUrl, server } from "@/services/constants";
-// import router from "@/router";
 
 const redirectLogin =(error) =>{
-  console.log(error);
-  localStorage.removeItem(server.TOKEN_KEY);
-  // router.push("/Login");
-  window.location.href="bnp/Login"
+  console.log(error.response.status);
+  let ck_status = error.response.status
+  if(ck_status == 401){
+    localStorage.removeItem(server.TOKEN_KEY);
+    window.location.href="bnp/Login"
+  }
+  //localStorage.removeItem(server.TOKEN_KEY);
+  //window.location.href="bnp/Login"
 }
 
 //Dashboard

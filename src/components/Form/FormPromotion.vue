@@ -147,6 +147,11 @@ export default {
       if (this.CreateorEdit == false) {
         this.PromotionEdit_ID = {promotion_code:this.$store.getters["Newpersonal_BNP_ID"].BNP_ID}
         let result = await api.getEditpromotion(this.PromotionEdit_ID);
+                  if(!result.data.result.length){
+                      window.location.href=`${process.env.VUE_APP_SUB_PATH}/Promotion`
+                      //this.$router.push({name:'Promotion'})
+                      return
+                  }
         this.PromotiontoEdit_ID = result.data.result[0].promotion_code
         this.Promotion_Name = result.data.result[0].name
         this.Promotion_discount = result.data.result[0].discount

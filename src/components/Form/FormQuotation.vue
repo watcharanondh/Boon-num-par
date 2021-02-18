@@ -88,13 +88,24 @@
                     <v-col lg="6" md="6" sm="12" cols="12">
                       <div class="sizehead">หมายเลขผู้เสียภาษี</div>
                       <v-row class="no-gutters">
-                        <v-text-field
+                      <v-text-field-integer
                           v-model="Quotation_tax_id"
-                          dense
-                          solo
-                          outlined
-                          clearable
-                        ></v-text-field>
+                          v-bind:properties="{
+                            dense: true,
+                            solo: true,
+                            outlined: true,
+                            clearable: true,
+                            placeholder: '123456789123',
+                            required: true,
+                          }"
+                          v-bind:options="{
+                            inputMask: '#############',
+                            outputMask: '#############',
+                            empty: null,
+                            alphanumeric: true,
+                          }"
+                          class="w-100"
+                        />
                       </v-row>
                     </v-col>
 
@@ -158,7 +169,6 @@
                       clearable: true,
                       placeholder: '02 1234 567 ,0 5312 3456',
                       required: true,
-                      
                     }"
                     v-bind:options="{
                       inputMask: '# #### ####',
@@ -1040,13 +1050,26 @@ export default {
 
       let result = await api.getCustomerQuotation();
       this.DataCustomer = result.data.result;
+
+      //แก้ไขใบเสนอราคา
       if (this.CreateorEdittype == false) {
         this.loadDataPackage();
         this.loadDataPromotion();
+        const Quotation_ID_Edit = this.$store.getters["Newpersonal_BNP_ID"];
+        if(!Quotation_ID_Edit){
+          window.location.href=`${process.env.VUE_APP_SUB_PATH}/Quotation`
+          //this.$router.push({name:'Quotation'})
+            return
+        }
+
         this.EditQuotation_ID = this.$store.getters["Newpersonal_BNP_ID"].BNP_ID;
         let DataEditFindCustomer = { quotation_code: this.EditQuotation_ID };
         let result = await api.getEditQuotation(DataEditFindCustomer);
-
+        // console.log(result);
+        //             if(!result.data.result.customers_data[0].length){
+        //                 this.$router.push({name:'Quotation'})
+        //                 return
+        //             }
         this.Quotation_Person_type = {
           id: result.data.result.customers_data[0].customer_type_id,
           name: result.data.result.customers_data[0].customer_type_name,
@@ -1100,7 +1123,7 @@ export default {
           result.data.result.customers_data[0].amount_drink;
 
         this.package_selected_items.push(result.data.result.packages_data[0]);
-        console.log('package_code',result.data.result.packages_data);
+
         this.Package_ID = result.data.result.packages_data[0].package_code;
 
         for (let i = 0; i < this.package_amount_savory_food; i++) {

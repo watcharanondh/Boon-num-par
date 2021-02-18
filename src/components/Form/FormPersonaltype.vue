@@ -59,7 +59,6 @@
                       outlined: true,
                       clearable: true,
                       placeholder: '02 1234 567 ,0 5312 3456',
-                      rules:Personaltype_telephone_numberRules,
                       required: true,
                     }"
                     v-bind:options="{
@@ -265,15 +264,25 @@
             <v-col lg="6" md="6" sm="12" cols="12">
               <div class="sizehead">รหัสประจำตัวผู้เสียภาษี</div>
               <v-row class="no-gutters">
-                <v-text-field
-                  v-model="Taxinvoiceinfo_id"
-                  placeholder="1234567890"
-                  dense
-                  solo
-                  outlined
-                  :disabled="btn"
-                  clearable
-                ></v-text-field>
+                <v-text-field-integer
+                    v-model="Taxinvoiceinfo_id"
+                    v-bind:properties="{
+                      disabled: btn,
+                      dense: true,
+                      solo: true,
+                      outlined: true,
+                      clearable: true,
+                      placeholder: '123456789123',
+                      required: true,
+                    }"
+                    v-bind:options="{
+                      inputMask: '#############',
+                      outputMask: '#############',
+                      empty: null,
+                      alphanumeric: true,
+                    }"
+                    class="w-100"
+                  />
               </v-row>
             </v-col>
           </v-row>
@@ -515,7 +524,7 @@ export default {
   name: "FormPersonaltype",
 
   props:['CreateorEdittype','monitortypes'],
-  
+
   mounted() {
            this.loadDataType();
            this.loadDataProvince();
@@ -577,10 +586,10 @@ export default {
 
 
     Personaltype_fullnameRules:[v1=>!!v1 || "กรุณากรอกชื่อและนามสกุล",],
-    Personaltype_telephone_numberRules:[
-      v1=>!!v1 || "กรุณากรอกเบอร์โทรศัพท์",
-      v1 => (v1 && v1.length >= 11) || "กรุณากรอกเบอร์มือถือให้ครบ 9 หลัก",
-      ],
+    // Personaltype_telephone_numberRules:[
+    //   v1=>!!v1 || "กรุณากรอกเบอร์โทรศัพท์",
+    //   v1 => (v1 && v1.length >= 11) || "กรุณากรอกเบอร์มือถือให้ครบ 9 หลัก",
+    //   ],
     Personaltype_telemobile_phone_numberRules:[
       v1=>!!v1 || "กรุณากรอกมือถือ",
       v1 => (v1 && v1.length >= 12) || "กรุณากรอกเบอร์มือถือให้ครบ 10 หลัก",
@@ -608,13 +617,21 @@ export default {
       },
     },
 
-
   methods: {
    async loadDataType(){
     this.CreateorEdit = this.CreateorEdittype
+    
     if(this.CreateorEdit == true){
-        //console.log('สร้าง');
-        this.pasoneltype = this.$store.getters["Newpersonal_type_id"].type_id
+      //console.log('สร้าง');
+        const type_id_customer = this.$store.getters["Newpersonal_type_id"]
+      if(!type_id_customer){
+        window.location.href=`${process.env.VUE_APP_SUB_PATH}/Customer`
+        //this.$router.push({name:'Customer'})
+          return
+      }
+          this.pasoneltype = type_id_customer.type_id
+          console.log(this.pasoneltype.type_id);
+        
     }else{
         this.btn = this.monitortypes
         //แก้ไขข้อมูล
@@ -625,6 +642,12 @@ export default {
         let BNP_ID_Edit = { customer_code:this.EditPersonaltype_ID }
         let result = await api.getListEditcustomers(BNP_ID_Edit);
         //console.log('ข้อมูลที่ต้องแก้ไข',result);
+        
+        if(!result.data.result.length){
+            window.location.href=`${process.env.VUE_APP_SUB_PATH}/Customer`
+            //this.$router.push({name:'Customer'})
+            return
+        }
         this.pasoneltype = result.data.result[0].type_id
         this.Personaltype_type_id = result.data.result[0].type_id
         this.Personaltype_fullname=result.data.result[0].name
@@ -651,8 +674,8 @@ export default {
 
         this.Same_address=result.data.result[0].check_same_address
         this.vat_selected = result.data.result[0].cti_vat_type,
-        console.log(result.data.result[0].cti_vat_type);
-        console.log(this.vat_selected);
+        // console.log(result.data.result[0].cti_vat_type);
+        // console.log(this.vat_selected);
 
         this.Taxinvoiceinfo_SelectProvinces = {province_Name: result.data.result[0].cti_province ,province_Code: result.data.result[0].cti_province_code};
         this.Taxinvoiceinfo_GatAmphoe.push({amphoe_Name: result.data.result[0].cti_amphoe ,amphoe_Code: result.data.result[0].cti_amphoe_code});
@@ -930,7 +953,7 @@ async submit() {
                             cti_district_id:this.Personaltype_district_id,
                             cti_vat_type: this.vat_selected,
                           };
-                      console.log('แก้ไขที่อยู่บริษัทแบบเดิม',DataCompanytypeEdit_Old_address);
+                      //console.log('แก้ไขที่อยู่บริษัทแบบเดิม',DataCompanytypeEdit_Old_address);
                       let result = await api.Editcustomer(DataCompanytypeEdit_Old_address);
                       //console.log(result);
                       if (result.data.response =='OK'){
@@ -961,7 +984,7 @@ async submit() {
                             cti_district_id:this.Taxinvoiceinfo_district_id,
                             cti_vat_type: this.vat_selected,
                           };
-                      console.log('แก้ไขที่อยู่บริษัทแบบใหม่',DataCompanytypeEdit_New_address);
+                      //('แก้ไขที่อยู่บริษัทแบบใหม่',DataCompanytypeEdit_New_address);
                       let result = await api.Editcustomer(DataCompanytypeEdit_New_address);
                       //console.log(result);
                       if (result.data.response =='OK'){

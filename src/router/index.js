@@ -47,7 +47,7 @@ const routes = [
   },
   {
     path: "/Customer",
-    name: "/Customer",
+    name: "Customer",
     component: Customer
   },
   {
@@ -68,7 +68,7 @@ const routes = [
 
   {
     path: "/Quotation",
-    name: "/Quotation",
+    name: "Quotation",
     component: Quotation
   },
   {
@@ -88,7 +88,7 @@ const routes = [
   },
   {
     path: "/Equipment",
-    name: "/Equipment",
+    name: "Equipment",
     component: Equipment
   },
   {
@@ -103,7 +103,7 @@ const routes = [
   },
   {
     path: "/Package",
-    name: "/Package",
+    name: "Package",
     component: Package
   },
   {
@@ -118,7 +118,7 @@ const routes = [
   },
   {
     path: "/Promotion",
-    name: "/Promotion",
+    name: "Promotion",
     component: Promotion
   },
   {
@@ -134,7 +134,7 @@ const routes = [
 
   {
     path: "/",
-    redirect: "Login",
+    redirect: "/Login",
   },
   {
     path: "*",

@@ -120,10 +120,18 @@ export default {
   methods: {
     async loadDataEdit() {
       this.CreateorEdit = this.CreateorEdittype;
+      
       if (this.CreateorEdit == false) {
+
         this.EditEquipment_ID = this.$store.getters["Newpersonal_BNP_ID"].BNP_ID
-        let Equipment_ID_Edit = { equipment_code:this.EditEquipment_ID }
-         let result = await api.getEditequipment(Equipment_ID_Edit);
+        let Equipment_ID_Edits = { equipment_code:this.EditEquipment_ID }
+         let result = await api.getEditequipment(Equipment_ID_Edits);
+          
+          if(!result.data.result.length){
+                      window.location.href=`${process.env.VUE_APP_SUB_PATH}/Equipment`
+                      //this.$router.push({name:'Equipment'})
+                      return
+                  }
                     this.EquipmentEdit_id=result.data.result[0].equipment_code
                     this.Equipment_Name=result.data.result[0].name
                     this.Equipment_Stock_IN=result.data.result[0].stock_in

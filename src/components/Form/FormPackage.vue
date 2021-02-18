@@ -334,7 +334,11 @@ export default {
         this.Equipment_table_all_total= this.equipment_data_items.length
         let EditPackageID = {package_code:this.$store.getters["Newpersonal_BNP_ID"].BNP_ID}
         let result = await api.getEditPackage(EditPackageID);
-        //console.log(result);
+            if(!result.data.result.length){
+                window.location.href=`${process.env.VUE_APP_SUB_PATH}/Package`
+                //this.$router.push({name:'Package'})
+            return
+        }
         this.Editpackage_ID = result.data.result[0].package_code,
         this.Package_Name = result.data.result[0].name,
         this.Package_price = result.data.result[0].price,
