@@ -27,6 +27,7 @@
                 <v-row class="no-gutters">
                   <v-text-field
                     v-model="Equipment_Name"
+                    :rules="equipment_nameRules"
                     type="text"
                     dense
                     solo
@@ -42,6 +43,7 @@
                 <v-row class="no-gutters">
                   <v-text-field
                     v-model="Equipment_Stock_IN"
+                    :rules="equipment_amountRules"
                     type="number"
                     min="1"
                     dense
@@ -110,6 +112,9 @@ export default {
     
     Equipment_Name: null,
     Equipment_Stock_IN: null,
+    
+    equipment_nameRules:[v1=>!!v1 || "กรุณากรอกชื่ออุปกรณ์",],
+    equipment_amountRules:[v1=>!!v1 || "กรุณากรอกจำนวนอุปกรณ์",],
   }),
 
   methods: {
@@ -126,34 +131,36 @@ export default {
     },
 
     async submit() {
-      console.log(this.CreateorEdit);
-      //สร้างอุปกรณ์
-      if (this.CreateorEdit == true) {
-        let DataNewEquipment = {
-          name: this.Equipment_Name,
-          stock_in: this.Equipment_Stock_IN,
-        };
-        let result = await api.addEquipment(DataNewEquipment);
-        if (result.data.response == "OK") {
-          this.$swal.fire("สำเร็จ", 'บันทึกอุปกรณ์เรียบร้อยแล้ว', "success");
-          this.$router.push("/Equipment");
-        }else{
-          this.$swal.fire("เกิดข้อผิดพลาด", `บันทึกอุปกรณ์ไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
-        }
 
-      } else {
-        //แก้ไขอุปกรณ์
-        let DataEditEquipment = {
-          equipment_code: this.EquipmentEdit_id,
-          name: this.Equipment_Name,
-          stock_in: this.Equipment_Stock_IN,
-        };
-        let result = await api.editEquipment(DataEditEquipment);
-        if (result.data.response == "OK") {
-          this.$swal.fire("สำเร็จ", 'แก้ไขอุปกรณ์เรียบร้อยแล้ว', "success");
-          this.$router.push("/Equipment");
-        }else{
-          this.$swal.fire("เกิดข้อผิดพลาด", `แก้ไขอุปกรณ์ไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
+      if(this.$refs.form.validate() == true){
+        //สร้างอุปกรณ์
+        if (this.CreateorEdit == true) {
+          let DataNewEquipment = {
+            name: this.Equipment_Name,
+            stock_in: this.Equipment_Stock_IN,
+          };
+          let result = await api.addEquipment(DataNewEquipment);
+          if (result.data.response == "OK") {
+            this.$swal.fire("สำเร็จ", 'บันทึกอุปกรณ์เรียบร้อยแล้ว', "success");
+            this.$router.push("/Equipment");
+          }else{
+            this.$swal.fire("เกิดข้อผิดพลาด", `บันทึกอุปกรณ์ไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
+          }
+
+        } else {
+          //แก้ไขอุปกรณ์
+          let DataEditEquipment = {
+            equipment_code: this.EquipmentEdit_id,
+            name: this.Equipment_Name,
+            stock_in: this.Equipment_Stock_IN,
+          };
+          let result = await api.editEquipment(DataEditEquipment);
+          if (result.data.response == "OK") {
+            this.$swal.fire("สำเร็จ", 'แก้ไขอุปกรณ์เรียบร้อยแล้ว', "success");
+            this.$router.push("/Equipment");
+          }else{
+            this.$swal.fire("เกิดข้อผิดพลาด", `แก้ไขอุปกรณ์ไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
+          }
         }
       }
     },

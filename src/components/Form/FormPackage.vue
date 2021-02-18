@@ -25,6 +25,7 @@
               อุปกรณ์แพ็กเกจ
             </v-tab>
             <v-tab-item value="tab-1">
+              <v-form ref="form" v-model="valid" lazy-validation>
               <v-card flat>
                 <v-card-text>
                   <v-row>
@@ -33,6 +34,7 @@
                       <v-row class="no-gutters">
                         <v-text-field
                           v-model="Package_Name"
+                          :rules="package_nameRules"
                           dense
                           solo
                           outlined
@@ -45,6 +47,7 @@
                       <v-row class="no-gutters">
                         <v-text-field
                           v-model="Package_price"
+                          :rules="package_amountRules"
                           type="number"
                           min="1"
                           dense
@@ -61,6 +64,7 @@
                       <v-row class="no-gutters">
                         <v-text-field
                           v-model="Savoryfood_amount"
+                          :rules="package_savoryfood_amountRules"
                           type="number"
                           min="1"
                           dense
@@ -75,6 +79,7 @@
                       <v-row class="no-gutters">
                         <v-text-field
                           v-model="Dessert_amount"
+                          :rules="package_sweetfood_amountRules"
                           type="number"
                           min="1"
                           dense
@@ -89,6 +94,7 @@
                       <v-row class="no-gutters">
                         <v-text-field
                           v-model="Drinks_amount"
+                          :rules="package_drink_amountRules"
                           type="number"
                           min="1"
                           dense
@@ -125,6 +131,7 @@
                   >
                 </v-col>
               </v-row>
+             </v-form>
             </v-tab-item>
             <v-tab-item value="tab-2">
               <!-- รายการอุปกรณ์ -->
@@ -280,6 +287,13 @@ export default {
       { text: "จำนวน",value: "stock_balance",sortable: false,align: "start",color: "black",},
       { text: "", value: "", sortable: false, align: "start", color: "black" },
     ],
+
+    package_nameRules:[v1=>!!v1 || "กรุณากรอกชื่อแพ็คเกจ",],
+    package_amountRules:[v1=>!!v1 || "กรุณากรอกราคาแพ็คเกจ",],
+    package_savoryfood_amountRules:[v1=>!!v1 || "กรุณากรอกจำนวนอาหารคาว",],
+    package_sweetfood_amountRules:[v1=>!!v1 || "กรุณากรอกจำนวนอาหารหวาน",],
+    package_drink_amountRules:[v1=>!!v1 || "กรุณากรอกจำนวนเครื่องดื่ม",],
+
   }),
   computed: {
     Changesubmit() {
@@ -292,7 +306,9 @@ export default {
       this.tab = "tab-1";
     },
     changetoTab2() {
-      this.tab = "tab-2";
+       if(this.$refs.form.validate() == true){
+              this.tab = "tab-2";
+       }
     },
     //  increment () {
     //   this.item.amount = parseInt(this.item.amount,10) + 1

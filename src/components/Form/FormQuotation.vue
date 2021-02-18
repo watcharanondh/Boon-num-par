@@ -12,6 +12,7 @@
     </v-col>
 
     <v-card class="mx-10 pa-5 rounded-lg" outlined>
+
       <v-row justify="center">
         <v-col lg="9" md="9" sm="12" cols="12">
           <!-- Tap เมนู ข้อมูลแพ็คเกจ -->
@@ -26,6 +27,11 @@
               เลือกโปรโมชั่น
             </v-tab>
             <v-tab-item value="tab-1">
+              <v-form
+                  ref="form"
+                  v-model="valid"
+                  lazy-validation
+              >
               <v-card flat>
                 <v-card-text>
                   <!-- ค้นหารายชื่อลูกค้า หรือ ค้นหาหมายเลขลูกค้า -->
@@ -101,6 +107,7 @@
                           dense
                           solo
                           outlined
+                          :rules="Taxinvoiceinfo_fullnameRules"
                           clearable
                         ></v-text-field>
                       </v-row>
@@ -142,14 +149,7 @@
                     <v-col lg="6" md="6" sm="12" cols="12">
                       <div class="sizehead">โทรศัพท์</div>
                       <v-row class="no-gutters">
-                        <!-- <v-text-field
-                          v-model="Quotation_telephone_number"
-                          dense
-                          solo
-                          outlined
-                          clearable
-                        ></v-text-field> -->
-                  <v-text-field-simplemask
+                  <v-text-field-integer
                     v-model="Quotation_telephone_number"
                     v-bind:properties="{
                       dense: true,
@@ -175,21 +175,15 @@
                     <v-col lg="6" md="6" sm="12" cols="12">
                       <div class="sizehead">มือถือ</div>
                       <v-row class="no-gutters">
-                        <!-- <v-text-field
+                      <v-text-field-integer
                           v-model="Quotation_mobile_phone_number"
-                          dense
-                          solo
-                          outlined
-                          clearable
-                        ></v-text-field> -->
-                      <v-text-field-simplemask
-                          v-model="Quotation_mobile_phone_number"
-                          v-bind:properties="{                  
+                          v-bind:properties="{                
                             dense: true,
                             solo: true,
                             outlined: true,
                             clearable: true,
                             placeholder: '08 1123 4567',
+                            rules:Taxinvoiceinfo_telemobile_phone_numberRules,
                             required: true,
                           }"
                           v-bind:options="{
@@ -197,6 +191,7 @@
                             outputMask: '##########',
                             empty: null,
                             alphanumeric: true,
+                            applyAfter: false,
                           }"
                           class="w-100"
                         />
@@ -301,6 +296,7 @@
                           dense
                           solo
                           outlined
+                          :rules="Taxinvoiceinfo_teleaddressRules"
                           clearable
                         ></v-text-field>
                       </v-row>
@@ -413,8 +409,8 @@
                   >
                 </v-col>
               </v-row>
+            </v-form>
             </v-tab-item>
-
             <v-tab-item value="tab-2">
               <!-- ค้นหาแพ็กเกจ -->
               <v-col lg="6" md="6" sm="12" cols="12">
@@ -495,9 +491,7 @@
                           <v-btn
                             small
                             elevation="1"
-                            @click="selectedPackage(item)"
-                            >เลือก</v-btn
-                          >
+                            @click="selectedPackage(item)">เลือก</v-btn>
                         </td>
                       </tr>
                     </template>
@@ -509,9 +503,7 @@
                 <v-col lg="12" md="12" sm="12" cols="12">
                   <v-row class="no-gutters">
                     <div class="sizehead">
-                      แพ็กเกจที่ท่านเลือก<span class="text-sm-body-2 red--text">
-                        (เลือกได้แค่แพ็กเกจเดียว)</span
-                      >
+                      แพ็กเกจที่ท่านเลือก<span class="text-sm-body-2 red--text">(เลือกได้แค่แพ็กเกจเดียว)</span>
                     </div>
                   </v-row>
                 </v-col>
@@ -539,15 +531,10 @@
                           <v-btn
                             small
                             elevation="1"
-                            @click="DeletePackage(item)"
-                            >ลบ</v-btn
-                          >
+                            @click="DeletePackage(item)">ลบ</v-btn>
                         </td>
                       </tr>
-                    </template>
-
-                    ></v-data-table
-                  >
+                    </template></v-data-table>
                 </v-row>
               </v-col>
 
@@ -557,9 +544,7 @@
                   <v-row class="no-gutters">
                     <div class="sizehead">
                       เลือกอาหารแพ็กเกจ
-                      <span class="text-sm-body-2 red--text"
-                        >(ถ้าลูกค้ายังไม่คอนเฟิร์มยังไม่ต้องใส่)</span
-                      >
+                      <span class="text-sm-body-2 red--text">(ถ้าลูกค้ายังไม่คอนเฟิร์มยังไม่ต้องใส่)</span>
                     </div>
                   </v-row>
                 </v-col>
@@ -652,6 +637,7 @@
                       v-model="select_drink"
                       :items="drink_items"
                       :search-input.sync="search_drink"
+                      :rules="drinkfoodRules"
                       hide-selected
                       label="เลือกเครื่องดืม"
                       multiple
@@ -695,7 +681,7 @@
                   >
                 </v-col>
               </v-row>
-            </v-tab-item>
+          </v-tab-item>
 
             <v-tab-item value="tab-3">
               <!-- ค้นหาโปรโมชั่น -->
@@ -815,6 +801,7 @@
           </v-tabs>
         </v-col>
       </v-row>
+
     </v-card>
   </v-container>
 </template>
@@ -935,39 +922,15 @@ export default {
 
     package_data_items: [],
     headers_package_data: [
-      {
-        text: "",
-        value: "name",
-        sortable: false,
-        align: "start",
-        color: "black",
-      },
-      {
-        text: "",
-        value: "food_des",
-        sortable: false,
-        align: "start",
-        color: "black",
-      },
+      { text: "", value: "name", sortable: false, align: "start", color: "black",},
+      { text: "", value: "food_des", sortable: false,  align: "start", color: "black",},
       { text: "", value: "", sortable: false, align: "start", color: "black" },
     ],
 
     package_selected_items: [],
     headers_package_selected_data: [
-      {
-        text: "",
-        value: "name",
-        sortable: false,
-        align: "start",
-        color: "black",
-      },
-      {
-        text: "",
-        value: "food_des",
-        sortable: false,
-        align: "start",
-        color: "black",
-      },
+      { text: "", value: "name",sortable: false,align: "start", color: "black",},
+      { text: "",value: "food_des", sortable: false, align: "start",color: "black",},
       { text: "", value: "", sortable: false, align: "start", color: "black" },
     ],
 
@@ -979,27 +942,28 @@ export default {
 
     promotion_table_items: [],
     headers_promotion_table: [
-      {
-        text: "",
-        value: "name",
-        sortable: false,
-        align: "start",
-        color: "black",
-      },
+      { text: "", value: "name", sortable: false, align: "start", color: "black",},
       { text: "", value: "", sortable: false, align: "start", color: "black" },
     ],
 
     promotion_table_selected_items: [],
     headers_promotion_selected_table: [
-      {
-        text: "",
-        value: "name",
-        sortable: false,
-        align: "start",
-        color: "black",
-      },
+      { text: "", value: "name", sortable: false, align: "start",color: "black",},
       { text: "", value: "", sortable: false, align: "start", color: "black" },
     ],
+
+    valid:true,
+    Taxinvoiceinfo_fullnameRules:[v1=>!!v1 || "กรุณากรอกชื่อผู้เสียภาษี",],
+    Taxinvoiceinfo_telemobile_phone_numberRules:[
+      v1=>!!v1 || "กรุณากรอกเบอร์มือถือ",
+      v1 => (v1 && v1.length >= 12) || "กรุณากรอกเบอร์มือถือให้ครบ 10 หลัก",
+    ],
+    Taxinvoiceinfo_teleaddressRules:[v1=>!!v1 || "กรุณากรอกที่อยู่",],
+
+    // savoryfoodRules:[v1=>!!v1 || "กรุณาเลือกอาหารคาว ตามจำนวนแพ็กเกจ",],
+    // sweetfoodRules:[v1=>!!v1 || "กรุณาเลือกอาหารหวาน ตามจำนวนแพ็กเกจ",],
+    // drinkfoodRules:[v1=>!!v1 || "กรุณาเลือกเครื่องดืม ตามจำนวนแพ็กเกจ",],
+    
   }),
 
   watch: {
@@ -1049,13 +1013,23 @@ export default {
 
   methods: {
     changetoTab1() {
-      this.tab = "tab-1";
+        this.tab = "tab-1";
     },
     changetoTab2() {
-      this.tab = "tab-2";
+      if(this.$refs.form.validate() == true){
+        this.tab = "tab-2";
+       }
     },
     changetoTab3() {
-      this.tab = "tab-3";
+      if(this.package_selected_items.length >0){
+              this.tab = "tab-3";
+      }else{
+          this.$swal.fire(
+                    "แจ้งเตือน",
+                    `กรุณาเลือกแพ็กเกจ หนึงแพ็กเกจ`,
+                    "warning"
+                  );
+      }
     },
     async loadDataCustomer() {
       let resultgetListcustomer = await api.getListcustomertypeselector();
@@ -1070,9 +1044,9 @@ export default {
       let result = await api.getCustomerQuotation();
       this.DataCustomer = result.data.result;
       if (this.CreateorEdittype == false) {
-        this.EditQuotation_ID = this.$store.getters[
-          "Newpersonal_BNP_ID"
-        ].BNP_ID;
+        this.loadDataPackage();
+        this.loadDataPromotion();
+        this.EditQuotation_ID = this.$store.getters["Newpersonal_BNP_ID"].BNP_ID;
         let DataEditFindCustomer = { quotation_code: this.EditQuotation_ID };
         let result = await api.getEditQuotation(DataEditFindCustomer);
 
@@ -1080,8 +1054,7 @@ export default {
           id: result.data.result.customers_data[0].customer_type_id,
           name: result.data.result.customers_data[0].customer_type_name,
         };
-        this.Quotation_customer_id =
-          result.data.result.customers_data[0].customer_code;
+        this.Quotation_customer_id = result.data.result.customers_data[0].customer_code;
 
         this.Quotation_tax_id = result.data.result.customers_data[0].tax_id;
 
@@ -1090,18 +1063,13 @@ export default {
 
         this.Quotation_fax = result.data.result.customers_data[0].flash_number;
         this.Quotation_email = result.data.result.customers_data[0].email;
-        this.Quotation_telephone_number =
-          result.data.result.customers_data[0].telephone_number;
-        this.Quotation_mobile_phone_number =
-          result.data.result.customers_data[0].mobile_phone_number;
-        this.Quotation_event_date =
-          result.data.result.customers_data[0].event_date;
-        this.Quotation_area_viewing_date =
-          result.data.result.customers_data[0].area_viewing_date;
+        this.Quotation_telephone_number = result.data.result.customers_data[0].telephone_number;
+        this.Quotation_mobile_phone_number = result.data.result.customers_data[0].mobile_phone_number;
+        this.Quotation_event_date = result.data.result.customers_data[0].event_date;
+        this.Quotation_area_viewing_date = result.data.result.customers_data[0].area_viewing_date;
 
         this.Quotation_address = result.data.result.customers_data[0].address;
-        this.Quotation_district_id =
-          result.data.result.customers_data[0].district_id;
+        this.Quotation_district_id =  result.data.result.customers_data[0].district_id;
         this.Quotation_SelectProvinces = {
           province_Name: result.data.result.customers_data[0].province,
           province_Code: result.data.result.customers_data[0].province_code,
@@ -1126,17 +1094,16 @@ export default {
           district_Name: result.data.result.customers_data[0].district,
           amphoe_Code: result.data.result.customers_data[0].district_code,
         });
-        this.Quotation_SelectZipcode =
-          result.data.result.customers_data[0].zipcode;
+        this.Quotation_SelectZipcode = result.data.result.customers_data[0].zipcode;
         this.Quotation_note = result.data.result.customers_data[0].note;
-        this.package_amount_savory_food =
-          result.data.result.customers_data[0].amount_savory_food;
+        this.package_amount_savory_food = result.data.result.customers_data[0].amount_savory_food;
         this.package_amount_sweet_food =
           result.data.result.customers_data[0].amount_sweet_food;
         this.package_amount_drink =
           result.data.result.customers_data[0].amount_drink;
 
         this.package_selected_items.push(result.data.result.packages_data[0]);
+        console.log('package_code',result.data.result.packages_data);
         this.Package_ID = result.data.result.packages_data[0].package_code;
 
         for (let i = 0; i < this.package_amount_savory_food; i++) {
@@ -1149,13 +1116,15 @@ export default {
           this.select_drink.push(this.savory_food_items[i]);
         }
 
-        this.promotion_table_selected_items.push(
-          result.data.result.promotions_data[0]
-        );
-        this.promotion_selectd_id.push(
-          result.data.result.promotions_data[0].promotion_code
-        );
-        this.promotion_table_select_total = this.promotion_table_selected_items.length;
+        //โปรโมชั่น
+        let promotion_table_selected = result.data.result.promotions_data
+        if(promotion_table_selected.length > 0){
+            this.promotion_table_selected_items.push(result.data.result.promotions_data[0]);
+            this.promotion_table_select_total = this.promotion_table_selected_items.length;
+        }else{
+             this.promotion_table_selected_items =[]
+        }
+    
       }
     },
     async FindCustomer(selectListCustomer) {
@@ -1222,7 +1191,6 @@ export default {
     DeletePackage(item) {
       this.editedIndex = this.package_selected_items.indexOf(item);
       this.package_selected_items.splice(this.editedIndex, 1);
-      this.package_data_items.push(item);
       this.Package_ID = null;
       this.package_amount_savory_food = 0;
       this.package_amount_sweet_food = 0;
@@ -1256,7 +1224,6 @@ export default {
     deletePromotion(item) {
       this.editedIndex = this.promotion_table_selected_items.indexOf(item);
       this.promotion_table_selected_items.splice(this.editedIndex, 1);
-      this.promotion_table_items.push(item);
       this.promotion_selectd_id = [];
       this.promotion_table_all_total = this.promotion_table_items.length;
       this.promotion_table_select_total = 0;
@@ -1328,80 +1295,81 @@ export default {
       }, 500);
     },
     async submit() {
+      
       //สร้างใบเสนอราคา
-      let Quotation_type_Pid = this.Quotation_Person_type.id;
-      if (this.CreateorEdittype == true) {
-        let CreateNewQuotation = {
-          customer_code: this.Quotation_customer_id,
-          type_id: Quotation_type_Pid,
-          tax_id: this.Quotation_tax_id,
-          name: this.Quotation_fullname,
-          flash_number: this.Quotation_fax,
-          email: this.Quotation_email,
-          telephone_number: this.Quotation_telephone_number,
-          mobile_phone_number: this.Quotation_mobile_phone_number,
-          address: this.Quotation_address,
-          district_id: this.Quotation_district_id,
-          note: this.Quotation_note,
-          package_id: this.Package_ID,
-          promotion_id: this.promotion_selectd_id,
-          event_date: this.Quotation_event_date,
-          area_viewing_date: this.Quotation_area_viewing_date,
-          amount_savory_food: this.package_amount_savory_food,
-          amount_sweet_food: this.package_amount_sweet_food,
-          amount_drink: this.package_amount_drink,
-        };
-        console.log(CreateNewQuotation);
-        let resultCreateNewQuotation = await api.addQuotation(
-          CreateNewQuotation
-        );
-        console.log(resultCreateNewQuotation);
-        if (resultCreateNewQuotation.data.response == "OK") {
-          this.$swal.fire(
-            "สำเร็จ",
-            "สร้างใบเสนอราคาสำเร็จเรียบร้อยแล้ว",
-            "success"
+        let Quotation_type_Pid = this.Quotation_Person_type.id;
+        if (this.CreateorEdittype == true) {
+          let CreateNewQuotation = {
+            customer_code: this.Quotation_customer_id,
+            type_id: Quotation_type_Pid,
+            tax_id: this.Quotation_tax_id,
+            name: this.Quotation_fullname,
+            flash_number: this.Quotation_fax,
+            email: this.Quotation_email,
+            telephone_number: this.Quotation_telephone_number,
+            mobile_phone_number: this.Quotation_mobile_phone_number,
+            address: this.Quotation_address,
+            district_id: this.Quotation_district_id,
+            note: this.Quotation_note,
+            package_code: this.Package_ID,
+            promotion_code: this.promotion_selectd_id,
+            event_date: this.Quotation_event_date,
+            area_viewing_date: this.Quotation_area_viewing_date,
+            amount_savory_food: this.package_amount_savory_food,
+            amount_sweet_food: this.package_amount_sweet_food,
+            amount_drink: this.package_amount_drink,
+          };
+          console.log(CreateNewQuotation);
+          let resultCreateNewQuotation = await api.addQuotation(
+            CreateNewQuotation
           );
-          this.$router.push("/Quotation");
+          console.log(resultCreateNewQuotation);
+          if (resultCreateNewQuotation.data.response == "OK") {
+            this.$swal.fire(
+              "สำเร็จ",
+              "สร้างใบเสนอราคาสำเร็จเรียบร้อยแล้ว",
+              "success"
+            );
+            this.$router.push("/Quotation");
+          } else {
+            this.$swal.fire(
+              "เกิดข้อผิดพลาด",
+              `สร้างใบเสนอราคาสำเร็จไม่สำเร็จ ${resultCreateNewQuotation.data.response} เนื่องจาก ${resultCreateNewQuotation.data.result} `,
+              "error"
+            );
+          }
         } else {
-          this.$swal.fire(
-            "เกิดข้อผิดพลาด",
-            `สร้างใบเสนอราคาสำเร็จไม่สำเร็จ ${resultCreateNewQuotation.data.response} เนื่องจาก ${resultCreateNewQuotation.data.result} `,
-            "error"
-          );
+          //แก้ไขใบเสนอราคา
+          let EditQuotation = {
+            quotation_code: this.EditQuotation_ID,
+            customer_code: this.Quotation_customer_id,
+            package_code: this.Package_ID,
+            promotion_code: this.promotion_selectd_id,
+            event_date: this.Quotation_event_date,
+            area_viewing_date: this.Quotation_area_viewing_date,
+            amount_savory_food: this.package_amount_savory_food,
+            amount_sweet_food: this.package_amount_sweet_food,
+            amount_drink: this.package_amount_drink,
+            note: this.Quotation_note,
+          };
+          console.log('quotation_code',EditQuotation);
+          let resultEditQuotation = await api.editQuotation(EditQuotation);
+          //console.log(resultEditQuotation);
+          if (resultEditQuotation.data.response == "OK") {
+            this.$swal.fire(
+              "สำเร็จ",
+              "แก้ไขใบเสนอราคาสำเร็จเรียบร้อยแล้ว",
+              "success"
+            );
+            this.$router.push("/Quotation");
+          } else {
+            this.$swal.fire(
+              "เกิดข้อผิดพลาด",
+              `แก้ไขใบเสนอราคาไม่สำเร็จ ${resultEditQuotation.data.response} เนื่องจาก ${resultEditQuotation.data.result} `,
+              "error"
+            );
+          }
         }
-      } else {
-        //แก้ไขใบเสนอราคา
-        let EditQuotation = {
-          quotation_code: this.EditQuotation_ID,
-          customer_id: this.Quotation_customer_id,
-          package_id: this.Package_ID,
-          promotion_id: this.promotion_selectd_id,
-          event_date: this.Quotation_event_date,
-          area_viewing_date: this.Quotation_area_viewing_date,
-          amount_savory_food: this.package_amount_savory_food,
-          amount_sweet_food: this.package_amount_sweet_food,
-          amount_drink: this.package_amount_drink,
-          note: this.Quotation_note,
-        };
-        //console.log('quotation_code',EditQuotation);
-        let resultEditQuotation = await api.editQuotation(EditQuotation);
-        //console.log(resultEditQuotation);
-        if (resultEditQuotation.data.response == "OK") {
-          this.$swal.fire(
-            "สำเร็จ",
-            "แก้ไขใบเสนอราคาสำเร็จเรียบร้อยแล้ว",
-            "success"
-          );
-          this.$router.push("/Quotation");
-        } else {
-          this.$swal.fire(
-            "เกิดข้อผิดพลาด",
-            `แก้ไขใบเสนอราคาไม่สำเร็จ ${resultEditQuotation.data.response} เนื่องจาก ${resultEditQuotation.data.result} `,
-            "error"
-          );
-        }
-      }
     },
   },
 };

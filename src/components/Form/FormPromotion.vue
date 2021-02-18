@@ -28,6 +28,7 @@
                   <v-text-field
                     v-model="Promotion_Name"
                     type="text"
+                    :rules="Promotion_nameRules"
                     dense
                     solo
                     outlined
@@ -36,7 +37,7 @@
                 </v-row>
               </v-col>
 
-              <!-- จำนวน -->
+              <!-- ส่วนลด -->
               <v-col lg="3" md="6" sm="12" cols="12">
                 <div class="sizehead">ส่วนลด</div>
                 <v-row class="no-gutters">
@@ -44,6 +45,7 @@
                     v-model="Promotion_discount"
                     type="number"
                     min="1"
+                    :rules="Promotion_discountRules"
                     dense
                     solo
                     outlined
@@ -133,6 +135,10 @@ export default {
   
     Promotion_discount_type_selected:{ text: "บาท", value: "1" },
     Promotion_discount_type:[ { text: "บาท", value: "1" },{text: "%", value: "2"}],
+
+    Promotion_nameRules:[v1=>!!v1 || "กรุณากรอกชื่อโปรโมชั่น",],
+    Promotion_discountRules:[v1=>!!v1 || "กรุณากรอกส่วนลด",],
+
   }),
 
   methods: {
@@ -158,33 +164,35 @@ export default {
     },
 
     async submit() {
-      if (this.CreateorEdit == true) {
-        let DataNewPromotion = {
-          name: this.Promotion_Name,
-          discount: this.Promotion_discount,
-          discount_type: this.Promotion_discount_type_selected.value,
-        };
-        console.log(DataNewPromotion);
-        let result = await api.addPromotion(DataNewPromotion);
-        if (result.data.response == "OK") {
-          this.$swal.fire("สำเร็จ", 'บันทึกโปรโมชั่นเรียบร้อยแล้ว', "success");
-          this.$router.push("/Promotion");
-        }else{
-          this.$swal.fire("เกิดข้อผิดพลาด", `บันทึกโปรโมชั่นไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
-        }
-      } else {
-        let DataEditPromotion = {
-          promotion_code: this.PromotiontoEdit_ID,
-          name: this.Promotion_Name,
-          discount: this.Promotion_discount,
-          discount_type: this.Promotion_discount_type_selected.value,
-        };
-        let result = await api.editPromotion(DataEditPromotion);
-        if (result.data.response == "OK") {
-          this.$swal.fire("สำเร็จ", 'แก้ไขโปรโมชั่นเรียบร้อยแล้ว', "success");
-          this.$router.push("/Promotion");
-        }else{
-          this.$swal.fire("เกิดข้อผิดพลาด", `แก้ไขโปรโมชั่นไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
+      if(this.$refs.form.validate() == true){
+        if (this.CreateorEdit == true) {
+          let DataNewPromotion = {
+            name: this.Promotion_Name,
+            discount: this.Promotion_discount,
+            discount_type: this.Promotion_discount_type_selected.value,
+          };
+          console.log(DataNewPromotion);
+          let result = await api.addPromotion(DataNewPromotion);
+          if (result.data.response == "OK") {
+            this.$swal.fire("สำเร็จ", 'บันทึกโปรโมชั่นเรียบร้อยแล้ว', "success");
+            this.$router.push("/Promotion");
+          }else{
+            this.$swal.fire("เกิดข้อผิดพลาด", `บันทึกโปรโมชั่นไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
+          }
+        } else {
+          let DataEditPromotion = {
+            promotion_code: this.PromotiontoEdit_ID,
+            name: this.Promotion_Name,
+            discount: this.Promotion_discount,
+            discount_type: this.Promotion_discount_type_selected.value,
+          };
+          let result = await api.editPromotion(DataEditPromotion);
+          if (result.data.response == "OK") {
+            this.$swal.fire("สำเร็จ", 'แก้ไขโปรโมชั่นเรียบร้อยแล้ว', "success");
+            this.$router.push("/Promotion");
+          }else{
+            this.$swal.fire("เกิดข้อผิดพลาด", `แก้ไขโปรโมชั่นไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
+          }
         }
       }
     },

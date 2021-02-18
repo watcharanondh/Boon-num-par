@@ -6,7 +6,7 @@ const redirectLogin =(error) =>{
   console.log(error);
   localStorage.removeItem(server.TOKEN_KEY);
   // router.push("/Login");
-  window.location.href="/Login"
+  window.location.href="bnp/Login"
 }
 
 //Dashboard

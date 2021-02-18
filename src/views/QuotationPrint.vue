@@ -103,7 +103,7 @@
                             เลขที่/Number
                           </v-col>
                           <v-col style="text-align: right;"  cols="4" class="justify-end ma-2">
-                            {{ Header.quotation_id }}
+                            {{ Header.quotation_code }}
                           </v-col>
                         </v-row>
                         <v-row>

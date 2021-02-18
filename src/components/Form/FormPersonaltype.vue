@@ -50,19 +50,7 @@
             <v-col lg="6" md="6" sm="12" cols="12">
               <div class="sizehead">โทรศัพท์</div>
               <v-row class="no-gutters">
-                <!-- <input type="text" v-mask="'9-9999-9999'" > -->
-                <!-- <v-text-field
-                  v-model="Personaltype_telephone_number"
-                  placeholder="02-1234567"
-                  dense
-                  solo
-                  outlined
-                  clearable
-                  :rules="Personaltype_telephone_numberRules"
-                  :disabled="btn"
-                  required
-                ></v-text-field> -->
-                <v-text-field-simplemask
+                <v-text-field-integer
                     v-model="Personaltype_telephone_number"
                     v-bind:properties="{
                       disabled: btn,
@@ -91,16 +79,7 @@
             <v-col lg="6" md="6" sm="12" cols="12">
               <div class="sizehead">มือถือ</div>
               <v-row class="no-gutters">
-                <!-- <v-text-field
-                  v-model="Personaltype_mobile_phone_number"
-                  placeholder="081-2345678"
-                  dense
-                  solo
-                  outlined
-                  clearable
-                  :disabled="btn"
-                ></v-text-field> -->
-                <v-text-field-simplemask
+                <v-text-field-integer
                     v-model="Personaltype_mobile_phone_number"
                     v-bind:properties="{
                       disabled: btn,
@@ -109,6 +88,7 @@
                       outlined: true,
                       clearable: true,
                       placeholder: '08 1123 4567',
+                      rules:Personaltype_telemobile_phone_numberRules,
                       required: true,
                     }"
                     v-bind:options="{
@@ -332,16 +312,7 @@
             <v-col lg="6" md="6" sm="12" cols="12">
               <div class="sizehead">โทรศัพท์</div>
               <v-row class="no-gutters">
-                <!-- <v-text-field
-                  v-model="Taxinvoiceinfo_telephone_number"
-                  placeholder="053-123456"
-                  dense
-                  solo
-                  outlined
-                  clearable
-                  :disabled="btn"
-                ></v-text-field> -->
-                <v-text-field-simplemask
+                <v-text-field-integer
                     v-model="Taxinvoiceinfo_telephone_number"
                     v-bind:properties="{
                       disabled: btn,
@@ -365,17 +336,7 @@
             <v-col lg="6" md="6" sm="12" cols="12">
               <div class="sizehead">มือถือ</div>
               <v-row class="no-gutters">
-                <!-- <v-text-field
-                  v-model="Taxinvoiceinfo_mobile_phone_number"
-                  placeholder="081-2345678"
-                  dense
-                  solo
-                  outlined
-                  clearable
-                  :disabled="btn"
-                ></v-text-field> -->
-                <div>
-                <v-text-field-simplemask
+                <v-text-field-integer
                     v-model="Taxinvoiceinfo_mobile_phone_number"
                     v-bind:properties="{
                       disabled: btn,
@@ -394,7 +355,6 @@
                     }"
                     class="w-100"
                   />
-                  </div>
               </v-row>
             </v-col>
           </v-row>
@@ -541,11 +501,10 @@
               >
             </v-col>
           </v-row>
-      </v-col>
+          </v-col>
           </v-row>
         </v-form>
     </v-card>
- 
 </v-container>
 </template>
 
@@ -618,7 +577,14 @@ export default {
 
 
     Personaltype_fullnameRules:[v1=>!!v1 || "กรุณากรอกชื่อและนามสกุล",],
-    Personaltype_telephone_numberRules:[v1=>!!v1 || "กรุณากรอกเบอร์โทรศัพท์",],
+    Personaltype_telephone_numberRules:[
+      v1=>!!v1 || "กรุณากรอกเบอร์โทรศัพท์",
+      v1 => (v1 && v1.length >= 11) || "กรุณากรอกเบอร์มือถือให้ครบ 9 หลัก",
+      ],
+    Personaltype_telemobile_phone_numberRules:[
+      v1=>!!v1 || "กรุณากรอกมือถือ",
+      v1 => (v1 && v1.length >= 12) || "กรุณากรอกเบอร์มือถือให้ครบ 10 หลัก",
+      ],
     Personaltype_addressRules:[v1=>!!v1 || "กรุณากรอกที่อยู่",],
 
     // Taxinvoiceinfo_fullnameRules:[v1=>!!v1 || "กรุณากรอกชื่อและนามสกุลใบกำกับภาษี",],
