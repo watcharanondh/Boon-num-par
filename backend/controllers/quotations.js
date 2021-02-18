@@ -328,6 +328,9 @@ exports.createNewQuotation = async (req, res) => {
       }
 
       const { name, telephone_number, mobile_phone_number, type_id, address, district_id, tax_id, flash_number, email } = req.body;
+      if (!name || name == null || name == undefined || name == '') { res.json({ response: "FAILED", result: "invalid Name." }) }
+      if (!mobile_phone_number || mobile_phone_number == null || mobile_phone_number == undefined || mobile_phone_number == '') { res.json({ response: "FAILED", result: "invalid Mobile phone." }) }
+      if (!district_id || district_id == null || district_id == undefined || district_id == '' || !address || address == null || address == undefined || address == '') { res.json({ response: "FAILED", result: "invalid Address." }) }
       if (parseInt(req.body.type_id) === 1) {
         /* Customers */
         const customers_result = await customers.create({
@@ -377,14 +380,14 @@ exports.createNewQuotation = async (req, res) => {
         const customer_tax_invoices_result = await customer_tax_invoices.create({
           customer_id: customers_result.dataValues.id,
           customer_tax_invoices_code: invoice_no,
-          title: name,
-          tax_id: tax_id,
-          flash_number: flash_number,
-          email: email,
-          telephone_number: telephone_number,
-          mobile_phone_number: mobile_phone_number,
-          address: address,
-          district_id: district_id,
+          title: name || '',
+          tax_id: tax_id || '',
+          flash_number: flash_number || '',
+          email: email || '',
+          telephone_number: telephone_number || '',
+          mobile_phone_number: mobile_phone_number || '',
+          address: address || '',
+          district_id: district_id || '',
           vat_type: 0
         });
         customer_result = [customers_result, customer_tax_invoices_result];

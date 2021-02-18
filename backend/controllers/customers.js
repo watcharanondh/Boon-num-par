@@ -93,8 +93,11 @@ exports.createCustomer = async (req, res) => {
     }
     
     if (parseInt(req.body.type_id) === 1) {
-      /* Customers */
       const { name, telephone_number, mobile_phone_number, line_id, type_id, address, district_id } = req.body;
+      if (!name || name == null || name == undefined || name == '') { res.json({ response: "FAILED", result: "invalid Name." }) }
+      if (!mobile_phone_number || mobile_phone_number == null || mobile_phone_number == undefined || mobile_phone_number == '') { res.json({ response: "FAILED", result: "invalid Mobile phone." }) }
+      if (!district_id || district_id == null || district_id == undefined || district_id == '' || !address || address == null || address == undefined || address == '') { res.json({ response: "FAILED", result: "invalid Address." }) }
+      /* Customers */
       const customers_result = await customers.create({
         customer_code: costomer_code,
         name: name,
@@ -133,6 +136,10 @@ exports.createCustomer = async (req, res) => {
         });
       }
 
+      if (!name || name == null || name == undefined || name == '') { res.json({ response: "FAILED", result: "invalid Name." }) }
+      if (!mobile_phone_number || mobile_phone_number == null || mobile_phone_number == undefined || mobile_phone_number == '') { res.json({ response: "FAILED", result: "invalid Mobile phone." }) }
+      if (!district_id || district_id == null || district_id == undefined || district_id == '' || !address || address == null || address == undefined || address == '') { res.json({ response: "FAILED", result: "invalid Address." }) }
+
       /* Customers */
       const customers_result = await customers.create({
         customer_code: costomer_code,
@@ -149,14 +156,14 @@ exports.createCustomer = async (req, res) => {
       const customer_tax_invoices_result = await customer_tax_invoices.create({
         customer_id : customers_result.dataValues.id,
         customer_tax_invoices_code: invoice_no,
-        title: cti_title,
-        tax_id: cti_tax_id,
-        flash_number: cti_flash_number,
-        email: cti_email,
-        telephone_number: cti_telephone_number,
-        mobile_phone_number: cti_mobile_phone_number,
-        address: cti_address,
-        district_id: cti_district_id,
+        title: cti_title || '',
+        tax_id: cti_tax_id || '',
+        flash_number: cti_flash_number || '',
+        email: cti_email || '',
+        telephone_number: cti_telephone_number || '',
+        mobile_phone_number: cti_mobile_phone_number || '',
+        address: cti_address || '',
+        district_id: cti_district_id || '',
         vat_type: cti_vat_type
       });
       if (customers_result && customer_tax_invoices_result) {
@@ -217,7 +224,8 @@ exports.listCustomerToEdit = async (req, res) => {
             where: {
               is_active: 1,
               is_delete: 0
-            }
+            },
+            required: false
           },
           {
             model: districts,
@@ -231,11 +239,37 @@ exports.listCustomerToEdit = async (req, res) => {
         }
       })
         .then(all_customers => {
+          if (all_customers[0].customer_tax_invoices.length > 0) {
           all_customers[0].dataValues = { ...all_customers[0].dataValues, ...all_customers[0].district.dataValues, ...all_customers[0].customer_tax_invoices[0].district.dataValues, ...all_customers[0].customer_tax_invoices[0].dataValues ,...all_customers[0].dataValues.district_personal}
           all_customers[0].dataValues.district = all_customers[0].dataValues.district_personal; /// set ditrict ทับ เพราะโดนแทนที่ตอน query ///  
           all_customers[0].dataValues.check_same_address = all_customers[0].dataValues.district_id == all_customers[0].dataValues.cti_district_id ? 1 : 0 ;
           delete all_customers[0].dataValues.customer_tax_invoices;
           delete all_customers[0].dataValues.district_personal;
+        }else{
+            all_customers[0].dataValues = {
+              ...all_customers[0].dataValues,
+              ...all_customers[0].district.dataValues,
+              ...all_customers[0].dataValues.district_personal,
+              cti_district: "",
+              cti_amphoe: "",
+              cti_province: "",
+              cti_zipcode: "",
+              cti_district_code: "",
+              cti_amphoe_code: "",
+              cti_province_code: "",
+              cti_title: "",
+              cti_tax_id: "",
+              cti_flash_number: "",
+              cti_email: "",
+              cti_telephone_number: "",
+              cti_mobile_phone_number: "",
+              cti_address: "",
+              cti_district_id: "",
+              cti_vat_type: 0,
+            }
+            all_customers[0].dataValues.district = all_customers[0].dataValues.district_personal; /// set ditrict ทับ เพราะโดนแทนที่ตอน query ///  
+            all_customers[0].dataValues.check_same_address = 0;
+          }
           return all_customers;
         });
     }

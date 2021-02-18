@@ -17,24 +17,24 @@ module.exports = (sequelize, DataTypes) => {
     },
     title: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
     },
     tax_id: {
       type: DataTypes.STRING(20),
-      allowNull: false,
+      allowNull: true,
     },
     flash_number: {
       type: DataTypes.STRING(50),
-      allowNull: false,
+      allowNull: true,
     },
     email: {
       type: DataTypes.STRING(100),
-      allowNull: false,
+      allowNull: true,
       unique: true,
     },
     telephone_number: {
       type: DataTypes.STRING(20),
-      allowNull: false,
+      allowNull: true,
     },
     mobile_phone_number: {
       type: DataTypes.STRING(20),
@@ -42,11 +42,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     address: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
     },
     district_id: {
       type: DataTypes.INTEGER(10),
-      allowNull: false,
+      allowNull: true,
     },
     vat_type: {
       type: DataTypes.INTEGER(1),

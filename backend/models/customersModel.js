@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     telephone_number: {
       type: DataTypes.STRING(20),
-      allowNull: false,
+      allowNull: true,
     },
     mobile_phone_number: {
       type: DataTypes.STRING(20),
@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     line_id: {
       type: DataTypes.STRING(50),
-      allowNull: false,
+      allowNull: true,
     },
     type_id: {
       type: DataTypes.INTEGER(10),
