@@ -160,11 +160,15 @@ exports.listFindCustomerInformation = async (req, res) => {
     });
     if (parseInt(check_type_id.dataValues.type_id) === 1) {
       const result = await customers.findAll({
-        attributes: ["customer_code", "name", "telephone_number", "mobile_phone_number", "address"],
+        attributes: ["customer_code", "name", "telephone_number", "mobile_phone_number", "address",["type_id","customer_type_id"]],
         include: [
           {
             model: districts,
             attributes: [["id", "district_id"], "district", "amphoe", "province", "zipcode", "district_code", "amphoe_code", "province_code"]
+          },
+          {
+            model:customer_types,
+            attributes:[["name","customer_type_name"]]
           }
         ],
         where: {
@@ -185,14 +189,16 @@ exports.listFindCustomerInformation = async (req, res) => {
             tax_id: "-",
             flash_number: "-",
             email: "-",
+            ...data.dataValues.customer_type.dataValues,
             ...data.dataValues.district.dataValues
           };
+          delete data.dataValues.customer_type;
         });
         res.json({ response: "OK", result: cust_data });
       });
     } else if (parseInt(check_type_id.dataValues.type_id) === 2) {
       const result = await customers.findAll({
-        attributes: ["customer_code", "name"],
+        attributes: ["customer_code", "name",["type_id","customer_type_id"]],
         include: [
           {
             model: customer_tax_invoices,
@@ -203,6 +209,10 @@ exports.listFindCustomerInformation = async (req, res) => {
                 attributes: [["id", "district_id"], "district", "amphoe", "province", "zipcode", "district_code", "amphoe_code", "province_code"]
               }
             ]
+          },
+          {
+            model:customer_types,
+            attributes:[["name","customer_type_name"]]
           }
         ],
         where: {
@@ -220,6 +230,8 @@ exports.listFindCustomerInformation = async (req, res) => {
           data.dataValues.customer_tax_invoices = data.dataValues.customer_tax_invoices[0];
           Object.assign(data.dataValues.customer_tax_invoices.dataValues, data.dataValues.customer_tax_invoices.district.dataValues)
           Object.assign(data.dataValues, data.dataValues.customer_tax_invoices.dataValues)
+          Object.assign(data.dataValues, data.dataValues.customer_type.dataValues)
+          delete data.dataValues.customer_type;
           delete data.dataValues.customer_tax_invoices;
         });
         res.json({ response: "OK", result: cust_data });
