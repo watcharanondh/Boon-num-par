@@ -630,7 +630,7 @@ export default {
           return
       }
           this.pasoneltype = type_id_customer.type_id
-          console.log(this.pasoneltype.type_id);
+          //console.log(this.pasoneltype.type_id);
         
     }else{
         this.btn = this.monitortypes
@@ -794,11 +794,6 @@ export default {
       // console.log(this.Taxinvoiceinfo_SelectZipcode);
       // console.log(this.Taxinvoiceinfo_district_id);
     },
-
-    BackpageCustomer() {
-      this.$router.push("/Customer");
-    },
-
 
 async submit() {
       //console.log(this.$refs.form.validate());
