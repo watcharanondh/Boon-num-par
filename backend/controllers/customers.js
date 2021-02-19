@@ -55,7 +55,11 @@ exports.listAllCustomers = async (req, res) => {
       order: [["customer_code", "DESC"]]
     }).then(customers_data => {
       customers_data.map((data) => {
-        data.dataValues.customer_tax_invoices = data.dataValues.customer_tax_invoices != '' ? data.dataValues.customer_tax_invoices[0].title : "ไม่พบข้อมูล";
+        if (data.dataValues.customer_tax_invoices != '') {
+          data.dataValues.customer_tax_invoices = data.dataValues.customer_tax_invoices[0].title != '' ? data.dataValues.customer_tax_invoices[0].title : "ไม่พบชื่อใบกำกับภาษี";
+        }else{
+          data.dataValues.customer_tax_invoices = "ไม่พบข้อมูลใบกำกับภาษี";
+        }
         data.dataValues.customer_type = data.dataValues.customer_type.name
         count_total++
       });
