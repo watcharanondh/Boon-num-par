@@ -348,20 +348,24 @@ exports.createNewQuotation = async (req, res) => {
       } else if (parseInt(req.body.type_id) === 2) {
         // cti = customer tax invoice //
         /* Email Check */
-        const is_email = await customer_tax_invoices.findOne({ where: { email: email } })
+        const is_email = await customer_tax_invoices.findOne({ where: { [Op.and]: [{ email: email }, { email: { [Op.ne]: '' } }] } })
+        console.log(is_email);
         if (is_email) {
           res.json({
             response: "FAILED",
             result: "Email already exists."
           });
+          return
         }
         /* TAX ID Check */
-        const is_tax_id = await customer_tax_invoices.findOne({ where: { tax_id: tax_id } })
+        const is_tax_id = await customer_tax_invoices.findOne({ where: { [Op.and]: [{ tax_id: tax_id }, { tax_id: { [Op.ne]: '' } }] } })
+        console.log(is_tax_id);
         if (is_tax_id) {
           res.json({
             response: "FAILED",
             result: "Tax ID already exists."
           });
+          return
         }
 
         /* Customers */
