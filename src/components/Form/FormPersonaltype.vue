@@ -58,7 +58,7 @@
                       solo: true,
                       outlined: true,
                       clearable: true,
-                      placeholder: '02 1234 567 ,0 5312 3456',
+                      placeholder: '0 2123 4567 ,0 5312 3456',
                       required: true,
                     }"
                     v-bind:options="{
@@ -329,7 +329,7 @@
                       solo: true,
                       outlined: true,
                       clearable: true,
-                      placeholder: '02 1234 567 ,0 5312 3456',
+                      placeholder: '0 2123 4567 ,0 5312 3456',
                       required: true,
                     }"
                     v-bind:options="{
