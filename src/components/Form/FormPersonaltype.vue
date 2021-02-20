@@ -272,7 +272,7 @@
                       solo: true,
                       outlined: true,
                       clearable: true,
-                      placeholder: '123456789123',
+                      placeholder: '0123456789123',
                       required: true,
                     }"
                     v-bind:options="{
