@@ -324,7 +324,7 @@ exports.editCustomer = async (req, res) => {
       const { customer_code, name, telephone_number, mobile_phone_number, line_id, address, district_id, cti_title, cti_tax_id, cti_flash_number, cti_email, cti_telephone_number, cti_mobile_phone_number, cti_address, cti_district_id, cti_vat_type } = req.body;
       const find_cust_id = await customers.findOne({attributes:['id'],where:{customer_code:customer_code}})
       /* Email Check */
-      const is_email = await customer_tax_invoices.findOne({ where: { [Op.and]: [{ email: email }, { email: { [Op.ne]: '' } }] } })
+      const is_email = await customer_tax_invoices.findOne({ where: { [Op.and]: [{ email: cti_email }, { email: { [Op.ne]: '' } }] } })
       const is_own_email = await customer_tax_invoices.findOne({ where: { email: cti_email, customer_id: find_cust_id.dataValues.id } })
       if (is_email) {
         if (!is_own_email) {        
@@ -336,7 +336,7 @@ exports.editCustomer = async (req, res) => {
         }
       }
       /* TAX ID Check */
-      const is_tax_id = await customer_tax_invoices.findOne({ where: { [Op.and]: [{ tax_id: tax_id }, { tax_id: { [Op.ne]: '' } }] } })
+      const is_tax_id = await customer_tax_invoices.findOne({ where: { [Op.and]: [{ tax_id: cti_tax_id }, { tax_id: { [Op.ne]: '' } }] } })
       const is_own_tax_id = await customer_tax_invoices.findOne({ where: { tax_id: cti_tax_id, customer_id: find_cust_id.dataValues.id } })
       console.log('tax_id',is_tax_id);
       if (is_tax_id) {
