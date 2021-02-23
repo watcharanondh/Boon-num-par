@@ -3,7 +3,7 @@
     <v-row>
       <v-col>
         <v-card flat color="#E5E5E5">
-          <div class="sizetitle">{{ Changesubmit }}โปรโมชั่น</div>
+          <div class="header-title">{{ Changesubmit }}โปรโมชั่น</div>
         </v-card>
       </v-col>
     </v-row>
@@ -17,13 +17,13 @@
           <v-col lg="9" md="9" sm="12" cols="12">
             <v-row>
               <v-col>
-                <div class="sizetitle">{{ Changesubmit }}ข้อมูลโปรโมชั่น</div>
+                <div class="create-edit-title">{{ Changesubmit }}ข้อมูลโปรโมชั่น</div>
               </v-col>
             </v-row>
             <!-- ข้อมูลโปรโมชั่น -->
             <v-row>
               <v-col lg="6" md="6" sm="12" cols="12">
-                <div class="sizehead">ชื่อโปรโมชั่น</div>
+                <div>ชื่อโปรโมชั่น</div>
                 <v-row class="no-gutters">
                   <v-text-field
                     v-model="Promotion_Name"
@@ -39,7 +39,7 @@
 
               <!-- ส่วนลด -->
               <v-col lg="3" md="6" sm="12" cols="12">
-                <div class="sizehead">ส่วนลด</div>
+                 <span>ส่วนลด</span><span class="promotion">( ใส่เป็นจำนวน )</span>
                 <v-row class="no-gutters">
                   <v-text-field
                     v-model="Promotion_discount"
@@ -55,7 +55,7 @@
               </v-col>
               <!-- ประเภทส่วนลด -->
               <v-col lg="3" md="6" sm="12" cols="12">
-                <div class="sizehead">ประเภทส่วนลด</div>
+                <div >ประเภทส่วนลด</div>
                 <v-row class="no-gutters">
                   <v-select
                     v-model="Promotion_discount_type_selected"

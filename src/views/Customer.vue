@@ -3,7 +3,7 @@
     <v-col>
       <v-row>
         <v-card flat color="#E5E5E5">
-          <div class="sizetitle">
+          <div class="header-title">
             รายชื่อลูกค้าทั้งหมด
             <v-icon> keyboard_arrow_down</v-icon>
           </div>
@@ -36,8 +36,8 @@
             <!-- table top section -->
             <template v-slot:top>
               <v-toolbar flat>
-                <v-toolbar-title><span>รายชื่อลูกค้า</span></v-toolbar-title>
-                <v-toolbar-title><span class="text-caption grey--text ml-1">{{total}}</span></v-toolbar-title>
+                <v-toolbar-title><span class="header-table-title">รายชื่อลูกค้า</span></v-toolbar-title>
+                <v-toolbar-title><span class="order">{{total}}</span></v-toolbar-title>
                  <v-spacer></v-spacer>
                     <v-divider class="mx-4" inset vertical></v-divider>
                       <v-text-field
@@ -91,21 +91,21 @@
                 <td>{{ item.customer_code }}</td>
                 <td>
                   {{ item.name }}<br />
-                  update {{ item.update }}
+                <span class="updateintable-font-color">update {{ item.update }}</span> 
                 </td>
                 <td>
                   {{ item.customer_tax_invoices }}
                   <br />
-                  update {{ item.update }}
+                <span class="updateintable-font-color">update {{ item.update }}</span>
                 </td>
                 <td>
                   {{ item.customer_type }}
                   <br />
-                  update {{ item.update }}
+                 <span class="updateintable-font-color">update {{ item.update }}</span>
                 </td>
                 <td>
                   {{ item.created_at_date }} <br />
-                  {{ item.created_at_datetime }}
+                  <span class="updateintable-font-color"> {{ item.created_at_datetime }} </span>
                 </td>
                 <td>
                   <v-row>

@@ -3,7 +3,7 @@
     <v-row>
       <v-col>
         <v-card flat color="#E5E5E5">
-          <div class="sizetitle">
+          <div class="header-title">
             สร้างแพ็คเกจ
           </div>
         </v-card>
@@ -13,24 +13,24 @@
       <v-row> </v-row>
     </v-col>
 
-    <v-card class="mx-10 pa-5 rounded-lg" outlined>
+    <v-card class=" mx-10 pa-5 rounded-lg" outlined>
       <v-row justify="center">
         <v-col lg="9" md="9" sm="12" cols="12">
           <!-- Tap เมนู ข้อมูลแพ็คเกจ -->
           <v-tabs v-model="tab" left color="black">
-            <v-tab href="#tab-1">
+            <v-tab class="h-package" href="#tab-1">
               ข้อมูลแพ็คเกจ
             </v-tab>
-            <v-tab href="#tab-2">
+            <v-tab class="h-package" href="#tab-2">
               อุปกรณ์แพ็กเกจ
             </v-tab>
             <v-tab-item value="tab-1">
               <v-form ref="form" v-model="valid" lazy-validation>
-              <v-card flat>
-                <v-card-text>
+              <v-card  flat>
+                <v-card-text class="s-package">
                   <v-row>
                     <v-col lg="6" md="6" sm="12" cols="12">
-                      <div class="sizehead">ชื่อแพ็คเกจ</div>
+                      <div >ชื่อแพ็คเกจ</div>
                       <v-row class="no-gutters">
                         <v-text-field
                           v-model="Package_Name"
@@ -43,7 +43,7 @@
                       </v-row>
                     </v-col>
                     <v-col lg="6" md="6" sm="12" cols="12">
-                      <div class="sizehead">ราคา</div>
+                      <div >ราคา</div>
                       <v-row class="no-gutters">
                         <v-text-field
                           v-model="Package_price"
@@ -60,7 +60,7 @@
                   </v-row>
                   <v-row>
                     <v-col lg="4" md="4" sm="12" cols="12">
-                      <div class="sizehead">จำนวนอาหารคาว</div>
+                      <div >จำนวนอาหารคาว</div>
                       <v-row class="no-gutters">
                         <v-text-field
                           v-model="Savoryfood_amount"
@@ -75,7 +75,7 @@
                       </v-row>
                     </v-col>
                     <v-col lg="4" md="4" sm="12" cols="12">
-                      <div class="sizehead">จำนวนอาหารหวาน</div>
+                      <div >จำนวนอาหารหวาน</div>
                       <v-row class="no-gutters">
                         <v-text-field
                           v-model="Dessert_amount"
@@ -90,7 +90,7 @@
                       </v-row>
                     </v-col>
                     <v-col lg="4" md="4" sm="12" cols="12">
-                      <div class="sizehead">จำนวนเครื่องดื่ม</div>
+                      <div >จำนวนเครื่องดื่ม</div>
                       <v-row class="no-gutters">
                         <v-text-field
                           v-model="Drinks_amount"
@@ -139,7 +139,7 @@
                 <v-col lg="6" md="6" sm="12" cols="12">
                   <v-row class="no-gutters">
                     <h3>รายการอุปกรณ์</h3>
-                    <span class="text-caption grey--text pt-1 ml-3">{{Equipment_table_all_total}} รายการ</span>
+                    <span class="order mt-2">{{Equipment_table_all_total}} รายการ</span>
                   </v-row>
 
                       <!-- รายการอุปกรณ์ -->
@@ -172,7 +172,7 @@
                 <v-col lg="6" md="6" sm="12" cols="12">
                   <v-row class="no-gutters">
                     <h3>อุปกรณ์ที่เลือก</h3>
-                    <span class="text-caption grey--text pt-1 ml-3">{{Equipment_table_selected_total}} รายการ</span>
+                    <span class="order mt-2">{{Equipment_table_selected_total}} รายการ</span>
                   </v-row>
 
               

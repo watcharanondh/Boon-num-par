@@ -3,7 +3,7 @@
     <v-row>
       <v-col>
         <v-card flat color="#E5E5E5">
-          <div class="sizetitle">
+          <div class="header-title">
             {{Changesubmit}}รายชื่อลูกค้าประเภท{{formTitle}}
           </div>
         </v-card>
@@ -23,7 +23,7 @@
         <v-col lg="9" md="9" sm="12" cols="12">
           <v-row>
             <v-col>
-             <div class="sizetitle">ข้อมูลลูกค้าประเภท{{formTitle}}</div>
+             <div class="create-edit-title">ข้อมูลลูกค้าประเภท{{formTitle}}</div>
             </v-col>
           </v-row>
 
@@ -243,7 +243,7 @@
         <v-col lg="11" md="11" sm="11" cols="11">
           <v-row>
             <v-col>
-             <div class="sizetitle">ข้อมูลใบกำกับภาษี</div>
+             <div class="create-edit-title">ข้อมูลใบกำกับภาษี</div>
             </v-col>
           </v-row>
           <v-row>

@@ -3,7 +3,7 @@
     <v-col>
       <v-row>
         <v-card flat color="#E5E5E5">
-          <div class="sizetitle">
+          <div class="header-title">
             ใบเสนอราคา
           </div>
         </v-card>
@@ -38,8 +38,8 @@
             <!-- table top section -->
             <template v-slot:top>
               <v-toolbar flat>
-                <v-toolbar-title><span>ใบเสนอราคา</span></v-toolbar-title>
-                  <v-toolbar-title><span class="text-caption grey--text ml-1">{{total}}</span></v-toolbar-title>
+                <v-toolbar-title><span class="header-table-title">ใบเสนอราคา</span></v-toolbar-title>
+                  <v-toolbar-title><span class="order">{{total}}</span></v-toolbar-title>
                   <v-spacer></v-spacer>
                     <v-divider class="mx-4" inset vertical></v-divider>
                       <v-text-field
@@ -54,16 +54,30 @@
             <template v-slot:item="{ item }">
             <tr>
               <td>{{item.quotation_code}}</td>
-              <td>{{item.customer_tax_invoices}}
-                <div>update {{item.update}}</div>
+              <td>{{item.customer_tax_invoices}}<br />
+                 <span class="quotation-font-color">update {{item.update}}</span>
               </td>
               <td>
-                วันที่จัดงาน
-                <div>{{item.event_date}} {{item.event_date_datetime}}</div>
-                วันนัดดูพื้นที่
-                <div>{{item.area_viewing_date}} {{item.area_viewing_date_datetime}}</div>
+               <span class="quotation-font-color">วันที่จัดงาน</span><br/>
+                {{item.event_date}} <span class="quotation-font-color">{{item.event_date_datetime}}</span><br/>
+                <span class="quotation-font-color">วันนัดดูพื้นที่</span><br/>
+                {{item.area_viewing_date}} <span class="quotation-font-color">{{item.area_viewing_date_datetime}}</span>
               </td>
-              <td>{{item.quotation_status}}</td>
+              <td class="size14">
+                 <div
+                    v-if="item.quotation_status == 'คอนเฟิร์ม'"
+                    class="success--text ">
+                    {{ item.quotation_status }}
+                  </div>
+                  <div
+                    v-else-if="item.quotation_status == 'ไม่คอนเฟิร์ม'"
+                    class="warning--text ">
+                    {{ item.quotation_status }}
+                  </div>
+                  <div v-else class="error--text ">
+                    {{ item.quotation_status }}
+                  </div>
+              </td>
               <td><ModalCreateQuotation :quotation_code="item.quotation_code"/></td>
               <td>
                   <v-row>

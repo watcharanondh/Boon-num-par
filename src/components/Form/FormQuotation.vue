@@ -3,7 +3,7 @@
     <v-row>
       <v-col>
         <v-card flat color="#E5E5E5">
-          <div class="sizetitle">{{ Changesubmit }}ใบเสนอราคา</div>
+          <div class="header-title">{{ Changesubmit }}ใบเสนอราคา</div>
         </v-card>
       </v-col>
     </v-row>
@@ -11,19 +11,19 @@
       <v-row> </v-row>
     </v-col>
 
-    <v-card class="mx-10 pa-5 rounded-lg" outlined>
+    <v-card class="quotation mx-10 pa-5 rounded-lg" outlined>
 
       <v-row justify="center">
         <v-col lg="9" md="9" sm="12" cols="12">
           <!-- Tap เมนู ข้อมูลแพ็คเกจ -->
           <v-tabs v-model="tab" left color="black">
-            <v-tab href="#tab-1">
+            <v-tab  class="quotation" href="#tab-1">
               ข้อมูลลูกค้า
             </v-tab>
-            <v-tab href="#tab-2">
+            <v-tab class="quotation" href="#tab-2">
               เลือกแพ็กเกจ
             </v-tab>
-            <v-tab href="#tab-3">
+            <v-tab class="quotation" href="#tab-3">
               เลือกโปรโมชั่น
             </v-tab>
             <v-tab-item value="tab-1">
@@ -32,12 +32,12 @@
                   v-model="valid"
                   lazy-validation
               >
-              <v-card flat>
-                <v-card-text>
+              <v-card  flat>
+                <v-card-text class="quotation">
                   <!-- ค้นหารายชื่อลูกค้า หรือ ค้นหาหมายเลขลูกค้า -->
                   <v-row>
                     <v-col lg="12" md="12" sm="12" cols="12">
-                      <div class="sizehead">
+                      <div>
                         ค้นหารายชื่อลูกค้า หรือ ค้นหาหมายเลขลูกค้า
                       </div>
                       <v-row class="no-gutters">
@@ -66,7 +66,7 @@
                   <!-- ประเภทลูกค้า -->
                   <v-row>
                     <v-col lg="6" md="6" sm="12" cols="12">
-                      <div class="sizehead">ประเภทลูกค้า</div>
+                      <div>ประเภทลูกค้า</div>
                       <v-row class="no-gutters">
                         <v-select
                           v-model="Quotation_Person_type"
@@ -86,7 +86,7 @@
                   <!-- หมายเลขผู้เสียภาษี -->
                   <v-row>
                     <v-col lg="6" md="6" sm="12" cols="12">
-                      <div class="sizehead">หมายเลขผู้เสียภาษี</div>
+                      <div>หมายเลขผู้เสียภาษี</div>
                       <v-row class="no-gutters">
                       <v-text-field-integer
                           v-model="Quotation_tax_id"
@@ -111,7 +111,7 @@
 
                     <!-- ชื่อผู้เสียภาษี -->
                     <v-col lg="6" md="6" sm="12" cols="12">
-                      <div class="sizehead">ชื่อผู้เสียภาษี</div>
+                      <div>ชื่อผู้เสียภาษี</div>
                       <v-row class="no-gutters">
                         <v-text-field
                           v-model="Quotation_fullname"
@@ -128,7 +128,7 @@
                   <!-- แฟลช -->
                   <v-row>
                     <v-col lg="6" md="6" sm="12" cols="12">
-                      <div class="sizehead">แฟลช</div>
+                      <div>แฟลช</div>
                       <v-row class="no-gutters">
                         <v-text-field
                           v-model="Quotation_fax"
@@ -142,7 +142,7 @@
 
                     <!-- อีเมล์ -->
                     <v-col lg="6" md="6" sm="12" cols="12">
-                      <div class="sizehead">อีเมล์</div>
+                      <div>อีเมล์</div>
                       <v-row class="no-gutters">
                         <v-text-field
                           v-model="Quotation_email"
@@ -158,7 +158,7 @@
                   <!-- โทรศัพท์ -->
                   <v-row>
                     <v-col lg="6" md="6" sm="12" cols="12">
-                      <div class="sizehead">โทรศัพท์</div>
+                      <div>โทรศัพท์</div>
                       <v-row class="no-gutters">
                   <v-text-field-integer
                     v-model="Quotation_telephone_number"
@@ -183,7 +183,7 @@
 
                     <!-- มือถือ -->
                     <v-col lg="6" md="6" sm="12" cols="12">
-                      <div class="sizehead">มือถือ</div>
+                      <div>มือถือ</div>
                       <v-row class="no-gutters">
                       <v-text-field-integer
                           v-model="Quotation_mobile_phone_number"
@@ -212,7 +212,7 @@
                   <!-- วันจัดงาน -->
                   <v-row>
                     <v-col lg="6" md="6" sm="12" cols="12">
-                      <div class="sizehead">วันจัดงาน</div>
+                      <div>วันจัดงาน</div>
                       <v-row class="no-gutters">
                         <v-menu
                           v-model="menu_Quotation_event_date"
@@ -246,7 +246,7 @@
 
                     <!-- วันนัดดูพื้นที่ -->
                     <v-col lg="6" md="6" sm="12" cols="12">
-                      <div class="sizehead">วันนัดดูพื้นที่</div>
+                      <div>วันนัดดูพื้นที่</div>
                       <v-row class="no-gutters">
                         <v-menu
                           v-model="menu_Quotation_area_viewing_date"
@@ -282,7 +282,7 @@
                   <!-- หมายเหตุ -->
                   <v-row>
                     <v-col lg="12" md="12" sm="12" cols="12">
-                      <div class="sizehead">หมายเหตุ</div>
+                      <div>หมายเหตุ</div>
                       <v-row class="no-gutters">
                         <v-textarea
                           v-model="Quotation_note"
@@ -299,7 +299,7 @@
                   <!-- ที่อยู่ -->
                   <v-row>
                     <v-col lg="12" md="12" sm="12" cols="12">
-                      <div class="sizehead">ที่อยู่</div>
+                      <div>ที่อยู่</div>
                       <v-row class="no-gutters">
                         <v-text-field
                           v-model="Quotation_address"
@@ -316,7 +316,7 @@
                   <!-- จังหวัด -->
                   <v-row>
                     <v-col lg="6" md="6" sm="12" cols="12">
-                      <div class="sizehead">จังหวัด</div>
+                      <div>จังหวัด</div>
                       <v-row class="no-gutters">
                         <v-select
                           v-model="Quotation_SelectProvinces"
@@ -337,7 +337,7 @@
 
                     <!-- เขต/อำเภอ -->
                     <v-col lg="6" md="6" sm="12" cols="12">
-                      <div class="sizehead">เขต/อำเภอ</div>
+                      <div>เขต/อำเภอ</div>
                       <v-row class="no-gutters">
                         <v-select
                           v-model="Quotation_SelectAmphoe"
@@ -360,7 +360,7 @@
                   <!-- แขวง/ตำบล -->
                   <v-row>
                     <v-col lg="6" md="6" sm="12" cols="12">
-                      <div class="sizehead">แขวง/ตำบล</div>
+                      <div>แขวง/ตำบล</div>
                       <v-row class="no-gutters">
                         <v-select
                           v-model="Quotation_SelectDistrict"
@@ -380,7 +380,7 @@
 
                     <!-- รหัสไปรษณีย์ -->
                     <v-col lg="6" md="6" sm="12" cols="12">
-                      <div class="sizehead">รหัสไปรษณีย์</div>
+                      <div>รหัสไปรษณีย์</div>
                       <v-row class="no-gutters">
                         <v-text-field
                           v-model="Quotation_SelectZipcode"
@@ -450,7 +450,7 @@
                     <!-- table top section -->
                     <template v-slot:top>
                       <v-toolbar flat>
-                        <v-toolbar-title><span>แพ็กเกจ</span></v-toolbar-title>
+                        <v-toolbar-title><span class="quotation-package">แพ็กเกจ</span></v-toolbar-title>
                         <v-spacer></v-spacer>
                         <!-- <v-divider class="mx-5" inset vertical></v-divider>
                     <v-row class="ma-2">
@@ -493,8 +493,8 @@
                     <template v-slot:item="{ item }">
                       <tr>
                         <td>
-                          {{ item.name }}
-                          <div>update {{ item.update }}</div>
+                          {{ item.name }}<br/>
+                          <span class="quotation-font-color">update {{ item.update }}</span>
                         </td>
                         <td>{{ item.food_des }}</td>
                         <td>
@@ -512,9 +512,7 @@
               <v-row>
                 <v-col lg="12" md="12" sm="12" cols="12">
                   <v-row class="no-gutters">
-                    <div class="sizehead">
-                      แพ็กเกจที่ท่านเลือก<span class="text-sm-body-2 red--text">(เลือกได้แค่แพ็กเกจเดียว)</span>
-                    </div>
+                    <span class="quotation-package">แพ็กเกจที่ท่านเลือก</span><span class="quotation-package-red">(เลือกได้แค่แพ็กเกจเดียว)</span>
                   </v-row>
                 </v-col>
               </v-row>
@@ -533,8 +531,8 @@
                     <template v-slot:item="{ item }">
                       <tr>
                         <td>
-                          {{ item.name }}
-                          <div>update {{ item.update }}</div>
+                          {{ item.name }}<br/>
+                          <span class="quotation-font-color">update {{ item.update }}</span>
                         </td>
                         <td>{{ item.food_des }}</td>
                         <td>
@@ -552,25 +550,23 @@
               <v-row>
                 <v-col lg="12" md="12" sm="12" cols="12">
                   <v-row class="no-gutters">
-                    <div class="sizehead">
-                      เลือกอาหารแพ็กเกจ
-                      <span class="text-sm-body-2 red--text">(ถ้าลูกค้ายังไม่คอนเฟิร์มยังไม่ต้องใส่)</span>
-                    </div>
+                    <span class="quotation-package">เลือกอาหารแพ็กเกจ</span><span class="quotation-package-red">(ถ้าลูกค้ายังไม่คอนเฟิร์มยังไม่ต้องใส่)</span>
                   </v-row>
                 </v-col>
               </v-row>
               <!-- อาหารคาว -->
               <v-row>
                 <v-col lg="12" md="12" sm="12" cols="12">
-                  <div class="sizehead">
+                  <div>
                     อาหารคาว
-                    <span class="text-sm-body-2 grey--text">เลือก {{ check_select_savory_food }} เหลือ{{ package_amount_savory_food }}</span>
+                    <span class="package">เลือก {{ check_select_savory_food }} เหลือ {{ package_amount_savory_food }}</span>
                   </div>
                   <v-row class="no-gutters">
                     <v-combobox
                       v-model="select_savory_food"
                       :items="savory_food_items"
                       :search-input.sync="search_savory_food"
+                      class="combo"
                       hide-selected
                       label="เลือกอาหารคาว"
                       multiple
@@ -599,15 +595,16 @@
               <!-- อาหารหวาน -->
               <v-row>
                 <v-col lg="12" md="12" sm="12" cols="12">
-                  <div class="sizehead">
+                  <div>
                     อาหารหวาน
-                    <span class="text-sm-body-2 grey--text">เลือก {{ check_select_sweet_food }} เหลือ{{ package_amount_sweet_food }}</span>
+                    <span class="package">เลือก {{ check_select_sweet_food }} เหลือ {{ package_amount_sweet_food }}</span>
                   </div>
                   <v-row class="no-gutters">
                     <v-combobox
                       v-model="select_sweet_food"
                       :items="sweet_food_items"
                       :search-input.sync="search_sweet_food"
+                      class="combo"
                       hide-selected
                       label="เลือกอาหารคาว"
                       multiple
@@ -635,18 +632,16 @@
               <!-- เครื่องดืม -->
               <v-row>
                 <v-col lg="12" md="12" sm="12" cols="12">
-                  <div class="sizehead">
+                  <div>
                     เครื่องดืม
-                    <span class="text-sm-body-2 grey--text"
-                      >เลือก {{ check_select_drink }} เหลือ
-                      {{ package_amount_drink }}</span
-                    >
+                    <span class="package">เลือก {{ check_select_drink }} เหลือ {{ package_amount_drink }}</span>
                   </div>
                   <v-row class="no-gutters">
                     <v-combobox
                       v-model="select_drink"
                       :items="drink_items"
                       :search-input.sync="search_drink"
+                      class="combo"
                       hide-selected
                       label="เลือกเครื่องดืม"
                       multiple
@@ -712,7 +707,7 @@
                 <v-col lg="6" md="6" sm="12" cols="12">
                   <v-row class="no-gutters">
                     <h3>รายการโปรโมชั่น</h3>
-                    <span class="text-caption grey--text pt-1 ml-3">{{ promotion_table_all_total }} รายการ</span>
+                    <span class="quotation-select-pro mt-1">{{ promotion_table_all_total }} รายการ</span>
                   </v-row>
                   <!-- รายการโปรโมชั่น -->
                   <v-row>
@@ -749,7 +744,7 @@
                 <v-col lg="6" md="6" sm="12" cols="12">
                   <v-row class="no-gutters">
                     <h3>โปรโมชั่นที่เลือก</h3>
-                    <span class="text-caption grey--text pt-1 ml-3 ">{{ promotion_table_select_total }} รายการ</span>
+                    <span class="quotation-select-pro mt-1">{{ promotion_table_select_total }} รายการ</span>
                   </v-row>
                   
 
@@ -1399,4 +1394,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style lang="scss">
+.combo .v-input__slot[role="combobox"] .v-select__slot{
+  padding: 20px;
+}
+
+</style>

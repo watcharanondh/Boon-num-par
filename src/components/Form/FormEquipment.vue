@@ -3,7 +3,7 @@
     <v-row>
       <v-col>
         <v-card flat color="#E5E5E5">
-          <div class="sizetitle">{{ Changesubmit }}อุปกรณ์</div>
+          <div class="header-title">{{ Changesubmit }}อุปกรณ์</div>
         </v-card>
       </v-col>
     </v-row>
@@ -17,13 +17,13 @@
           <v-col lg="9" md="9" sm="12" cols="12">
             <v-row>
               <v-col>
-                <div class="sizetitle">{{ Changesubmit }}ข้อมูลอุปกรณ์</div>
+                <div class="create-edit-title">{{ Changesubmit }}ข้อมูลอุปกรณ์</div>
               </v-col>
             </v-row>
             <!-- ข้อมูลอุปกรณ์ -->
             <v-row>
               <v-col lg="6" md="6" sm="12" cols="12">
-                <div class="sizehead">ชื่ออุปกรณ์</div>
+                <div>ชื่ออุปกรณ์</div>
                 <v-row class="no-gutters">
                   <v-text-field
                     v-model="Equipment_Name"
@@ -39,7 +39,7 @@
 
               <!-- จำนวน -->
               <v-col lg="6" md="6" sm="12" cols="12">
-                <div class="sizehead">จำนวน</div>
+                <div>จำนวน</div>
                 <v-row class="no-gutters">
                   <v-text-field
                     v-model="Equipment_Stock_IN"

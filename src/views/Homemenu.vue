@@ -189,10 +189,3 @@ export default {
   >.v-card__text
     color: #000
 </style>
-
-<style scoped>
-.size36 {
-  font-size: 36px;
-  font-weight: 550;
-}
-</style>

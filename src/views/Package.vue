@@ -3,7 +3,7 @@
     <v-col>
       <v-row>
         <v-card flat color="#E5E5E5">
-          <div class="sizetitle">
+          <div class="header-title">
             แพ็คเก็จ
           </div>
         </v-card>
@@ -40,8 +40,8 @@
             <!-- table top section -->
             <template v-slot:top>
               <v-toolbar flat>
-                <v-toolbar-title><span>รายการแพ็กเก็จ</span></v-toolbar-title>
-                <v-toolbar-title><span class="text-caption grey--text ml-1">{{total}}</span></v-toolbar-title>
+                <v-toolbar-title><span class="header-table-title">รายการแพ็กเก็จ</span></v-toolbar-title>
+                <v-toolbar-title><span class="order">{{total}}</span></v-toolbar-title>
                 <v-spacer></v-spacer>
 
                 <!-- <div>

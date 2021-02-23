@@ -3,7 +3,7 @@
     <v-col>
       <v-row>
         <v-card flat color="#E5E5E5">
-          <div class="sizetitle">
+          <div class="header-title">
             แสดงผล
           </div>
         </v-card>
@@ -48,7 +48,7 @@
             <!-- table top section -->
             <template v-slot:top>
               <v-toolbar flat>
-                <v-toolbar-title class="text--black"
+                <v-toolbar-title class="header-table-title"
                   >สถานะใบเสนอราคาล่าสุด</v-toolbar-title
                 >
               </v-toolbar>
@@ -92,7 +92,7 @@
           >
             <template v-slot:top>
               <v-toolbar flat>
-                <v-toolbar-title class="text--black">รายชื่อลูกค้าล่าสุด</v-toolbar-title>
+                <v-toolbar-title class="header-table-title">รายชื่อลูกค้าล่าสุด</v-toolbar-title>
               </v-toolbar>
             </template>
             <template v-slot:item="{ item }">
