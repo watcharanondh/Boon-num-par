@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const authorize = require('../middleware/authorize');
+const authorize = require('../../middleware/authorize');
 
-const PromotionsContrllers = require("../controllers/promotions");
+const PromotionsContrllers = require("../../controllers/sales/promotions");
 
 /* List All Equipment */
 router.get("/listallpromotions", authorize, PromotionsContrllers.listAllPromotions);

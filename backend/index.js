@@ -7,8 +7,6 @@ const logger = require("./middleware/logger");
 const authorize = require("./middleware/authorize");
 
 var http = require('http');
-var https = require('https');
-var fs = require('fs');
 
 const dotenv = require("dotenv");
 dotenv.config();
@@ -27,29 +25,42 @@ app.get(START_PART_WITH + "/", authorize, (req, res) => {
   res.send("Hello World");
 });
 
-/*-------------------- DashBoard --------------------*/
-/* DashBoard Route */
-app.use(START_PART_WITH + "/dashboard", require("./routes/Dashboard"));
-
-
 /*---------------------- SALE ----------------------*/
+/* DashBoard Route */
+app.use(START_PART_WITH + "/sale/dashboard", require("./routes/sales/Dashboard"));
+
 /* Customers Route */
-app.use(START_PART_WITH + "/customers", require("./routes/Customers"));
+app.use(START_PART_WITH + "/sale/customers", require("./routes/sales/Customers"));
 /* Quotations Route */
-app.use(START_PART_WITH + "/quotations", require("./routes/Quotations"));
-/* Districts Route */
-app.use(START_PART_WITH + "/districts", require("./routes/Districts"));
+app.use(START_PART_WITH + "/sale/quotations", require("./routes/sales/Quotations"));
 
 
-/*---------------------- ADMIN ----------------------*/
 /* Equipment Route */
-app.use(START_PART_WITH + "/equipments", require("./routes/Equipments"));
+app.use(START_PART_WITH + "/sale/equipments", require("./routes/sales/Equipments"));
 /* Packages Route */
-app.use(START_PART_WITH + "/packages", require("./routes/Packages"));
+app.use(START_PART_WITH + "/sale/packages", require("./routes/sales/Packages"));
 /* Promotions Route */
-app.use(START_PART_WITH + "/promotions", require("./routes/Promotions"));
+app.use(START_PART_WITH + "/sale/promotions", require("./routes/sales/Promotions"));
+
+
+/*---------------------- TEAM BNP ----------------------*/
+/* Shipping Route */
+app.use(START_PART_WITH + "/bnp/shipping", require("./routes/teamBNP/listShipping"));
+
+/*---------------------- TEAM HONG ----------------------*/
+
+
+/*---------------------- TEAM KITCHEN ----------------------*/
+
+
+/*---------------------- DISTRICTS ----------------------*/
+/* Districts Route */
+app.use(START_PART_WITH + "/districts", require("./routes/districts/Districts"));
+
+
+/*---------------------- USERS ----------------------*/
 /* Users Route */
-app.use(START_PART_WITH + "/users", require("./routes/Users"));
+app.use(START_PART_WITH + "/users", require("./routes/users/Users"));
 
 
 DB.sequelize.sync().then(() => {

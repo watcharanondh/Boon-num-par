@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const authorize = require('../middleware/authorize');
+const authorize = require('../../middleware/authorize');
 
-const PackagesContrllers = require("../controllers/packages");
+const PackagesContrllers = require("../../controllers/sales/packages");
 
 /* List All Packages */
 router.get("/listallpackage", authorize, PackagesContrllers.listAllPackages);

@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const authorize = require('../middleware/authorize');
+const authorize = require('../../middleware/authorize');
 
-const QuotationsContrllers = require("../controllers/quotations");
+const QuotationsContrllers = require("../../controllers/sales/quotations");
 
 /*------------------------------ Create Quatation ------------------------------*/
 /* List All Quotations */

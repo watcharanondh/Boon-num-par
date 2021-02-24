@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const authorize = require('../middleware/authorize');
+const authorize = require('../../middleware/authorize');
 
-const DistrictContrllers = require("../controllers/districts");
+const DistrictContrllers = require("../../controllers/districts/districts");
 
 /* List Find Province */
 router.get("/findprovince", authorize, DistrictContrllers.List_Find_Province);

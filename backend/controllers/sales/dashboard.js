@@ -1,4 +1,4 @@
-const { quotations, quotation_statuses, customers, customer_tax_invoices } = require("../models");
+const { quotations, quotation_statuses, customers, customer_tax_invoices } = require("../../models");
 const { Op, Sequelize } = require("sequelize");
 
 /* List Customer Type */

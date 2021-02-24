@@ -1,6 +1,6 @@
-const { customers, customer_types, customer_tax_invoices, districts } = require("../models");
+const { customers, customer_types, customer_tax_invoices, districts } = require("../../models");
 const { Op, Sequelize } = require("sequelize");
-const helper = require("../helper/sku");
+const helper = require("../../helper/sku");
 
 /*------------------------------ Customer ------------------------------*/
 /* List Customer Type Selector */

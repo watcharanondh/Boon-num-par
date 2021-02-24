@@ -1,4 +1,4 @@
-const { districts } = require("../models");
+const { districts } = require("../../models");
 const { Op } = require("sequelize");
 
 /* List Customer Type */

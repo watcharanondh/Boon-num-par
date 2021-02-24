@@ -1,6 +1,6 @@
-const { sequelize, quotations, customer_tax_invoices, quotation_statuses, quotation_packages, quotation_promotions, customers, customer_types, districts, packages, promotions } = require("../models");
+const { sequelize, quotations, customer_tax_invoices, quotation_statuses, quotation_packages, quotation_promotions, customers, customer_types, districts, packages, promotions } = require("../../models");
 const { Op, Sequelize } = require("sequelize");
-const helper = require("../helper/sku");
+const helper = require("../../helper/sku");
 
 
 /*------------------------------ Create Quatation ------------------------------*/

@@ -1,4 +1,4 @@
-const { users } = require("../models");
+const { users } = require("../../models");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const fs = require('fs') ;
@@ -20,7 +20,7 @@ exports.userLogin = async (req, res) => {
             "remember_token": result.remember_token,
             "last_login": result.last_login
           };
-          const accessToken = jwt.sign(_payload, fs.readFileSync(__dirname + '/../middleware/private.key'),{ expiresIn: '10h' })
+          const accessToken = jwt.sign(_payload, fs.readFileSync(__dirname + '/../../middleware/private.key'),{ expiresIn: '10h' })
           res.json({
             response: "OK",
             accessToken: accessToken,

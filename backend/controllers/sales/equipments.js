@@ -1,6 +1,6 @@
-const { equipments } = require("../models");
+const { equipments } = require("../../models");
 const { Op, Sequelize } = require("sequelize");
-const helper = require("../helper/sku");
+const helper = require("../../helper/sku");
 
 
 /* List All Equipments */
