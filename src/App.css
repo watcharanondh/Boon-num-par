@@ -8,12 +8,54 @@
   font-family: "Prompt", sans-serif !important;
 }
 
+/* หน้า Adminmenu */
+.container.menu-main-container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-main-core{
+  /* display: flex; */
+  width: 900px;
+}
+
+.menu-main-title{
+  font-size: 36px;
+  font-weight: 550;
+  text-align: center;
+}
+
+.menu-main-box{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left;
+  grid-gap: 26px 10px;
+  margin-top: 48px !important;
+}
+
+
+.menu-main-box-size{
+  width: 217px;
+  height: 150px;
+}
+
 /* หน้า Homemenu */
 .container.container--fluid {
   height: 100%;
 }
 
+/* หน้า Homemenu */
 .container.menu-container {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+/* หน้า login */
+.container.login-container {
   display: flex;
   height: 100%;
   align-items: center;
@@ -22,6 +64,19 @@
 
 .menu-box {
   width: 585px;
+}
+
+.login-box {
+  width: 400px;
+}
+
+.front-menu{
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  letter-spacing: 0.2px;
+  color: #000000;
 }
 
 .size10 {

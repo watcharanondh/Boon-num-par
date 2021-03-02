@@ -1,31 +1,33 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Login from "@/views/Login.vue";
-import Homemenu from "@/views/Homemenu.vue";
-import Home from "@/views/Home.vue";
+import HomeMainAdmin from "@/views/HomeMainAdmin.vue";
 
-import Customer from "@/views/Customer.vue";
-import MonitorPersonltype from "@/views/MonitorPersonltype.vue";
-import CreatePersoneltype from "@/views/CreatePersoneltype.vue";
-import EditPersoneltype from "@/views/EditPersoneltype.vue";
+import Menusale from "@/views/sale/Menusale.vue";
+import Home from "@/views/sale/Home.vue";
+import Customer from "@/views/sale/Customer.vue";
+import MonitorPersonltype from "@/views/sale/MonitorPersonltype.vue";
+import CreatePersoneltype from "@/views/sale/CreatePersoneltype.vue";
+import EditPersoneltype from "@/views/sale/EditPersoneltype.vue";
+import Quotation from "@/views/sale/Quotation.vue";
+import CreateQuotation from "@/views/sale/CreateQuotation.vue";
+import EditQuotation from "@/views/sale/EditQuotation.vue";
+import QuotationPrint from "@/views/sale/QuotationPrint.vue"; 
+import Equipment from "@/views/sale/Equipment.vue";
+import CreateEquipment from "@/views/sale/CreateEquipment.vue";
+import EditEquipment from "@/views/sale/EditEquipment.vue";
+import Package from "@/views/sale/Package.vue"; 
+import CreatePackage from "@/views/sale/CreatePackage.vue";
+import EditPackage from "@/views/sale/EditPackage.vue";
+import Promotion from "@/views/sale/Promotion.vue";
+import CreatePromotion from "@/views/sale/CreatePromotion.vue";
+import EditPromotion from "@/views/sale/EditPromotion.vue";
 
-import Quotation from "@/views/Quotation.vue";
-import CreateQuotation from "@/views/CreateQuotation.vue";
-import EditQuotation from "@/views/EditQuotation.vue";
-import QuotationPrint from "@/views/QuotationPrint.vue"; 
-
-import Equipment from "@/views/Equipment.vue";
-import CreateEquipment from "@/views/CreateEquipment.vue";
-import EditEquipment from "@/views/EditEquipment.vue";
-
-import Package from "@/views/Package.vue"; 
-import CreatePackage from "@/views/CreatePackage.vue";
-import EditPackage from "@/views/EditPackage.vue";
-
-import Promotion from "@/views/Promotion.vue";
-import CreatePromotion from "@/views/CreatePromotion.vue";
-import EditPromotion from "@/views/EditPromotion.vue";
-
+import Menuteambnp from "@/views/teambnp/Menuteambnp.vue";
+import Eventteaminformation from "@/views/teambnp/Eventteaminformation.vue";
+import Viewareaplacearrangement from "@/views/teambnp/Viewareaplacearrangement.vue";
+import Workprogress from "@/views/teambnp/Workprogress.vue";
+import Customizethesystem from "@/views/teambnp/Customizethesystem.vue";
 
 Vue.use(VueRouter);
 
@@ -35,102 +37,141 @@ const routes = [
     name: "Login",
     component: Login
   },
+
   {
-    path: "/Homemenu",
-    name: "Homemenu",
-    component: Homemenu
+    path: "/HomeMainAdmin",
+    name: "HomeMainAdmin",
+    component: HomeMainAdmin
+  },
+
+  // sale
+  {
+    path: "/sale/Menusale",
+    name: "menusale",
+    component: Menusale
   },
   {
-    path: "/Home",
-    name: "Home",
+    path: "/sale/Home",
+    name: "salehome",
     component: Home
   },
   {
-    path: "/Customer",
-    name: "Customer",
+    path: "/sale/Customer",
+    name: "saleCustomer",
     component: Customer
   },
   {
-    path: "/MonitorPersonltype",
-    name: "/MonitorPersonltype",
+    path: "/sale/MonitorPersonltype",
+    name: "saleMonitorPersonltype",
     component: MonitorPersonltype
   },
   {
-    path: "/CreatePersoneltype",
-    name: "Create/Personeltype",
+    path: "/sale/CreatePersoneltype",
+    name: "saleCreatePersoneltype",
     component: CreatePersoneltype
   },
   {
-    path: "/EditPersoneltype",
-    name: "/EditPersoneltype",
+    path: "/sale/EditPersoneltype",
+    name: "saleEditPersoneltype",
     component: EditPersoneltype
   },
 
   {
-    path: "/Quotation",
-    name: "Quotation",
+    path: "/sale/Quotation",
+    name: "saleQuotation",
     component: Quotation
   },
   {
-    path: "/CreateQuotation",
-    name: "/CreateQuotation",
+    path: "/sale/CreateQuotation",
+    name: "saleCreateQuotation",
     component: CreateQuotation
   },
   {
-    path: "/EditQuotation",
-    name: "/EditQuotation",
+    path: "/sale/EditQuotation",
+    name: "saleEditQuotation",
     component: EditQuotation
   },
   {
-    path: "/QuotationPrint",
-    name: "/QuotationPrint",
+    path: "/sale/QuotationPrint",
+    name: "saleQuotationPrint",
     component: QuotationPrint
   },
   {
-    path: "/Equipment",
-    name: "Equipment",
+    path: "/sale/Equipment",
+    name: "saleEquipment",
     component: Equipment
   },
   {
-    path: "/CreateEquipment",
-    name: "/CreateEquipment",
+    path: "/sale/CreateEquipment",
+    name: "saleCreateEquipment",
     component: CreateEquipment
   },
   {
-    path: "/EditEquipment",
-    name: "/EditEquipment",
+    path: "/sale/EditEquipment",
+    name: "saleEditEquipment",
     component: EditEquipment
   },
   {
-    path: "/Package",
-    name: "Package",
+    path: "/sale/Package",
+    name: "salePackage",
     component: Package
   },
   {
-    path: "/CreatePackage",
-    name: "/CreatePackage",
+    path: "/sale/CreatePackage",
+    name: "saleCreatePackage",
     component: CreatePackage
   },
   {
-    path: "/EditPackage",
-    name: "/EditPackage",
+    path: "/sale/EditPackage",
+    name: "saleEditPackage",
     component: EditPackage
   },
   {
-    path: "/Promotion",
-    name: "Promotion",
+    path: "/sale/Promotion",
+    name: "salePromotion",
     component: Promotion
   },
   {
-    path: "/CreatePromotion",
-    name: "/CreatePromotion",
+    path: "/sale/CreatePromotion",
+    name: "saleCreatePromotion",
     component: CreatePromotion
   },
   {
-    path: "/EditPromotion",
-    name: "/EditPromotion",
+    path: "/sale/EditPromotion",
+    name: "saleEditPromotion",
     component: EditPromotion
   },
+  //จบ sale
+
+  // Team bnp
+  {
+    path: "/teambnp/Menuteambnp",
+    name: "menuteambnp",
+    component: Menuteambnp
+  },
+  {
+    path: "/teambnp/Eventteaminformation",
+    name: "menueventteaminformation",
+    component: Eventteaminformation
+  },
+  {
+    path: "/teambnp/Viewareaplacearrangement",
+    name: "menuviewareaplacearrangement",
+    component: Viewareaplacearrangement
+  },
+  {
+    path: "/teambnp/Workprogress",
+    name: "menuworkprogress",
+    component: Workprogress
+  },
+  {
+    path: "/teambnp/Customizethesystem",
+    name: "menucustomizethesystem",
+    component: Customizethesystem
+  },
+
+  //จบ Team bnp
+
 
   {
     path: "/",

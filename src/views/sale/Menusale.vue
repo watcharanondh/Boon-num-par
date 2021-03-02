@@ -16,9 +16,10 @@
               class="mx-auto"
               height="200"
               max-width="250"
+              @click="ChangePageHome"
             >
               <v-card-text
-                class="font-weight-medium mt-12 text-center black--text subtitle-2"
+                class="font-weight-medium mt-12 text-center black--text subtitle-2 pointer"
                 @click="ChangePageHome"
               >
                 <svg
@@ -103,9 +104,10 @@
               class="mx-auto"
               height="200"
               max-width="250"
+              @click="ChangePageEquipment"
             >
               <v-card-text
-                class="font-weight-medium mt-12 text-center black--text subtitle-2"
+                class="font-weight-medium mt-12 text-center black--text subtitle-2 pointer"
                 @click="ChangePageEquipment"
               >
                 <svg
@@ -150,10 +152,10 @@
 import api from "@/services/api";
 
 export default {
-  name: "Homemenu",
+  name: "Menusale",
   mounted() {
     if (api.isLoggedIn()) {
-      this.$router.push("/Homemenu").catch(() => {});
+      this.$router.push({name:"menusale"}).catch(() => {});
     }
 
     this.$store.dispatch({
@@ -163,21 +165,16 @@ export default {
   },
   data() {
     return {
-      isShowPassword: false,
-      account: {
-        username: "",
-        password: "",
-      },
     };
   },
 
   methods: {
     ChangePageHome() {
-      this.$router.push("/Home");
+      this.$router.push({name:"salehome"});
       window.location.reload();
     },
     ChangePageEquipment() {
-      this.$router.push("/Equipment");
+      this.$router.push({name:"saleEquipment"});
       window.location.reload();
     },
   },
@@ -188,4 +185,8 @@ export default {
   background-color: rgba(#FFF, 0.8)
   >.v-card__text
     color: #000
+</style>
+
+<style scoped>
+.pointer {cursor: pointer;}
 </style>

@@ -1,75 +1,70 @@
 <template>
-  <v-container>
-    <v-col></v-col>
-    <v-col></v-col>
-    <v-col></v-col>
-    <v-col></v-col>
-    <v-col></v-col>
-    <v-col></v-col>
-    <v-col></v-col>
-    <v-col></v-col>
-    <v-col></v-col>
-    <v-col>
+  <v-container class="login-container">
+    <div class="login-box">
       <v-row class="justify-center">
         <v-card style="width:400px;">
-          <v-img
-          class="white--text align-end"
-          src="@/assets/login_header.jpg"
-          height="200px"
-        >
-          <v-card-title primary-title>
-            Login
-          </v-card-title>
-        </v-img>
           <v-card-text>
             <form>
               <!-- Username -->
+            <div lg="12" md="12" sm="12" cols="12">
+              <div class="sizehead">Username</div>
+              <v-row class="no-gutters">
               <v-text-field
                 v-model="account.username"
                 :error-messages="usernameErrors"
-                label="Username"
+                dense
+                solo
+                outlined
                 required
                 @input="$v.account.username.$touch()"
                 @blur="$v.account.username.$touch()"
               ></v-text-field>
+              </v-row>
+            </div>
 
               <!-- Password -->
-              <v-text-field
-                v-model="account.password"
-                label="Password"
-                :error-messages="passwordErrors"
-                @input="$v.account.password.$touch()"
-                @blur="$v.account.password.$touch()"
-                :append-icon="isShowPassword ? 'visibility' : 'visibility_off'"
-                @click:append="isShowPassword = !isShowPassword"
-                :type="isShowPassword ? 'text' : 'password'"
-                 v-on:keyup.enter="submit"
-              />
-              <v-col md="12">
-              <!-- <span>{{account}}</span> -->
-              <v-row class="justify-space-between px-3 pt-5">
-                <v-btn @click="clear">clear</v-btn>
-                <v-btn color="success" @click="submit">Login</v-btn>
+              <div lg="12" md="12" sm="12" cols="12">
+                <div class="sizehead">Username</div>
+                  <v-row class="no-gutters">
+                  <v-text-field
+                    v-model="account.password"
+                    dense
+                    solo
+                    outlined
+                    clearable
+                    :error-messages="passwordErrors"
+                    @input="$v.account.password.$touch()"
+                    @blur="$v.account.password.$touch()"
+                    :append-icon="isShowPassword ? 'visibility' : 'visibility_off'"
+                    @click:append="isShowPassword = !isShowPassword"
+                    :type="isShowPassword ? 'text' : 'password'"
+                    v-on:keyup.enter="submit"
+                  />
               </v-row>
-              </v-col>
+            </div>
+              <!-- <span>{{account}}</span> -->
+              <div class="button-login">
+                <v-btn class="bttn" color="#29CC97" dark large rounded @click="submit">Login</v-btn>
+              </div>
+
             </form>
           </v-card-text>
         </v-card>
       </v-row>
-    </v-col>
+    </div>
   </v-container>
 </template>
 
 <script>
-import api from "@/services/api";
+//import api from "@/services/api";
 import { required } from "vuelidate/lib/validators";
 
 export default {
   name: "Login",
   mounted() {
-    if (api.isLoggedIn()) {
-      this.$router.push("/Homemenu");
-    }
+    // if (api.isLoggedIn()) {
+    //   this.$router.push("/Homemenu");
+    // }
   },
   data() {
     return {
@@ -115,15 +110,19 @@ export default {
         
       });
       }
-
     },
-     clear () {
-        this.$v.account.$reset()
-        this.account.username =''
-        this.account.password =''
-      },
   },
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.button-login{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+    .bttn{
+        width: 220px;
+        height: 50px;
+    }
+}
+</style>

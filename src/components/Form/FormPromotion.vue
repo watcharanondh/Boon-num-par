@@ -79,7 +79,7 @@
                   large
                   rounded
                   outlined
-                  @click="$router.push('/Promotion')"
+                  @click="$router.push({name:'salePromotion'})"
                   >ยกเลิก</v-btn
                 >
               </v-col>
@@ -148,7 +148,7 @@ export default {
         this.PromotionEdit_ID = {promotion_code:this.$store.getters["Newpersonal_BNP_ID"].BNP_ID}
         let result = await api.getEditpromotion(this.PromotionEdit_ID);
                   if(!result.data.result.length){
-                      window.location.href=`${process.env.VUE_APP_SUB_PATH}/Promotion`
+                      window.location.href=`${process.env.VUE_APP_SUB_PATH}/sale/Promotion`
                       //this.$router.push({name:'Promotion'})
                       return
                   }
@@ -180,7 +180,7 @@ export default {
           let result = await api.addPromotion(DataNewPromotion);
           if (result.data.response == "OK") {
             this.$swal.fire("สำเร็จ", 'บันทึกโปรโมชั่นเรียบร้อยแล้ว', "success");
-            this.$router.push("/Promotion");
+            this.$router.push({name:'salePromotion'});
           }else{
             this.$swal.fire("เกิดข้อผิดพลาด", `บันทึกโปรโมชั่นไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
           }
@@ -194,7 +194,7 @@ export default {
           let result = await api.editPromotion(DataEditPromotion);
           if (result.data.response == "OK") {
             this.$swal.fire("สำเร็จ", 'แก้ไขโปรโมชั่นเรียบร้อยแล้ว', "success");
-            this.$router.push("/Promotion");
+            this.$router.push({name:'salePromotion'});
           }else{
             this.$swal.fire("เกิดข้อผิดพลาด", `แก้ไขโปรโมชั่นไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
           }

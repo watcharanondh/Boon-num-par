@@ -402,7 +402,7 @@
                     large
                     rounded
                     outlined
-                    @click="$router.push('/Quotation')"
+                    @click="$router.push({name:'saleQuotation'})"
                     >ยกเลิก</v-btn
                   >
                 </v-col>
@@ -1052,7 +1052,7 @@ export default {
         this.loadDataPromotion();
         const Quotation_ID_Edit = this.$store.getters["Newpersonal_BNP_ID"];
         if(!Quotation_ID_Edit){
-          window.location.href=`${process.env.VUE_APP_SUB_PATH}/Quotation`
+          window.location.href=`${process.env.VUE_APP_SUB_PATH}/sale/Quotation`
           //this.$router.push({name:'Quotation'})
             return
         }
@@ -1349,7 +1349,7 @@ export default {
               "สร้างใบเสนอราคาสำเร็จเรียบร้อยแล้ว",
               "success"
             );
-            this.$router.push("/Quotation");
+            this.$router.push({name:"saleQuotation"});
           } else {
             this.$swal.fire(
               "เกิดข้อผิดพลาด",
@@ -1380,7 +1380,7 @@ export default {
               "แก้ไขใบเสนอราคาสำเร็จเรียบร้อยแล้ว",
               "success"
             );
-            this.$router.push("/Quotation");
+            this.$router.push({name:"saleQuotation"});
           } else {
             this.$swal.fire(
               "เกิดข้อผิดพลาด",

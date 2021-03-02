@@ -39,7 +39,7 @@
                   class="ma-2"
                   block
                   color="black"
-                  @click="$router.push('/Quotation')"
+                  @click="$router.push({name:'saleQuotation'})"
                   rounded
                 >
                   <span class="white--text">ปิด</span></v-btn

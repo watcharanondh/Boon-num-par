@@ -156,26 +156,26 @@ export default {
     this.RouterPath = this.$store.getters["Route_path"];
 
     if (
-      this.RouterPath == "/Home" ||
-      this.RouterPath == "/Customer" ||
-      this.RouterPath == "/CreatePersoneltype" ||
-      this.RouterPath == "/EditPersoneltype" ||
-      this.RouterPath == "/Quotation" ||
-      this.RouterPath == "/CreateQuotation" ||
-      this.RouterPath == "/EditQuotation" ||
-      this.RouterPath == "/QuotationPrint" 
+      this.RouterPath == "/sale/Home" ||
+      this.RouterPath == "/sale/Customer" ||
+      this.RouterPath == "/sale/CreatePersoneltype" ||
+      this.RouterPath == "/sale/EditPersoneltype" ||
+      this.RouterPath == "/sale/Quotation" ||
+      this.RouterPath == "/sale/CreateQuotation" ||
+      this.RouterPath == "/sale/EditQuotation" ||
+      this.RouterPath == "/sale/QuotationPrint" 
     ) {
       return this.RouterPath = 1;
     } else if (
-      this.RouterPath == "/Equipment" ||
-      this.RouterPath == "/CreateEquipment" ||
-      this.RouterPath == "/EditEquipment" ||
-      this.RouterPath == "/Package" ||
-      this.RouterPath == "/CreatePackage" ||
-      this.RouterPath == "/Promotion" ||
-      this.RouterPath == "/CreatePromotion" ||
-      this.RouterPath == "/EditPromotion" 
-      
+      this.RouterPath == "/sale/Equipment" ||
+      this.RouterPath == "/sale/CreateEquipment" ||
+      this.RouterPath == "/sale/EditEquipment" ||
+      this.RouterPath == "/sale/Package" ||
+      this.RouterPath == "/sale/CreatePackage" ||
+      this.RouterPath == "/sale/EditPackage" ||
+      this.RouterPath == "/sale/Promotion" ||
+      this.RouterPath == "/sale/CreatePromotion" ||
+      this.RouterPath == "/sale/EditPromotion"
     ) {
       return this.RouterPath = 2;
     }else{
@@ -190,16 +190,16 @@ export default {
       drawer: true,
       selectedMenu: 0,
       menus: [
-        ["แสดงผลรวม", "/Home"],
-        ["รายชื่อลูกค้า", "/Customer"],
-        ["ใบเสนอราคา", "/Quotation"],
+        ["แสดงผลรวม", "/sale/Home"],
+        ["รายชื่อลูกค้า", "/sale/Customer"],
+        ["ใบเสนอราคา", "/sale/Quotation"],
       ],
       menusEquipment: [
-        ["รายการอุปกรณ์", "/Equipment"],
-        ["รายการแพ็คเกจ", "/Package"],
-        ["รายการโปรโมชั่น", "/Promotion"],
+        ["รายการอุปกรณ์", "/sale/Equipment"],
+        ["รายการแพ็คเกจ", "/sale/Package"],
+        ["รายการโปรโมชั่น", "/sale/Promotion"],
       ],
-      Backmenu: [["ย้อนกลับ", "/Homemenu"]],
+      Backmenu: [["ย้อนกลับ", "/sale/Menusale"]],
     };
   },
 
@@ -220,11 +220,11 @@ export default {
     },
 
     onClickHome(){
-       this.$router.push('/Homemenu');
+       this.$router.push('/sale/Menusale');
        window.location.reload();
     },
     onClickBack(){
-       this.$router.push('/Homemenu');
+       this.$router.push('/sale/Menusale');
        window.location.reload();
     },
   },

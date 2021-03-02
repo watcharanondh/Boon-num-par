@@ -114,7 +114,7 @@
                     large
                     rounded
                     outlined
-                    @click="$router.push('/Package')"
+                    @click="$router.push({name:'salePackage'})"
                     >ยกเลิก</v-btn
                   >
                 </v-col>
@@ -335,7 +335,7 @@ export default {
         let EditPackageID = {package_code:this.$store.getters["Newpersonal_BNP_ID"].BNP_ID}
         let result = await api.getEditPackage(EditPackageID);
             if(!result.data.result.length){
-                window.location.href=`${process.env.VUE_APP_SUB_PATH}/Package`
+                window.location.href=`${process.env.VUE_APP_SUB_PATH}/sale/Package`
                 //this.$router.push({name:'Package'})
             return
         }
@@ -401,7 +401,7 @@ export default {
         let resultCreateNewPackage = await api.addPackage(CreateNewPackage);
         if (resultCreateNewPackage.data.response == "OK") {
           this.$swal.fire("สำเร็จ", 'สร้างแพ็กเก็จสำเร็จเรียบร้อยแล้ว', "success");
-          this.$router.push("/Package");
+          this.$router.push({name:"salePackage"});
         } else {
           this.$swal.fire("เกิดข้อผิดพลาด", `สร้างแพ็กเก็จราคาไม่สำเร็จ ${resultCreateNewPackage.data.response} เนื่องจาก ${resultCreateNewPackage.data.result} `, "error");
         }
@@ -427,7 +427,7 @@ export default {
         let resultEditPackage = await api.editPackage(EditPackage);
         if (resultEditPackage.data.response == "OK") {
           this.$swal.fire("สำเร็จ", 'แก้ไขแพ็กเก็จราคาสำเร็จเรียบร้อยแล้ว', "success");
-          this.$router.push("/Package");
+          this.$router.push({name:"salePackage"});
         } else {
           this.$swal.fire("เกิดข้อผิดพลาด", `แก้ไขแพ็กเก็จราคาไม่สำเร็จ ${resultEditPackage.data.response} เนื่องจาก ${resultEditPackage.data.result} `, "error");
         }

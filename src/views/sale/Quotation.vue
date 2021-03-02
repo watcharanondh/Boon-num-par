@@ -16,7 +16,7 @@
       <v-col>
         <v-btn
           color="#29CC97"
-          @click="$router.push('/CreateQuotation')"
+          @click="$router.push({name:'saleCreateQuotation'})"
           rounded
         >
           <span class="white--text">สร้างใบเสนอราคา</span></v-btn
@@ -135,9 +135,9 @@ export default {
       { text: "ชื่อใบกำกับภาษี", value: "customer_tax_invoices",sortable: false, align: "start" },
       { text: "วันเดือนปี", value: "event_date",sortable: true, align: "start" },
       { text: "สถานะ", value: "quotation_status",sortable: true, align: "start" },
-      { text: "", value: "", align: "start" },
-      { text: "", value: "", align: "start" },
-      { text: "", value: "", align: "start" },
+      { text: "", value: "",sortable: false, align: "start" },
+      { text: "", value: "",sortable: false, align: "start" },
+      { text: "", value: "",sortable: false, align: "start" },
     ],
   }),
 
@@ -153,7 +153,7 @@ export default {
           type: "doEditBNPID",
           BNP_ID: item.quotation_code,
         });
-     await this.$router.push('/QuotationPrint');
+     await this.$router.push({name:'saleQuotationPrint'});
 
     },
 
@@ -162,7 +162,7 @@ export default {
           type: "doEditBNPID",
           BNP_ID: item.quotation_code,
         });
-      await this.$router.push('/EditQuotation');
+      await this.$router.push({name:'saleEditQuotation'});
     },
     async DeleteQuotation(item){
           this.$swal.fire({

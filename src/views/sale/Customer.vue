@@ -4,7 +4,8 @@
       <v-row>
         <v-card flat color="#E5E5E5">
           <div class="header-title">
-            รายการโปรโมชั่น
+            รายชื่อลูกค้าทั้งหมด
+            <v-icon> keyboard_arrow_down</v-icon>
           </div>
         </v-card>
       </v-row>
@@ -14,13 +15,7 @@
     </v-col>
     <v-row>
       <v-col>
-        <v-btn
-          color="#29CC97"
-          @click="$router.push('/CreatePromotion')"
-          rounded
-        >
-          <span class="white--text">สร้างโปรโมชั่น</span></v-btn
-        >
+        <ModalCreateCustomers />
       </v-col>
     </v-row>
     <v-col>
@@ -28,22 +23,33 @@
     </v-col>
     <v-row>
       <v-col lg="12" md="12" sm="12" cols="12">
-        <!-- รายการโปรโมชั่น -->
+        <!-- รายชื่อลูกค้าทั้งหมด -->
         <v-card>
           <v-data-table
-            :headers="headers_table_promtion"
-            :items="table_promtion"
+            :search="search"
+            :headers="headers_table_customer"
+            :items="table_customer"
             :items-per-page="10"
+            mobile-breakpoint="0"
             class="elevation-1"
           >
             <!-- table top section -->
             <template v-slot:top>
               <v-toolbar flat>
-                <v-toolbar-title><span class="header-table-title">รายการโปรโมชั่น</span></v-toolbar-title>
+                <v-toolbar-title><span class="header-table-title">รายชื่อลูกค้า</span></v-toolbar-title>
                 <v-toolbar-title><span class="order">{{total}}</span></v-toolbar-title>
-                <v-spacer></v-spacer>
+                 <v-spacer></v-spacer>
+                    <v-divider class="mx-4" inset vertical></v-divider>
+                      <v-text-field
+                        v-model="search"
+                        prepend-inner-icon="mdi-magnify"
+                        label="ค้นหาชื่อลูกค้าบุคคล/บริษัท"
+                        single-line
+                        hide-details
+                      ></v-text-field>
 
-                <!-- <div>
+                <!-- ปุ่มเรียง
+                  <div>
                   <v-btn icon>
                     <svg
                       width="14"
@@ -82,18 +88,34 @@
             </template>
             <template v-slot:item="{ item }">
               <tr>
-                <td>{{ item.promotion_code }}</td>
-                <td>{{ item.name }}</td>
-                <td>{{ item.discount_text }}</td>
+                <td>{{ item.customer_code }}</td>
+                <td>
+                  {{ item.name }}<br />
+                <span class="updateintable-font-color">update {{ item.update }}</span> 
+                </td>
+                <td>
+                  {{ item.customer_tax_invoices }}
+                  <br />
+                <span class="updateintable-font-color">update {{ item.update }}</span>
+                </td>
+                <td>
+                  {{ item.customer_type }}
+                  <br />
+                 <span class="updateintable-font-color">update {{ item.update }}</span>
+                </td>
+                <td>
+                  {{ item.created_at_date }} <br />
+                  <span class="updateintable-font-color"> {{ item.created_at_datetime }} </span>
+                </td>
                 <td>
                   <v-row>
-                    <!-- <v-btn fab icon outlined small>
+                    <v-btn @click="MonitorCustomer(item)" fab icon outlined small>
                       <v-icon>visibility</v-icon>
-                    </v-btn> -->
-                    <v-btn @click="EditPromotion(item)" fab icon outlined small>
+                    </v-btn>
+                    <v-btn @click="EditCustomer(item)" fab icon outlined small>
                       <v-icon>edit</v-icon>
                     </v-btn>
-                    <v-btn @click="DelPromotion(item)" fab icon outlined small>
+                    <v-btn @click="DeleteCustomer(item)" fab icon outlined small>
                       <v-icon>delete</v-icon>
                     </v-btn>
                   </v-row>
@@ -113,56 +135,72 @@
 </template>
 
 <script>
+import ModalCreateCustomers from "@/components/dialog/ModalCreateCustomers.vue";
 import api from "@/services/api";
 export default {
-  name: "Promotion",
-async mounted() {
-    this.loadPromotion();
+  name: "Customer",
+  components: {
+    ModalCreateCustomers,
+  },
+ mounted() {
+    this.loadCustomers();
     this.$store.dispatch({
           type: "inputRoutepath",
           RT: this.$route.path,
-    });
-
+        });  
   },
 
   data: () => ({
-    total:null,
-    table_promtion: [],
-    headers_table_promtion: [
-      { text: "รหัสโปรโมชั่น", value: "promotion_code", sortable: true, align: "start", color: "black"},
-      { text: "รายชื่อโปรโมชั่น", value: "name", sortable: false, align: "start" },
-      { text: "ลดราคา", value: "discount_text", sortable: false, align: "start"},
+    search:"",
+    total:'',
+    table_customer: [],
+    headers_table_customer: [
+      { text: "รหัสลูกค้า", value: "customer_code", sortable: true, align: "start", color: "black"},
+      { text: "ชื่อลูกค้า", value: "name", sortable: false, align: "start" },
+      { text: "ชื่อออกใบกำกับภาษี", value: "customer_tax_invoices", sortable: false, align: "start"},
+      { text: "ประเภทลูกค้า", value: "customer_type", sortable: false, align: "start"},
+      { text: "วันเวลาที่สร้าง",  value: "created_at_date", sortable: true, align: "start"},
       { text: "", value: "", sortable: false, align: "start" },
       { text: "", value: "", sortable: false, align: "start" },
     ],
   }),
 
   methods: {
-    async loadPromotion(){
-            let result = await api.getPromotion();
-            this.table_promtion = result.data.result;
-            this.total = result.data.count_total;
-          },
-    async EditPromotion(item){
-          await this.$store.dispatch({
-                  type: "doEditBNPID",
-                  BNP_ID: item.promotion_code,
-               });
-          await this.$router.push('/EditPromotion');
-          },
-    async DelPromotion(item){
+    async loadCustomers(){
+      let result = await api.getListallcustomers();
+      this.table_customer = result.data.result;
+      this.total = result.data.total;
+    },
+
+   async MonitorCustomer(item){
+      await this.$store.dispatch({
+          type: "doEditBNPID",
+          BNP_ID: item.customer_code,
+        });
+      await  this.$router.push({name:'saleMonitorPersonltype'});
+    },
+
+    async EditCustomer(item){
+      await this.$store.dispatch({
+          type: "doEditBNPID",
+          BNP_ID: item.customer_code,
+        });
+      await this.$router.push({name:'saleEditPersoneltype'});
+    },
+
+    async DeleteCustomer(item){
           this.$swal.fire({
-            title:`ต้องการลบโปรโมชั่นนี้ใช่หรือไม่ ?`,
+            title:`ต้องการลบลูกค้ารายนี้ใช่หรือไม่ ?`,
             showDenyButton: true,
             confirmButtonText: `ยืนยัน`,
             denyButtonText: `ยกเลิก`,
           }).then(async (result) => {
             if (result.isConfirmed) {
-                let delPromotion ={"promotion_code":item.promotion_code}
-                let resultdel = await api.delPromotion(delPromotion);
+                let delCustomer ={"customer_code":item.customer_code}
+                let resultdel = await api.delCustomer(delCustomer);
                 if (resultdel.data.response =='OK'){
                   this.$swal.fire('ยืนยันการลบเรียบร้อย', '', 'success')
-                  await this.loadPromotion()
+                  this.loadCustomers()
                 }
             } else if (result.isDenied) {
               this.$swal.fire('ยกเลิกการลบ', '', 'error')

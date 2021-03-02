@@ -4,7 +4,7 @@
       <v-row>
         <v-card flat color="#E5E5E5">
           <div class="header-title">
-            รายการอุปกรณ์
+            รายการโปรโมชั่น
           </div>
         </v-card>
       </v-row>
@@ -16,10 +16,10 @@
       <v-col>
         <v-btn
           color="#29CC97"
-          @click="$router.push('/CreateEquipment')"
+          @click="$router.push({name:'saleCreatePromotion'})"
           rounded
         >
-          <span class="white--text">สร้างอุปกรณ์</span></v-btn
+          <span class="white--text">สร้างโปรโมชั่น</span></v-btn
         >
       </v-col>
     </v-row>
@@ -28,19 +28,18 @@
     </v-col>
     <v-row>
       <v-col lg="12" md="12" sm="12" cols="12">
-        <!-- รายการอุปกรณ์ -->
+        <!-- รายการโปรโมชั่น -->
         <v-card>
           <v-data-table
-            :headers="headers_table_customer"
-            :items="table_customer"
+            :headers="headers_table_promtion"
+            :items="table_promtion"
             :items-per-page="10"
-            mobile-breakpoint="0"
             class="elevation-1"
           >
             <!-- table top section -->
             <template v-slot:top>
               <v-toolbar flat>
-                <v-toolbar-title><span class="header-table-title">รายการอุปกรณ์</span></v-toolbar-title>
+                <v-toolbar-title><span class="header-table-title">รายการโปรโมชั่น</span></v-toolbar-title>
                 <v-toolbar-title><span class="order">{{total}}</span></v-toolbar-title>
                 <v-spacer></v-spacer>
 
@@ -83,19 +82,18 @@
             </template>
             <template v-slot:item="{ item }">
               <tr>
-                <td>{{ item.equipment_code }}</td>
+                <td>{{ item.promotion_code }}</td>
                 <td>{{ item.name }}</td>
-                <td>{{ item.stock_out }}</td>
-                <td>{{ item.balance_stock }}</td>
+                <td>{{ item.discount_text }}</td>
                 <td>
                   <v-row>
                     <!-- <v-btn fab icon outlined small>
                       <v-icon>visibility</v-icon>
                     </v-btn> -->
-                    <v-btn @click="EditEquipment(item)" fab icon outlined small>
+                    <v-btn @click="EditPromotion(item)" fab icon outlined small>
                       <v-icon>edit</v-icon>
                     </v-btn>
-                    <v-btn @click="DelEquipment(item)" fab icon outlined small>
+                    <v-btn @click="DelPromotion(item)" fab icon outlined small>
                       <v-icon>delete</v-icon>
                     </v-btn>
                   </v-row>
@@ -117,9 +115,9 @@
 <script>
 import api from "@/services/api";
 export default {
-  name: "Equipment",
+  name: "Promotion",
 async mounted() {
-    this.loadEquipment();
+    this.loadPromotion();
     this.$store.dispatch({
           type: "inputRoutepath",
           RT: this.$route.path,
@@ -129,44 +127,42 @@ async mounted() {
 
   data: () => ({
     total:null,
-    table_customer: [],
-    headers_table_customer: [
-      { text: "หมายเลขอุปกรณ์", value: "equipment_code", sortable: true, align: "start", color: "black"},
-      { text: "รายชื่ออุปกรณ์", value: "name", sortable: false, align: "start" },
-      { text: "ถูกใช้", value: "stock_out", sortable: false, align: "start"},
-      { text: "คงเหลือ", value: "balance_stock", sortable: false, align: "start"},
+    table_promtion: [],
+    headers_table_promtion: [
+      { text: "รหัสโปรโมชั่น", value: "promotion_code", sortable: true, align: "start", color: "black"},
+      { text: "รายชื่อโปรโมชั่น", value: "name", sortable: false, align: "start" },
+      { text: "ลดราคา", value: "discount_text", sortable: false, align: "start"},
       { text: "", value: "", sortable: false, align: "start" },
       { text: "", value: "", sortable: false, align: "start" },
     ],
   }),
 
   methods: {
-    async loadEquipment(){
-            let result = await api.getEquipment();
-            this.table_customer = result.data.result;
+    async loadPromotion(){
+            let result = await api.getPromotion();
+            this.table_promtion = result.data.result;
             this.total = result.data.count_total;
           },
-    async EditEquipment(item){
+    async EditPromotion(item){
           await this.$store.dispatch({
                   type: "doEditBNPID",
-                  BNP_ID: item.equipment_code,
+                  BNP_ID: item.promotion_code,
                });
-          await this.$router.push('/EditEquipment');
+          await this.$router.push({name:'saleEditPromotion'});
           },
-
-    async DelEquipment(item){
+    async DelPromotion(item){
           this.$swal.fire({
-            title:`ต้องการลบอุปกรณ์นี้ใช่หรือไม่ ?`,
+            title:`ต้องการลบโปรโมชั่นนี้ใช่หรือไม่ ?`,
             showDenyButton: true,
             confirmButtonText: `ยืนยัน`,
             denyButtonText: `ยกเลิก`,
           }).then(async (result) => {
             if (result.isConfirmed) {
-                let delEquipment ={"equipment_code":item.equipment_code}
-                let resultdel = await api.delEquipment(delEquipment);
+                let delPromotion ={"promotion_code":item.promotion_code}
+                let resultdel = await api.delPromotion(delPromotion);
                 if (resultdel.data.response =='OK'){
                   this.$swal.fire('ยืนยันการลบเรียบร้อย', '', 'success')
-                  await this.loadEquipment()
+                  await this.loadPromotion()
                 }
             } else if (result.isDenied) {
               this.$swal.fire('ยกเลิกการลบ', '', 'error')

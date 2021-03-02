@@ -12,7 +12,6 @@ export default new Vuex.Store({
     isLogged: false,
     username: "",
     Routepath:"",
-
     BNP_ID:"",
     type_id:null,
 
@@ -27,19 +26,12 @@ export default new Vuex.Store({
     Route_path(state) {
       return state.Routepath;
     },
-
-
     Newpersonal_type_id(state) {
       return state.type_id;
     },
-
-
     Newpersonal_BNP_ID(state) {
       return state.BNP_ID;
     },
-
-
-
   },
   mutations: {
     SET_LOGGED_IN(state){
@@ -73,7 +65,7 @@ export default new Vuex.Store({
       if (result == true) {
         commit("SET_LOGGED_IN");
         commit("SET_USERNAME", username);
-        router.push("/Homemenu");
+        router.push("HomeMainAdmin");
         window.location.reload();
       } else {
         //this.$swal("error", `Login ไม่สำเร็จ`, "error");

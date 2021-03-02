@@ -4,8 +4,7 @@
       <v-row>
         <v-card flat color="#E5E5E5">
           <div class="header-title">
-            รายชื่อลูกค้าทั้งหมด
-            <v-icon> keyboard_arrow_down</v-icon>
+            แพ็คเก็จ
           </div>
         </v-card>
       </v-row>
@@ -15,7 +14,13 @@
     </v-col>
     <v-row>
       <v-col>
-        <ModalCreateCustomers />
+        <v-btn
+          color="#29CC97"
+          @click="$router.push({name:'saleCreatePackage'})"
+          rounded
+        >
+          <span class="white--text">สร้างแพ็คเก็จ</span></v-btn
+        >
       </v-col>
     </v-row>
     <v-col>
@@ -23,12 +28,11 @@
     </v-col>
     <v-row>
       <v-col lg="12" md="12" sm="12" cols="12">
-        <!-- รายชื่อลูกค้าทั้งหมด -->
+        <!-- รายการแพ็กเก็จ -->
         <v-card>
           <v-data-table
-            :search="search"
-            :headers="headers_table_customer"
-            :items="table_customer"
+            :headers="headers_table_package"
+            :items="table_package"
             :items-per-page="10"
             mobile-breakpoint="0"
             class="elevation-1"
@@ -36,20 +40,11 @@
             <!-- table top section -->
             <template v-slot:top>
               <v-toolbar flat>
-                <v-toolbar-title><span class="header-table-title">รายชื่อลูกค้า</span></v-toolbar-title>
+                <v-toolbar-title><span class="header-table-title">รายการแพ็กเก็จ</span></v-toolbar-title>
                 <v-toolbar-title><span class="order">{{total}}</span></v-toolbar-title>
-                 <v-spacer></v-spacer>
-                    <v-divider class="mx-4" inset vertical></v-divider>
-                      <v-text-field
-                        v-model="search"
-                        prepend-inner-icon="mdi-magnify"
-                        label="ค้นหาชื่อลูกค้าบุคคล/บริษัท"
-                        single-line
-                        hide-details
-                      ></v-text-field>
+                <v-spacer></v-spacer>
 
-                <!-- ปุ่มเรียง
-                  <div>
+                <!-- <div>
                   <v-btn icon>
                     <svg
                       width="14"
@@ -88,42 +83,26 @@
             </template>
             <template v-slot:item="{ item }">
               <tr>
-                <td>{{ item.customer_code }}</td>
-                <td>
-                  {{ item.name }}<br />
-                <span class="updateintable-font-color">update {{ item.update }}</span> 
-                </td>
-                <td>
-                  {{ item.customer_tax_invoices }}
-                  <br />
-                <span class="updateintable-font-color">update {{ item.update }}</span>
-                </td>
-                <td>
-                  {{ item.customer_type }}
-                  <br />
-                 <span class="updateintable-font-color">update {{ item.update }}</span>
-                </td>
-                <td>
-                  {{ item.created_at_date }} <br />
-                  <span class="updateintable-font-color"> {{ item.created_at_datetime }} </span>
-                </td>
+                <td>{{ item.package_code }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.food_des }}</td>
                 <td>
                   <v-row>
-                    <v-btn @click="MonitorCustomer(item)" fab icon outlined small>
+                    <!-- <v-btn fab icon outlined small>
                       <v-icon>visibility</v-icon>
-                    </v-btn>
-                    <v-btn @click="EditCustomer(item)" fab icon outlined small>
+                    </v-btn> -->
+                    <v-btn @click="EditPackage(item)" fab icon outlined small>
                       <v-icon>edit</v-icon>
                     </v-btn>
-                    <v-btn @click="DeleteCustomer(item)" fab icon outlined small>
+                    <v-btn @click="DelPackage(item)" fab icon outlined small>
                       <v-icon>delete</v-icon>
                     </v-btn>
                   </v-row>
                 </td>
                 <td>
-                  <!-- <v-btn icon>
+                  <v-btn icon>
                     <v-icon>mdi-dots-vertical</v-icon>
-                  </v-btn> -->
+                  </v-btn>
                 </td>
               </tr>
             </template>
@@ -135,72 +114,56 @@
 </template>
 
 <script>
-import ModalCreateCustomers from "@/components/dialog/ModalCreateCustomers.vue";
 import api from "@/services/api";
 export default {
-  name: "Customer",
-  components: {
-    ModalCreateCustomers,
-  },
- mounted() {
-    this.loadCustomers();
+  name: "Package",
+  async mounted() {
+    this.loadPackage();
     this.$store.dispatch({
           type: "inputRoutepath",
           RT: this.$route.path,
-        });  
+    });
+
   },
 
   data: () => ({
-    search:"",
-    total:'',
-    table_customer: [],
-    headers_table_customer: [
-      { text: "รหัสลูกค้า", value: "customer_code", sortable: true, align: "start", color: "black"},
-      { text: "ชื่อลูกค้า", value: "name", sortable: false, align: "start" },
-      { text: "ชื่อออกใบกำกับภาษี", value: "customer_tax_invoices", sortable: false, align: "start"},
-      { text: "ประเภทลูกค้า", value: "customer_type", sortable: false, align: "start"},
-      { text: "วันเวลาที่สร้าง",  value: "created_at_date", sortable: true, align: "start"},
+    total:null,
+    table_package: [],
+    headers_table_package: [
+      { text: "รหัสแพ็กเก็จ", value: "package_code", sortable: true, align: "start", color: "black"},
+      { text: "ชื่อแพ็กเก็จ", value: "name", sortable: false, align: "start" },
+      { text: "รายละเอียด", value: "food_des", sortable: false, align: "start"},
       { text: "", value: "", sortable: false, align: "start" },
       { text: "", value: "", sortable: false, align: "start" },
     ],
   }),
 
   methods: {
-    async loadCustomers(){
-      let result = await api.getListallcustomers();
-      this.table_customer = result.data.result;
-      this.total = result.data.total;
-    },
-
-   async MonitorCustomer(item){
-      await this.$store.dispatch({
-          type: "doEditBNPID",
-          BNP_ID: item.customer_code,
-        });
-      await  this.$router.push('/MonitorPersonltype');
-    },
-
-    async EditCustomer(item){
-      await this.$store.dispatch({
-          type: "doEditBNPID",
-          BNP_ID: item.customer_code,
-        });
-      await this.$router.push('/EditPersoneltype');
-    },
-
-    async DeleteCustomer(item){
+    async loadPackage(){
+            let result = await api.getPackage();
+            this.table_package = result.data.result;
+            this.total = result.data.count_total;
+          },
+    async EditPackage(item){
+          await this.$store.dispatch({
+                  type: "doEditBNPID",
+                  BNP_ID: item.package_code,
+               });
+          await this.$router.push({name:'saleEditPackage'});
+          },
+    async DelPackage(item){
           this.$swal.fire({
-            title:`ต้องการลบลูกค้ารายนี้ใช่หรือไม่ ?`,
+            title:`ต้องการลบแพ็กเก็จนี้ใช่หรือไม่ ?`,
             showDenyButton: true,
             confirmButtonText: `ยืนยัน`,
             denyButtonText: `ยกเลิก`,
           }).then(async (result) => {
             if (result.isConfirmed) {
-                let delCustomer ={"customer_code":item.customer_code}
-                let resultdel = await api.delCustomer(delCustomer);
+                let delPackage ={"package_code":item.package_code}
+                let resultdel = await api.delPackage(delPackage);
                 if (resultdel.data.response =='OK'){
                   this.$swal.fire('ยืนยันการลบเรียบร้อย', '', 'success')
-                  this.loadCustomers()
+                  await this.loadPackage()
                 }
             } else if (result.isDenied) {
               this.$swal.fire('ยกเลิกการลบ', '', 'error')

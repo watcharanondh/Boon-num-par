@@ -62,7 +62,7 @@
                   large
                   rounded
                   outlined
-                  @click="$router.push('/Equipment')"
+                  @click="$router.push({name:'saleEquipment'})"
                   >ยกเลิก</v-btn
                 >
               </v-col>
@@ -128,8 +128,8 @@ export default {
          let result = await api.getEditequipment(Equipment_ID_Edits);
           
           if(!result.data.result.length){
-                      window.location.href=`${process.env.VUE_APP_SUB_PATH}/Equipment`
-                      //this.$router.push({name:'Equipment'})
+                      window.location.href=`${process.env.VUE_APP_SUB_PATH}/sale/Equipment`
+                      //this.$router.push({name:'saleEquipment'})
                       return
                   }
                     this.EquipmentEdit_id=result.data.result[0].equipment_code
@@ -150,7 +150,7 @@ export default {
           let result = await api.addEquipment(DataNewEquipment);
           if (result.data.response == "OK") {
             this.$swal.fire("สำเร็จ", 'บันทึกอุปกรณ์เรียบร้อยแล้ว', "success");
-            this.$router.push("/Equipment");
+            this.$router.push({name:'saleEquipment'});
           }else{
             this.$swal.fire("เกิดข้อผิดพลาด", `บันทึกอุปกรณ์ไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
           }
@@ -165,7 +165,7 @@ export default {
           let result = await api.editEquipment(DataEditEquipment);
           if (result.data.response == "OK") {
             this.$swal.fire("สำเร็จ", 'แก้ไขอุปกรณ์เรียบร้อยแล้ว', "success");
-            this.$router.push("/Equipment");
+            this.$router.push({name:'saleEquipment'});
           }else{
             this.$swal.fire("เกิดข้อผิดพลาด", `แก้ไขอุปกรณ์ไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `, "error");
           }
