@@ -74,48 +74,49 @@
 <script>
 import api from "@/services/api";
 export default {
-  name:"ModalCreateQuotation",
-  props:['quotation_code'],
- mounted() {
-      this.getStatus();
-
+  name: "ModalCreateQuotation",
+  props: ["quotation_code"],
+  mounted() {
+    this.getStatus();
   },
   data() {
     return {
       SelectStatus: { name: "คอนเฟิร์ม", id: "1" },
-      StatusType: [],
+      StatusType: []
     };
   },
   methods: {
-  async  getStatus(){
+    async getStatus() {
       let result = await api.getStatusQuotation();
-      let status = result.data.result
+      let status = result.data.result;
       let _this = this;
-          status.forEach((value) =>  {
-            _this.StatusType.push({
-              id: `${value.id}`,
-              name: `${value.name}`,
-            });
-          });
+      status.forEach(value => {
+        _this.StatusType.push({
+          id: `${value.id}`,
+          name: `${value.name}`
+        });
+      });
     },
-  async changeStatus(SelectStatus) {
-      let StatusID = SelectStatus.id
-      let updateStatus = {quotation_code:this.quotation_code ,status:StatusID}
+    async changeStatus(SelectStatus) {
+      let StatusID = SelectStatus.id;
+      let updateStatus = {
+        quotation_code: this.quotation_code,
+        status: StatusID
+      };
       console.log(updateStatus);
       let result = await api.updateStatusQuotation(updateStatus);
       console.log(result);
-          if (result.data.response =='OK'){
-              window.location.reload()
-
+      if (result.data.response == "OK") {
+        window.location.reload();
       }
-  },
+    },
 
-  async loadQuotations() {
-    let result = await api.getQuotation();
+    async loadQuotations() {
+      let result = await api.getQuotation();
       this.table_quotation_item = result.data.result;
       this.total = result.data.total;
     }
-  },
+  }
 };
 </script>
 

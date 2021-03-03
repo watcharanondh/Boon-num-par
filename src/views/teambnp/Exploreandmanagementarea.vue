@@ -1,5 +1,5 @@
 <template>
-  <h1>Eventteaminformation</h1>
+  <h1>Exploreandmanagementarea</h1>
 </template>
 
 <script>

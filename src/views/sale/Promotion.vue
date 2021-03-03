@@ -16,7 +16,7 @@
       <v-col>
         <v-btn
           color="#29CC97"
-          @click="$router.push({name:'saleCreatePromotion'})"
+          @click="$router.push({ name: 'saleCreatePromotion' })"
           rounded
         >
           <span class="white--text">สร้างโปรโมชั่น</span></v-btn
@@ -39,8 +39,14 @@
             <!-- table top section -->
             <template v-slot:top>
               <v-toolbar flat>
-                <v-toolbar-title><span class="header-table-title">รายการโปรโมชั่น</span></v-toolbar-title>
-                <v-toolbar-title><span class="order">{{total}}</span></v-toolbar-title>
+                <v-toolbar-title
+                  ><span class="header-table-title"
+                    >รายการโปรโมชั่น</span
+                  ></v-toolbar-title
+                >
+                <v-toolbar-title
+                  ><span class="order">{{ total }}</span></v-toolbar-title
+                >
                 <v-spacer></v-spacer>
 
                 <!-- <div>
@@ -116,60 +122,77 @@
 import api from "@/services/api";
 export default {
   name: "Promotion",
-async mounted() {
+  async mounted() {
     this.loadPromotion();
     this.$store.dispatch({
-          type: "inputRoutepath",
-          RT: this.$route.path,
+      type: "inputRoutepath",
+      RT: this.$route.path
     });
-
   },
 
   data: () => ({
-    total:null,
+    total: null,
     table_promtion: [],
     headers_table_promtion: [
-      { text: "รหัสโปรโมชั่น", value: "promotion_code", sortable: true, align: "start", color: "black"},
-      { text: "รายชื่อโปรโมชั่น", value: "name", sortable: false, align: "start" },
-      { text: "ลดราคา", value: "discount_text", sortable: false, align: "start"},
+      {
+        text: "รหัสโปรโมชั่น",
+        value: "promotion_code",
+        sortable: true,
+        align: "start",
+        color: "black"
+      },
+      {
+        text: "รายชื่อโปรโมชั่น",
+        value: "name",
+        sortable: false,
+        align: "start"
+      },
+      {
+        text: "ลดราคา",
+        value: "discount_text",
+        sortable: false,
+        align: "start"
+      },
       { text: "", value: "", sortable: false, align: "start" },
-      { text: "", value: "", sortable: false, align: "start" },
-    ],
+      { text: "", value: "", sortable: false, align: "start" }
+    ]
   }),
 
   methods: {
-    async loadPromotion(){
-            let result = await api.getPromotion();
-            this.table_promtion = result.data.result;
-            this.total = result.data.count_total;
-          },
-    async EditPromotion(item){
-          await this.$store.dispatch({
-                  type: "doEditBNPID",
-                  BNP_ID: item.promotion_code,
-               });
-          await this.$router.push({name:'saleEditPromotion'});
-          },
-    async DelPromotion(item){
-          this.$swal.fire({
-            title:`ต้องการลบโปรโมชั่นนี้ใช่หรือไม่ ?`,
-            showDenyButton: true,
-            confirmButtonText: `ยืนยัน`,
-            denyButtonText: `ยกเลิก`,
-          }).then(async (result) => {
-            if (result.isConfirmed) {
-                let delPromotion ={"promotion_code":item.promotion_code}
-                let resultdel = await api.delPromotion(delPromotion);
-                if (resultdel.data.response =='OK'){
-                  this.$swal.fire('ยืนยันการลบเรียบร้อย', '', 'success')
-                  await this.loadPromotion()
-                }
-            } else if (result.isDenied) {
-              this.$swal.fire('ยกเลิกการลบ', '', 'error')
+    async loadPromotion() {
+      let result = await api.getPromotion();
+      this.table_promtion = result.data.result;
+      this.total = result.data.count_total;
+    },
+    async EditPromotion(item) {
+      await this.$store.dispatch({
+        type: "doEditBNPID",
+        BNP_ID: item.promotion_code
+      });
+      await this.$router.push({ name: "saleEditPromotion" });
+    },
+    async DelPromotion(item) {
+      this.$swal
+        .fire({
+          title: `ต้องการลบโปรโมชั่นนี้ใช่หรือไม่ ?`,
+          showDenyButton: true,
+          confirmButtonText: `ยืนยัน`,
+          denyButtonText: `ยกเลิก`
+        })
+        .then(async result => {
+          if (result.isConfirmed) {
+            let delPromotion = { promotion_code: item.promotion_code };
+            let resultdel = await api.delPromotion(delPromotion);
+            if (resultdel.data.response == "OK") {
+              this.$swal.fire("ยืนยันการลบเรียบร้อย", "", "success");
+              await this.loadPromotion();
             }
-          })
+          } else if (result.isDenied) {
+            this.$swal.fire("ยกเลิกการลบ", "", "error");
+          }
+        });
     }
-  },
+  }
 };
 </script>
 

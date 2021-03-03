@@ -36,17 +36,23 @@
             <!-- table top section -->
             <template v-slot:top>
               <v-toolbar flat>
-                <v-toolbar-title><span class="header-table-title">รายชื่อลูกค้า</span></v-toolbar-title>
-                <v-toolbar-title><span class="order">{{total}}</span></v-toolbar-title>
-                 <v-spacer></v-spacer>
-                    <v-divider class="mx-4" inset vertical></v-divider>
-                      <v-text-field
-                        v-model="search"
-                        prepend-inner-icon="mdi-magnify"
-                        label="ค้นหาชื่อลูกค้าบุคคล/บริษัท"
-                        single-line
-                        hide-details
-                      ></v-text-field>
+                <v-toolbar-title
+                  ><span class="header-table-title"
+                    >รายชื่อลูกค้า</span
+                  ></v-toolbar-title
+                >
+                <v-toolbar-title
+                  ><span class="order">{{ total }}</span></v-toolbar-title
+                >
+                <v-spacer></v-spacer>
+                <v-divider class="mx-4" inset vertical></v-divider>
+                <v-text-field
+                  v-model="search"
+                  prepend-inner-icon="mdi-magnify"
+                  label="ค้นหาชื่อลูกค้าบุคคล/บริษัท"
+                  single-line
+                  hide-details
+                ></v-text-field>
 
                 <!-- ปุ่มเรียง
                   <div>
@@ -91,31 +97,51 @@
                 <td>{{ item.customer_code }}</td>
                 <td>
                   {{ item.name }}<br />
-                <span class="updateintable-font-color">update {{ item.update }}</span> 
+                  <span class="updateintable-font-color"
+                    >update {{ item.update }}</span
+                  >
                 </td>
                 <td>
                   {{ item.customer_tax_invoices }}
                   <br />
-                <span class="updateintable-font-color">update {{ item.update }}</span>
+                  <span class="updateintable-font-color"
+                    >update {{ item.update }}</span
+                  >
                 </td>
                 <td>
                   {{ item.customer_type }}
                   <br />
-                 <span class="updateintable-font-color">update {{ item.update }}</span>
+                  <span class="updateintable-font-color"
+                    >update {{ item.update }}</span
+                  >
                 </td>
                 <td>
                   {{ item.created_at_date }} <br />
-                  <span class="updateintable-font-color"> {{ item.created_at_datetime }} </span>
+                  <span class="updateintable-font-color">
+                    {{ item.created_at_datetime }}
+                  </span>
                 </td>
                 <td>
                   <v-row>
-                    <v-btn @click="MonitorCustomer(item)" fab icon outlined small>
+                    <v-btn
+                      @click="MonitorCustomer(item)"
+                      fab
+                      icon
+                      outlined
+                      small
+                    >
                       <v-icon>visibility</v-icon>
                     </v-btn>
                     <v-btn @click="EditCustomer(item)" fab icon outlined small>
                       <v-icon>edit</v-icon>
                     </v-btn>
-                    <v-btn @click="DeleteCustomer(item)" fab icon outlined small>
+                    <v-btn
+                      @click="DeleteCustomer(item)"
+                      fab
+                      icon
+                      outlined
+                      small
+                    >
                       <v-icon>delete</v-icon>
                     </v-btn>
                   </v-row>
@@ -140,74 +166,97 @@ import api from "@/services/api";
 export default {
   name: "Customer",
   components: {
-    ModalCreateCustomers,
+    ModalCreateCustomers
   },
- mounted() {
+  mounted() {
     this.loadCustomers();
     this.$store.dispatch({
-          type: "inputRoutepath",
-          RT: this.$route.path,
-        });  
+      type: "inputRoutepath",
+      RT: this.$route.path
+    });
   },
 
   data: () => ({
-    search:"",
-    total:'',
+    search: "",
+    total: "",
     table_customer: [],
     headers_table_customer: [
-      { text: "รหัสลูกค้า", value: "customer_code", sortable: true, align: "start", color: "black"},
+      {
+        text: "รหัสลูกค้า",
+        value: "customer_code",
+        sortable: true,
+        align: "start",
+        color: "black"
+      },
       { text: "ชื่อลูกค้า", value: "name", sortable: false, align: "start" },
-      { text: "ชื่อออกใบกำกับภาษี", value: "customer_tax_invoices", sortable: false, align: "start"},
-      { text: "ประเภทลูกค้า", value: "customer_type", sortable: false, align: "start"},
-      { text: "วันเวลาที่สร้าง",  value: "created_at_date", sortable: true, align: "start"},
+      {
+        text: "ชื่อออกใบกำกับภาษี",
+        value: "customer_tax_invoices",
+        sortable: false,
+        align: "start"
+      },
+      {
+        text: "ประเภทลูกค้า",
+        value: "customer_type",
+        sortable: false,
+        align: "start"
+      },
+      {
+        text: "วันเวลาที่สร้าง",
+        value: "created_at_date",
+        sortable: true,
+        align: "start"
+      },
       { text: "", value: "", sortable: false, align: "start" },
-      { text: "", value: "", sortable: false, align: "start" },
-    ],
+      { text: "", value: "", sortable: false, align: "start" }
+    ]
   }),
 
   methods: {
-    async loadCustomers(){
+    async loadCustomers() {
       let result = await api.getListallcustomers();
       this.table_customer = result.data.result;
       this.total = result.data.total;
     },
 
-   async MonitorCustomer(item){
+    async MonitorCustomer(item) {
       await this.$store.dispatch({
-          type: "doEditBNPID",
-          BNP_ID: item.customer_code,
-        });
-      await  this.$router.push({name:'saleMonitorPersonltype'});
+        type: "doEditBNPID",
+        BNP_ID: item.customer_code
+      });
+      await this.$router.push({ name: "saleMonitorPersonltype" });
     },
 
-    async EditCustomer(item){
+    async EditCustomer(item) {
       await this.$store.dispatch({
-          type: "doEditBNPID",
-          BNP_ID: item.customer_code,
-        });
-      await this.$router.push({name:'saleEditPersoneltype'});
+        type: "doEditBNPID",
+        BNP_ID: item.customer_code
+      });
+      await this.$router.push({ name: "saleEditPersoneltype" });
     },
 
-    async DeleteCustomer(item){
-          this.$swal.fire({
-            title:`ต้องการลบลูกค้ารายนี้ใช่หรือไม่ ?`,
-            showDenyButton: true,
-            confirmButtonText: `ยืนยัน`,
-            denyButtonText: `ยกเลิก`,
-          }).then(async (result) => {
-            if (result.isConfirmed) {
-                let delCustomer ={"customer_code":item.customer_code}
-                let resultdel = await api.delCustomer(delCustomer);
-                if (resultdel.data.response =='OK'){
-                  this.$swal.fire('ยืนยันการลบเรียบร้อย', '', 'success')
-                  this.loadCustomers()
-                }
-            } else if (result.isDenied) {
-              this.$swal.fire('ยกเลิกการลบ', '', 'error')
+    async DeleteCustomer(item) {
+      this.$swal
+        .fire({
+          title: `ต้องการลบลูกค้ารายนี้ใช่หรือไม่ ?`,
+          showDenyButton: true,
+          confirmButtonText: `ยืนยัน`,
+          denyButtonText: `ยกเลิก`
+        })
+        .then(async result => {
+          if (result.isConfirmed) {
+            let delCustomer = { customer_code: item.customer_code };
+            let resultdel = await api.delCustomer(delCustomer);
+            if (resultdel.data.response == "OK") {
+              this.$swal.fire("ยืนยันการลบเรียบร้อย", "", "success");
+              this.loadCustomers();
             }
-          })
+          } else if (result.isDenied) {
+            this.$swal.fire("ยกเลิกการลบ", "", "error");
+          }
+        });
     }
-  },
+  }
 };
 </script>
 

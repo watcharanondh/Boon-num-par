@@ -1,13 +1,9 @@
 <template>
-  <h1>Customizethesystem</h1>
+  <h1>Customizethesyste</h1>
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
-<style>
-
-</style>
+<style></style>

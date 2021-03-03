@@ -13,14 +13,13 @@ export default {
   name: "App",
   components: {
     Header,
-    Content,
+    Content
   },
-   mounted() {
+  mounted() {
     this.$store.dispatch({ type: "restoreLogin" });
   },
   data: () => ({
     //
-  }),
- 
+  })
 };
 </script>

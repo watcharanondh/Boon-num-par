@@ -1,0 +1,336 @@
+@import url("https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700&display=swap");
+
+// ปรับฟอร์ตแต่**ยกเว้น**ไม่ทับmaterial-icons
+*:not(.material-icons) {
+  font-family: "Prompt", sans-serif !important;
+}
+#app:not(.material-icons) {
+  font-family: "Prompt", sans-serif !important;
+}
+//จบ ปรับฟอร์ตแต่**ยกเว้น**ไม่ทับmaterial-icons
+
+/* หน้า login */
+.container-login {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+.box-login {
+  width: 400px;
+}
+.button-login {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  .bttn {
+    width: 220px;
+    height: 50px;
+  }
+}
+/*จบ หน้า login */
+
+/* รูปบนเมนู  */
+.menu-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 60%;
+  img {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: -30px;
+  }
+}
+
+/* ขนาด front บนเมนูทุกหน้า  */
+.front-menu {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  letter-spacing: 0.2px;
+  color: #000000;
+}
+
+
+/* หน้า homemainadmin */
+.menu-homemainadmin {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.menu-core-homemainadmin {
+  width: 900px;
+}
+.menu-title-homemainadmin {
+  font-size: 36px;
+  font-weight: 550;
+  text-align: center;
+}
+.menu-box-homemainadmin {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left;
+  grid-gap: 26px 10px;
+  margin-top: 48px !important;
+  .menu-box-size-homemainadmin {
+    width: 217px;
+    height: 150px;
+  }
+}
+
+/*จบ หน้า HomeMainAdmin */
+
+
+/* หน้า menusale */
+.container.container--fluid {
+  height: 100%;
+}
+
+.menu-sale {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-core-sale {
+  width: 671;
+}
+
+.menu-title-sale{
+  font-size: 36px;
+  font-weight: 550;
+  text-align: center;
+}
+
+.menu-box-sale{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  grid-gap: 26px 10px;
+  margin-top: 48px !important;
+  .menu-box-size-sale{
+    width: 217px;
+    height: 150px;
+  }
+}
+/*จบ หน้า menusale */
+
+/* ฟอร์ตใช้ทั่วไป */
+
+.size10 {
+  font-size: 10px;
+}
+
+.size14 {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.size36 {
+  font-size: 36px;
+  font-weight: 550;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.order {
+  margin-left: 0.5rem;
+  font-size: 12px;
+  color: #c5c7cd;
+}
+
+.updateintable-font-color {
+  font-size: 12px;
+  color: #c5c7cd;
+}
+
+.quotation {
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0.2px;
+  color: #000000;
+}
+
+.quotation-font-color {
+  font-size: 12px;
+  color: #c5c7cd;
+}
+
+.quotation-package {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0.2px;
+  color: #000000;
+}
+
+.quotation-package-red {
+  margin-left: 0.5rem;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0.2px;
+  color: #ff0000;
+}
+
+.header-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #252733;
+}
+
+.header-table-title {
+  font-size: 19px;
+  font-weight: bold;
+  letter-spacing: 0.4px;
+  color: #252733;
+}
+
+.cardshowtotal {
+  width: 258px;
+  background: #ffffff;
+  border: 1px solid #dfe0eb;
+  box-sizing: border-box;
+  border-radius: 8px;
+}
+
+.vcsubtitle {
+  height: 24px;
+  left: 32px;
+  right: 896px;
+  top: 24px;
+  font-weight: bold;
+  font-size: 19px !important;
+  line-height: 24px;
+  text-align: center;
+  letter-spacing: 0.4px;
+  color: #9fa2b4;
+}
+
+.vctitle {
+  font-weight: bold;
+  font-size: 40px !important;
+  line-height: 50px;
+  text-align: center;
+  letter-spacing: 1px;
+
+  color: #252733;
+}
+
+.headercard {
+  color: #9fa2b4;
+  font-size: 19px;
+}
+
+.quotation-select-pro {
+  color: #c4c4c4;
+  font-size: 12px;
+  line-height: 15px;
+  letter-spacing: 0.4px;
+  margin-left: 0.5rem;
+}
+
+.package {
+  width: 100px;
+  height: 20px;
+  left: 97px;
+  top: 0px;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0.2px;
+  color: #606771;
+}
+
+.h-package {
+  font-size: 18px;
+  line-height: 23px;
+  letter-spacing: 0.3px;
+  color: #252733;
+}
+
+.s-package {
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0.2px;
+  color: #000000;
+}
+
+.cg {
+  color: #c5c7cd;
+}
+
+.create-edit-title {
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 23px;
+}
+
+.promotion {
+  font-size: 12px;
+  margin-left: 0.5rem;
+  color: red;
+}
+
+/* หน้า menuteambnp */
+.menu-teambnp{
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.menu-core-teambnp {
+  width: 1150px;
+}
+.menu-title-teambnp{
+  font-size: 36px;
+  font-weight: 550;
+  text-align: center;
+}
+.menu-box-teambnp {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  grid-gap: 26px 10px;
+  margin-top: 48px !important;
+    .menu-box-size-teambnp {
+      width: 217px;
+      height: 150px;
+  }
+}
+/*จบ หน้า menuteambnp */
+
+/* หน้า menuteambnp-eapa */
+.menu-teambnp-eapa{
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.menu-core-teambnp {
+  width: 1150px;
+}
+.menu-title-teambnp {
+  font-size: 36px;
+  font-weight: 550;
+  text-align: center;
+}
+.menu-box-teambnp-eapa {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  grid-gap: 26px 10px;
+  margin-top: 48px !important;
+    .menu-box-sizeteambnp-eapa {
+      width: 217px;
+      height: 150px;
+  }
+}
+/*จบ หน้า menuteambnp */
+

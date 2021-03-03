@@ -1,11 +1,11 @@
 <template>
-  <v-container class="menu-main-container">
-    <div class="menu-main-core">
-      <div class="menu-main-title">
+  <v-container class="menu-teambnp">
+    <div class="menu-core-teambnp">
+      <div class="menu-title-teambnp">
         เลือกเมนู
       </div>
-      <div class="menu-main-box">
-        <div class="menu-main-box-size">
+      <div class="menu-box-teambnp">
+        <div class="menu-box-size-teambnp">
           <v-hover v-slot="{ hover }">
             <v-card
               :elevation="hover ? 16 : 2"
@@ -15,6 +15,9 @@
               max-width="215"
               @click="PageEventteaminformation"
             >
+              <div class="menu-img">
+                <img src="@/assets/Eventteaminfo.svg" />
+              </div>
               <v-card-text
                 class=" text-center black--text"
                 @click="PageEventteaminformation"
@@ -25,7 +28,7 @@
           </v-hover>
         </div>
 
-        <div class="menu-main-box-size">
+        <div class="menu-box-size-teambnp">
           <v-hover v-slot="{ hover }">
             <v-card
               :elevation="hover ? 16 : 2"
@@ -33,11 +36,14 @@
               class="mx-auto"
               height="150"
               max-width="215"
-               @click="Pageviewareaplacearrangement"
+              @click="PageExploreandmanagementarea"
             >
+              <div class="menu-img">
+                <img src="@/assets/Exploreandmanagementarea.svg" />
+              </div>
               <v-card-text
                 class=" text-center black--text"
-                @click="Pageviewareaplacearrangement"
+                @click="PageExploreandmanagementarea"
               >
                 <span class="front-menu">ดูพื้นที่ | จัดสถานที่</span>
               </v-card-text>
@@ -45,7 +51,7 @@
           </v-hover>
         </div>
 
-        <div class="menu-main-box-size">
+        <div class="menu-box-size-teambnp">
           <v-hover v-slot="{ hover }">
             <v-card
               :elevation="hover ? 16 : 2"
@@ -53,11 +59,16 @@
               class="mx-auto"
               height="150"
               max-width="215"
-              @click="Pageworkprogress"
+              @click="PageWorkprogress"
             >
+              <div class="menu-img">
+                <!-- <img
+                src="@/assets/workprogress.svg"
+              /> -->
+              </div>
               <v-card-text
                 class=" text-center black--text"
-                @click="Pageworkprogress"
+                @click="PageWorkprogress"
               >
                 <span class="front-menu">ความคืบหน้างาน</span>
               </v-card-text>
@@ -65,7 +76,7 @@
           </v-hover>
         </div>
 
-        <div class="menu-main-box-size">
+        <div class="menu-box-size-teambnp">
           <v-hover v-slot="{ hover }">
             <v-card
               :elevation="hover ? 16 : 2"
@@ -73,11 +84,14 @@
               class="mx-auto"
               height="150"
               max-width="215"
-              @click="Pagecustomizethesystem"
+              @click="PageCustomizethesystem"
             >
+              <div class="menu-img">
+                <img src="@/assets/Customizethesystem.svg" />
+              </div>
               <v-card-text
                 class=" text-center black--text"
-                @click="Pagecustomizethesystem"
+                @click="PageCustomizethesystem"
               >
                 <span class="front-menu">ปรับแต่งระบบ</span>
               </v-card-text>
@@ -85,7 +99,7 @@
           </v-hover>
         </div>
 
-        <div class="menu-main-box-size">
+        <div class="menu-box-size-teambnp">
           <v-hover v-slot="{ hover }">
             <v-card
               :elevation="hover ? 16 : 2"
@@ -93,12 +107,14 @@
               class="mx-auto"
               height="150"
               max-width="215"
-              @click="Pageback"
+              @click="PageBack"
             >
-              <v-card-text
-                class=" text-center black--text"
-                @click="Pageback"
-              >
+              <div class="menu-img">
+                <!-- <img
+                src="@/assets/back.svg"
+              /> -->
+              </div>
+              <v-card-text class=" text-center black--text" @click="PageBack">
                 <span class="front-menu">ย้อนกลับ</span>
               </v-card-text>
             </v-card>
@@ -116,7 +132,7 @@ export default {
   name: "Menuteambnp",
   mounted() {
     if (api.isLoggedIn()) {
-      this.$router.push({name:"menuteambnp"}).catch(() => {});
+      this.$router.push({ name: "menuteambnp" }).catch(() => {});
     }
 
     this.$store.dispatch({
@@ -130,23 +146,23 @@ export default {
 
   methods: {
     PageEventteaminformation() {
-      this.$router.push({name:"menueventteaminformation"});
+      this.$router.push({ name: "menueventteaminformation" });
       window.location.reload();
     },
-    Pageviewareaplacearrangement() {
-      this.$router.push({name:"menuviewareaplacearrangement"});
+    PageExploreandmanagementarea() {
+      this.$router.push({ name: "menuteambnp_eapa" });
       window.location.reload();
     },
-    Pageworkprogress() {
-      this.$router.push({name:"menuworkprogress"});
+    PageWorkprogress() {
+      this.$router.push({ name: "menuworkprogress" });
       window.location.reload();
     },
-    Pagecustomizethesystem() {
-      this.$router.push({name:"menucustomizethesystem"});
+    PageCustomizethesystem() {
+      this.$router.push({ name: "menucustomizethesystem" });
       window.location.reload();
     },
-    Pageback() {
-      this.$router.push({name:"menuteambnp"});
+    PageBack() {
+      this.$router.push({ name: "HomeMainAdmin" });
       window.location.reload();
     },
   },
@@ -158,3 +174,4 @@ export default {
   >.v-card__text
     color: #000
 </style>
+

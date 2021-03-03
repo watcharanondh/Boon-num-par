@@ -12,11 +12,11 @@ import EditPersoneltype from "@/views/sale/EditPersoneltype.vue";
 import Quotation from "@/views/sale/Quotation.vue";
 import CreateQuotation from "@/views/sale/CreateQuotation.vue";
 import EditQuotation from "@/views/sale/EditQuotation.vue";
-import QuotationPrint from "@/views/sale/QuotationPrint.vue"; 
+import QuotationPrint from "@/views/sale/QuotationPrint.vue";
 import Equipment from "@/views/sale/Equipment.vue";
 import CreateEquipment from "@/views/sale/CreateEquipment.vue";
 import EditEquipment from "@/views/sale/EditEquipment.vue";
-import Package from "@/views/sale/Package.vue"; 
+import Package from "@/views/sale/Package.vue";
 import CreatePackage from "@/views/sale/CreatePackage.vue";
 import EditPackage from "@/views/sale/EditPackage.vue";
 import Promotion from "@/views/sale/Promotion.vue";
@@ -24,8 +24,9 @@ import CreatePromotion from "@/views/sale/CreatePromotion.vue";
 import EditPromotion from "@/views/sale/EditPromotion.vue";
 
 import Menuteambnp from "@/views/teambnp/Menuteambnp.vue";
+import Menuteambnp_eapa from "@/views/teambnp/Menuteambnp_eapa.vue";
 import Eventteaminformation from "@/views/teambnp/Eventteaminformation.vue";
-import Viewareaplacearrangement from "@/views/teambnp/Viewareaplacearrangement.vue";
+import Exploreandmanagementarea from "@/views/teambnp/Exploreandmanagementarea.vue";
 import Workprogress from "@/views/teambnp/Workprogress.vue";
 import Customizethesystem from "@/views/teambnp/Customizethesystem.vue";
 
@@ -150,14 +151,19 @@ const routes = [
     component: Menuteambnp
   },
   {
+    path: "/teambnp/Menuteambnp_eapa",
+    name: "menuteambnp_eapa",
+    component: Menuteambnp_eapa
+  },
+  {
     path: "/teambnp/Eventteaminformation",
     name: "menueventteaminformation",
     component: Eventteaminformation
   },
   {
-    path: "/teambnp/Viewareaplacearrangement",
-    name: "menuviewareaplacearrangement",
-    component: Viewareaplacearrangement
+    path: "/teambnp/Exploreandmanagementarea",
+    name: "menuExploreandmanagementarea",
+    component: Exploreandmanagementarea
   },
   {
     path: "/teambnp/Workprogress",
@@ -172,16 +178,14 @@ const routes = [
 
   //จบ Team bnp
 
-
   {
     path: "/",
-    redirect: "/Login",
+    redirect: "/Login"
   },
   {
     path: "*",
-    redirect: "/Login",
-  },
-
+    redirect: "/Login"
+  }
 ];
 
 const router = new VueRouter({

@@ -12,12 +12,11 @@
     </v-col>
 
     <v-card class="quotation mx-10 pa-5 rounded-lg" outlined>
-
       <v-row justify="center">
         <v-col lg="9" md="9" sm="12" cols="12">
           <!-- Tap เมนู ข้อมูลแพ็คเกจ -->
           <v-tabs v-model="tab" left color="black">
-            <v-tab  class="quotation" href="#tab-1">
+            <v-tab class="quotation" href="#tab-1">
               ข้อมูลลูกค้า
             </v-tab>
             <v-tab class="quotation" href="#tab-2">
@@ -27,399 +26,395 @@
               เลือกโปรโมชั่น
             </v-tab>
             <v-tab-item value="tab-1">
-              <v-form
-                  ref="form"
-                  v-model="valid"
-                  lazy-validation
-              >
-              <v-card  flat>
-                <v-card-text class="quotation">
-                  <!-- ค้นหารายชื่อลูกค้า หรือ ค้นหาหมายเลขลูกค้า -->
-                  <v-row>
-                    <v-col lg="12" md="12" sm="12" cols="12">
-                      <div>
-                        ค้นหารายชื่อลูกค้า หรือ ค้นหาหมายเลขลูกค้า
-                      </div>
-                      <v-row class="no-gutters">
-                        <v-autocomplete
-                          v-model="selectListCustomer"
-                          :items="itemsListCustomer"
-                          :loading="loading"
-                          :search-input.sync="searchListCustomer"
-                          color="white"
-                          cache-items
-                          hide-no-data
-                          hide-details
-                          label="ชื่อลูกค้าและหมายเลขลูกค้า"
-                          placeholder="เริ่มค้นหา"
-                          v-on:change="FindCustomer(selectListCustomer)"
-                          filled
-                          dense
-                          solo
-                          outlined
-                          clearable
-                          return-object
-                        ></v-autocomplete>
-                      </v-row>
-                    </v-col>
-                  </v-row>
-                  <!-- ประเภทลูกค้า -->
-                  <v-row>
-                    <v-col lg="6" md="6" sm="12" cols="12">
-                      <div>ประเภทลูกค้า</div>
-                      <v-row class="no-gutters">
-                        <v-select
-                          v-model="Quotation_Person_type"
-                          :items="Quotation_Person_item_type"
-                          item-text="name"
-                          item-value="value"
-                          return-object
-                          filled
-                          dense
-                          solo
-                          outlined
-                        ></v-select>
-                      </v-row>
-                    </v-col>
-                  </v-row>
+              <v-form ref="form" v-model="valid" lazy-validation>
+                <v-card flat>
+                  <v-card-text class="quotation">
+                    <!-- ค้นหารายชื่อลูกค้า หรือ ค้นหาหมายเลขลูกค้า -->
+                    <v-row>
+                      <v-col lg="12" md="12" sm="12" cols="12">
+                        <div>
+                          ค้นหารายชื่อลูกค้า หรือ ค้นหาหมายเลขลูกค้า
+                        </div>
+                        <v-row class="no-gutters">
+                          <v-autocomplete
+                            v-model="selectListCustomer"
+                            :items="itemsListCustomer"
+                            :loading="loading"
+                            :search-input.sync="searchListCustomer"
+                            color="white"
+                            cache-items
+                            hide-no-data
+                            hide-details
+                            label="ชื่อลูกค้าและหมายเลขลูกค้า"
+                            placeholder="เริ่มค้นหา"
+                            v-on:change="FindCustomer(selectListCustomer)"
+                            filled
+                            dense
+                            solo
+                            outlined
+                            clearable
+                            return-object
+                          ></v-autocomplete>
+                        </v-row>
+                      </v-col>
+                    </v-row>
+                    <!-- ประเภทลูกค้า -->
+                    <v-row>
+                      <v-col lg="6" md="6" sm="12" cols="12">
+                        <div>ประเภทลูกค้า</div>
+                        <v-row class="no-gutters">
+                          <v-select
+                            v-model="Quotation_Person_type"
+                            :items="Quotation_Person_item_type"
+                            item-text="name"
+                            item-value="value"
+                            return-object
+                            filled
+                            dense
+                            solo
+                            outlined
+                          ></v-select>
+                        </v-row>
+                      </v-col>
+                    </v-row>
 
-                  <!-- หมายเลขผู้เสียภาษี -->
-                  <v-row>
-                    <v-col lg="6" md="6" sm="12" cols="12">
-                      <div>หมายเลขผู้เสียภาษี</div>
-                      <v-row class="no-gutters">
-                      <v-text-field-integer
-                          v-model="Quotation_tax_id"
-                          v-bind:properties="{
-                            dense: true,
-                            solo: true,
-                            outlined: true,
-                            clearable: true,
-                            placeholder: '0123456789123',
-                            required: true,
-                          }"
-                          v-bind:options="{
-                            inputMask: '#############',
-                            outputMask: '#############',
-                            empty: null,
-                            alphanumeric: true,
-                          }"
-                          class="w-100"
-                        />
-                      </v-row>
-                    </v-col>
+                    <!-- หมายเลขผู้เสียภาษี -->
+                    <v-row>
+                      <v-col lg="6" md="6" sm="12" cols="12">
+                        <div>หมายเลขผู้เสียภาษี</div>
+                        <v-row class="no-gutters">
+                          <v-text-field-integer
+                            v-model="Quotation_tax_id"
+                            v-bind:properties="{
+                              dense: true,
+                              solo: true,
+                              outlined: true,
+                              clearable: true,
+                              placeholder: '0123456789123',
+                              required: true
+                            }"
+                            v-bind:options="{
+                              inputMask: '#############',
+                              outputMask: '#############',
+                              empty: null,
+                              alphanumeric: true
+                            }"
+                            class="w-100"
+                          />
+                        </v-row>
+                      </v-col>
 
-                    <!-- ชื่อผู้เสียภาษี -->
-                    <v-col lg="6" md="6" sm="12" cols="12">
-                      <div>ชื่อผู้เสียภาษี</div>
-                      <v-row class="no-gutters">
-                        <v-text-field
-                          v-model="Quotation_fullname"
-                          dense
-                          solo
-                          outlined
-                          :rules="Taxinvoiceinfo_fullnameRules"
-                          clearable
-                        ></v-text-field>
-                      </v-row>
-                    </v-col>
-                  </v-row>
+                      <!-- ชื่อผู้เสียภาษี -->
+                      <v-col lg="6" md="6" sm="12" cols="12">
+                        <div>ชื่อผู้เสียภาษี</div>
+                        <v-row class="no-gutters">
+                          <v-text-field
+                            v-model="Quotation_fullname"
+                            dense
+                            solo
+                            outlined
+                            :rules="Taxinvoiceinfo_fullnameRules"
+                            clearable
+                          ></v-text-field>
+                        </v-row>
+                      </v-col>
+                    </v-row>
 
-                  <!-- แฟลช -->
-                  <v-row>
-                    <v-col lg="6" md="6" sm="12" cols="12">
-                      <div>แฟลช</div>
-                      <v-row class="no-gutters">
-                        <v-text-field
-                          v-model="Quotation_fax"
-                          dense
-                          solo
-                          outlined
-                          clearable
-                        ></v-text-field>
-                      </v-row>
-                    </v-col>
+                    <!-- แฟลช -->
+                    <v-row>
+                      <v-col lg="6" md="6" sm="12" cols="12">
+                        <div>แฟลช</div>
+                        <v-row class="no-gutters">
+                          <v-text-field
+                            v-model="Quotation_fax"
+                            dense
+                            solo
+                            outlined
+                            clearable
+                          ></v-text-field>
+                        </v-row>
+                      </v-col>
 
-                    <!-- อีเมล์ -->
-                    <v-col lg="6" md="6" sm="12" cols="12">
-                      <div>อีเมล์</div>
-                      <v-row class="no-gutters">
-                        <v-text-field
-                          v-model="Quotation_email"
-                          dense
-                          solo
-                          outlined
-                          clearable
-                        ></v-text-field>
-                      </v-row>
-                    </v-col>
-                  </v-row>
+                      <!-- อีเมล์ -->
+                      <v-col lg="6" md="6" sm="12" cols="12">
+                        <div>อีเมล์</div>
+                        <v-row class="no-gutters">
+                          <v-text-field
+                            v-model="Quotation_email"
+                            dense
+                            solo
+                            outlined
+                            clearable
+                          ></v-text-field>
+                        </v-row>
+                      </v-col>
+                    </v-row>
 
-                  <!-- โทรศัพท์ -->
-                  <v-row>
-                    <v-col lg="6" md="6" sm="12" cols="12">
-                      <div>โทรศัพท์</div>
-                      <v-row class="no-gutters">
-                  <v-text-field-integer
-                    v-model="Quotation_telephone_number"
-                    v-bind:properties="{
-                      dense: true,
-                      solo: true,
-                      outlined: true,
-                      clearable: true,
-                      placeholder: '0 2123 4567 ,0 5312 3456',
-                      required: true,
-                    }"
-                    v-bind:options="{
-                      inputMask: '# #### ####',
-                      outputMask: '#########',
-                      empty: null,
-                      alphanumeric: true,
-                    }"
-                    class="w-100"
-                  />
-                      </v-row>
-                    </v-col>
+                    <!-- โทรศัพท์ -->
+                    <v-row>
+                      <v-col lg="6" md="6" sm="12" cols="12">
+                        <div>โทรศัพท์</div>
+                        <v-row class="no-gutters">
+                          <v-text-field-integer
+                            v-model="Quotation_telephone_number"
+                            v-bind:properties="{
+                              dense: true,
+                              solo: true,
+                              outlined: true,
+                              clearable: true,
+                              placeholder: '0 2123 4567 ,0 5312 3456',
+                              required: true
+                            }"
+                            v-bind:options="{
+                              inputMask: '# #### ####',
+                              outputMask: '#########',
+                              empty: null,
+                              alphanumeric: true
+                            }"
+                            class="w-100"
+                          />
+                        </v-row>
+                      </v-col>
 
-                    <!-- มือถือ -->
-                    <v-col lg="6" md="6" sm="12" cols="12">
-                      <div>มือถือ</div>
-                      <v-row class="no-gutters">
-                      <v-text-field-integer
-                          v-model="Quotation_mobile_phone_number"
-                          v-bind:properties="{                
-                            dense: true,
-                            solo: true,
-                            outlined: true,
-                            clearable: true,
-                            placeholder: '08 1123 4567',
-                            rules:Taxinvoiceinfo_telemobile_phone_numberRules,
-                            required: true,
-                          }"
-                          v-bind:options="{
-                            inputMask: '## #### ####',
-                            outputMask: '##########',
-                            empty: null,
-                            alphanumeric: true,
-                            applyAfter: false,
-                          }"
-                          class="w-100"
-                        />
-                      </v-row>
-                    </v-col>
-                  </v-row>
+                      <!-- มือถือ -->
+                      <v-col lg="6" md="6" sm="12" cols="12">
+                        <div>มือถือ</div>
+                        <v-row class="no-gutters">
+                          <v-text-field-integer
+                            v-model="Quotation_mobile_phone_number"
+                            v-bind:properties="{
+                              dense: true,
+                              solo: true,
+                              outlined: true,
+                              clearable: true,
+                              placeholder: '08 1123 4567',
+                              rules: Taxinvoiceinfo_telemobile_phone_numberRules,
+                              required: true
+                            }"
+                            v-bind:options="{
+                              inputMask: '## #### ####',
+                              outputMask: '##########',
+                              empty: null,
+                              alphanumeric: true,
+                              applyAfter: false
+                            }"
+                            class="w-100"
+                          />
+                        </v-row>
+                      </v-col>
+                    </v-row>
 
-                  <!-- วันจัดงาน -->
-                  <v-row>
-                    <v-col lg="6" md="6" sm="12" cols="12">
-                      <div>วันจัดงาน</div>
-                      <v-row class="no-gutters">
-                        <v-menu
-                          v-model="menu_Quotation_event_date"
-                          :close-on-content-click="false"
-                          :nudge-right="40"
-                          transition="scale-transition"
-                          offset-y
-                          min-width="auto"
-                        >
-                          <template v-slot:activator="{ on, attrs }">
-                            <v-text-field
+                    <!-- วันจัดงาน -->
+                    <v-row>
+                      <v-col lg="6" md="6" sm="12" cols="12">
+                        <div>วันจัดงาน</div>
+                        <v-row class="no-gutters">
+                          <v-menu
+                            v-model="menu_Quotation_event_date"
+                            :close-on-content-click="false"
+                            :nudge-right="40"
+                            transition="scale-transition"
+                            offset-y
+                            min-width="auto"
+                          >
+                            <template v-slot:activator="{ on, attrs }">
+                              <v-text-field
+                                v-model="Quotation_event_date"
+                                label="เลือกวันที่จัดงาน"
+                                dense
+                                solo
+                                outlined
+                                readonly
+                                v-bind="attrs"
+                                v-on="on"
+                              ></v-text-field>
+                            </template>
+                            <v-date-picker
                               v-model="Quotation_event_date"
-                              label="เลือกวันที่จัดงาน"
-                              dense
-                              solo
-                              outlined
-                              readonly
-                              v-bind="attrs"
-                              v-on="on"
-                            ></v-text-field>
-                          </template>
-                          <v-date-picker
-                            v-model="Quotation_event_date"
-                            @input="menu_Quotation_event_date = false"
-                            color="yellow darken-3"
-                            locale="th"
-                          ></v-date-picker>
-                        </v-menu>
-                      </v-row>
-                    </v-col>
+                              @input="menu_Quotation_event_date = false"
+                              color="yellow darken-3"
+                              locale="th"
+                            ></v-date-picker>
+                          </v-menu>
+                        </v-row>
+                      </v-col>
 
-                    <!-- วันนัดดูพื้นที่ -->
-                    <v-col lg="6" md="6" sm="12" cols="12">
-                      <div>วันนัดดูพื้นที่</div>
-                      <v-row class="no-gutters">
-                        <v-menu
-                          v-model="menu_Quotation_area_viewing_date"
-                          :close-on-content-click="false"
-                          :nudge-right="40"
-                          transition="scale-transition"
-                          offset-y
-                          min-width="auto"
-                        >
-                          <template v-slot:activator="{ on, attrs }">
-                            <v-text-field
+                      <!-- วันนัดดูพื้นที่ -->
+                      <v-col lg="6" md="6" sm="12" cols="12">
+                        <div>วันนัดดูพื้นที่</div>
+                        <v-row class="no-gutters">
+                          <v-menu
+                            v-model="menu_Quotation_area_viewing_date"
+                            :close-on-content-click="false"
+                            :nudge-right="40"
+                            transition="scale-transition"
+                            offset-y
+                            min-width="auto"
+                          >
+                            <template v-slot:activator="{ on, attrs }">
+                              <v-text-field
+                                v-model="Quotation_area_viewing_date"
+                                label="เลือกวันนัดดูพื้นที่"
+                                dense
+                                solo
+                                outlined
+                                readonly
+                                v-bind="attrs"
+                                v-on="on"
+                              ></v-text-field>
+                            </template>
+                            <v-date-picker
                               v-model="Quotation_area_viewing_date"
-                              label="เลือกวันนัดดูพื้นที่"
-                              dense
-                              solo
-                              outlined
-                              readonly
-                              v-bind="attrs"
-                              v-on="on"
-                            ></v-text-field>
-                          </template>
-                          <v-date-picker
-                            v-model="Quotation_area_viewing_date"
-                            @input="menu_Quotation_area_viewing_date = false"
-                            color="yellow darken-3"
-                            locale="th"
-                          ></v-date-picker>
-                        </v-menu>
-                      </v-row>
-                    </v-col>
-                  </v-row>
+                              @input="menu_Quotation_area_viewing_date = false"
+                              color="yellow darken-3"
+                              locale="th"
+                            ></v-date-picker>
+                          </v-menu>
+                        </v-row>
+                      </v-col>
+                    </v-row>
 
-                  <!-- หมายเหตุ -->
-                  <v-row>
-                    <v-col lg="12" md="12" sm="12" cols="12">
-                      <div>หมายเหตุ</div>
-                      <v-row class="no-gutters">
-                        <v-textarea
-                          v-model="Quotation_note"
-                          rows="2"
-                          dense
-                          solo
-                          outlined
-                          clearable
-                        ></v-textarea>
-                      </v-row>
-                    </v-col>
-                  </v-row>
+                    <!-- หมายเหตุ -->
+                    <v-row>
+                      <v-col lg="12" md="12" sm="12" cols="12">
+                        <div>หมายเหตุ</div>
+                        <v-row class="no-gutters">
+                          <v-textarea
+                            v-model="Quotation_note"
+                            rows="2"
+                            dense
+                            solo
+                            outlined
+                            clearable
+                          ></v-textarea>
+                        </v-row>
+                      </v-col>
+                    </v-row>
 
-                  <!-- ที่อยู่ -->
-                  <v-row>
-                    <v-col lg="12" md="12" sm="12" cols="12">
-                      <div>ที่อยู่</div>
-                      <v-row class="no-gutters">
-                        <v-text-field
-                          v-model="Quotation_address"
-                          dense
-                          solo
-                          outlined
-                          :rules="Taxinvoiceinfo_teleaddressRules"
-                          clearable
-                        ></v-text-field>
-                      </v-row>
-                    </v-col>
-                  </v-row>
+                    <!-- ที่อยู่ -->
+                    <v-row>
+                      <v-col lg="12" md="12" sm="12" cols="12">
+                        <div>ที่อยู่</div>
+                        <v-row class="no-gutters">
+                          <v-text-field
+                            v-model="Quotation_address"
+                            dense
+                            solo
+                            outlined
+                            :rules="Taxinvoiceinfo_teleaddressRules"
+                            clearable
+                          ></v-text-field>
+                        </v-row>
+                      </v-col>
+                    </v-row>
 
-                  <!-- จังหวัด -->
-                  <v-row>
-                    <v-col lg="6" md="6" sm="12" cols="12">
-                      <div>จังหวัด</div>
-                      <v-row class="no-gutters">
-                        <v-select
-                          v-model="Quotation_SelectProvinces"
-                          :items="Quotation_GatProvince"
-                          item-text="province_Name"
-                          item-value="province_Code"
-                          placeholder="เลือกจังหวัด"
-                          v-on:change="FindAmphoeSelected()"
-                          return-object
-                          filled
-                          dense
-                          solo
-                          outlined
-                        >
-                        </v-select>
-                      </v-row>
-                    </v-col>
+                    <!-- จังหวัด -->
+                    <v-row>
+                      <v-col lg="6" md="6" sm="12" cols="12">
+                        <div>จังหวัด</div>
+                        <v-row class="no-gutters">
+                          <v-select
+                            v-model="Quotation_SelectProvinces"
+                            :items="Quotation_GatProvince"
+                            item-text="province_Name"
+                            item-value="province_Code"
+                            placeholder="เลือกจังหวัด"
+                            v-on:change="FindAmphoeSelected()"
+                            return-object
+                            filled
+                            dense
+                            solo
+                            outlined
+                          >
+                          </v-select>
+                        </v-row>
+                      </v-col>
 
-                    <!-- เขต/อำเภอ -->
-                    <v-col lg="6" md="6" sm="12" cols="12">
-                      <div>เขต/อำเภอ</div>
-                      <v-row class="no-gutters">
-                        <v-select
-                          v-model="Quotation_SelectAmphoe"
-                          :items="Quotation_GatAmphoe"
-                          item-text="amphoe_Name"
-                          item-value="amphoe_Code"
-                          placeholder="เลือกอำเภอ"
-                          v-on:change="FindDistrict_Zipcode_Selected()"
-                          return-object
-                          filled
-                          dense
-                          solo
-                          outlined
-                        >
-                        </v-select>
-                      </v-row>
-                    </v-col>
-                  </v-row>
+                      <!-- เขต/อำเภอ -->
+                      <v-col lg="6" md="6" sm="12" cols="12">
+                        <div>เขต/อำเภอ</div>
+                        <v-row class="no-gutters">
+                          <v-select
+                            v-model="Quotation_SelectAmphoe"
+                            :items="Quotation_GatAmphoe"
+                            item-text="amphoe_Name"
+                            item-value="amphoe_Code"
+                            placeholder="เลือกอำเภอ"
+                            v-on:change="FindDistrict_Zipcode_Selected()"
+                            return-object
+                            filled
+                            dense
+                            solo
+                            outlined
+                          >
+                          </v-select>
+                        </v-row>
+                      </v-col>
+                    </v-row>
 
-                  <!-- แขวง/ตำบล -->
-                  <v-row>
-                    <v-col lg="6" md="6" sm="12" cols="12">
-                      <div>แขวง/ตำบล</div>
-                      <v-row class="no-gutters">
-                        <v-select
-                          v-model="Quotation_SelectDistrict"
-                          :items="Quotation_GatDistrict"
-                          item-text="district_Name"
-                          placeholder="เลือกแขวง/ตำบล"
-                          v-on:change="FindProv_idSelected()"
-                          return-object
-                          filled
-                          dense
-                          solo
-                          outlined
-                        >
-                        </v-select>
-                      </v-row>
-                    </v-col>
+                    <!-- แขวง/ตำบล -->
+                    <v-row>
+                      <v-col lg="6" md="6" sm="12" cols="12">
+                        <div>แขวง/ตำบล</div>
+                        <v-row class="no-gutters">
+                          <v-select
+                            v-model="Quotation_SelectDistrict"
+                            :items="Quotation_GatDistrict"
+                            item-text="district_Name"
+                            placeholder="เลือกแขวง/ตำบล"
+                            v-on:change="FindProv_idSelected()"
+                            return-object
+                            filled
+                            dense
+                            solo
+                            outlined
+                          >
+                          </v-select>
+                        </v-row>
+                      </v-col>
 
-                    <!-- รหัสไปรษณีย์ -->
-                    <v-col lg="6" md="6" sm="12" cols="12">
-                      <div>รหัสไปรษณีย์</div>
-                      <v-row class="no-gutters">
-                        <v-text-field
-                          v-model="Quotation_SelectZipcode"
-                          placeholder="รหัสไปรษณีย์"
-                          dense
-                          solo
-                          outlined
-                          disabled
-                        ></v-text-field>
-                      </v-row>
-                    </v-col>
-                  </v-row>
-                </v-card-text>
-              </v-card>
-              <v-row>
-                <v-col xl="3" lg="3" md="6" sm="12" cols="12">
-                  <v-btn
-                    block
-                    large
-                    rounded
-                    outlined
-                    @click="$router.push({name:'saleQuotation'})"
-                    >ยกเลิก</v-btn
-                  >
-                </v-col>
-                <v-spacer></v-spacer>
-                <v-col xl="3" lg="3" md="6" sm="12" cols="12">
-                  <v-btn
-                    block
-                    color="#29CC97"
-                    dark
-                    large
-                    rounded
-                    @click="changetoTab2()"
-                    ><span class="white--text">ถัดไป</span></v-btn
-                  >
-                </v-col>
-              </v-row>
-            </v-form>
+                      <!-- รหัสไปรษณีย์ -->
+                      <v-col lg="6" md="6" sm="12" cols="12">
+                        <div>รหัสไปรษณีย์</div>
+                        <v-row class="no-gutters">
+                          <v-text-field
+                            v-model="Quotation_SelectZipcode"
+                            placeholder="รหัสไปรษณีย์"
+                            dense
+                            solo
+                            outlined
+                            disabled
+                          ></v-text-field>
+                        </v-row>
+                      </v-col>
+                    </v-row>
+                  </v-card-text>
+                </v-card>
+                <v-row>
+                  <v-col xl="3" lg="3" md="6" sm="12" cols="12">
+                    <v-btn
+                      block
+                      large
+                      rounded
+                      outlined
+                      @click="$router.push({ name: 'saleQuotation' })"
+                      >ยกเลิก</v-btn
+                    >
+                  </v-col>
+                  <v-spacer></v-spacer>
+                  <v-col xl="3" lg="3" md="6" sm="12" cols="12">
+                    <v-btn
+                      block
+                      color="#29CC97"
+                      dark
+                      large
+                      rounded
+                      @click="changetoTab2()"
+                      ><span class="white--text">ถัดไป</span></v-btn
+                    >
+                  </v-col>
+                </v-row>
+              </v-form>
             </v-tab-item>
             <v-tab-item value="tab-2">
               <!-- ค้นหาแพ็กเกจ -->
@@ -450,7 +445,11 @@
                     <!-- table top section -->
                     <template v-slot:top>
                       <v-toolbar flat>
-                        <v-toolbar-title><span class="quotation-package">แพ็กเกจ</span></v-toolbar-title>
+                        <v-toolbar-title
+                          ><span class="quotation-package"
+                            >แพ็กเกจ</span
+                          ></v-toolbar-title
+                        >
                         <v-spacer></v-spacer>
                         <!-- <v-divider class="mx-5" inset vertical></v-divider>
                     <v-row class="ma-2">
@@ -493,15 +492,19 @@
                     <template v-slot:item="{ item }">
                       <tr>
                         <td>
-                          {{ item.name }}<br/>
-                          <span class="quotation-font-color">update {{ item.update }}</span>
+                          {{ item.name }}<br />
+                          <span class="quotation-font-color"
+                            >update {{ item.update }}</span
+                          >
                         </td>
                         <td>{{ item.food_des }}</td>
                         <td>
                           <v-btn
                             small
                             elevation="1"
-                            @click="selectedPackage(item)">เลือก</v-btn>
+                            @click="selectedPackage(item)"
+                            >เลือก</v-btn
+                          >
                         </td>
                       </tr>
                     </template>
@@ -512,7 +515,10 @@
               <v-row>
                 <v-col lg="12" md="12" sm="12" cols="12">
                   <v-row class="no-gutters">
-                    <span class="quotation-package">แพ็กเกจที่ท่านเลือก</span><span class="quotation-package-red">(เลือกได้แค่แพ็กเกจเดียว)</span>
+                    <span class="quotation-package">แพ็กเกจที่ท่านเลือก</span
+                    ><span class="quotation-package-red"
+                      >(เลือกได้แค่แพ็กเกจเดียว)</span
+                    >
                   </v-row>
                 </v-col>
               </v-row>
@@ -531,18 +537,23 @@
                     <template v-slot:item="{ item }">
                       <tr>
                         <td>
-                          {{ item.name }}<br/>
-                          <span class="quotation-font-color">update {{ item.update }}</span>
+                          {{ item.name }}<br />
+                          <span class="quotation-font-color"
+                            >update {{ item.update }}</span
+                          >
                         </td>
                         <td>{{ item.food_des }}</td>
                         <td>
                           <v-btn
                             small
                             elevation="1"
-                            @click="DeletePackage(item)">ลบ</v-btn>
+                            @click="DeletePackage(item)"
+                            >ลบ</v-btn
+                          >
                         </td>
                       </tr>
-                    </template></v-data-table>
+                    </template></v-data-table
+                  >
                 </v-row>
               </v-col>
 
@@ -550,7 +561,10 @@
               <v-row>
                 <v-col lg="12" md="12" sm="12" cols="12">
                   <v-row class="no-gutters">
-                    <span class="quotation-package">เลือกอาหารแพ็กเกจ</span><span class="quotation-package-red">(ถ้าลูกค้ายังไม่คอนเฟิร์มยังไม่ต้องใส่)</span>
+                    <span class="quotation-package">เลือกอาหารแพ็กเกจ</span
+                    ><span class="quotation-package-red"
+                      >(ถ้าลูกค้ายังไม่คอนเฟิร์มยังไม่ต้องใส่)</span
+                    >
                   </v-row>
                 </v-col>
               </v-row>
@@ -559,7 +573,10 @@
                 <v-col lg="12" md="12" sm="12" cols="12">
                   <div>
                     อาหารคาว
-                    <span class="package">เลือก {{ check_select_savory_food }} เหลือ {{ package_amount_savory_food }}</span>
+                    <span class="package"
+                      >เลือก {{ check_select_savory_food }} เหลือ
+                      {{ package_amount_savory_food }}</span
+                    >
                   </div>
                   <v-row class="no-gutters">
                     <v-combobox
@@ -597,7 +614,10 @@
                 <v-col lg="12" md="12" sm="12" cols="12">
                   <div>
                     อาหารหวาน
-                    <span class="package">เลือก {{ check_select_sweet_food }} เหลือ {{ package_amount_sweet_food }}</span>
+                    <span class="package"
+                      >เลือก {{ check_select_sweet_food }} เหลือ
+                      {{ package_amount_sweet_food }}</span
+                    >
                   </div>
                   <v-row class="no-gutters">
                     <v-combobox
@@ -634,7 +654,10 @@
                 <v-col lg="12" md="12" sm="12" cols="12">
                   <div>
                     เครื่องดืม
-                    <span class="package">เลือก {{ check_select_drink }} เหลือ {{ package_amount_drink }}</span>
+                    <span class="package"
+                      >เลือก {{ check_select_drink }} เหลือ
+                      {{ package_amount_drink }}</span
+                    >
                   </div>
                   <v-row class="no-gutters">
                     <v-combobox
@@ -685,7 +708,7 @@
                   >
                 </v-col>
               </v-row>
-          </v-tab-item>
+            </v-tab-item>
 
             <v-tab-item value="tab-3">
               <!-- ค้นหาโปรโมชั่น -->
@@ -707,7 +730,9 @@
                 <v-col lg="6" md="6" sm="12" cols="12">
                   <v-row class="no-gutters">
                     <h3>รายการโปรโมชั่น</h3>
-                    <span class="quotation-select-pro mt-1">{{ promotion_table_all_total }} รายการ</span>
+                    <span class="quotation-select-pro mt-1"
+                      >{{ promotion_table_all_total }} รายการ</span
+                    >
                   </v-row>
                   <!-- รายการโปรโมชั่น -->
                   <v-row>
@@ -730,7 +755,8 @@
                                   small
                                   elevation="1"
                                   @click="selectedPromotion(item)"
-                                  >เลือก</v-btn>
+                                  >เลือก</v-btn
+                                >
                               </td>
                             </tr>
                           </template>
@@ -744,9 +770,10 @@
                 <v-col lg="6" md="6" sm="12" cols="12">
                   <v-row class="no-gutters">
                     <h3>โปรโมชั่นที่เลือก</h3>
-                    <span class="quotation-select-pro mt-1">{{ promotion_table_select_total }} รายการ</span>
+                    <span class="quotation-select-pro mt-1"
+                      >{{ promotion_table_select_total }} รายการ</span
+                    >
                   </v-row>
-                  
 
                   <!-- โปรโมชั่นที่เลือก -->
                   <v-row>
@@ -769,7 +796,8 @@
                                   small
                                   elevation="1"
                                   @click="deletePromotion(item)"
-                                  >ลบ</v-btn>
+                                  >ลบ</v-btn
+                                >
                               </td>
                             </tr>
                           </template>
@@ -803,7 +831,6 @@
           </v-tabs>
         </v-col>
       </v-row>
-
     </v-card>
   </v-container>
 </template>
@@ -823,7 +850,7 @@ export default {
     await this.loadDataPromotion();
     await this.$store.dispatch({
       type: "inputRoutepath",
-      RT: this.$route.path,
+      RT: this.$route.path
     });
   },
   data: () => ({
@@ -889,7 +916,7 @@ export default {
       "แกงจืดหน่อไม้ไก่",
       "ยำถั่วพู",
       "ต้มข่าไก่",
-      "ต้มยำกุ้ง",
+      "ต้มยำกุ้ง"
     ],
     sweet_food_items: [
       "กล้วยเชื่อม",
@@ -901,7 +928,7 @@ export default {
       "ถั่วกวน",
       "ขนมโค",
       "ขนมหยกมณี",
-      "ถั่วเขียวต้มน้ำตาล",
+      "ถั่วเขียวต้มน้ำตาล"
     ],
     drink_items: [
       "กาแฟ",
@@ -913,7 +940,7 @@ export default {
       "นํ้าส้ม",
       "ชาเขียว",
       "นํ้าใบบัวบก",
-      "น้ำอัญชันมะนาว",
+      "น้ำอัญชันมะนาว"
     ],
     search_savory_food: null,
     search_sweet_food: null,
@@ -924,16 +951,40 @@ export default {
 
     package_data_items: [],
     headers_package_data: [
-      { text: "", value: "name", sortable: false, align: "start", color: "black",},
-      { text: "", value: "food_des", sortable: false,  align: "start", color: "black",},
-      { text: "", value: "", sortable: false, align: "start", color: "black" },
+      {
+        text: "",
+        value: "name",
+        sortable: false,
+        align: "start",
+        color: "black"
+      },
+      {
+        text: "",
+        value: "food_des",
+        sortable: false,
+        align: "start",
+        color: "black"
+      },
+      { text: "", value: "", sortable: false, align: "start", color: "black" }
     ],
 
     package_selected_items: [],
     headers_package_selected_data: [
-      { text: "", value: "name",sortable: false,align: "start", color: "black",},
-      { text: "",value: "food_des", sortable: false, align: "start",color: "black",},
-      { text: "", value: "", sortable: false, align: "start", color: "black" },
+      {
+        text: "",
+        value: "name",
+        sortable: false,
+        align: "start",
+        color: "black"
+      },
+      {
+        text: "",
+        value: "food_des",
+        sortable: false,
+        align: "start",
+        color: "black"
+      },
+      { text: "", value: "", sortable: false, align: "start", color: "black" }
     ],
 
     //เลือกโปรโมชั่น
@@ -944,28 +995,39 @@ export default {
 
     promotion_table_items: [],
     headers_promotion_table: [
-      { text: "", value: "name", sortable: false, align: "start", color: "black",},
-      { text: "", value: "", sortable: false, align: "start", color: "black" },
+      {
+        text: "",
+        value: "name",
+        sortable: false,
+        align: "start",
+        color: "black"
+      },
+      { text: "", value: "", sortable: false, align: "start", color: "black" }
     ],
 
     promotion_table_selected_items: [],
     headers_promotion_selected_table: [
-      { text: "", value: "name", sortable: false, align: "start",color: "black",},
-      { text: "", value: "", sortable: false, align: "start", color: "black" },
+      {
+        text: "",
+        value: "name",
+        sortable: false,
+        align: "start",
+        color: "black"
+      },
+      { text: "", value: "", sortable: false, align: "start", color: "black" }
     ],
 
-    valid:true,
-    Taxinvoiceinfo_fullnameRules:[v1=>!!v1 || "กรุณากรอกชื่อผู้เสียภาษี",],
-    Taxinvoiceinfo_telemobile_phone_numberRules:[
-      v1=>!!v1 || "กรุณากรอกเบอร์มือถือ",
-      v1 => (v1 && v1.length >= 12) || "กรุณากรอกเบอร์มือถือให้ครบ 10 หลัก",
+    valid: true,
+    Taxinvoiceinfo_fullnameRules: [v1 => !!v1 || "กรุณากรอกชื่อผู้เสียภาษี"],
+    Taxinvoiceinfo_telemobile_phone_numberRules: [
+      v1 => !!v1 || "กรุณากรอกเบอร์มือถือ",
+      v1 => (v1 && v1.length >= 12) || "กรุณากรอกเบอร์มือถือให้ครบ 10 หลัก"
     ],
-    Taxinvoiceinfo_teleaddressRules:[v1=>!!v1 || "กรุณากรอกที่อยู่",],
+    Taxinvoiceinfo_teleaddressRules: [v1 => !!v1 || "กรุณากรอกที่อยู่"]
 
     // savoryfoodRules:[v1=>!!v1 || "กรุณาเลือกอาหารคาว ตามจำนวนแพ็กเกจ",],
     // sweetfoodRules:[v1=>!!v1 || "กรุณาเลือกอาหารหวาน ตามจำนวนแพ็กเกจ",],
     // drinkfoodRules:[v1=>!!v1 || "กรุณาเลือกเครื่องดืม ตามจำนวนแพ็กเกจ",],
-    
   }),
 
   watch: {
@@ -977,10 +1039,10 @@ export default {
       if (val.length > this.package_amount_savory_food) {
         this.$nextTick(() => this.select_savory_food.pop());
         this.$swal.fire(
-            "แจ้งเตือน",
-            `"ไม่สามารถเลือกอาหารคาวได้อีก" เนื่องจากครบจำนวนตามแพ็กเก็จแล้ว`,
-            "warning"
-          );
+          "แจ้งเตือน",
+          `"ไม่สามารถเลือกอาหารคาวได้อีก" เนื่องจากครบจำนวนตามแพ็กเก็จแล้ว`,
+          "warning"
+        );
       }
     },
     select_sweet_food(val) {
@@ -988,57 +1050,57 @@ export default {
       if (val.length > this.package_amount_sweet_food) {
         this.$nextTick(() => this.select_sweet_food.pop());
         this.$swal.fire(
-            "แจ้งเตือน",
-            `"ไม่สามารถเลือกอาหารหวานได้อีก" เนื่องจากครบจำนวนตามแพ็กเก็จแล้ว`,
-            "warning"
-          );
+          "แจ้งเตือน",
+          `"ไม่สามารถเลือกอาหารหวานได้อีก" เนื่องจากครบจำนวนตามแพ็กเก็จแล้ว`,
+          "warning"
+        );
       }
     },
     select_drink(val) {
       this.check_select_drink = val.length;
       if (val.length > this.package_amount_drink) {
         this.$nextTick(() => this.select_drink.pop());
-         this.$swal.fire(
-            "แจ้งเตือน",
-            `"ไม่สามารถเลือกเครื่องดื่มได้อีก" เนื่องจากครบจำนวนตามแพ็กเก็จแล้ว`,
-            "warning"
-          );
+        this.$swal.fire(
+          "แจ้งเตือน",
+          `"ไม่สามารถเลือกเครื่องดื่มได้อีก" เนื่องจากครบจำนวนตามแพ็กเก็จแล้ว`,
+          "warning"
+        );
       }
-    },
+    }
   },
 
   computed: {
     Changesubmit() {
       return this.CreateorEdittype == true ? "บันทึก" : "แก้ไข";
-    },
+    }
   },
 
   methods: {
     changetoTab1() {
-        this.tab = "tab-1";
+      this.tab = "tab-1";
     },
     changetoTab2() {
-      if(this.$refs.form.validate() == true){
+      if (this.$refs.form.validate() == true) {
         this.tab = "tab-2";
-       }
+      }
     },
     changetoTab3() {
-      if(this.package_selected_items.length >0){
-              this.tab = "tab-3";
-      }else{
-          this.$swal.fire(
-                    "แจ้งเตือน",
-                    `กรุณาเลือกแพ็กเกจ หนึงแพ็กเกจ`,
-                    "warning"
-                  );
+      if (this.package_selected_items.length > 0) {
+        this.tab = "tab-3";
+      } else {
+        this.$swal.fire(
+          "แจ้งเตือน",
+          `กรุณาเลือกแพ็กเกจ หนึงแพ็กเกจ`,
+          "warning"
+        );
       }
     },
     async loadDataCustomer() {
       let resultgetListcustomer = await api.getListcustomertypeselector();
-      resultgetListcustomer.data.result.forEach((element) => {
+      resultgetListcustomer.data.result.forEach(element => {
         this.Quotation_Person_item_type.push({
           name: element.name,
-          id: element.id,
+          id: element.id
         });
       });
       this.Quotation_Person_type = this.Quotation_Person_item_type[0];
@@ -1051,13 +1113,15 @@ export default {
         this.loadDataPackage();
         this.loadDataPromotion();
         const Quotation_ID_Edit = this.$store.getters["Newpersonal_BNP_ID"];
-        if(!Quotation_ID_Edit){
-          window.location.href=`${process.env.VUE_APP_SUB_PATH}/sale/Quotation`
+        if (!Quotation_ID_Edit) {
+          window.location.href = `${process.env.VUE_APP_SUB_PATH}/sale/Quotation`;
           //this.$router.push({name:'Quotation'})
-            return
+          return;
         }
 
-        this.EditQuotation_ID = this.$store.getters["Newpersonal_BNP_ID"].BNP_ID;
+        this.EditQuotation_ID = this.$store.getters[
+          "Newpersonal_BNP_ID"
+        ].BNP_ID;
         let DataEditFindCustomer = { quotation_code: this.EditQuotation_ID };
         let result = await api.getEditQuotation(DataEditFindCustomer);
         // console.log(result);
@@ -1067,9 +1131,10 @@ export default {
         //             }
         this.Quotation_Person_type = {
           id: result.data.result.customers_data[0].customer_type_id,
-          name: result.data.result.customers_data[0].customer_type_name,
+          name: result.data.result.customers_data[0].customer_type_name
         };
-        this.Quotation_customer_id = result.data.result.customers_data[0].customer_code;
+        this.Quotation_customer_id =
+          result.data.result.customers_data[0].customer_code;
 
         this.Quotation_tax_id = result.data.result.customers_data[0].tax_id;
 
@@ -1078,40 +1143,47 @@ export default {
 
         this.Quotation_fax = result.data.result.customers_data[0].flash_number;
         this.Quotation_email = result.data.result.customers_data[0].email;
-        this.Quotation_telephone_number = result.data.result.customers_data[0].telephone_number;
-        this.Quotation_mobile_phone_number = result.data.result.customers_data[0].mobile_phone_number;
-        this.Quotation_event_date = result.data.result.customers_data[0].event_date;
-        this.Quotation_area_viewing_date = result.data.result.customers_data[0].area_viewing_date;
+        this.Quotation_telephone_number =
+          result.data.result.customers_data[0].telephone_number;
+        this.Quotation_mobile_phone_number =
+          result.data.result.customers_data[0].mobile_phone_number;
+        this.Quotation_event_date =
+          result.data.result.customers_data[0].event_date;
+        this.Quotation_area_viewing_date =
+          result.data.result.customers_data[0].area_viewing_date;
 
         this.Quotation_address = result.data.result.customers_data[0].address;
-        this.Quotation_district_id =  result.data.result.customers_data[0].district_id;
+        this.Quotation_district_id =
+          result.data.result.customers_data[0].district_id;
         this.Quotation_SelectProvinces = {
           province_Name: result.data.result.customers_data[0].province,
-          province_Code: result.data.result.customers_data[0].province_code,
+          province_Code: result.data.result.customers_data[0].province_code
         };
         this.Quotation_GatProvince.push({
           province_Name: result.data.result.customers_data[0].province,
-          province_Code: result.data.result.customers_data[0].province_code,
+          province_Code: result.data.result.customers_data[0].province_code
         });
         this.Quotation_SelectAmphoe = {
           amphoe_Name: result.data.result.customers_data[0].amphoe,
-          amphoe_Code: result.data.result.customers_data[0].amphoe_code,
+          amphoe_Code: result.data.result.customers_data[0].amphoe_code
         };
         this.Quotation_GatAmphoe.push({
           amphoe_Name: result.data.result.customers_data[0].amphoe,
-          amphoe_Code: result.data.result.customers_data[0].amphoe_code,
+          amphoe_Code: result.data.result.customers_data[0].amphoe_code
         });
         this.Quotation_SelectDistrict = {
           district_Name: result.data.result.customers_data[0].district,
-          amphoe_Code: result.data.result.customers_data[0].district_code,
+          amphoe_Code: result.data.result.customers_data[0].district_code
         };
         this.Quotation_GatDistrict.push({
           district_Name: result.data.result.customers_data[0].district,
-          amphoe_Code: result.data.result.customers_data[0].district_code,
+          amphoe_Code: result.data.result.customers_data[0].district_code
         });
-        this.Quotation_SelectZipcode = result.data.result.customers_data[0].zipcode;
+        this.Quotation_SelectZipcode =
+          result.data.result.customers_data[0].zipcode;
         this.Quotation_note = result.data.result.customers_data[0].note;
-        this.package_amount_savory_food = result.data.result.customers_data[0].amount_savory_food;
+        this.package_amount_savory_food =
+          result.data.result.customers_data[0].amount_savory_food;
         this.package_amount_sweet_food =
           result.data.result.customers_data[0].amount_sweet_food;
         this.package_amount_drink =
@@ -1132,23 +1204,24 @@ export default {
         }
 
         //โปรโมชั่น
-        let promotion_table_selected = result.data.result.promotions_data
-        if(promotion_table_selected.length > 0){
-            this.promotion_table_selected_items.push(result.data.result.promotions_data[0]);
-            this.promotion_table_select_total = this.promotion_table_selected_items.length;
-        }else{
-             this.promotion_table_selected_items =[]
+        let promotion_table_selected = result.data.result.promotions_data;
+        if (promotion_table_selected.length > 0) {
+          this.promotion_table_selected_items.push(
+            result.data.result.promotions_data[0]
+          );
+          this.promotion_table_select_total = this.promotion_table_selected_items.length;
+        } else {
+          this.promotion_table_selected_items = [];
         }
-    
       }
     },
     async FindCustomer(selectListCustomer) {
       let DataFindCustomer = { iden: selectListCustomer };
       let result = await api.getCreateCustomerQuotation(DataFindCustomer);
       this.Quotation_Person_type = {
-          id: result.data.result[0].customer_type_id,
-          name: result.data.result[0].customer_type_name,
-        };
+        id: result.data.result[0].customer_type_id,
+        name: result.data.result[0].customer_type_name
+      };
       this.Quotation_customer_id = result.data.result[0].customer_code;
       this.Quotation_tax_id = result.data.result[0].tax_id;
       this.Quotation_fullname = result.data.result[0].name;
@@ -1161,27 +1234,27 @@ export default {
       this.Quotation_district_id = result.data.result[0].district_id;
       this.Quotation_SelectProvinces = {
         province_Name: result.data.result[0].province,
-        province_Code: result.data.result[0].province_code,
+        province_Code: result.data.result[0].province_code
       };
       this.Quotation_GatProvince.push({
         province_Name: result.data.result[0].province,
-        province_Code: result.data.result[0].province_code,
+        province_Code: result.data.result[0].province_code
       });
       this.Quotation_SelectAmphoe = {
         amphoe_Name: result.data.result[0].amphoe,
-        amphoe_Code: result.data.result[0].amphoe_code,
+        amphoe_Code: result.data.result[0].amphoe_code
       };
       this.Quotation_GatAmphoe.push({
         amphoe_Name: result.data.result[0].amphoe,
-        amphoe_Code: result.data.result[0].amphoe_code,
+        amphoe_Code: result.data.result[0].amphoe_code
       });
       this.Quotation_SelectDistrict = {
         district_Name: result.data.result[0].district,
-        amphoe_Code: result.data.result[0].district_code,
+        amphoe_Code: result.data.result[0].district_code
       };
       this.Quotation_GatDistrict.push({
         district_Name: result.data.result[0].district,
-        amphoe_Code: result.data.result[0].district_code,
+        amphoe_Code: result.data.result[0].district_code
       });
       this.Quotation_SelectZipcode = result.data.result[0].zipcode;
     },
@@ -1200,11 +1273,7 @@ export default {
         this.package_amount_sweet_food = item.amount_sweet_food;
         this.package_amount_drink = item.amount_drink;
       } else {
-         this.$swal.fire(
-            "แจ้งเตือน",
-            `เลือกแพ็กเกจได้แพ็กเกจเดียว`,
-            "warning"
-          );
+        this.$swal.fire("แจ้งเตือน", `เลือกแพ็กเกจได้แพ็กเกจเดียว`, "warning");
       }
     },
     DeletePackage(item) {
@@ -1234,10 +1303,10 @@ export default {
         this.promotion_table_select_total = this.promotion_table_selected_items.length;
       } else {
         this.$swal.fire(
-            "แจ้งเตือน",
-            `เลือกโปรโมชั่นได้โปรโมชั่นเดียว`,
-            "warning"
-          );
+          "แจ้งเตือน",
+          `เลือกโปรโมชั่นได้โปรโมชั่นเดียว`,
+          "warning"
+        );
       }
     },
     deletePromotion(item) {
@@ -1251,10 +1320,10 @@ export default {
       let result = await api.getProvinces();
       let provinces = result.data.result;
       let _this = this;
-      provinces.forEach((value) => {
+      provinces.forEach(value => {
         _this.Quotation_GatProvince.push({
           province_Name: `${value.province}`,
-          province_Code: `${value.province_code}`,
+          province_Code: `${value.province_code}`
         });
       });
     },
@@ -1265,15 +1334,15 @@ export default {
       //console.log( this.Quotation_SelectProvinces.province_Name);
       let QuotationProv = {
         province_code: this.Quotation_SelectProvinces.province_Code,
-        province: this.Quotation_SelectProvinces.province_Name,
+        province: this.Quotation_SelectProvinces.province_Name
       };
       let resultQuotationProv = await api.getAmphoe(QuotationProv);
       let AmphoeQuotation = resultQuotationProv.data.result;
       let _this = this;
-      AmphoeQuotation.forEach((value) => {
+      AmphoeQuotation.forEach(value => {
         _this.Quotation_GatAmphoe.push({
           amphoe_Name: `${value.amphoe}`,
-          amphoe_Code: `${value.amphoe_code}`,
+          amphoe_Code: `${value.amphoe_code}`
         });
       });
     },
@@ -1283,16 +1352,16 @@ export default {
       this.Quotation_SelectZipcode = [];
       let QuotationAmphoe = {
         amphoe_code: this.Quotation_SelectAmphoe.amphoe_Code,
-        amphoe: this.Quotation_SelectAmphoe.amphoe_Name,
+        amphoe: this.Quotation_SelectAmphoe.amphoe_Name
       };
       let resultQuotationAmphoe = await api.getDistrict(QuotationAmphoe);
       let DistrictQuotationAmphoe = resultQuotationAmphoe.data.result;
       let _this = this;
-      DistrictQuotationAmphoe.forEach((value) => {
+      DistrictQuotationAmphoe.forEach(value => {
         _this.Quotation_GatDistrict.push({
           district_Name: `${value.district}`,
           zipcode: `${value.zipcode}`,
-          prov_id: `${value.id}`,
+          prov_id: `${value.id}`
         });
       });
     },
@@ -1307,96 +1376,94 @@ export default {
     querySelections(v) {
       this.loading = true;
       setTimeout(() => {
-        this.itemsListCustomer = this.DataCustomer.filter((e) => {
+        this.itemsListCustomer = this.DataCustomer.filter(e => {
           return (e || "").toLowerCase().indexOf((v || "").toLowerCase()) > -1;
         });
         this.loading = false;
       }, 500);
     },
     async submit() {
-      
       //สร้างใบเสนอราคา
-        let Quotation_type_Pid = this.Quotation_Person_type.id;
-        if (this.CreateorEdittype == true) {
-          let CreateNewQuotation = {
-            customer_code: this.Quotation_customer_id,
-            type_id: Quotation_type_Pid,
-            tax_id: this.Quotation_tax_id,
-            name: this.Quotation_fullname,
-            flash_number: this.Quotation_fax,
-            email: this.Quotation_email,
-            telephone_number: this.Quotation_telephone_number,
-            mobile_phone_number: this.Quotation_mobile_phone_number,
-            address: this.Quotation_address,
-            district_id: this.Quotation_district_id,
-            note: this.Quotation_note,
-            package_code: this.Package_ID,
-            promotion_code: this.promotion_selectd_id,
-            event_date: this.Quotation_event_date,
-            area_viewing_date: this.Quotation_area_viewing_date,
-            amount_savory_food: this.package_amount_savory_food,
-            amount_sweet_food: this.package_amount_sweet_food,
-            amount_drink: this.package_amount_drink,
-          };
-          console.log(CreateNewQuotation);
-          let resultCreateNewQuotation = await api.addQuotation(
-            CreateNewQuotation
+      let Quotation_type_Pid = this.Quotation_Person_type.id;
+      if (this.CreateorEdittype == true) {
+        let CreateNewQuotation = {
+          customer_code: this.Quotation_customer_id,
+          type_id: Quotation_type_Pid,
+          tax_id: this.Quotation_tax_id,
+          name: this.Quotation_fullname,
+          flash_number: this.Quotation_fax,
+          email: this.Quotation_email,
+          telephone_number: this.Quotation_telephone_number,
+          mobile_phone_number: this.Quotation_mobile_phone_number,
+          address: this.Quotation_address,
+          district_id: this.Quotation_district_id,
+          note: this.Quotation_note,
+          package_code: this.Package_ID,
+          promotion_code: this.promotion_selectd_id,
+          event_date: this.Quotation_event_date,
+          area_viewing_date: this.Quotation_area_viewing_date,
+          amount_savory_food: this.package_amount_savory_food,
+          amount_sweet_food: this.package_amount_sweet_food,
+          amount_drink: this.package_amount_drink
+        };
+        console.log(CreateNewQuotation);
+        let resultCreateNewQuotation = await api.addQuotation(
+          CreateNewQuotation
+        );
+        console.log(resultCreateNewQuotation);
+        if (resultCreateNewQuotation.data.response == "OK") {
+          this.$swal.fire(
+            "สำเร็จ",
+            "สร้างใบเสนอราคาสำเร็จเรียบร้อยแล้ว",
+            "success"
           );
-          console.log(resultCreateNewQuotation);
-          if (resultCreateNewQuotation.data.response == "OK") {
-            this.$swal.fire(
-              "สำเร็จ",
-              "สร้างใบเสนอราคาสำเร็จเรียบร้อยแล้ว",
-              "success"
-            );
-            this.$router.push({name:"saleQuotation"});
-          } else {
-            this.$swal.fire(
-              "เกิดข้อผิดพลาด",
-              `สร้างใบเสนอราคาสำเร็จไม่สำเร็จ ${resultCreateNewQuotation.data.response} เนื่องจาก ${resultCreateNewQuotation.data.result} `,
-              "error"
-            );
-          }
+          this.$router.push({ name: "saleQuotation" });
         } else {
-          //แก้ไขใบเสนอราคา
-          let EditQuotation = {
-            quotation_code: this.EditQuotation_ID,
-            customer_code: this.Quotation_customer_id,
-            package_code: this.Package_ID,
-            promotion_code: this.promotion_selectd_id,
-            event_date: this.Quotation_event_date,
-            area_viewing_date: this.Quotation_area_viewing_date,
-            amount_savory_food: this.package_amount_savory_food,
-            amount_sweet_food: this.package_amount_sweet_food,
-            amount_drink: this.package_amount_drink,
-            note: this.Quotation_note,
-          };
-          console.log('quotation_code',EditQuotation);
-          let resultEditQuotation = await api.editQuotation(EditQuotation);
-          //console.log(resultEditQuotation);
-          if (resultEditQuotation.data.response == "OK") {
-            this.$swal.fire(
-              "สำเร็จ",
-              "แก้ไขใบเสนอราคาสำเร็จเรียบร้อยแล้ว",
-              "success"
-            );
-            this.$router.push({name:"saleQuotation"});
-          } else {
-            this.$swal.fire(
-              "เกิดข้อผิดพลาด",
-              `แก้ไขใบเสนอราคาไม่สำเร็จ ${resultEditQuotation.data.response} เนื่องจาก ${resultEditQuotation.data.result} `,
-              "error"
-            );
-          }
+          this.$swal.fire(
+            "เกิดข้อผิดพลาด",
+            `สร้างใบเสนอราคาสำเร็จไม่สำเร็จ ${resultCreateNewQuotation.data.response} เนื่องจาก ${resultCreateNewQuotation.data.result} `,
+            "error"
+          );
         }
-    },
-  },
+      } else {
+        //แก้ไขใบเสนอราคา
+        let EditQuotation = {
+          quotation_code: this.EditQuotation_ID,
+          customer_code: this.Quotation_customer_id,
+          package_code: this.Package_ID,
+          promotion_code: this.promotion_selectd_id,
+          event_date: this.Quotation_event_date,
+          area_viewing_date: this.Quotation_area_viewing_date,
+          amount_savory_food: this.package_amount_savory_food,
+          amount_sweet_food: this.package_amount_sweet_food,
+          amount_drink: this.package_amount_drink,
+          note: this.Quotation_note
+        };
+        console.log("quotation_code", EditQuotation);
+        let resultEditQuotation = await api.editQuotation(EditQuotation);
+        //console.log(resultEditQuotation);
+        if (resultEditQuotation.data.response == "OK") {
+          this.$swal.fire(
+            "สำเร็จ",
+            "แก้ไขใบเสนอราคาสำเร็จเรียบร้อยแล้ว",
+            "success"
+          );
+          this.$router.push({ name: "saleQuotation" });
+        } else {
+          this.$swal.fire(
+            "เกิดข้อผิดพลาด",
+            `แก้ไขใบเสนอราคาไม่สำเร็จ ${resultEditQuotation.data.response} เนื่องจาก ${resultEditQuotation.data.result} `,
+            "error"
+          );
+        }
+      }
+    }
+  }
 };
 </script>
 
 <style lang="scss">
-.combo .v-input__slot[role="combobox"] .v-select__slot{
+.combo .v-input__slot[role="combobox"] .v-select__slot {
   padding: 20px;
 }
-
 </style>

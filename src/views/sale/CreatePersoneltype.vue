@@ -3,21 +3,17 @@
 </template>
 
 <script>
-import FormPersonaltype from '@/components/Form/FormPersonaltype.vue';
+import FormPersonaltype from "@/components/Form/FormPersonaltype.vue";
 export default {
   name: "CreatePersoneltype",
-  components: { 
-    FormPersonaltype 
-    },
+  components: {
+    FormPersonaltype
+  },
 
   data: () => ({
-    CreateorEdittype:1,
-
-  }),
-
-}
+    CreateorEdittype: 1
+  })
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

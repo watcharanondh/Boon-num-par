@@ -1,11 +1,11 @@
 <template>
-  <v-container class="menu-sale">
-    <div class="menu-core-sale">
-      <div class="menu-title-sale">
+  <v-container class="menu-teambnp-eapa">
+    <div class="menu-core-teambnp">
+      <div class="menu-title-teambnp">
         เลือกเมนู
       </div>
-      <div class="menu-box-sale">
-        <div class="menu-box-size-sale">
+      <div class="menu-box-teambnp-eapa">
+        <div class="menu-box-sizeteambnp-eapa">
           <v-hover v-slot="{ hover }">
             <v-card
               :elevation="hover ? 16 : 2"
@@ -13,22 +13,22 @@
               class="mx-auto"
               height="150"
               max-width="215"
-              @click="ChangePageHome"
+              @click="PageExplorearea"
             >
               <div class="menu-img">
-                <img src="@/assets/sale-info.svg" />
+                <img src="@/assets/Exploreandmanagementarea.svg" />
               </div>
               <v-card-text
                 class=" text-center black--text"
-                @click="ChangePageHome"
+                @click="PageExplorearea"
               >
-                <h3>ข้อมูลการขาย</h3>
+                <span class="front-menu">ดูพื้นที่</span>
               </v-card-text>
             </v-card>
           </v-hover>
         </div>
 
-        <div class="menu-box-size-sale">
+        <div class="menu-box-sizeteambnp-eapa">
           <v-hover v-slot="{ hover }">
             <v-card
               :elevation="hover ? 16 : 2"
@@ -36,22 +36,22 @@
               class="mx-auto"
               height="150"
               max-width="215"
-              @click="ChangePageEquipment"
+              @click="PagePlacearrangement"
             >
               <div class="menu-img">
-                <img src="@/assets/Customizethesystem.svg" />
+                <!-- <img src="@/assets/Placearrangement.svg" /> -->
               </div>
               <v-card-text
                 class=" text-center black--text"
-                @click="ChangePageEquipment"
+                @click="PagePlacearrangement"
               >
-                <h3>ปรับแต่งระบบ</h3>
+                <span class="front-menu">จัดสถานที่</span>
               </v-card-text>
             </v-card>
           </v-hover>
         </div>
 
-        <div class="menu-box-size-sale">
+        <div class="menu-box-sizeteambnp-eapa">
           <v-hover v-slot="{ hover }">
             <v-card
               :elevation="hover ? 16 : 2"
@@ -62,13 +62,12 @@
               @click="PageBack"
             >
               <div class="menu-img">
-                <!-- <img src="@/assets/Customizethesystem.svg" /> -->
+                <!-- <img
+                src="@/assets/back.svg"
+              /> -->
               </div>
-              <v-card-text
-                class=" text-center black--text"
-                @click="PageBack"
-              >
-                <h3>ย้อนกลับ</h3>
+              <v-card-text class=" text-center black--text" @click="PageBack">
+                <span class="front-menu">ย้อนกลับ</span>
               </v-card-text>
             </v-card>
           </v-hover>
@@ -79,14 +78,14 @@
 </template>
 
 <script>
-import api from "@/services/api";
+//import api from "@/services/api";
 
 export default {
-  name: "Menusale",
+  name: "Menuteambnp",
   mounted() {
-    if (api.isLoggedIn()) {
-      this.$router.push({ name: "menusale" }).catch(() => {});
-    }
+    // if (api.isLoggedIn()) {
+    //   this.$router.push({ name: "menuteambnp_eapa" }).catch(() => {});
+    // }
 
     this.$store.dispatch({
       type: "inputRoutepath",
@@ -98,16 +97,16 @@ export default {
   },
 
   methods: {
-    ChangePageHome() {
-      this.$router.push({ name: "salehome" });
+    PageExplorethearea() {
+      this.$router.push({ name: "menuexplorearea" });
       window.location.reload();
     },
-    ChangePageEquipment() {
-      this.$router.push({ name: "saleEquipment" });
+    PagePlacearrangement() {
+      this.$router.push({ name: "menuplacearrangement" });
       window.location.reload();
     },
     PageBack() {
-      this.$router.push({ name: "HomeMainAdmin" });
+      this.$router.push({ name: "menuteambnp" });
       window.location.reload();
     },
   },
@@ -120,8 +119,29 @@ export default {
     color: #000
 </style>
 
-<style scoped>
-.pointer {
-  cursor: pointer;
+<style lang="scss" scoped>
+.menu-main-core-teambnp-eapa {
+  width: 685px;
+}
+
+.menu-main-box-teambnp-eapa {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  grid-gap: 26px 17px;
+  margin-top: 48px !important;
+}
+
+.menu-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 60%;
+  img {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: -30px;
+  }
 }
 </style>

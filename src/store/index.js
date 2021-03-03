@@ -11,11 +11,10 @@ export default new Vuex.Store({
   state: {
     isLogged: false,
     username: "",
-    Routepath:"",
-    BNP_ID:"",
-    type_id:null,
-
-  },  
+    Routepath: "",
+    BNP_ID: "",
+    type_id: null
+  },
   getters: {
     isLogin(state) {
       return state.isLogged;
@@ -31,36 +30,35 @@ export default new Vuex.Store({
     },
     Newpersonal_BNP_ID(state) {
       return state.BNP_ID;
-    },
+    }
   },
   mutations: {
-    SET_LOGGED_IN(state){
-      state.isLogged = true
+    SET_LOGGED_IN(state) {
+      state.isLogged = true;
     },
     SET_LOGGED_OUT(state) {
       state.isLogged = false;
     },
-    SET_USERNAME(state, value){
-      state.username = value
+    SET_USERNAME(state, value) {
+      state.username = value;
     },
-    SET_ROUTE_PATH(state, route){
-      state.Routepath = route
-    },
-
-    SET_type_id(state, type_id){
-      state.type_id = type_id
+    SET_ROUTE_PATH(state, route) {
+      state.Routepath = route;
     },
 
-    SET_Edit_BNP_ID(state, ID){
-      state.BNP_ID = ID
+    SET_type_id(state, type_id) {
+      state.type_id = type_id;
     },
-    
+
+    SET_Edit_BNP_ID(state, ID) {
+      state.BNP_ID = ID;
+    }
   },
   actions: {
     inputRoutepath({ commit }, { RT }) {
       commit("SET_ROUTE_PATH", RT);
     },
-  async doLogin({ commit, dispatch }, { username, password }) {
+    async doLogin({ commit, dispatch }, { username, password }) {
       let result = await api.login({ username, password });
       if (result == true) {
         commit("SET_LOGGED_IN");
@@ -74,7 +72,7 @@ export default new Vuex.Store({
         //   `Login ไม่สำเร็จ`,
         //   "error"
         // );
-        alert('Login ไม่สำเร็จ');
+        alert("Login ไม่สำเร็จ");
         dispatch("doLogout", {});
       }
     },
@@ -91,10 +89,10 @@ export default new Vuex.Store({
       }
     },
     doTypeCreate({ commit }, type_id) {
-      commit('SET_type_id', type_id);
+      commit("SET_type_id", type_id);
     },
     doEditBNPID({ commit }, BNP_ID) {
-      commit('SET_Edit_BNP_ID', BNP_ID);
+      commit("SET_Edit_BNP_ID", BNP_ID);
     }
   },
   modules: {}

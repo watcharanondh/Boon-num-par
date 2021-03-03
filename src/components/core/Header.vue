@@ -37,89 +37,40 @@
       </v-btn>
     </v-app-bar>
 
+    <div v-if="RouterPath == 1">
+      <!-- MenuSalesData -->
+      <v-navigation-drawer v-model="drawer" app>
+        <div @click="onClickHome" class="justify-center d-flex pointer">
+          <v-img
+            :src="require('@/assets/AW-Logo-Boonumpar.webp')"
+            max-height="100%"
+            max-width="60%"
+          />
+        </div>
 
-
-      <div v-if="RouterPath == 1">
-        <!-- MenuSalesData -->
-        <v-navigation-drawer v-model="drawer" app>
-            <div @click="onClickHome" class="justify-center d-flex pointer">
-              <v-img
-                :src="require('@/assets/AW-Logo-Boonumpar.webp')"
-                max-height="100%"
-                max-width="60%"
-              />
-            </div>
-
-          <v-list flat>
-            <v-list-item-group v-model="selectedMenu" mandatory color="primary">
-              <v-list-item
-                class="tile"
-                v-for="([title, route], index) in menus"
-                :key="index"
-                @click="onClickMenu(route)"
-              >
-                <v-list-item-icon>
-                  <v-icon color="white"></v-icon>
-                </v-list-item-icon>
-
-                <v-list-item-content>
-                  <v-list-item-title>{{ title }}</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list-item-group>
-          </v-list>
-          <v-divider></v-divider>
-          <v-list flat>
+        <v-list flat>
+          <v-list-item-group v-model="selectedMenu" mandatory color="primary">
             <v-list-item
-              v-for="([title, route], index) in Backmenu"
+              class="tile"
+              v-for="([title, route], index) in menus"
               :key="index"
-              @click="onClickBack(route)"
+              @click="onClickMenu(route)"
             >
               <v-list-item-icon>
                 <v-icon color="white"></v-icon>
               </v-list-item-icon>
 
               <v-list-item-content>
-                <v-list-item-title><span>{{ title }}</span></v-list-item-title>
+                <v-list-item-title>{{ title }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-          </v-list>
-        </v-navigation-drawer>
-      </div>
-      <div v-else-if="RouterPath == 2" >
-        <!-- MenuManageSystem -->
-        <v-navigation-drawer v-model="drawer" app>
-            <div @click="onClickHome" class="justify-center d-flex pointer">
-              <v-img
-                :src="require('@/assets/AW-Logo-Boonumpar.webp')"
-                max-height="100%"
-                max-width="60%"
-              />
-            </div>
-
-          <v-list>
-            <v-list-item-group v-model="selectedMenu" mandatory color="primary">
-              <v-list-item
-                class="tile"
-                v-for="([title, route], i) in menusEquipment"
-                :key="i"
-                @click="onClickMenu(route)"
-              >
-                <v-list-item-icon>
-                  <v-icon color="white"></v-icon>
-                </v-list-item-icon>
-
-                <v-list-item-content>
-                  <v-list-item-title>{{ title }}</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list-item-group>
-          </v-list>
-          <v-divider></v-divider>
-
+          </v-list-item-group>
+        </v-list>
+        <v-divider></v-divider>
+        <v-list flat>
           <v-list-item
-            v-for="([title, route], i) in Backmenu"
-            :key="i"
+            v-for="([title, route], index) in Backmenu"
+            :key="index"
             @click="onClickBack(route)"
           >
             <v-list-item-icon>
@@ -127,29 +78,75 @@
             </v-list-item-icon>
 
             <v-list-item-content>
-              <v-list-item-title><span>{{ title }}</span></v-list-item-title>
+              <v-list-item-title
+                ><span>{{ title }}</span></v-list-item-title
+              >
             </v-list-item-content>
           </v-list-item>
-        </v-navigation-drawer>
-      </div>
+        </v-list>
+      </v-navigation-drawer>
+    </div>
+    <div v-else-if="RouterPath == 2">
+      <!-- MenuManageSystem -->
+      <v-navigation-drawer v-model="drawer" app>
+        <div @click="onClickHome" class="justify-center d-flex pointer">
+          <v-img
+            :src="require('@/assets/AW-Logo-Boonumpar.webp')"
+            max-height="100%"
+            max-width="60%"
+          />
+        </div>
 
-      <div v-else>
-        
-        </div> 
+        <v-list>
+          <v-list-item-group v-model="selectedMenu" mandatory color="primary">
+            <v-list-item
+              class="tile"
+              v-for="([title, route], i) in menusEquipment"
+              :key="i"
+              @click="onClickMenu(route)"
+            >
+              <v-list-item-icon>
+                <v-icon color="white"></v-icon>
+              </v-list-item-icon>
 
+              <v-list-item-content>
+                <v-list-item-title>{{ title }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+        <v-divider></v-divider>
+
+        <v-list-item
+          v-for="([title, route], i) in Backmenu"
+          :key="i"
+          @click="onClickBack(route)"
+        >
+          <v-list-item-icon>
+            <v-icon color="white"></v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title
+              ><span>{{ title }}</span></v-list-item-title
+            >
+          </v-list-item-content>
+        </v-list-item>
+      </v-navigation-drawer>
+    </div>
+
+    <div v-else></div>
   </v-card>
 </template>
 
 <script>
-
 export default {
   name: "Header",
 
   created() {
-    if(window.innerWidth <= 768){
-      this.drawer= false
+    if (window.innerWidth <= 768) {
+      this.drawer = false;
     }
-
   },
 
   mounted() {
@@ -163,9 +160,9 @@ export default {
       this.RouterPath == "/sale/Quotation" ||
       this.RouterPath == "/sale/CreateQuotation" ||
       this.RouterPath == "/sale/EditQuotation" ||
-      this.RouterPath == "/sale/QuotationPrint" 
+      this.RouterPath == "/sale/QuotationPrint"
     ) {
-      return this.RouterPath = 1;
+      return (this.RouterPath = 1);
     } else if (
       this.RouterPath == "/sale/Equipment" ||
       this.RouterPath == "/sale/CreateEquipment" ||
@@ -177,11 +174,10 @@ export default {
       this.RouterPath == "/sale/CreatePromotion" ||
       this.RouterPath == "/sale/EditPromotion"
     ) {
-      return this.RouterPath = 2;
-    }else{
-      return this.RouterPath = -1;
+      return (this.RouterPath = 2);
+    } else {
+      return (this.RouterPath = -1);
     }
-
   },
   data() {
     return {
@@ -192,14 +188,14 @@ export default {
       menus: [
         ["แสดงผลรวม", "/sale/Home"],
         ["รายชื่อลูกค้า", "/sale/Customer"],
-        ["ใบเสนอราคา", "/sale/Quotation"],
+        ["ใบเสนอราคา", "/sale/Quotation"]
       ],
       menusEquipment: [
         ["รายการอุปกรณ์", "/sale/Equipment"],
         ["รายการแพ็คเกจ", "/sale/Package"],
-        ["รายการโปรโมชั่น", "/sale/Promotion"],
+        ["รายการโปรโมชั่น", "/sale/Promotion"]
       ],
-      Backmenu: [["ย้อนกลับ", "/sale/Menusale"]],
+      Backmenu: [["ย้อนกลับ", "/sale/Menusale"]]
     };
   },
 
@@ -209,7 +205,7 @@ export default {
     },
     title() {
       return process.env.VUE_APP_TITLE;
-    },
+    }
   },
   methods: {
     onClickLogOff() {
@@ -219,15 +215,15 @@ export default {
       this.$router.push(link).catch(() => {});
     },
 
-    onClickHome(){
-       this.$router.push('/sale/Menusale');
-       window.location.reload();
+    onClickHome() {
+      this.$router.push("/sale/Menusale");
+      window.location.reload();
     },
-    onClickBack(){
-       this.$router.push('/sale/Menusale');
-       window.location.reload();
-    },
-  },
+    onClickBack() {
+      this.$router.push("/sale/Menusale");
+      window.location.reload();
+    }
+  }
 
   // watch: {
   //   $route(to) {
@@ -241,6 +237,7 @@ export default {
 </script>
 
 <style scoped>
-.pointer {cursor: pointer;}
+.pointer {
+  cursor: pointer;
+}
 </style>
-

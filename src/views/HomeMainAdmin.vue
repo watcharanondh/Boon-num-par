@@ -1,11 +1,11 @@
 <template>
-  <v-container class="menu-main-container">
-    <div class="menu-main-core">
-      <div class="menu-main-title">
+  <v-container class="menu-homemainadmin">
+    <div class="menu-homemainadmin-core">
+      <div class="menu-title-homemainadmin">
         เลือกเมนู
       </div>
-      <div class="menu-main-box">
-        <div class="menu-main-box-size">
+      <div class="menu-box-homemainadmin">
+        <div class="menu-box-size-homemainadmin">
           <v-hover v-slot="{ hover }">
             <v-card
               :elevation="hover ? 16 : 2"
@@ -15,17 +15,17 @@
               max-width="215"
               @click="Pagesale"
             >
-              <v-card-text
-                class=" text-center black--text"
-                @click="Pagesale"
-              >
+              <div class="menu-img">
+                <!-- <img src="@/assets/Eventteaminfo.svg" /> -->
+              </div>
+              <v-card-text class=" text-center black--text" @click="Pagesale">
                 <span class="front-menu">SALE</span>
               </v-card-text>
             </v-card>
           </v-hover>
         </div>
 
-        <div class="menu-main-box-size">
+        <div class="menu-box-size-homemainadmin">
           <v-hover v-slot="{ hover }">
             <v-card
               :elevation="hover ? 16 : 2"
@@ -33,8 +33,11 @@
               class="mx-auto"
               height="150"
               max-width="215"
-               @click="Pageteambnp"
+              @click="Pageteambnp"
             >
+              <div class="menu-img">
+                <!-- <img src="@/assets/Eventteaminfo.svg" /> -->
+              </div>
               <v-card-text
                 class=" text-center black--text"
                 @click="Pageteambnp"
@@ -45,7 +48,7 @@
           </v-hover>
         </div>
 
-        <div class="menu-main-box-size">
+        <div class="menu-box-size-homemainadmin">
           <v-hover v-slot="{ hover }">
             <v-card
               :elevation="hover ? 16 : 2"
@@ -55,6 +58,9 @@
               max-width="215"
               @click="Pageteamhong"
             >
+              <div class="menu-img">
+                <!-- <img src="@/assets/Eventteaminfo.svg" /> -->
+              </div>
               <v-card-text
                 class=" text-center black--text"
                 @click="Pageteamhong"
@@ -65,7 +71,7 @@
           </v-hover>
         </div>
 
-        <div class="menu-main-box-size">
+        <div class="menu-box-size-homemainadmin">
           <v-hover v-slot="{ hover }">
             <v-card
               :elevation="hover ? 16 : 2"
@@ -75,6 +81,9 @@
               max-width="215"
               @click="Pageteamkitchen"
             >
+              <div class="menu-img">
+                <!-- <img src="@/assets/Eventteaminfo.svg" /> -->
+              </div>
               <v-card-text
                 class=" text-center black--text"
                 @click="Pageteamkitchen"
@@ -85,7 +94,7 @@
           </v-hover>
         </div>
 
-        <div class="menu-main-box-size">
+        <div class="menu-box-size-homemainadmin">
           <v-hover v-slot="{ hover }">
             <v-card
               :elevation="hover ? 16 : 2"
@@ -95,6 +104,9 @@
               max-width="215"
               @click="Pageadminmenger"
             >
+              <div class="menu-img">
+                <!-- <img src="@/assets/Eventteaminfo.svg" /> -->
+              </div>
               <v-card-text
                 class=" text-center black--text"
                 @click="Pageadminmenger"
@@ -116,7 +128,7 @@ export default {
   name: "HomeMainAdmin",
   mounted() {
     if (api.isLoggedIn()) {
-      this.$router.push({name:"HomeMainAdmin"}).catch(() => {});
+      this.$router.push({ name: "HomeMainAdmin" }).catch(() => {});
     }
 
     this.$store.dispatch({
@@ -130,23 +142,23 @@ export default {
 
   methods: {
     Pagesale() {
-      this.$router.push({name:"menusale"});
+      this.$router.push({ name: "menusale" });
       window.location.reload();
     },
     Pageteambnp() {
-      this.$router.push({name:"menuteambnp"});
+      this.$router.push({ name: "menuteambnp" });
       window.location.reload();
     },
     Pageteamhong() {
-      this.$router.push({name:"menuteamhong"});
+      this.$router.push({ name: "menuteamhong" });
       window.location.reload();
     },
     Pageteamkitchen() {
-      this.$router.push({name:"menuteamkitchen"});
+      this.$router.push({ name: "menuteamkitchen" });
       window.location.reload();
     },
     Pageadminmenger() {
-      this.$router.push({name:"menuadminmenger"});
+      this.$router.push({ name: "menuadminmenger" });
       window.location.reload();
     },
   },
@@ -158,3 +170,5 @@ export default {
   >.v-card__text
     color: #000
 </style>
+
+

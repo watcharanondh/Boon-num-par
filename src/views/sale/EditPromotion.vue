@@ -1,20 +1,18 @@
 <template>
-  <FormPromotion :CreateorEdittype="CreateorEdittype"/>
+  <FormPromotion :CreateorEdittype="CreateorEdittype" />
 </template>
 
 <script>
-import FormPromotion from '@/components/Form/FormPromotion';
+import FormPromotion from "@/components/Form/FormPromotion";
 export default {
   name: "EditPromotion",
-  components: { 
-     FormPromotion
-    },
+  components: {
+    FormPromotion
+  },
   data: () => ({
-    CreateorEdittype:false
-  }),
-}
+    CreateorEdittype: false
+  })
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

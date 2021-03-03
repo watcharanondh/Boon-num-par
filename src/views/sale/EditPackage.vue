@@ -1,20 +1,18 @@
 <template>
-  <FormPackage :CreateorEdittype="CreateorEdittype"/>
+  <FormPackage :CreateorEdittype="CreateorEdittype" />
 </template>
 
 <script>
-import FormPackage from '@/components/Form/FormPackage';
+import FormPackage from "@/components/Form/FormPackage";
 export default {
   name: "EditPackage",
-  components: { 
-     FormPackage
-    },
+  components: {
+    FormPackage
+  },
   data: () => ({
-    CreateorEdittype:false
-  }),
-}
+    CreateorEdittype: false
+  })
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

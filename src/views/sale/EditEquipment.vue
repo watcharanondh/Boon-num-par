@@ -1,21 +1,18 @@
 <template>
-  <FormEquipment :CreateorEdittype="CreateorEdittype"/>
+  <FormEquipment :CreateorEdittype="CreateorEdittype" />
 </template>
 
 <script>
-import FormEquipment from '@/components/Form/FormEquipment';
+import FormEquipment from "@/components/Form/FormEquipment";
 export default {
   name: "EditEquipment",
-  components: { 
-     FormEquipment
-    },
+  components: {
+    FormEquipment
+  },
   data: () => ({
-    CreateorEdittype:false,
-  }),
-
-}
+    CreateorEdittype: false
+  })
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

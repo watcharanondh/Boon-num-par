@@ -16,7 +16,7 @@
       <v-col>
         <v-btn
           color="#29CC97"
-          @click="$router.push({name:'saleCreateEquipment'})"
+          @click="$router.push({ name: 'saleCreateEquipment' })"
           rounded
         >
           <span class="white--text">สร้างอุปกรณ์</span></v-btn
@@ -40,8 +40,14 @@
             <!-- table top section -->
             <template v-slot:top>
               <v-toolbar flat>
-                <v-toolbar-title><span class="header-table-title">รายการอุปกรณ์</span></v-toolbar-title>
-                <v-toolbar-title><span class="order">{{total}}</span></v-toolbar-title>
+                <v-toolbar-title
+                  ><span class="header-table-title"
+                    >รายการอุปกรณ์</span
+                  ></v-toolbar-title
+                >
+                <v-toolbar-title
+                  ><span class="order">{{ total }}</span></v-toolbar-title
+                >
                 <v-spacer></v-spacer>
 
                 <!-- <div>
@@ -118,62 +124,79 @@
 import api from "@/services/api";
 export default {
   name: "Equipment",
-async mounted() {
+  async mounted() {
     this.loadEquipment();
     this.$store.dispatch({
-          type: "inputRoutepath",
-          RT: this.$route.path,
+      type: "inputRoutepath",
+      RT: this.$route.path
     });
-
   },
 
   data: () => ({
-    total:null,
+    total: null,
     table_customer: [],
     headers_table_customer: [
-      { text: "หมายเลขอุปกรณ์", value: "equipment_code", sortable: true, align: "start", color: "black"},
-      { text: "รายชื่ออุปกรณ์", value: "name", sortable: false, align: "start" },
-      { text: "ถูกใช้", value: "stock_out", sortable: false, align: "start"},
-      { text: "คงเหลือ", value: "balance_stock", sortable: false, align: "start"},
+      {
+        text: "หมายเลขอุปกรณ์",
+        value: "equipment_code",
+        sortable: true,
+        align: "start",
+        color: "black"
+      },
+      {
+        text: "รายชื่ออุปกรณ์",
+        value: "name",
+        sortable: false,
+        align: "start"
+      },
+      { text: "ถูกใช้", value: "stock_out", sortable: false, align: "start" },
+      {
+        text: "คงเหลือ",
+        value: "balance_stock",
+        sortable: false,
+        align: "start"
+      },
       { text: "", value: "", sortable: false, align: "start" },
-      { text: "", value: "", sortable: false, align: "start" },
-    ],
+      { text: "", value: "", sortable: false, align: "start" }
+    ]
   }),
 
   methods: {
-    async loadEquipment(){
-            let result = await api.getEquipment();
-            this.table_customer = result.data.result;
-            this.total = result.data.count_total;
-          },
-    async EditEquipment(item){
-          await this.$store.dispatch({
-                  type: "doEditBNPID",
-                  BNP_ID: item.equipment_code,
-               });
-          await this.$router.push({name:'saleEditEquipment'});
-          },
+    async loadEquipment() {
+      let result = await api.getEquipment();
+      this.table_customer = result.data.result;
+      this.total = result.data.count_total;
+    },
+    async EditEquipment(item) {
+      await this.$store.dispatch({
+        type: "doEditBNPID",
+        BNP_ID: item.equipment_code
+      });
+      await this.$router.push({ name: "saleEditEquipment" });
+    },
 
-    async DelEquipment(item){
-          this.$swal.fire({
-            title:`ต้องการลบอุปกรณ์นี้ใช่หรือไม่ ?`,
-            showDenyButton: true,
-            confirmButtonText: `ยืนยัน`,
-            denyButtonText: `ยกเลิก`,
-          }).then(async (result) => {
-            if (result.isConfirmed) {
-                let delEquipment ={"equipment_code":item.equipment_code}
-                let resultdel = await api.delEquipment(delEquipment);
-                if (resultdel.data.response =='OK'){
-                  this.$swal.fire('ยืนยันการลบเรียบร้อย', '', 'success')
-                  await this.loadEquipment()
-                }
-            } else if (result.isDenied) {
-              this.$swal.fire('ยกเลิกการลบ', '', 'error')
+    async DelEquipment(item) {
+      this.$swal
+        .fire({
+          title: `ต้องการลบอุปกรณ์นี้ใช่หรือไม่ ?`,
+          showDenyButton: true,
+          confirmButtonText: `ยืนยัน`,
+          denyButtonText: `ยกเลิก`
+        })
+        .then(async result => {
+          if (result.isConfirmed) {
+            let delEquipment = { equipment_code: item.equipment_code };
+            let resultdel = await api.delEquipment(delEquipment);
+            if (resultdel.data.response == "OK") {
+              this.$swal.fire("ยืนยันการลบเรียบร้อย", "", "success");
+              await this.loadEquipment();
             }
-          })
+          } else if (result.isDenied) {
+            this.$swal.fire("ยกเลิกการลบ", "", "error");
+          }
+        });
     }
-  },
+  }
 };
 </script>
 

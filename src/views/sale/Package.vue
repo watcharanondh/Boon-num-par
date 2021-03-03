@@ -16,7 +16,7 @@
       <v-col>
         <v-btn
           color="#29CC97"
-          @click="$router.push({name:'saleCreatePackage'})"
+          @click="$router.push({ name: 'saleCreatePackage' })"
           rounded
         >
           <span class="white--text">สร้างแพ็คเก็จ</span></v-btn
@@ -40,8 +40,14 @@
             <!-- table top section -->
             <template v-slot:top>
               <v-toolbar flat>
-                <v-toolbar-title><span class="header-table-title">รายการแพ็กเก็จ</span></v-toolbar-title>
-                <v-toolbar-title><span class="order">{{total}}</span></v-toolbar-title>
+                <v-toolbar-title
+                  ><span class="header-table-title"
+                    >รายการแพ็กเก็จ</span
+                  ></v-toolbar-title
+                >
+                <v-toolbar-title
+                  ><span class="order">{{ total }}</span></v-toolbar-title
+                >
                 <v-spacer></v-spacer>
 
                 <!-- <div>
@@ -120,57 +126,69 @@ export default {
   async mounted() {
     this.loadPackage();
     this.$store.dispatch({
-          type: "inputRoutepath",
-          RT: this.$route.path,
+      type: "inputRoutepath",
+      RT: this.$route.path
     });
-
   },
 
   data: () => ({
-    total:null,
+    total: null,
     table_package: [],
     headers_table_package: [
-      { text: "รหัสแพ็กเก็จ", value: "package_code", sortable: true, align: "start", color: "black"},
+      {
+        text: "รหัสแพ็กเก็จ",
+        value: "package_code",
+        sortable: true,
+        align: "start",
+        color: "black"
+      },
       { text: "ชื่อแพ็กเก็จ", value: "name", sortable: false, align: "start" },
-      { text: "รายละเอียด", value: "food_des", sortable: false, align: "start"},
+      {
+        text: "รายละเอียด",
+        value: "food_des",
+        sortable: false,
+        align: "start"
+      },
       { text: "", value: "", sortable: false, align: "start" },
-      { text: "", value: "", sortable: false, align: "start" },
-    ],
+      { text: "", value: "", sortable: false, align: "start" }
+    ]
   }),
 
   methods: {
-    async loadPackage(){
-            let result = await api.getPackage();
-            this.table_package = result.data.result;
-            this.total = result.data.count_total;
-          },
-    async EditPackage(item){
-          await this.$store.dispatch({
-                  type: "doEditBNPID",
-                  BNP_ID: item.package_code,
-               });
-          await this.$router.push({name:'saleEditPackage'});
-          },
-    async DelPackage(item){
-          this.$swal.fire({
-            title:`ต้องการลบแพ็กเก็จนี้ใช่หรือไม่ ?`,
-            showDenyButton: true,
-            confirmButtonText: `ยืนยัน`,
-            denyButtonText: `ยกเลิก`,
-          }).then(async (result) => {
-            if (result.isConfirmed) {
-                let delPackage ={"package_code":item.package_code}
-                let resultdel = await api.delPackage(delPackage);
-                if (resultdel.data.response =='OK'){
-                  this.$swal.fire('ยืนยันการลบเรียบร้อย', '', 'success')
-                  await this.loadPackage()
-                }
-            } else if (result.isDenied) {
-              this.$swal.fire('ยกเลิกการลบ', '', 'error')
+    async loadPackage() {
+      let result = await api.getPackage();
+      this.table_package = result.data.result;
+      this.total = result.data.count_total;
+    },
+    async EditPackage(item) {
+      await this.$store.dispatch({
+        type: "doEditBNPID",
+        BNP_ID: item.package_code
+      });
+      await this.$router.push({ name: "saleEditPackage" });
+    },
+    async DelPackage(item) {
+      this.$swal
+        .fire({
+          title: `ต้องการลบแพ็กเก็จนี้ใช่หรือไม่ ?`,
+          showDenyButton: true,
+          confirmButtonText: `ยืนยัน`,
+          denyButtonText: `ยกเลิก`
+        })
+        .then(async result => {
+          if (result.isConfirmed) {
+            let delPackage = { package_code: item.package_code };
+            let resultdel = await api.delPackage(delPackage);
+            if (resultdel.data.response == "OK") {
+              this.$swal.fire("ยืนยันการลบเรียบร้อย", "", "success");
+              await this.loadPackage();
             }
-          })
+          } else if (result.isDenied) {
+            this.$swal.fire("ยกเลิกการลบ", "", "error");
+          }
+        });
     }
-  },
+  }
 };
 </script>
 

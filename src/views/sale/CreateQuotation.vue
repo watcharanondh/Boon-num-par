@@ -1,20 +1,18 @@
 <template>
-  <FormQuotation :CreateorEdittype="CreateorEdittype"/>
+  <FormQuotation :CreateorEdittype="CreateorEdittype" />
 </template>
 
 <script>
-import FormQuotation from '@/components/Form/FormQuotation';
+import FormQuotation from "@/components/Form/FormQuotation";
 export default {
   name: "CreateQuotation",
-  components: { 
-     FormQuotation
-    },
+  components: {
+    FormQuotation
+  },
   data: () => ({
-    CreateorEdittype:true
-  }),
-}
+    CreateorEdittype: true
+  })
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

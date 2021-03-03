@@ -92,16 +92,18 @@
           >
             <template v-slot:top>
               <v-toolbar flat>
-                <v-toolbar-title class="header-table-title">รายชื่อลูกค้าล่าสุด</v-toolbar-title>
+                <v-toolbar-title class="header-table-title"
+                  >รายชื่อลูกค้าล่าสุด</v-toolbar-title
+                >
               </v-toolbar>
             </template>
             <template v-slot:item="{ item }">
-            <tr>
-              <td>{{ item.customer_code}}</td>
-              <td>{{ item.name }}</td>
-              <td>{{ item.created_at_date }}</td>
-            </tr>
-           </template>
+              <tr>
+                <td>{{ item.customer_code }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.created_at_date }}</td>
+              </tr>
+            </template>
           </v-data-table>
         </v-card>
       </v-col>
@@ -116,7 +118,7 @@ import api from "@/services/api";
 export default {
   name: "Home",
   components: {
-    StockCard,
+    StockCard
   },
 
   mounted() {
@@ -124,7 +126,7 @@ export default {
 
     this.$store.dispatch({
       type: "inputRoutepath",
-      RT: this.$route.path,
+      RT: this.$route.path
     });
   },
 
@@ -136,20 +138,44 @@ export default {
 
     Latest_quotation: [],
     headers_latest_quotation: [
-      { text: "เลขที่ใบเสนอราคา", value: "quotation_code", sortable: false, align: "start" },
-      { text: "ชื่อลูกค้า",value: "customer_tax_invoices", sortable: false, align: "start"},
-      { text: "สถานะ", value: "quotation_status", sortable: false, align: "start",},
+      {
+        text: "เลขที่ใบเสนอราคา",
+        value: "quotation_code",
+        sortable: false,
+        align: "start"
+      },
+      {
+        text: "ชื่อลูกค้า",
+        value: "customer_tax_invoices",
+        sortable: false,
+        align: "start"
+      },
+      {
+        text: "สถานะ",
+        value: "quotation_status",
+        sortable: false,
+        align: "start"
+      }
     ],
 
     Latest_customer_list: [],
     headers_latest_customer_list: [
-      { text: "รหัสลูกค้า", value: "customer_code", sortable: false, align: "start" },
-      { text: "ชื่อลูกค้า",  value: "name", sortable: false, align: "start", },
-      { text: "วันที่สร้าง",value: "created_at_date",  sortable: false, align: "start" },
-    ],
+      {
+        text: "รหัสลูกค้า",
+        value: "customer_code",
+        sortable: false,
+        align: "start"
+      },
+      { text: "ชื่อลูกค้า", value: "name", sortable: false, align: "start" },
+      {
+        text: "วันที่สร้าง",
+        value: "created_at_date",
+        sortable: false,
+        align: "start"
+      }
+    ]
   }),
   methods: {
-
     async loadDatas() {
       let result = await api.getDashboard();
       this.total = result.data.result.header[0].total;
@@ -158,12 +184,9 @@ export default {
       this.cancel = result.data.result.header[3].cancel;
       this.Latest_quotation = result.data.result.latestquotation;
       this.Latest_customer_list = result.data.result.latestcustomer;
-    },
-   
-  },
+    }
+  }
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
