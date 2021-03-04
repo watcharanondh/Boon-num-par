@@ -1,18 +1,24 @@
 module.exports = (sequelize, DataTypes) => {
-  const roles = sequelize.define("roles", {
+  const team_users = sequelize.define("team_users", {
     id: {
-      type: DataTypes.INTEGER(1),
+      type: DataTypes.INTEGER(10),
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
     },
-    name: {
-      type: DataTypes.STRING(255),
+    user_id: {
+      type: DataTypes.INTEGER(10),
       allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
     },
-    role_types: {
-      type: DataTypes.INTEGER(1),
+    team_id: {
+      type: DataTypes.INTEGER(10),
       allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
     },
     createdAt: {
       field: "created_at",
@@ -46,11 +52,11 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 0,
     },
   });
-  roles.associate = models => {
-    roles.hasMany(models.positions, {
-      foreignKey: "id"
-    });
+
+  team_users.associate = models => {
+    team_users.belongsTo(models.users, {foreignKey: "user_id"});
+    team_users.belongsTo(models.teams, {foreignKey: "team_id"});
   };
 
-  return roles;
+  return team_users;
 };

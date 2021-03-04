@@ -63,6 +63,9 @@ module.exports = (sequelize, DataTypes) => {
     districts.hasMany(models.customer_tax_invoices, {
       foreignKey: "id"
     });
+    districts.hasMany(models.user_details, {
+      foreignKey: "id"
+    });
   };
 
   return districts;

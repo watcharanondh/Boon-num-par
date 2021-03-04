@@ -1,39 +1,42 @@
 module.exports = (sequelize, DataTypes) => {
-  const users = sequelize.define("users", {
+  const user_details = sequelize.define("user_details", {
     id: {
       type: DataTypes.INTEGER(10),
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
     },
-    username: {
-      type: DataTypes.STRING(50),
-      allowNull: true,
-      validate: {
-        notEmpty: true,
-      },
+    user_code : {
+      type: DataTypes.STRING(10),
+      allowNull: false,
+      unique: true,
     },
-    password: {
-      type: DataTypes.STRING(255),
-      allowNull: true,
-      validate: {
-        notEmpty: true,
-      },
-    },
-    email: {
+    name: {
       type: DataTypes.STRING(100),
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
     },
-    profile_url: {
-      type: DataTypes.STRING(255),
+    nickname: {
+      type: DataTypes.STRING(100),
       allowNull: true,
-      defaultValue: null,
     },
-    remember_token: {
-      type: DataTypes.STRING(255),
+    position_id : {
+      type: DataTypes.INTEGER(1),
+      allowNull: true,
+    },
+    telephone_number: {
+      type: DataTypes.STRING(20),
+      allowNull: false,
+    },
+    line_id: {
+      type: DataTypes.STRING(50),
+      allowNull: true,
+    },
+    address: {
+      type: DataTypes.INTEGER(10),
+      allowNull: false,
+    },
+    district_id: {
+      type: DataTypes.INTEGER(10),
       allowNull: false,
     },
     createdAt: {
@@ -57,11 +60,6 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       defaultValue: null,
     },
-    last_login: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      defaultValue: null,
-    },
     is_active: {
       type: DataTypes.INTEGER(1),
       allowNull: false,
@@ -74,10 +72,11 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
-  users.associate = models => {
-    users.belongsTo(models.user_details, { foreignKey: "id" });
-    users.hasMany(models.team_users, { foreignKey: "user_id" });
+  user_details.associate = models => {
+    user_details.belongsTo(models.users, { foreignKey: "id" });
+    user_details.belongsTo(models.districts, { foreignKey: "district_id" });
+    user_details.belongsTo(models.positions, { foreignKey: "position_id" });
   };
 
-  return users;
+  return user_details;
 };

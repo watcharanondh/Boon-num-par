@@ -16,15 +16,15 @@
   "localhost": {
     "username": "root",
     "password": null,
-    "database": "boonnumpar",
+    "database": "dem_bnp",
     "host": "localhost",
     "dialect": "mysql"
   },
   "production": {
-    "username": "dem_bnp",
-    "password": "kWsfW3YtJ8",
-    "database": "dem_bnp",
-    "host": "103.82.248.102",
+    "username": "dem_bnpprod",
+    "password": "BucXKFed12",
+    "database": "dem_bnpprod",
+    "host": "localhost",
     "dialect": "mysql"
   }
 }

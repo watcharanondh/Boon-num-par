@@ -1,18 +1,23 @@
 module.exports = (sequelize, DataTypes) => {
-  const roles = sequelize.define("roles", {
+  const quotation_checklists = sequelize.define("quotation_checklists", {
     id: {
-      type: DataTypes.INTEGER(1),
+      type: DataTypes.INTEGER(11),
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
     },
-    name: {
-      type: DataTypes.STRING(255),
+    quotation_id: {
+      type: DataTypes.INTEGER(11),
       allowNull: false,
     },
-    role_types: {
+    checklist_id: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false,
+    },
+    status: {
       type: DataTypes.INTEGER(1),
       allowNull: false,
+      defaultValue: 0,
     },
     createdAt: {
       field: "created_at",
@@ -46,11 +51,10 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 0,
     },
   });
-  roles.associate = models => {
-    roles.hasMany(models.positions, {
-      foreignKey: "id"
-    });
+  quotation_checklists.associate = models => {
+    quotation_checklists.belongsTo(models.quotations, { foreignKey: "quotation_id" });
+    quotation_checklists.belongsTo(models.checklists, { foreignKey: "checklist_id" });
   };
 
-  return roles;
+  return quotation_checklists;
 };

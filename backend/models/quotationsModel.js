@@ -23,20 +23,28 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       allowNull: false,
     },
+    event_team_id: {
+      type: DataTypes.INTEGER(10),
+      allowNull: false,
+    },
+    area_viewing_team_id: {
+      type: DataTypes.INTEGER(10),
+      allowNull: false,
+    },
     amount_savory_food: {
       type: DataTypes.INTEGER(5),
       allowNull: false,
-      defaultValue:0
+      defaultValue: 0
     },
     amount_sweet_food: {
       type: DataTypes.INTEGER(5),
       allowNull: false,
-      defaultValue:0
+      defaultValue: 0
     },
     amount_drink: {
       type: DataTypes.INTEGER(5),
       allowNull: false,
-      defaultValue:0
+      defaultValue: 0
     },
     quotation_status_id: {
       type: DataTypes.INTEGER(1),
@@ -82,6 +90,8 @@ module.exports = (sequelize, DataTypes) => {
   quotations.associate = models => {
     quotations.belongsTo(models.customers, { foreignKey: "customer_id" });
     quotations.belongsTo(models.quotation_statuses, { foreignKey: "quotation_status_id" });
+    quotations.belongsTo(models.teams, { foreignKey: "event_team_id", as: "event_team" });
+    quotations.belongsTo(models.teams, { foreignKey: "area_viewing_team_id", as: "area_viewing_team" });
     quotations.hasMany(models.quotation_packages, { foreignKey: "quotation_id" });
     quotations.hasMany(models.quotation_promotions, { foreignKey: "quotation_id" });
   };

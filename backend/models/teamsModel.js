@@ -1,17 +1,27 @@
 module.exports = (sequelize, DataTypes) => {
-  const roles = sequelize.define("roles", {
+  const teams = sequelize.define("teams", {
     id: {
-      type: DataTypes.INTEGER(1),
+      type: DataTypes.INTEGER(10),
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
     },
+    team_code: {
+      type: DataTypes.STRING(20),
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
     name: {
       type: DataTypes.STRING(255),
       allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
     },
-    role_types: {
-      type: DataTypes.INTEGER(1),
+    mobile_phone_number: {
+      type: DataTypes.STRING(20),
       allowNull: false,
     },
     createdAt: {
@@ -46,11 +56,11 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 0,
     },
   });
-  roles.associate = models => {
-    roles.hasMany(models.positions, {
-      foreignKey: "id"
-    });
+
+  teams.associate = models => {
+    teams.hasMany(models.team_users, { foreignKey: "team_id" });
+    teams.hasMany(models.quotations, { foreignKey: "id" });
   };
 
-  return roles;
+  return teams;
 };

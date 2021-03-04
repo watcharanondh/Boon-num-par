@@ -1,18 +1,29 @@
 module.exports = (sequelize, DataTypes) => {
-  const roles = sequelize.define("roles", {
+  const positions = sequelize.define("positions", {
     id: {
       type: DataTypes.INTEGER(1),
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
     },
+    position_code : {
+      type: DataTypes.STRING(20),
+      allowNull: false,
+    },
     name: {
       type: DataTypes.STRING(255),
       allowNull: false,
     },
-    role_types: {
+    description: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
+    role_id: {
       type: DataTypes.INTEGER(1),
       allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
     },
     createdAt: {
       field: "created_at",
@@ -46,11 +57,10 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 0,
     },
   });
-  roles.associate = models => {
-    roles.hasMany(models.positions, {
-      foreignKey: "id"
-    });
+  positions.associate = models => {
+    positions.belongsTo(models.roles, { foreignKey: "role_id" });
+    positions.hasMany(models.user_details, {foreignKey: "id"});
   };
 
-  return roles;
+  return positions;
 };
