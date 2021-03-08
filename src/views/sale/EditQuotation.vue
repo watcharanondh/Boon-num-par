@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import FormQuotation from "@/components/Form/FormQuotation";
+import FormQuotation from "@/components/Form/FormSale/FormQuotation";
 export default {
   name: "CreateQuotation",
   components: {

@@ -9,6 +9,8 @@ export const server = {
   TOKEN_KEY: `token`,
   USERNAME: `username`,
 
+  // Sale
+
   //Home
   DASHBOARD_URL: `/sale/dashboard/showall`,
 
@@ -71,5 +73,32 @@ export const server = {
 
   ADD_PROMOTION_URL: `/sale/promotions/addnewpromotion`,
   PUT_EDIT_PROMOTION_URL: `/sale/promotions/editpromotion`,
-  DELETE_PROMOTION_URL: `/sale/promotions/delpromotion`
+  DELETE_PROMOTION_URL: `/sale/promotions/delpromotion`,
+
+  //จบ sale
+
+  //Team BNP
+
+  //ModalUpdateLook&ManageAppointment
+  LIST_UPDATELOOKANDMANAGEAPPOINTMENT_URL:`/bnp/shipping/listteamtoshipping`,
+
+
+  //ModalUpdateLook&ManageAppointment
+  LIST_ALL_SURVEY_TEAM_URL:`/bnp/surveyteam/listallsurveyteam`,
+
+
+  //Customizecheck
+  LIST_ALL_EVENTTEAMINFORMATION_URL:`/bnp/shipping/listallshipping`,
+  LIST_TEAMS_ASSIGN_EVENTTEAMINFORMATION_URL:`/bnp/shipping/listteamtoshipping`,
+
+  //Customizethesystem
+  LIST_ALL_CUSTOMIZETHESYSTEM_URL:`/bnp/teammanage/listallteams`,
+  LIST_ALL_CREATE_CUSTOMIZETHESYSTEM_URL:`/bnp/teammanage/listuserstocreateteam`,
+  LIST_EDIT_CUSTOMIZETHESYSTEM_URL:`/bnp/teammanage/listteam`,
+
+  ADD_CUSTOMIZETHESYSTEM_URL:`/bnp/teammanage/createteam`,
+  PUT_EDIT_CUSTOMIZETHESYSTEM_URL:`/bnp/teammanage/editteam`,
+
+
+
 };

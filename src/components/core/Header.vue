@@ -8,7 +8,7 @@
     >
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-toolbar-title>{{ title }} V{{ version }}</v-toolbar-title>
+      <v-toolbar-title>{{ title }} Phase {{ version }}</v-toolbar-title>
 
       <v-spacer></v-spacer>
 
@@ -40,7 +40,7 @@
     <div v-if="RouterPath == 1">
       <!-- MenuSalesData -->
       <v-navigation-drawer v-model="drawer" app>
-        <div @click="onClickHome" class="justify-center d-flex pointer">
+        <div @click="onClicksale" class="justify-center d-flex pointer">
           <v-img
             :src="require('@/assets/AW-Logo-Boonumpar.webp')"
             max-height="100%"
@@ -52,7 +52,7 @@
           <v-list-item-group v-model="selectedMenu" mandatory color="primary">
             <v-list-item
               class="tile"
-              v-for="([title, route], index) in menus"
+              v-for="([title, route], index) in menusSale"
               :key="index"
               @click="onClickMenu(route)"
             >
@@ -69,9 +69,9 @@
         <v-divider></v-divider>
         <v-list flat>
           <v-list-item
-            v-for="([title, route], index) in Backmenu"
+            v-for="([title, route], index) in BackMenusale"
             :key="index"
-            @click="onClickBack(route)"
+            @click="onClickBacksale(route)"
           >
             <v-list-item-icon>
               <v-icon color="white"></v-icon>
@@ -89,7 +89,7 @@
     <div v-else-if="RouterPath == 2">
       <!-- MenuManageSystem -->
       <v-navigation-drawer v-model="drawer" app>
-        <div @click="onClickHome" class="justify-center d-flex pointer">
+        <div @click="onClicksale" class="justify-center d-flex pointer">
           <v-img
             :src="require('@/assets/AW-Logo-Boonumpar.webp')"
             max-height="100%"
@@ -101,7 +101,7 @@
           <v-list-item-group v-model="selectedMenu" mandatory color="primary">
             <v-list-item
               class="tile"
-              v-for="([title, route], i) in menusEquipment"
+              v-for="([title, route], i) in menusSaleEquipment"
               :key="i"
               @click="onClickMenu(route)"
             >
@@ -118,9 +118,9 @@
         <v-divider></v-divider>
 
         <v-list-item
-          v-for="([title, route], i) in Backmenu"
+          v-for="([title, route], i) in BackMenusale"
           :key="i"
-          @click="onClickBack(route)"
+          @click="onClickBacksale(route)"
         >
           <v-list-item-icon>
             <v-icon color="white"></v-icon>
@@ -134,6 +134,103 @@
         </v-list-item>
       </v-navigation-drawer>
     </div>
+            <div v-else-if="RouterPath == 3">
+      <!-- MenusteambnpCustomizethesyste -->
+      <v-navigation-drawer v-model="drawer" app>
+        <div @click="onClickteambnp" class="justify-center d-flex pointer">
+          <v-img
+            :src="require('@/assets/AW-Logo-Boonumpar.webp')"
+            max-height="100%"
+            max-width="60%"
+          />
+        </div>
+
+        <v-list>
+          <v-list-item-group v-model="selectedMenu" mandatory color="primary">
+            <v-list-item
+              class="tile"
+              v-for="([title, route], i) in menusEventteaminformation"
+              :key="i"
+              @click="onClickMenu(route)"
+            >
+              <v-list-item-icon>
+                <v-icon color="white"></v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-content>
+                <v-list-item-title>{{ title }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+        <v-divider></v-divider>
+
+        <v-list-item
+          v-for="([title, route], i) in BackMenuteambnp"
+          :key="i"
+          @click="onClickBackteambnp(route)"
+        >
+          <v-list-item-icon>
+            <v-icon color="white"></v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title
+              ><span>{{ title }}</span></v-list-item-title
+            >
+          </v-list-item-content>
+        </v-list-item>
+      </v-navigation-drawer>
+    </div>
+        <div v-else-if="RouterPath == 4">
+      <!-- MenusteambnpCustomizethesyste -->
+      <v-navigation-drawer v-model="drawer" app>
+        <div @click="onClickteambnp" class="justify-center d-flex pointer">
+          <v-img
+            :src="require('@/assets/AW-Logo-Boonumpar.webp')"
+            max-height="100%"
+            max-width="60%"
+          />
+        </div>
+
+        <v-list>
+          <v-list-item-group v-model="selectedMenu" mandatory color="primary">
+            <v-list-item
+              class="tile"
+              v-for="([title, route], i) in menusteambnpCustomizethesyste"
+              :key="i"
+              @click="onClickMenu(route)"
+            >
+              <v-list-item-icon>
+                <v-icon color="white"></v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-content>
+                <v-list-item-title>{{ title }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+        <v-divider></v-divider>
+
+        <v-list-item
+          v-for="([title, route], i) in BackMenuteambnp"
+          :key="i"
+          @click="onClickBackteambnp(route)"
+        >
+          <v-list-item-icon>
+            <v-icon color="white"></v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title
+              ><span>{{ title }}</span></v-list-item-title
+            >
+          </v-list-item-content>
+        </v-list-item>
+      </v-navigation-drawer>
+    </div>
+
 
     <div v-else></div>
   </v-card>
@@ -151,7 +248,6 @@ export default {
 
   mounted() {
     this.RouterPath = this.$store.getters["Route_path"];
-
     if (
       this.RouterPath == "/sale/Home" ||
       this.RouterPath == "/sale/Customer" ||
@@ -175,6 +271,17 @@ export default {
       this.RouterPath == "/sale/EditPromotion"
     ) {
       return (this.RouterPath = 2);
+    } else if (
+      this.RouterPath == "/teambnp/Eventteaminformation"
+      // this.RouterPath == "/teambnp/Createmanageteam"||
+    ) {
+      return (this.RouterPath = 3);
+    } else if (
+      this.RouterPath == "/teambnp/Manageteamlists"||
+      this.RouterPath == "/teambnp/Createmanageteam"||
+      this.RouterPath == "/teambnp/Customizecheck" 
+    ) {
+      return (this.RouterPath = 4);
     } else {
       return (this.RouterPath = -1);
     }
@@ -185,17 +292,25 @@ export default {
 
       drawer: true,
       selectedMenu: 0,
-      menus: [
+      menusSale: [
         ["แสดงผลรวม", "/sale/Home"],
         ["รายชื่อลูกค้า", "/sale/Customer"],
-        ["ใบเสนอราคา", "/sale/Quotation"]
+        ["ใบเสนอราคา", "/sale/Quotation"],
       ],
-      menusEquipment: [
+      menusSaleEquipment: [
         ["รายการอุปกรณ์", "/sale/Equipment"],
         ["รายการแพ็คเกจ", "/sale/Package"],
-        ["รายการโปรโมชั่น", "/sale/Promotion"]
+        ["รายการโปรโมชั่น", "/sale/Promotion"],
       ],
-      Backmenu: [["ย้อนกลับ", "/sale/Menusale"]]
+      menusEventteaminformation: [
+        ["รายการจัดทีม", "/teambnp/Eventteaminformation"],
+      ],
+      menusteambnpCustomizethesyste: [
+        ["ปรับแต่งทีม", "/teambnp/Manageteamlists"],
+        ["ปรับแต่งการตรวจสอบ", "/teambnp/Customizecheck"],
+      ],
+      BackMenusale: [["ย้อนกลับ", "/sale/Menusale"]],
+      BackMenuteambnp: [["กลับสู่เมนูหลัก", "/team/Menuteambnp"]],
     };
   },
 
@@ -205,7 +320,7 @@ export default {
     },
     title() {
       return process.env.VUE_APP_TITLE;
-    }
+    },
   },
   methods: {
     onClickLogOff() {
@@ -215,15 +330,26 @@ export default {
       this.$router.push(link).catch(() => {});
     },
 
-    onClickHome() {
+    onClicksale() {
       this.$router.push("/sale/Menusale");
       window.location.reload();
     },
-    onClickBack() {
+
+    onClickBacksale() {
       this.$router.push("/sale/Menusale");
       window.location.reload();
-    }
-  }
+    },
+
+    onClickteambnp() {
+      this.$router.push("/teambnp/Menuteambnp");
+      window.location.reload();
+    },
+    
+    onClickBackteambnp() {
+      this.$router.push("/teambnp/Menuteambnp");
+      window.location.reload();
+    },
+  },
 
   // watch: {
   //   $route(to) {

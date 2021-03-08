@@ -139,8 +139,7 @@
                 <v-col lg="6" md="6" sm="12" cols="12">
                   <v-row class="no-gutters">
                     <h3>รายการอุปกรณ์</h3>
-                    <span class="order mt-2"
-                      >{{ Equipment_table_all_total }} รายการ</span
+                    <span class="order mt-2">{{ Equipment_table_all_total }} รายการ</span
                     >
                   </v-row>
 
@@ -461,7 +460,7 @@ export default {
         } else {
           this.$swal.fire(
             "เกิดข้อผิดพลาด",
-            `สร้างแพ็กเก็จราคาไม่สำเร็จ ${resultCreateNewPackage.data.response} เนื่องจาก ${resultCreateNewPackage.data.result} `,
+            `สร้างแพ็กเก็จไม่สำเร็จ ${resultCreateNewPackage.data.response} เนื่องจาก ${resultCreateNewPackage.data.result} `,
             "error"
           );
         }
@@ -488,14 +487,14 @@ export default {
         if (resultEditPackage.data.response == "OK") {
           this.$swal.fire(
             "สำเร็จ",
-            "แก้ไขแพ็กเก็จราคาสำเร็จเรียบร้อยแล้ว",
+            "แก้ไขแพ็กเก็จสำเร็จเรียบร้อยแล้ว",
             "success"
           );
           this.$router.push({ name: "salePackage" });
         } else {
           this.$swal.fire(
             "เกิดข้อผิดพลาด",
-            `แก้ไขแพ็กเก็จราคาไม่สำเร็จ ${resultEditPackage.data.response} เนื่องจาก ${resultEditPackage.data.result} `,
+            `แก้ไขแพ็กเก็จไม่สำเร็จ ${resultEditPackage.data.response} เนื่องจาก ${resultEditPackage.data.result} `,
             "error"
           );
         }

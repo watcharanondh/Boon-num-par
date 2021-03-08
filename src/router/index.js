@@ -24,11 +24,24 @@ import CreatePromotion from "@/views/sale/CreatePromotion.vue";
 import EditPromotion from "@/views/sale/EditPromotion.vue";
 
 import Menuteambnp from "@/views/teambnp/Menuteambnp.vue";
-import Menuteambnp_eapa from "@/views/teambnp/Menuteambnp_eapa.vue";
+
 import Eventteaminformation from "@/views/teambnp/Eventteaminformation.vue";
-import Exploreandmanagementarea from "@/views/teambnp/Exploreandmanagementarea.vue";
+import Menuteambnp_eapa from "@/views/teambnp/Menuteambnp_eapa.vue";
 import Workprogress from "@/views/teambnp/Workprogress.vue";
-import Customizethesystem from "@/views/teambnp/Customizethesystem.vue";
+import Manageteamlists from "@/views/teambnp/Manageteamlists.vue"; 
+
+import Explorearea from "@/views/teambnp/Explorearea.vue";
+import CheckLocation from "@/views/teambnp/CheckLocation.vue";
+import Placearrangement from "@/views/teambnp/Placearrangement.vue"; 
+import Checkaftershipping from "@/views/teambnp/Checkaftershipping.vue"; 
+
+import Createmanageteam from "@/views/teambnp/Createmanageteam.vue";
+import Editmanageteam from "@/views/teambnp/Editmanageteam.vue"; 
+import MonitorTeaminformation from "@/views/teambnp/MonitorTeaminformation.vue";
+import Monitorteamlists from "@/views/teambnp/Monitorteamlists.vue";
+
+import Customizecheck from "@/views/teambnp/Customizecheck.vue";
+
 
 Vue.use(VueRouter);
 
@@ -147,33 +160,79 @@ const routes = [
   // Team bnp
   {
     path: "/teambnp/Menuteambnp",
-    name: "menuteambnp",
+    name: "menuTeambnp",
     component: Menuteambnp
   },
-  {
-    path: "/teambnp/Menuteambnp_eapa",
-    name: "menuteambnp_eapa",
-    component: Menuteambnp_eapa
-  },
+
   {
     path: "/teambnp/Eventteaminformation",
-    name: "menueventteaminformation",
+    name: "menuEventteaminformation",
     component: Eventteaminformation
   },
   {
-    path: "/teambnp/Exploreandmanagementarea",
-    name: "menuExploreandmanagementarea",
-    component: Exploreandmanagementarea
+    path: "/teambnp/Menuteambnp_eapa",
+    name: "menuTeambnp_eapa",
+    component: Menuteambnp_eapa
   },
+
+    {
+      path: "/teambnp/Explorearea",
+      name: "menuExplorearea",
+      component: Explorearea
+    },
+    {
+      path: "/teambnp/CheckLocation",
+      name: "menuCheckLocation",
+      component: CheckLocation
+    },
+    {
+      path: "/teambnp/Placearrangement",
+      name: "menuPlacearrangement",
+      component: Placearrangement
+    },
+    {
+      path: "/teambnp/Checkaftershipping",
+      name: "menuCheckaftershipping",
+      component: Checkaftershipping
+    },
+
+
   {
     path: "/teambnp/Workprogress",
-    name: "menuworkprogress",
+    name: "menuWorkprogress",
     component: Workprogress
   },
   {
-    path: "/teambnp/Customizethesystem",
-    name: "menucustomizethesystem",
-    component: Customizethesystem
+    path: "/teambnp/Manageteamlists",
+    name: "menuManageteamlists",
+    component: Manageteamlists
+  },
+
+
+  {
+    path: "/teambnp/MonitorTeaminformation",
+    name: "menuMonitorteaminformation",
+    component: MonitorTeaminformation
+  },
+  {
+    path: "/teambnp/Createmanageteam",
+    name: "menuCreatemanageteam",
+    component: Createmanageteam
+  },
+  {
+    path: "/teambnp/Monitorteamlists",
+    name: "menuMonitorteamlists",
+    component: Monitorteamlists
+  },
+  {
+    path: "/teambnp/Editmanageteam",
+    name: "menuEditmanageteam",
+    component: Editmanageteam
+  },
+  {
+    path: "/teambnp/Customizecheck",
+    name: "menuCustomizecheck",
+    component: Customizecheck
   },
 
   //จบ Team bnp

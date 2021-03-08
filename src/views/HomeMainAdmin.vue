@@ -146,19 +146,19 @@ export default {
       window.location.reload();
     },
     Pageteambnp() {
-      this.$router.push({ name: "menuteambnp" });
+      this.$router.push({ name: "menuTeambnp" });
       window.location.reload();
     },
     Pageteamhong() {
-      this.$router.push({ name: "menuteamhong" });
+      this.$router.push({ name: "menuTeamhong" });
       window.location.reload();
     },
     Pageteamkitchen() {
-      this.$router.push({ name: "menuteamkitchen" });
+      this.$router.push({ name: "menuTeamkitchen" });
       window.location.reload();
     },
     Pageadminmenger() {
-      this.$router.push({ name: "menuadminmenger" });
+      this.$router.push({ name: "menuAdminmenger" });
       window.location.reload();
     },
   },

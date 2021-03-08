@@ -1,3 +1,4 @@
+
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
@@ -12,6 +13,12 @@ import VueSweetalert2 from "vue-sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 import VuetifyMask from "vuetify-mask";
 
+
+import { Icon,Modal,Upload } from 'ant-design-vue';
+import 'ant-design-vue/lib/upload/style/css';
+import 'ant-design-vue/lib/icon/style/css';
+import 'ant-design-vue/lib/modal/style/css';
+
 const options = {
   name: "_blank",
   specs: ["fullscreen=yes", "titlebar=yes", "scrollbars=yes"],
@@ -25,6 +32,10 @@ Vue.use(VueHtmlToPaper, options);
 Vue.config.productionTip = false;
 Vue.use(Vuelidate);
 Vue.use(VuetifyMask);
+
+Vue.use(Upload);
+Vue.use(Icon);
+Vue.use(Modal);
 
 new Vue({
   router,

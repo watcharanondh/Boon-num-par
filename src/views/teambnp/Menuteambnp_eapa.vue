@@ -97,16 +97,16 @@ export default {
   },
 
   methods: {
-    PageExplorethearea() {
-      this.$router.push({ name: "menuexplorearea" });
+    PageExplorearea() {
+      this.$router.push({ name: "menuExplorearea" });
       window.location.reload();
     },
     PagePlacearrangement() {
-      this.$router.push({ name: "menuplacearrangement" });
+      this.$router.push({ name: "menuPlacearrangement" });
       window.location.reload();
     },
     PageBack() {
-      this.$router.push({ name: "menuteambnp" });
+      this.$router.push({ name: "menuTeambnp" });
       window.location.reload();
     },
   },

@@ -472,3 +472,116 @@ export const delPromotion = data => {
       redirectLogin(error);
     });
 };
+
+//Customizethesystem
+
+
+export const getEventteaminformation = () => {
+  return axios
+    .get(apiUrl + server.LIST_ALL_EVENTTEAMINFORMATION_URL, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+
+export const getupdatelookandmanageappointment = () => {
+  return axios
+    .get(apiUrl + server.LIST_UPDATELOOKANDMANAGEAPPOINTMENT_URL, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+
+
+export const getTeamstoAssign = () => {
+  return axios
+    .get(apiUrl + server.LIST_TEAMS_ASSIGN_EVENTTEAMINFORMATION_URL, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+
+export const getListallTeams = () => {
+  return axios
+    .get(apiUrl + server.LIST_ALL_CUSTOMIZETHESYSTEM_URL, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+
+export const getListtoCreateTeam = () => {
+  return axios
+    .get(apiUrl + server.LIST_ALL_CREATE_CUSTOMIZETHESYSTEM_URL, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+
+export const getListTeamtoEdit = data => {
+  return axios
+    .post(apiUrl + server.LIST_EDIT_CUSTOMIZETHESYSTEM_URL, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+
+export const addNewTeam = data => {
+  return axios
+    .post(apiUrl + server.ADD_CUSTOMIZETHESYSTEM_URL, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+
+export const editTeam = data => {
+  return axios
+    .post(apiUrl + server.PUT_EDIT_CUSTOMIZETHESYSTEM_URL, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+
+
+export const TeamSurvey = ()  => {
+  return axios
+    .get(apiUrl + server.LIST_ALL_SURVEY_TEAM_URL, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};

@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import FormPackage from "@/components/Form/FormPackage";
+import FormPackage from "@/components/Form/FormSale/FormPackage";
 export default {
   name: "EditPackage",
   components: {

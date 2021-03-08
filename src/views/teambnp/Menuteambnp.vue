@@ -132,7 +132,7 @@ export default {
   name: "Menuteambnp",
   mounted() {
     if (api.isLoggedIn()) {
-      this.$router.push({ name: "menuteambnp" }).catch(() => {});
+      this.$router.push({ name: "menuTeambnp" }).catch(() => {});
     }
 
     this.$store.dispatch({
@@ -146,19 +146,19 @@ export default {
 
   methods: {
     PageEventteaminformation() {
-      this.$router.push({ name: "menueventteaminformation" });
+      this.$router.push({ name: "menuEventteaminformation" });
       window.location.reload();
     },
     PageExploreandmanagementarea() {
-      this.$router.push({ name: "menuteambnp_eapa" });
+      this.$router.push({ name: "menuTeambnp_eapa" });
       window.location.reload();
     },
     PageWorkprogress() {
-      this.$router.push({ name: "menuworkprogress" });
+      this.$router.push({ name: "menuWorkprogress" });
       window.location.reload();
     },
     PageCustomizethesystem() {
-      this.$router.push({ name: "menucustomizethesystem" });
+      this.$router.push({ name: "menuManageteamlists" });
       window.location.reload();
     },
     PageBack() {

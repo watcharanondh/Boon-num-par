@@ -18,7 +18,7 @@
             <v-row>
               <v-col>
                 <div class="create-edit-title">
-                  {{ Changesubmit }ข้อมูลอุปกรณ์
+                  {{ Changesubmit }}ข้อมูลอุปกรณ์
                 </div>
               </v-col>
             </v-row>
@@ -122,9 +122,7 @@ export default {
       this.CreateorEdit = this.CreateorEdittype;
 
       if (this.CreateorEdit == false) {
-        this.EditEquipment_ID = this.$store.getters[
-          "Newpersonal_BNP_ID"
-        ].BNP_ID;
+        this.EditEquipment_ID = this.$store.getters["Newpersonal_BNP_ID"].BNP_ID;
         let Equipment_ID_Edits = { equipment_code: this.EditEquipment_ID };
         let result = await api.getEditequipment(Equipment_ID_Edits);
 

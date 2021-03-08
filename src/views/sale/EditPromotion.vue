@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import FormPromotion from "@/components/Form/FormPromotion";
+import FormPromotion from "@/components/Form/FormSale/FormPromotion";
 export default {
   name: "EditPromotion",
   components: {

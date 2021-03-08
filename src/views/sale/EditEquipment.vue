@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import FormEquipment from "@/components/Form/FormEquipment";
+import FormEquipment from "@/components/Form/FormSale/FormEquipment";
 export default {
   name: "EditEquipment",
   components: {
