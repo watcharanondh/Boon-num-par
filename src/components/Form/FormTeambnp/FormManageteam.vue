@@ -63,10 +63,10 @@
                 </v-row>
               </v-col>
             </v-row>
-          </v-col>
+            </v-col>
 
-          <!-- พนักงานที่เลือก -->
-          <v-col lg="4" md="4" sm="12" cols="12">
+            <!-- พนักงานที่เลือก -->
+            <v-col lg="4" md="4" sm="12" cols="12">
             <div class="name_team">เบอร์โทรศัพท์</div>
             <v-row class="no-gutters">
                 <v-text-field-integer
@@ -93,7 +93,7 @@
 
             <!-- พนักงานที่เลือก -->
             <v-row>
-              <v-col lg="6" md="6" sm="12" cols="12">
+              <v-col lg="9" md="9" sm="12" cols="12">
                 <v-row class="no-gutters">
                   <v-data-table
                     :headers="headers_teams_selected_data"
@@ -121,19 +121,22 @@
                 </v-row>
               </v-col>
             </v-row>
+
+
           </v-col>
         </v-row>
         
-        <v-row>
-          <v-col xl="3" lg="3" md="6" sm="12" cols="12">
+        <v-row class="mx-10 pa-5">
+          <v-col  xl="4" lg="4" md="6" sm="12" cols="12">
             <v-btn block large rounded outlined @click="$router.push({ name: 'menuManageteamlists' })">ยกเลิก</v-btn>
           </v-col>
           <v-spacer></v-spacer>
-          <v-col xl="3" lg="3" md="6" sm="12" cols="12">
-            <v-btn block color="#29CC97" dark large rounded @click="submit"
-              ><span class="white--text">{{ Changesubmit }}</span></v-btn>
+          <v-col xl="4" lg="4" md="6" sm="12" cols="12">
+            <v-btn block color="#29CC97" dark large rounded @click="submit"><span class="white--text">{{ Changesubmit }}</span></v-btn>
           </v-col>
         </v-row>
+
+
       </v-form>
     </v-card>
   </v-container>

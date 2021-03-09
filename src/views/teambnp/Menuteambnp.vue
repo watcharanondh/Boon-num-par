@@ -126,14 +126,14 @@
 </template>
 
 <script>
-import api from "@/services/api";
+//import api from "@/services/api";
 
 export default {
   name: "Menuteambnp",
   mounted() {
-    if (api.isLoggedIn()) {
-      this.$router.push({ name: "menuTeambnp" }).catch(() => {});
-    }
+    // if (api.isLoggedIn()) {
+    //   this.$router.push({ name: "menuTeambnp" }).catch(() => {});
+    // }
 
     this.$store.dispatch({
       type: "inputRoutepath",

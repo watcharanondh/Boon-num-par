@@ -16,7 +16,7 @@
       <v-btn
         class="mx-10"
         color="#C4C4C4"
-        @click="$router.push({ name: 'menuExplorearea' })"
+        @click="$router.push({ name: 'menuPlacearrangement' })"
         rounded
       >
         <span class="white--text">ย้อนกลับ</span></v-btn
@@ -43,7 +43,7 @@
                   <div>รหัสทีม</div>
                   <v-row class="no-gutters">
                     <v-text-field
-                      v-model="Equipment_Name"
+                      v-model="code_Team"
                       disabled
                     ></v-text-field>
                   </v-row>
@@ -53,7 +53,7 @@
                   <div>ชื่อใบกำกับภาษี</div>
                   <v-row class="no-gutters">
                     <v-text-field
-                      v-model="Equipment_Stock_IN"
+                      v-model="Tax_invoice_name"
                       disabled
                     ></v-text-field>
                   </v-row>
@@ -63,7 +63,7 @@
                   <div>สถานที่จัดงาน</div>
                   <v-row class="no-gutters">
                     <v-text-field
-                      v-model="Equipment_Stock_IN"
+                      v-model="Event_venue"
                       disabled
                     ></v-text-field>
                   </v-row>
@@ -75,7 +75,7 @@
                   <div>นัดดูสถานที่</div>
                   <v-row class="no-gutters">
                     <v-text-field
-                      v-model="Equipment_Name"
+                      v-model="look_location"
                       disabled
                     ></v-text-field>
                   </v-row>
@@ -95,17 +95,17 @@
 
       <v-row class="mx-10 pa-5">
      
-        <v-btn @click="active1 = active1 ,tab=1"  :color="active1 ? '#606771' : undefined" class="ma-2" rounded><span>ตรวจเช็คของ-นำไป</span></v-btn>
-        <v-btn  @click="ac()" :color="active2 ? '#606771' : undefined" class="ma-2" rounded><span>ตรวจเช็ควันจัดสถานที่</span></v-btn>
-        <v-btn @click="active3 = active3, tab=1" :color="active3 ? '#606771' : undefined" class="ma-2" rounded><span>ตรวจเช็คของ-นำกลับ</span></v-btn>
+        <v-btn @click="ac1()"  :color="active1 ? '#606771' : undefined" class="ma-2" rounded><span>ตรวจเช็คของ-นำไป</span></v-btn>
+        <v-btn  @click="ac2()" :color="active2 ? '#606771' : undefined" class="ma-2" rounded><span>ตรวจเช็ควันจัดสถานที่</span></v-btn>
+        <v-btn @click="ac3()" :color="active3 ? '#606771' : undefined" class="ma-2" rounded><span>ตรวจเช็คของ-นำกลับ</span></v-btn>
       </v-row>
   
       <v-row>
         <v-col lg="12" md="12" sm="12" cols="12">
           <!-- รายการที่ต้องตรวจสอบ -->
 
-          <v-card   v-if="tab==1" class="mx-10 pa-5 rounded-lg" outlined>
-            <v-btn class="" rounded><span>ทำเครื่องหมายเสร็จสมบูรณ์</span></v-btn>
+          <v-card   v-if="tab==1 || tab==3" class="mx-10 pa-5 rounded-lg" outlined>
+            <v-btn class="" rounded><span><v-icon>done</v-icon> ทำเครื่องหมายเสร็จสมบูรณ์</span></v-btn>
             <br />
             <br />
             <v-data-table
@@ -146,15 +146,15 @@
                   <td align="center">
                     <button
                       class="button-left"
-                      :class="{ active: isActive == 1 }"
-                      @click="test(1)"
+                      :class="{ 'active': item.status == 1 }"
+                      @click="test(item, 1)"
                     >
                       ผ่าน
                     </button>
                     <button
                       class="button-right"
-                      :class="{ active: isActive == 2 }"
-                      @click="test(2)"
+                      :class="{ 'active': item.status == 2 }"
+                      @click="test(item, 2)"
                     >
                       ไม่ผ่าน
                     </button>
@@ -204,8 +204,8 @@
             </v-row>
             <div class="clearfix">
               <a-upload
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                 list-type="picture-card"
+                style="zoom:3; padding:0px"
                 :file-list="fileList"
                 @preview="handlePreview"
                 @change="handleChange"
@@ -250,7 +250,7 @@
       <v-row>
         <v-col lg="12" md="12" sm="12" cols="12">
           <v-card class="mx-10 pa-5 rounded-lg" outlined>
-                <v-btn v-if="tab==2" class="" rounded><span>ทำเครื่องหมายเสร็จสมบูรณ์</span></v-btn>
+                <v-btn v-if="tab==2" class="" rounded><span><v-icon>done</v-icon>ทำเครื่องหมายเสร็จสมบูรณ์</span></v-btn>
             <br />
             <br />
             <v-row>
@@ -265,7 +265,7 @@
             </v-row>
             <div class="clearfix">
               <a-upload
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                style="zoom:3"
                 list-type="picture-card"
                 :file-list="fileList"
                 @preview="handlePreview"
@@ -324,10 +324,20 @@ export default {
       active2: false,
       active3: false,
     isActive: 0,
-    search: "",
-    idq: null,
+
+code_Team:"",
+Tax_invoice_name:"",
+Event_venue:"",
+look_location:"",
+
+
+
     total: null,
-    table_checklocation_item: [],
+    table_checklocation_item: [
+      {status:0},
+      {status:0},
+      {status:0},
+    ],
     headers_table_checklocation: [
       { text: "รายการ", value: "team_code", sortable: true, align: "start" },
       { text: "สถานะ", value: "team_name", sortable: false, align: "center" },
@@ -359,24 +369,37 @@ export default {
         url:
           "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
       },
-      {
-        uid: "-5",
-        name: "image.png",
-        status: "error",
-      },
     ],
   }),
 
   methods: {
-    test(isActive) {
-      this.isActive = isActive;
-      console.log(isActive);
+    test(item, status) {
+      item.status = status;
     },
 
-    ac(){
-        this.active2 = !this.active2 ;
+    ac1(){
+        this.active1 = true ;
+        this.active2 = false ;
+        this.active3 = false ;
+        this.tab=1
+    },
+    ac2(){
+        this.active1 = false ;
+        this.active2 = true ;
+        this.active3 = false ;
         this.tab=2
     },
+    ac3(){
+        this.active1 = false  ;
+        this.active2 = false ;
+        this.active3 = true ;
+        this.tab=3
+    },
+
+
+
+
+    
 
     handleCancel() {
       this.previewVisible = false;
@@ -394,7 +417,8 @@ export default {
 
     async loadExplorearea() {
       let result = await api.TeamSurvey();
-      this.table_checklocation_item = result.data.result;
+      console.log(result);
+      // this.table_checklocation_item = result.data.result;
       this.total = result.data.total;
     },
 
@@ -442,14 +466,8 @@ export default {
   background-color: #666;
   color: white;
 }
-
-.ant-upload-select-picture-card i {
-  font-size: 32px;
-  color: #999;
+.ant-upload-list-picture .ant-upload-list-item, .ant-upload-list-picture-card .ant-upload-list-item{
+ padding: 0px
 }
 
-.ant-upload-select-picture-card .ant-upload-text {
-  margin-top: 8px;
-  color: #666;
-}
 </style>

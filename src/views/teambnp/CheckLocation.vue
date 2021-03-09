@@ -29,7 +29,7 @@
       <v-col lg="12" md="12" sm="12" cols="12">
         <v-card class="mx-10 pa-5 rounded-lg" outlined>
           <v-row justify="center">
-            <v-col lg="9" md="9" sm="12" cols="12">
+            <v-col lg="12" md="12" sm="12" cols="12">
               <v-row>
                 <v-col>
                   <div class="create-edit-title">
