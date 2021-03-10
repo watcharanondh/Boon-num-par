@@ -14,7 +14,7 @@
     </v-col>
     <v-col>
       <v-row  justify="end">
-          <span class="mt-3 black--text justify--center ">ตารางงาน / <span>BNPT000001</span></span>
+          <span class="mt-3 black--text justify--center ">ตารางงาน / <span>{{Quotation_Code}}</span></span>
           <v-spacer></v-spacer>
         <v-btn
           class="mx-10"
@@ -29,7 +29,6 @@
       <v-row> </v-row>
     </v-col>
     <v-card class="mx-10 pa-5 rounded-lg" outlined>
-      <v-form ref="form" v-model="valid" lazy-validation>
         <v-row justify="center">
           <v-col lg="9" md="9" sm="12" cols="12">
             <v-row>
@@ -45,7 +44,7 @@
                 <div>รหัสทีม</div>
                 <v-row class="no-gutters">
                   <v-text-field
-                    v-model="Equipment_Name"
+                    v-model="Team_code"
                     disabled
                   ></v-text-field>
                 </v-row>
@@ -55,7 +54,7 @@
                 <div>ชื่อใบกำกับภาษี</div>
                 <v-row class="no-gutters">
                   <v-text-field
-                    v-model="Equipment_Stock_IN"
+                    v-model="Taxinvoice_name"
                     disabled
                   ></v-text-field>
                 </v-row>
@@ -65,7 +64,7 @@
                 <div>สถานที่จัดงาน</div>
                 <v-row class="no-gutters">
                   <v-text-field
-                    v-model="Equipment_Stock_IN"
+                    v-model="Venue"
                     disabled
                   ></v-text-field>
                 </v-row>
@@ -84,7 +83,7 @@
                 <div>จัดงาน</div>
                 <v-row class="no-gutters">
                   <v-text-field
-                    v-model="Equipment_Name"
+                    v-model="Organize_event"
                     disabled
                   ></v-text-field>
                 </v-row>
@@ -94,7 +93,7 @@
                 <div>นัดดูสถานที่</div>
                 <v-row class="no-gutters">
                   <v-text-field
-                    v-model="Equipment_Stock_IN"
+                    v-model="See_location"
                     disabled
                   ></v-text-field>
                 </v-row>
@@ -104,7 +103,7 @@
                 <div>จัดสถานที่</div>
                 <v-row class="no-gutters">
                   <v-text-field
-                    v-model="Equipment_Stock_IN"
+                    v-model="Place_arrangement"
                     disabled
                   ></v-text-field>
                 </v-row>
@@ -123,7 +122,7 @@
                 <div>ทีมดูสถานที่</div>
                 <v-row class="no-gutters">
                   <v-text-field
-                    v-model="Equipment_Name"
+                    v-model="Venue_view_team"
                     disabled
                   ></v-text-field>
                 </v-row>
@@ -133,17 +132,14 @@
                 <div>ทีมจัดสถานที่</div>
                 <v-row class="no-gutters">
                   <v-text-field
-                    v-model="Equipment_Stock_IN"
+                    v-model="Venue_team"
                     disabled
                   ></v-text-field>
                 </v-row>
               </v-col>
-              <!-- จัดสถานที่ -->
             </v-row>
-
           </v-col>
         </v-row>
-      </v-form>
     </v-card>
   </v-container>
 </template>
@@ -151,9 +147,9 @@
 <script>
 import api from "@/services/api";
 export default {
-  name: "Equipment",
+  name: "MonitorTeaminformation",
   async mounted() {
-    this.loadEquipment();
+    this.londDataTeaminformation();
     this.$store.dispatch({
       type: "inputRoutepath",
       RT: this.$route.path,
@@ -161,68 +157,37 @@ export default {
   },
 
   data: () => ({
-    total: null,
-    table_customer: [],
-    headers_table_customer: [
-      {
-        text: "หมายเลขอุปกรณ์",
-        value: "equipment_code",
-        sortable: true,
-        align: "start",
-        color: "black",
-      },
-      {
-        text: "รายชื่ออุปกรณ์",
-        value: "name",
-        sortable: false,
-        align: "start",
-      },
-      { text: "ถูกใช้", value: "stock_out", sortable: false, align: "start" },
-      {
-        text: "คงเหลือ",
-        value: "balance_stock",
-        sortable: false,
-        align: "start",
-      },
-      { text: "", value: "", sortable: false, align: "start" },
-      { text: "", value: "", sortable: false, align: "start" },
-    ],
+    Quotation_Code:null,
+    Team_code: null,
+    Taxinvoice_name: null,
+    Venue: null,
+    Organize_event: null,
+    Organize_event_datetime:null,
+    See_location: null,
+    See_location_datetime: null,
+    Place_arrangement: null,
+    Venue_view_team: null,
+    Venue_team: null,
   }),
 
   methods: {
-    async loadEquipment() {
-      let result = await api.getEquipment();
-      this.table_customer = result.data.result;
-      this.total = result.data.count_total;
-    },
-    async EditEquipment(item) {
-      await this.$store.dispatch({
-        type: "doEditBNPID",
-        BNP_ID: item.equipment_code,
-      });
-      await this.$router.push({ name: "saleEditEquipment" });
-    },
-
-    async DelEquipment(item) {
-      this.$swal
-        .fire({
-          title: `ต้องการลบอุปกรณ์นี้ใช่หรือไม่ ?`,
-          showDenyButton: true,
-          confirmButtonText: `ยืนยัน`,
-          denyButtonText: `ยกเลิก`,
-        })
-        .then(async (result) => {
-          if (result.isConfirmed) {
-            let delEquipment = { equipment_code: item.equipment_code };
-            let resultdel = await api.delEquipment(delEquipment);
-            if (resultdel.data.response == "OK") {
-              this.$swal.fire("ยืนยันการลบเรียบร้อย", "", "success");
-              await this.loadEquipment();
-            }
-          } else if (result.isDenied) {
-            this.$swal.fire("ยกเลิกการลบ", "", "error");
-          }
-        });
+    async londDataTeaminformation() {
+      this.Quotation_Code = this.$store.getters["BNP_DATA"].databnp;
+      this.Team_code = this.$store.getters["BNP_DATA"].databnp;
+      let sentQuotation_code ={quotation_code: this.Quotation_Code}
+      let result = await api.List_SHIPPING_TO_SEE(sentQuotation_code);
+      if (!result.data.result.length) {
+          window.location.href = `${process.env.VUE_APP_SUB_PATH}/teambnp/Eventteaminformation`;
+          //this.$router.push({name:'menuEventteaminformation'})
+          return;
+        }
+      this.Taxinvoice_name=result.data.result[0].customer_tax_invoices;
+      this.Venue=result.data.result[0].address;
+      this.Organize_event=result.data.result[0].event_date;
+      this.See_location=result.data.result[0].area_viewing_date;
+      this.Place_arrangement=result.data.result[0].update;
+      this.Venue_view_team=result.data.result[0].area_viewing_team;
+      this.Venue_team=result.data.result[0].event_team;
     },
   },
 };

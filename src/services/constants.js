@@ -79,8 +79,15 @@ export const server = {
 
   //Team BNP
 
-  //ModalUpdateLook&ManageAppointment
+  //ModalUpdateLook&ManageAppointment and assignwork
   LIST_UPDATELOOKANDMANAGEAPPOINTMENT_URL:`/bnp/shipping/listteamtoshipping`,
+  LIST_UPDATE_ASSIGNWORKTEAM_URL:`/bnp/shipping/assignworkteam`,
+
+  //Findmoment
+  FIND_MOMENT_URL:``,
+
+  //List Shipping to SEE
+  List_SHIPPING_TO_SEE:`/bnp/shipping/listshippingtosee`,
 
 
   //ModalUpdateLook&ManageAppointment

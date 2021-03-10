@@ -13,10 +13,75 @@
       <v-row> </v-row>
     </v-col>
     <v-row>
-      <v-col>
-        <!-- ปฎิทิน -->
-        <ModalCalendar/>
-      </v-col>
+      <v-col sm="3" cols="12">
+      <v-menu
+        ref="menu"
+        class="menupick"
+        v-model="menu"
+        :close-on-content-click="false"
+        :return-value.sync="dates"
+        offset-y
+        min-width="auto"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            v-model="dateRangeText"
+            label="ค้นหาวันที่มีงาน"
+            prepend-icon="mdi-calendar"
+            dense
+            solo
+            outlined
+            readonly
+            v-bind="attrs"
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-row cols="12" sm="12">
+          <v-col>
+            <v-date-picker
+              v-model="dates"
+              locale="th"
+              color="yellow darken-3"
+              range
+              no-title
+              scrollable
+            >
+              <v-col>
+                <v-row justify="center">
+                  <v-col cols="12" sm="12">
+                    <v-btn
+                      color="#29CC97"
+                      block
+                      large
+                      rounded
+                      small
+                      @click="$refs.menu.save(dates); BetweenDate()"
+                    >
+                      ตกลง
+                    </v-btn>
+                  </v-col>
+                </v-row>
+                <v-row justify="center">
+                  <v-col cols="12" sm="12">
+                    <v-btn
+                      block
+                      large
+                      rounded
+                      outlined
+                      small
+                      color="warning"
+                      @click="menu = false"
+                    >
+                      ปิด
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-date-picker>
+          </v-col>
+        </v-row>
+      </v-menu>
+    </v-col>
     </v-row>
     <v-col>
       <v-row> </v-row>
@@ -27,8 +92,8 @@
         <v-card>
           <v-data-table
             :search="search"
-            :headers="headers_table_quotation"
-            :items="table_quotation_item"
+            :headers="headers_table_Teaminglist"
+            :items="table_Teaminglist_item"
             class="elevation-1"
           >
             <!-- table top section -->
@@ -41,7 +106,7 @@
                 <!-- <v-text-field
                   v-model="search"
                   prepend-inner-icon="mdi-magnify"
-                  label="ค้นหาชื่อลูกค้าบุคคล/บริษัท"
+                  label="ค้นหาช่วงเวลาที่ต้องการ"
                   single-line
                   hide-details
                 ></v-text-field> -->
@@ -108,15 +173,13 @@
 <script>
 import ModalUpdateLookAppointment from "@/components/dialog/ModalUpdateLookAppointment.vue";
 import ModalUpdateManageAppointment from "@/components/dialog/ModalUpdateManageAppointment.vue";
-import ModalCalendar from "@/components/dialog/ModalCalendar.vue";
 import api from "@/services/api";
 
 export default {
   name: "Eventteaminformation",
   components: {
     ModalUpdateLookAppointment,
-    ModalUpdateManageAppointment,
-    ModalCalendar
+    ModalUpdateManageAppointment
   },
   mounted() {
     this.loadEventteaminformation();
@@ -126,35 +189,16 @@ export default {
     });
   },
   data: () => ({
+    dates: [],
+    menu: false,
     search: "",
-    idq: null,
     total: null,
-    table_quotation_item: [],
-    headers_table_quotation: [
-      {
-        text: "รหัสงาน",
-        value: "quotation_code",
-        sortable: true,
-        align: "start"
-      },
-      {
-        text: "ชื่อใบกำกับภาษี",
-        value: "customer_tax_invoices",
-        sortable: false,
-        align: "start"
-      },
-      {
-        text: "วันเวลานัดดูสถานที่",
-        value: "area_viewing_date",
-        sortable: true,
-        align: "start"
-      },
-      {
-        text: "ทีมนัดดูสถานที่",
-        value: "quotation_status",
-        sortable: true,
-        align: "start"
-      },
+    table_Teaminglist_item: [],
+    headers_table_Teaminglist: [
+      { text: "รหัสงาน",value: "quotation_code",sortable: true,align: "start"},
+      { text: "ชื่อใบกำกับภาษี", value: "customer_tax_invoices", sortable: false,align: "start"},
+      { text: "วันเวลานัดดูสถานที่", value: "area_viewing_date",sortable: true, align: "start"},
+      { text: "ทีมนัดดูสถานที่",value: "quotation_status",sortable: true,align: "start"},
       { text: "วันเวลาจัดสถานที่", value: "", sortable: false, align: "start" },
       { text: "จัดสถานที่", value: "", sortable: false, align: "start" },
       { text: "", value: "", sortable: false, align: "start" },
@@ -162,49 +206,35 @@ export default {
     ]
   }),
 
+  computed: {
+    dateRangeText() {
+      return this.dates.join(" ~ ");
+    },
+  },
+
   methods: {
     async loadEventteaminformation() {
       let result = await api.getEventteaminformation();
-      this.table_quotation_item = result.data.result;
+      this.table_Teaminglist_item = result.data.result;
       this.total = result.data.total;
+    },
+
+    BetweenDate(){
+      let Datemoment ={ startdate:this.dates[0] , enddate:this.dates[1] }
+      console.log(Datemoment);
+      // let result = await api.Findmoment(Datemoment);
+      // this.table_Teaminglist_item = result.data.result;
+      // this.total = result.data.total;
+
     },
 
     async MonitorTeaminformation(item) {
       await this.$store.dispatch({
-        type: "doEditBNPID",
-        BNP_ID: item.quotation_code
+        type: "setBNPDATA",
+        databnp: item.quotation_code
       });
       await this.$router.push({ name: "menuMonitorteaminformation" });
     },
-
-    async EditQuotation(item) {
-      await this.$store.dispatch({
-        type: "doEditBNPID",
-        BNP_ID: item.quotation_code
-      });
-      await this.$router.push({ name: "saleEditQuotation" });
-    },
-    async DeleteQuotation(item) {
-      this.$swal
-        .fire({
-          title: `ต้องการลบใบเสนอราคานี้ใช่หรือไม่ ?`,
-          showDenyButton: true,
-          confirmButtonText: `ยืนยัน`,
-          denyButtonText: `ยกเลิก`
-        })
-        .then(async result => {
-          if (result.isConfirmed) {
-            let delQuotations = { quotation_code: item.quotation_code };
-            let resultdel = await api.delQuotation(delQuotations);
-            if (resultdel.data.response == "OK") {
-              this.$swal.fire("ยืนยันการลบเรียบร้อย", "", "success");
-              await this.loadQuotation();
-            }
-          } else if (result.isDenied) {
-            this.$swal.fire("ยกเลิกการลบ", "", "error");
-          }
-        });
-    }
   }
 };
 </script>

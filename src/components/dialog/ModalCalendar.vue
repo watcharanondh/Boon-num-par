@@ -33,41 +33,40 @@
               no-title
               scrollable
             >
-          <v-col>
-          <v-row justify="center">
-            <v-col cols="12" sm="12">
-              <v-btn
-                color="#29CC97"
-                block
-                large
-                rounded
-                small
-                @click="$refs.menu.save(dates)"
-              >
-                ตกลง
-              </v-btn>
-            </v-col>
-          </v-row>
-          <v-row justify="center">
-            <v-col cols="12" sm="12">
-              <v-btn
-                block
-                large
-                rounded
-                outlined
-                small
-                color="warning"
-                @click="menu = false"
-              >
-                ปิด
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-col>
+              <v-col>
+                <v-row justify="center">
+                  <v-col cols="12" sm="12">
+                    <v-btn
+                      color="#29CC97"
+                      block
+                      large
+                      rounded
+                      small
+                      @click="$refs.menu.save(dates)"
+                    >
+                      ตกลง
+                    </v-btn>
+                  </v-col>
+                </v-row>
+                <v-row justify="center">
+                  <v-col cols="12" sm="12">
+                    <v-btn
+                      block
+                      large
+                      rounded
+                      outlined
+                      small
+                      color="warning"
+                      @click="menu = false"
+                    >
+                      ปิด
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-col>
             </v-date-picker>
           </v-col>
         </v-row>
-
       </v-menu>
     </v-col>
   </v-row>
@@ -85,5 +84,3 @@ export default {
   },
 };
 </script>
-
-

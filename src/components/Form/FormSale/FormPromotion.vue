@@ -105,7 +105,6 @@ import api from "@/services/api";
 
 export default {
   name: "FormPromotion",
-
   props: ["CreateorEdittype"],
 
   async mounted() {

@@ -473,9 +473,9 @@ export const delPromotion = data => {
     });
 };
 
-//Customizethesystem
+//Teambnp
 
-
+//เมนู ข้อมูลทีมจัดงาน => รายการจัดทีม
 export const getEventteaminformation = () => {
   return axios
     .get(apiUrl + server.LIST_ALL_EVENTTEAMINFORMATION_URL, {
@@ -488,9 +488,48 @@ export const getEventteaminformation = () => {
     });
 };
 
+export const Findmoment = data => {
+  return axios
+    .post(apiUrl + server.FIND_MOMENT_URL,data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+
+//Modal รับ อัพเดท นัดดู&จัดสถานที่
 export const getupdatelookandmanageappointment = () => {
   return axios
     .get(apiUrl + server.LIST_UPDATELOOKANDMANAGEAPPOINTMENT_URL, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+
+//Modal ส่ง อัพเดท นัดดู&จัดสถานที่
+export const AssignTeamtoWork = data => {
+  return axios
+    .post(apiUrl + server.LIST_UPDATE_ASSIGNWORKTEAM_URL,data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+
+//เมนู ข้อมูลทีมจัดงาน => ดูข้อมูลรายละเอียด รายการจัดทีม
+export const List_SHIPPING_TO_SEE = data => {
+  return axios
+    .post(apiUrl + server.List_SHIPPING_TO_SEE,data, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
       }
@@ -512,6 +551,8 @@ export const getTeamstoAssign = () => {
       redirectLogin(error);
     });
 };
+
+
 
 export const getListallTeams = () => {
   return axios

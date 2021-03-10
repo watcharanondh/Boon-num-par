@@ -29,7 +29,7 @@
                 กิจกรรม
               </div>
               <div class="update-sub-activity">
-                จัดสถานที่
+                นัดดูสถานที่
               </div>
             </v-col>
           </v-row>
@@ -50,8 +50,7 @@
                 v-model="SelectTeams"
                 :items="Teams"
                 item-text="name"
-                item-value="id"
-                return-object
+                item-value="team_code"
               >
               </v-select>
             </v-col>
@@ -70,11 +69,10 @@
           <v-row class="justify-center">
             <v-col class="justify-center">
               <v-select
-                v-model="SelectStatus"
-                :items="StatusType"
-                item-text="name"
-                item-value="id"
-                return-object
+                v-model="SelectDrivings"
+                :items="Drivings"
+                item-text="nickname"
+                item-value="user_code"
               >
               </v-select>
 
@@ -85,8 +83,9 @@
                     block
                     large
                     rounded
-                    @click="changeStatus(SelectStatus)"
-                    ><span class=" white--text">อัพเดท</span></v-btn
+                    @click="ManageAllteam()"
+                  >
+                    <span class=" white--text">อัพเดท</span></v-btn
                   >
                 </v-col>
               </v-card-actions>
@@ -115,50 +114,51 @@
 <script>
 import api from "@/services/api";
 export default {
-  name: "ModalCreateQuotation",
+  name: "ModalUpdateManageAppointment",
   props: ["quotation_code"],
   mounted() {
     this.getStatus();
   },
   data() {
     return {
-      SelectStatus: { name: "คอนเฟิร์ม", id: "1" },
-      StatusType: []
+      SelectTeams: null,
+      SelectDrivings: null,
+      Teams: [],
+      Drivings: [],
     };
   },
   methods: {
     async getStatus() {
-      let result = await api.getStatusQuotation();
-      let status = result.data.result;
-      let _this = this;
-      status.forEach(value => {
-        _this.StatusType.push({
-          id: `${value.id}`,
-          name: `${value.name}`
-        });
-      });
-    },
-    async changeStatus(SelectStatus) {
-      let StatusID = SelectStatus.id;
-      let updateStatus = {
-        quotation_code: this.quotation_code,
-        status: StatusID
-      };
-      console.log(updateStatus);
-      let result = await api.updateStatusQuotation(updateStatus);
-      console.log(result);
-      if (result.data.response == "OK") {
-        window.location.reload();
-      }
+      let result = await api.getupdatelookandmanageappointment();
+      this.Teams = result.data.result.teams;
+      this.SelectTeams = result.data.result.teams[0].team_code;
+      this.Drivings = result.data.result.drivers;
+      this.SelectDrivings = result.data.result.drivers[0].user_code;
     },
 
-    async loadQuotations() {
-      let result = await api.getQuotation();
-      this.table_quotation_item = result.data.result;
-      this.total = result.data.total;
-    }
-  }
+
+    async ManageAllteam() {
+      let submitmanage = {
+        quotation_code: this.quotation_code,
+        team_code: this.SelectTeams,
+        user_code: this.SelectDrivings,
+        team_type: "1",
+      };
+      let result = await api.AssignTeamtoWork(submitmanage);
+      console.log(result.data.response);
+      if (result.data.response == "OK") {
+        // this.$swal.fire("อัพเดทนัดดูสถานที่เรียบร้อย", "", "success");
+        window.location.reload();
+      } else {
+        this.$swal.fire(
+          "เกิดข้อผิดพลาด",
+          `อัพเดทนัดดูสถานที่ไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `,
+          "error"
+        );
+      }
+    },
+  },
 };
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped></style>

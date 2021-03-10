@@ -202,20 +202,14 @@
                 </div>
               </v-col>
             </v-row>
-            <div class="clearfix">
+       
               <a-upload
                 list-type="picture-card"
-                style="zoom:3; padding:0px"
+                style="zoom:3;"
                 :file-list="fileList"
                 @preview="handlePreview"
-                @change="handleChange"
+                :showUploadList="{ showPreviewIcon: true, showRemoveIcon: false }" 
               >
-                <div v-if="fileList.length < 8">
-                  <a-icon type="plus" />
-                  <div class="ant-upload-text">
-                    Upload
-                  </div>
-                </div>
               </a-upload>
               <a-modal
                 :visible="previewVisible"
@@ -224,7 +218,7 @@
               >
                 <img alt="example" style="width: 100%" :src="previewImage" />
               </a-modal>
-            </div>
+ 
           </v-card>
   
         </v-col>

@@ -126,14 +126,14 @@
 </template>
 
 <script>
-//import api from "@/services/api";
+import api from "@/services/api";
 
 export default {
   name: "Menuteambnp",
   mounted() {
-    // if (api.isLoggedIn()) {
-    //   this.$router.push({ name: "menuTeambnp" }).catch(() => {});
-    // }
+    if (api.isLoggedIn()) {
+      this.$router.push({ name: "menuTeambnp" }).catch(() => {});
+    }
 
     this.$store.dispatch({
       type: "inputRoutepath",
@@ -151,19 +151,16 @@ export default {
     },
     PageExploreandmanagementarea() {
       this.$router.push({ name: "menuTeambnp_eapa" });
-      window.location.reload();
     },
     PageWorkprogress() {
       this.$router.push({ name: "menuWorkprogress" });
-      window.location.reload();
     },
     PageCustomizethesystem() {
       this.$router.push({ name: "menuManageteamlists" });
-      window.location.reload();
     },
     PageBack() {
       this.$router.push({ name: "HomeMainAdmin" });
-      window.location.reload();
+
     },
   },
 };
