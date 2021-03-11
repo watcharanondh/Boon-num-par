@@ -157,6 +157,7 @@ export default {
     },
     PageCustomizethesystem() {
       this.$router.push({ name: "menuManageteamlists" });
+      window.location.reload();
     },
     PageBack() {
       this.$router.push({ name: "HomeMainAdmin" });

@@ -98,7 +98,7 @@
                 <td>
                   <v-row>
                     <v-btn
-                      @click="Monitorteam()"
+                      @click="Monitorteam(item)"
                       fab
                       icon
                       outlined
@@ -106,11 +106,11 @@
                     >
                       <v-icon>visibility</v-icon>
                     </v-btn>
-                    <v-btn @click="Editteam()" fab icon outlined small>
+                    <v-btn @click="Editteam(item)" fab icon outlined small>
                       <v-icon>edit</v-icon>
                     </v-btn>
                     <v-btn
-                      @click="Deleteteam(item)"
+                      @click="DeleteTeam(item)"
                       fab
                       icon
                       outlined
@@ -167,34 +167,34 @@ export default {
       this.total = result.data.total;
     },
 
-    async Monitorteam() {
-      // await this.$store.dispatch({
-      //   type: "doEditBNPID",
-      //   BNP_ID: item.customer_code
-      // });
+    async Monitorteam(item) {
+      await this.$store.dispatch({
+        type: "setBNPDATA",
+        databnp: item.team_code
+      });
       await this.$router.push({ name: "menuMonitorteamlists" });
     },
 
-    async Editteam() {
-      // await this.$store.dispatch({
-      //   type: "doEditBNPID",
-      //   BNP_ID: item.customer_code
-      // });
+    async Editteam(item) {
+      await this.$store.dispatch({
+        type: "setBNPDATA",
+        databnp: item.team_code
+      });
       await this.$router.push({ name: "menuEditmanageteam" });
     },
 
     async DeleteTeam(item) {
       this.$swal
         .fire({
-          title: `ต้องการลบลูกค้ารายนี้ใช่หรือไม่ ?`,
+          title: `คุณต้องการลบทีมนี้ใช่หรือไม่ ?`,
           showDenyButton: true,
           confirmButtonText: `ยืนยัน`,
           denyButtonText: `ยกเลิก`
         })
         .then(async result => {
           if (result.isConfirmed) {
-            let delTeam = { customer_code: item.customer_code };
-            let resultdel = await api.delteam(delTeam);
+            let delTeam = { team_code: item.team_code };
+            let resultdel = await api.deleteTeam(delTeam);
             if (resultdel.data.response == "OK") {
               this.$swal.fire("ยืนยันการลบเรียบร้อย", "", "success");
               this.loadTeams();

@@ -6,7 +6,7 @@
           <div class="header-title">{{ Changesubmit }}สร้างรายชื่อทีม BNP</div>
           <br />
           <div class="header-subtitle">
-            รายการทีม / สร้างรายชื่อทีม
+            รายการทีม / {{ Changesubmit }}สร้างรายชื่อทีม
           </div>
         </v-card>
       </v-col>
@@ -18,12 +18,11 @@
     <v-card class=" mx-10 pa-5 rounded-lg" outlined>
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-row justify="center">
-
           <v-col lg="4" md="4" sm="12" cols="12">
             <div class="name_team">ชื่อทีม</div>
             <v-row class="no-gutters">
               <v-text-field
-                v-model="name_team"
+                v-model="get_name_team"
                 :rules="name_teamRules"
                 clearable
               ></v-text-field>
@@ -31,7 +30,7 @@
 
             <v-row class="no-gutters">
               <h3>รายชื่อพนักงาน</h3>
-              <span class="order mt-2">{{ teams_table_all_total }} รายการ</span>
+              <span class="order mt-1">{{ teams_table_all_total }} รายการ</span>
             </v-row>
 
             <!-- รายชื่อพนักงาน -->
@@ -48,14 +47,13 @@
                     <template v-slot:item="{ item }">
                       <tr>
                         <td>{{ item.nickname }}</td>
-                        <td align = "center">
+                        <td align="center">
                           <v-btn
                             small
                             elevation="1"
                             color="success"
                             @click="selectedAddstaff(item)"
-                            >เพิ่ม</v-btn
-                          >
+                            >เพิ่ม</v-btn>
                         </td>
                       </tr>
                     </template>
@@ -63,37 +61,37 @@
                 </v-row>
               </v-col>
             </v-row>
-            </v-col>
+          </v-col>
 
-            <!-- พนักงานที่เลือก -->
-            <v-col lg="4" md="4" sm="12" cols="12">
+          <!-- พนักงานที่เลือก -->
+          <v-col lg="4" md="4" sm="12" cols="12">
             <div class="name_team">เบอร์โทรศัพท์</div>
             <v-row class="no-gutters">
-                <v-text-field-integer
-                    v-model="phone_team"
-                    v-bind:properties="{
-                      clearable: true,
-                      placeholder: '099-999-9999',
-                      rules:phone_teamRules,
-                      required: true
-                    }"
-                    v-bind:options="{
-                      inputMask: '###-###-####',
-                      outputMask: '##########',
-                      empty: null,
-                      alphanumeric: true
-                    }"
-                    class="w-100"
-                  />
+              <v-text-field-integer
+                v-model="phone_team"
+                v-bind:properties="{
+                  clearable: true,
+                  placeholder: '099-999-9999',
+                  rules: phone_teamRules,
+                  required: true,
+                }"
+                v-bind:options="{
+                  inputMask: '###-###-####',
+                  outputMask: '##########',
+                  empty: null,
+                  alphanumeric: true,
+                }"
+                class="w-100"
+              />
             </v-row>
             <v-row class="no-gutters">
               <h3>พนักงานที่เลือก</h3>
-              <span class="order mt-2">{{ teams_table_selected_staff_total }} รายการ</span>
+              <span class="order mt-1">{{ teams_table_selected_staff_total }} รายการ</span>
             </v-row>
 
             <!-- พนักงานที่เลือก -->
             <v-row>
-              <v-col lg="9" md="9" sm="12" cols="12">
+              <v-col lg="6" md="6" sm="12" cols="12">
                 <v-row class="no-gutters">
                   <v-data-table
                     :headers="headers_teams_selected_data"
@@ -106,7 +104,7 @@
                     <template v-slot:item="{ item }">
                       <tr>
                         <td>{{ item.nickname }}</td>
-                        <td align = "center">
+                        <td align="center">
                           <v-btn
                             small
                             elevation="1"
@@ -121,21 +119,18 @@
                 </v-row>
               </v-col>
             </v-row>
-
-
           </v-col>
         </v-row>
-        
-        <v-row class="mx-10 pa-5">
-          <v-col  xl="4" lg="4" md="6" sm="12" cols="12">
-            <v-btn block large rounded outlined @click="$router.push({ name: 'menuManageteamlists' })">ยกเลิก</v-btn>
-          </v-col>
-          <v-spacer></v-spacer>
-          <v-col xl="4" lg="4" md="6" sm="12" cols="12">
-            <v-btn block color="#29CC97" dark large rounded @click="submit"><span class="white--text">{{ Changesubmit }}</span></v-btn>
-          </v-col>
+        <br/>
+        <br/>
+        <v-row justify="center" style="display: flex; grid-gap: 500px;">
+            <v-col xl="2" lg="2" md="3" sm="12" cols="12">
+                <v-btn block large rounded outlined @click="$router.push({ name: 'menuManageteamlists' })">ยกเลิก</v-btn>
+            </v-col>
+            <v-col xl="2" lg="2" md="3" sm="12" cols="12">
+              <v-btn block large rounded dark color="#29CC97" @click="submit"><span class="white--text">{{ Changesubmit }}</span></v-btn>
+            </v-col>
         </v-row>
-
 
       </v-form>
     </v-card>
@@ -158,8 +153,8 @@ export default {
 
   data: () => ({
     valid: true,
-    name_team:"",
-    phone_team:null,
+    get_name_team: null,
+    phone_team: null,
 
     Editteam_ID: null,
     teams_table_all_total: 0,
@@ -170,14 +165,14 @@ export default {
 
     teams_data_staffs: [],
     headers_teams_data: [
-      { text: "ชื่อพนักงาน",value: "nickname",sortable: false, align: "start"},
-      { text: "", value: "", sortable: false, align: "center"  },
+      { text: "ชื่อพนักงาน", value: "nickname", sortable: false, align: "start"},
+      { text: "", value: "", sortable: false, align: "center" },
     ],
 
     teams_selected_staffs: [],
     headers_teams_selected_data: [
       { text: "ชื่อพนักงาน",value: "nickname", sortable: false, align: "start",},
-      { text: "", value: "", sortable: false, align: "center"},
+      { text: "", value: "", sortable: false, align: "center" },
     ],
   }),
   computed: {
@@ -191,41 +186,36 @@ export default {
       this.CreateorEdit = this.CreateorEdittype;
       if (this.CreateorEdit == true) {
         let result = await api.getListtoCreateTeam();
-        console.log(result.data.result.teams);
         this.teams_data_staffs = result.data.result.teams;
         this.teams_table_all_total = this.teams_data_staffs.length;
       } else {
-        let res = await api.getlistEquipmentToPackage();
-        this.teams_selected_staffs = res.data.result;
-        this.teams_table_selected_staff_total = this.teams_selected_staffs.length;
-        let EditPackageID = {
-          package_code: this.$store.getters["Newpersonal_BNP_ID"].BNP_ID,
+        let res = await api.getListtoCreateTeam();
+        this.teams_data_staffs = res.data.result.teams;
+        this.teams_table_all_total = this.teams_data_staffs.length;
+        let EditTeamCode = {
+          team_code: this.$store.getters["BNP_DATA"].databnp
         };
-        let result = await api.getEditPackage(EditPackageID);
-        // if (!result.data.result.length) {
-        //   window.location.href = `${process.env.VUE_APP_SUB_PATH}/sale/Package`;
-        //   //this.$router.push({name:'Package'})
-        //   return;
-        // }
-
-        let Data_Seleted_Edit_Equipment = result.data.result[0].package_equipments;
-        this.equipment_selected_items = Data_Seleted_Edit_Equipment.map(
-          (val) => {
-            return {
-              equipment_code: val.equipment_code,
-              name: val.name,
-              stock_balance: val.stock_balance,
-              amount: val.amount,
-            };
-          }
-        );
-        let total = result.data.result[0].package_equipments;
-        this.Equipment_table_selected_total = total.length;
+        let result = await api.getListTeamtoEdit(EditTeamCode);
+        // console.log(result);
+        if (!result.data.result.length) {
+          window.location.href = `${process.env.VUE_APP_SUB_PATH}/teambnp/Manageteamlists`;
+          //this.$router.push({name:'menuManageteamlists'})
+          return;
+        }
+        this.get_name_team = result.data.result[0].name;
+        this.phone_team = result.data.result[0].tel_no;
+        this.teams_selected_staffs = result.data.result[0].team_users;
+        this.teams_table_selected_staff_total = this.teams_selected_staffs.length;
       }
     },
 
     selectedAddstaff(item) {
-      this.teams_selected_staffs.push(item);
+      var chkstaffID = this.teams_selected_staffs.some(
+        val => val.id == item.id
+      );
+      if(!chkstaffID){
+          this.teams_selected_staffs.push(item);
+      }
       this.teams_table_selected_staff_total = this.teams_selected_staffs.length;
     },
 
@@ -240,61 +230,52 @@ export default {
         //สร้างทีม
         if (this.CreateorEdittype == true) {
           let staffs = [];
-          this.teams_selected_staffs.forEach((value) => {
-            staffs.push({
+          this.teams_selected_staffs.forEach((value) => {staffs.push({
               id: `${value.id}`,
               user_code: `${value.user_code}`,
             });
           });
           let CreateNewTeam = {
-            name: this.name_team,
+            name: this.get_name_team,
             tel_no: this.phone_team,
             team_members: staffs,
           };
-          console.log('ก่อน',CreateNewTeam);
           let resultCreateNewTeam = await api.addNewTeam(CreateNewTeam);
-          console.log(resultCreateNewTeam);
           if (resultCreateNewTeam.data.response == "OK") {
             this.$swal.fire("สำเร็จ", "สร้างทีมสำเร็จเรียบร้อยแล้ว", "success");
-            this.$router.push({ name: "menucustomizethesystem" });
+            this.$router.push({ name: "menuManageteamlists" });
           } else {
-            this.$swal.fire(
-              "เกิดข้อผิดพลาด",
-              `สร้างทีมไม่สำเร็จ ${resultCreateNewTeam.data.response} เนื่องจาก ${resultCreateNewTeam.data.result} `,
-              "error"
+            this.$swal.fire("เกิดข้อผิดพลาด",`สร้างทีมไม่สำเร็จ ${resultCreateNewTeam.data.response} เนื่องจาก ${resultCreateNewTeam.data.result} `,"error"
             );
           }
         } else {
-          //แก้ไขแพ็กเก็จ
-          let Equipment_last = [];
-          this.equipment_selected_items.forEach((value) => {
-            Equipment_last.push({
-              equipment_code: `${value.equipment_code}`,
-              amount: `${value.amount}`,
+          //แก้ไขทีม
+          let Edit_staffs = [];
+          this.teams_selected_staffs.forEach((value) => {
+            Edit_staffs.push({
+              id: `${value.id}`,
+              user_code: `${value.user_code}`,
             });
           });
-          let EditPackage = {
-            package_code: this.Editpackage_ID,
-            name: this.Package_Name,
-            price: this.Package_price,
-            amount_savory_food: this.Savoryfood_amount,
-            amount_sweet_food: this.Dessert_amount,
-            amount_drink: this.Drinks_amount,
-            package_equips: Equipment_last,
+          let Editstaff = {
+            team_code: this.$store.getters["BNP_DATA"].databnp,
+            name:this.get_name_team,
+            tel_no:this.phone_team,
+            team_members: Edit_staffs
           };
-          //console.log(EditPackage);
-          let resultEditPackage = await api.editPackage(EditPackage);
-          if (resultEditPackage.data.response == "OK") {
+          // console.log(Editstaff);
+          let resultEditstaff = await api.editTeam(Editstaff);
+          if (resultEditstaff.data.response == "OK") {
             this.$swal.fire(
               "สำเร็จ",
-              "แก้ไขแพ็กเก็จราคาสำเร็จเรียบร้อยแล้ว",
+              "แก้ไขทีมสำเร็จเรียบร้อยแล้ว",
               "success"
             );
-            this.$router.push({ name: "salePackage" });
+            this.$router.push({ name: "menuManageteamlists" });
           } else {
             this.$swal.fire(
               "เกิดข้อผิดพลาด",
-              `แก้ไขแพ็กเก็จราคาไม่สำเร็จ ${resultEditPackage.data.response} เนื่องจาก ${resultEditPackage.data.result} `,
+              `แก้ไขทีมไม่สำเร็จ ${resultEditstaff.data.response} เนื่องจาก ${resultEditstaff.data.result} `,
               "error"
             );
           }

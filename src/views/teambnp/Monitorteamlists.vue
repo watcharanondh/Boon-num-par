@@ -19,8 +19,7 @@
           @click="$router.push({ name: 'menuManageteamlists' })"
           rounded
         >
-          <span class="white--text">ย้อนกลับ</span></v-btn
-        >
+          <span class="white--text">ย้อนกลับ</span></v-btn>
             </v-row>
       </v-col>
     <v-col>
@@ -39,14 +38,13 @@
             <v-row class="no-gutters">
               <v-text-field
                 v-model="teamname"
-                clearable
+                disabled
               ></v-text-field>
             </v-row>
           </v-col>
 
           <!-- ข้อมูลสมาชิกทีม -->
           <v-data-table
-            :search="search"
             :headers="headers_table_teams"
             :items="table_teams"
             :items-per-page="10"
@@ -56,11 +54,7 @@
             <!-- table top section -->
             <template v-slot:top>
               <v-toolbar flat>
-                <v-toolbar-title
-                  ><span class="header-table-title"
-                    >ข้อมูลสมาชิกทีม</span
-                  ></v-toolbar-title
-                >
+                <v-toolbar-title><span class="header-table-title">ข้อมูลสมาชิกทีม</span></v-toolbar-title>
                 <v-spacer></v-spacer>
                 <!-- <v-divider class="mx-4" inset vertical></v-divider>
                 <v-text-field
@@ -111,31 +105,9 @@
             </template>
             <template v-slot:item="{ item }">
               <tr>
-                <td>{{ item.customer_code }}</td>
                 <td>{{ item.name }}</td>
-                <td>{{ item.customer_tax_invoices }}</td>
-                <td>
-                  <v-row>
-                    <v-btn
-                      @click="Editteamlists(item)"
-                      fab
-                      icon
-                      outlined
-                      small
-                    >
-                      <v-icon>edit</v-icon>
-                    </v-btn>
-                    <v-btn
-                      @click="Deleteteamlists(item)"
-                      fab
-                      icon
-                      outlined
-                      small
-                    >
-                      <v-icon>delete</v-icon>
-                    </v-btn>
-                  </v-row>
-                </td>
+                <td>{{ item.description }}</td>
+                <td>{{ item.telephone_number }}</td>
                 <td>
                   <!-- <v-btn icon>
                     <v-icon>mdi-dots-vertical</v-icon>
@@ -156,7 +128,7 @@ import api from "@/services/api";
 export default {
   name: "Customizecheck",
   mounted() {
-    this.loadTeams();
+    this.loadTeamInfo();
     this.$store.dispatch({
       type: "inputRoutepath",
       RT: this.$route.path,
@@ -165,21 +137,26 @@ export default {
 
   data: () => ({
     teamname:"",
-    search: "",
     table_teams: [],
     headers_table_teams: [
-      { text: "ชื่อ", value: "customizechecks_code", sortable: false, align: "start"},
-      { text: "ตำแหน่ง", value: "", sortable: false, align: "start" },
-      { text: "เบอร์โทรศัพท์", value: "", sortable: false, align: "start" },
+      { text: "ชื่อ", value: "name", sortable: false, align: "start"},
+      { text: "ตำแหน่ง", value: "description", sortable: false, align: "start" },
+      { text: "เบอร์โทรศัพท์", value: "telephone_number", sortable: false, align: "start" },
     ],
 
   }),
 
   methods: {
-    async loadCustomizechecks() {
-      let result = await api.getListallCustomizechecks();
-      this.table_teams = result.data.result;
-      this.total = result.data.total;
+    async loadTeamInfo() {
+      let senteamcodeID ={team_code: this.$store.getters["BNP_DATA"].databnp }
+      let result = await api.getListTeamtoEdit(senteamcodeID);
+      if (!result.data.result.length) {
+          window.location.href = `${process.env.VUE_APP_SUB_PATH}/teambnp/Manageteamlists`;
+          //this.$router.push({name:'menuEventteaminformation'})
+          return;
+      }
+      this.teamname = result.data.result[0].name;
+      this.table_teams = result.data.result[0].team_users;
     },
   },
 };

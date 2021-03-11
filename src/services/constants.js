@@ -79,32 +79,46 @@ export const server = {
 
   //Team BNP
 
+  ////////////////////Eventteaminformation////////////////////////////
+  //Eventteaminformation
+  LIST_ALL_EVENTTEAMINFORMATION_URL:`/bnp/shipping/listallshipping`,
   //ModalUpdateLook&ManageAppointment and assignwork
   LIST_UPDATELOOKANDMANAGEAPPOINTMENT_URL:`/bnp/shipping/listteamtoshipping`,
   LIST_UPDATE_ASSIGNWORKTEAM_URL:`/bnp/shipping/assignworkteam`,
-
   //Findmoment
   FIND_MOMENT_URL:``,
-
   //List Shipping to SEE
   List_SHIPPING_TO_SEE:`/bnp/shipping/listshippingtosee`,
+  ///////////////////////////////////////////////////////////////////
+
 
 
   //ModalUpdateLook&ManageAppointment
   LIST_ALL_SURVEY_TEAM_URL:`/bnp/surveyteam/listallsurveyteam`,
 
 
-  //Customizecheck
-  LIST_ALL_EVENTTEAMINFORMATION_URL:`/bnp/shipping/listallshipping`,
-  LIST_TEAMS_ASSIGN_EVENTTEAMINFORMATION_URL:`/bnp/shipping/listteamtoshipping`,
 
-  //Customizethesystem
-  LIST_ALL_CUSTOMIZETHESYSTEM_URL:`/bnp/teammanage/listallteams`,
-  LIST_ALL_CREATE_CUSTOMIZETHESYSTEM_URL:`/bnp/teammanage/listuserstocreateteam`,
-  LIST_EDIT_CUSTOMIZETHESYSTEM_URL:`/bnp/teammanage/listteam`,
 
-  ADD_CUSTOMIZETHESYSTEM_URL:`/bnp/teammanage/createteam`,
-  PUT_EDIT_CUSTOMIZETHESYSTEM_URL:`/bnp/teammanage/editteam`,
+
+  ///////////////Manageteamlists (setup) (Team Management)///////////
+  //Team Management
+  LIST_MANAGETEAM_URL:`/bnp/teammanage/listallteams`,
+  LIST_CREATE_TO_MANAGETEAM_URL:`/bnp/teammanage/listuserstocreateteam`,
+  LIST_EDIT_TO_MANAGETEAM_URL:`/bnp/teammanage/listteam`,
+  ADD_MANAGETEAM_URL:`/bnp/teammanage/createteam`,
+  PUT_EDIT_MANAGETEAM_URL:`/bnp/teammanage/editteam`,
+  DEL_MANAGETEAM_URL:`/bnp/teammanage/delteam`,
+
+  //Checklists
+  LIST_ALL_CHECKLISTS_URL:`/bnp/checklists/listallchecklists`,
+  LIST_EDIT_TO_CHECKLISTS_URL:`/bnp/checklists/listchecklist`,
+  LIST_ADD_CHECKLISTS_URL:`/bnp/checklists/createchecklist`,
+  PUT_EDIT_CHECKLISTS_URL:`/bnp/checklists/editchecklist`,
+  DEL_CHECKLISTS_URL:`/bnp/checklists/delchecklist`,
+
+  ///////////////////////////////////////////////////////////////////
+
+
 
 
 

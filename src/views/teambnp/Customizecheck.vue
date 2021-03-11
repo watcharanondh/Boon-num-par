@@ -15,27 +15,19 @@
     <v-col>
       <v-row justify="end">
         <v-btn
-          color="#606771"
-          @click="$router.push({ name: 'teambnpCreatemanageteam' })"
+          @click="Bringto"
           rounded
         >
           <span class="white--text">ตรวจเช็คของ-นำไป</span></v-btn>
         <v-btn
-          color="#606771"
-          @click="$router.push({ name: 'teambnpCreatemanageteam' })"
+          @click="Bringback"
           rounded
         >
           <span class="white--text">ตรวจเช็คของ-นำกลับ</span></v-btn>
         <v-spacer></v-spacer>
-        <ModalAddchecklist/>
-        <!-- <v-btn
-          color="#29CC97"
-          @click="$router.push({ name: 'teambnpCreatemanageteam' })"
-          rounded
-        >
-          <span class="white--text">สร้างเคสตรวจสอบ</span></v-btn> -->
-          </v-row>
-      </v-col>
+        <ModalAddchecklist />
+      </v-row>
+    </v-col>
     <v-col>
       <v-row> </v-row>
     </v-col>
@@ -53,7 +45,11 @@
             <!-- table top section -->
             <template v-slot:top>
               <v-toolbar flat>
-                <v-toolbar-title><span class="header-table-title">รายชื่อที่ออกงาน</span></v-toolbar-title>
+                <v-toolbar-title
+                  ><span class="header-table-title"
+                    >รายชื่อที่ออกงาน</span
+                  ></v-toolbar-title
+                >
                 <v-spacer></v-spacer>
                 <!-- <v-divider class="mx-4" inset vertical></v-divider>
                 <v-text-field
@@ -107,7 +103,13 @@
                 <td>{{ item.customer_code }}</td>
                 <td>
                   <v-row>
-                    <v-btn @click="EditCustomizecheck(item)" fab icon outlined small>
+                    <v-btn
+                      @click="EditCustomizecheck(item)"
+                      fab
+                      icon
+                      outlined
+                      small
+                    >
                       <v-icon>edit</v-icon>
                     </v-btn>
                     <v-btn
@@ -140,27 +142,25 @@ import api from "@/services/api";
 import ModalAddchecklist from "@/components/dialog/ModalAddchecklist.vue";
 
 export default {
-    name: "Customizecheck",
-    components: {
-    ModalAddchecklist
+  name: "Customizecheck",
+  components: {
+    ModalAddchecklist,
   },
   mounted() {
     this.loadCustomizechecks();
     this.$store.dispatch({
       type: "inputRoutepath",
-      RT: this.$route.path
+      RT: this.$route.path,
     });
-
   },
 
   data: () => ({
-
     table_Customizechecks: [],
     headers_table_Customizechecks: [
-      { text: "รายการตรวจสอบ", value: "customizechecks_code",sortable: true,  align: "start",color: "black"},
+      { text: "รายการตรวจสอบ", value: "customizechecks_code",sortable: true, align: "start"},
       { text: "", value: "", sortable: false, align: "start" },
-      { text: "", value: "", sortable: false, align: "start" }
-    ]
+      { text: "", value: "", sortable: false, align: "start" },
+    ],
   }),
 
   methods: {
@@ -173,7 +173,7 @@ export default {
     async MonitorTeam(item) {
       await this.$store.dispatch({
         type: "doEditBNPID",
-        BNP_ID: item.customer_code
+        BNP_ID: item.customer_code,
       });
       await this.$router.push({ name: "menueonitorteam" });
     },
@@ -181,7 +181,7 @@ export default {
     async Editmanageteam(item) {
       await this.$store.dispatch({
         type: "doEditBNPID",
-        BNP_ID: item.customer_code
+        BNP_ID: item.customer_code,
       });
       await this.$router.push({ name: "menueditmanageteam" });
     },
@@ -192,9 +192,9 @@ export default {
           title: `ต้องการลบรายการตรวจสอบนี้ใช่หรือไม่ ?`,
           showDenyButton: true,
           confirmButtonText: `ยืนยัน`,
-          denyButtonText: `ยกเลิก`
+          denyButtonText: `ยกเลิก`,
         })
-        .then(async result => {
+        .then(async (result) => {
           if (result.isConfirmed) {
             let delTeam = { customer_code: item.customer_code };
             let resultdel = await api.delteam(delTeam);
@@ -206,8 +206,8 @@ export default {
             this.$swal.fire("ยกเลิกการลบ", "", "error");
           }
         });
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -214,7 +214,9 @@ export default {
 
   methods: {
     async loadEventteaminformation() {
-      let result = await api.getEventteaminformation();
+      let Datemoment ={ startdate:"" , enddate:"" }
+      let result = await api.getEventteaminformation(Datemoment);
+      console.log('test',result);
       this.table_Teaminglist_item = result.data.result;
       this.total = result.data.total;
     },

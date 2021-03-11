@@ -476,9 +476,9 @@ export const delPromotion = data => {
 //Teambnp
 
 //เมนู ข้อมูลทีมจัดงาน => รายการจัดทีม
-export const getEventteaminformation = () => {
+export const getEventteaminformation = data => {
   return axios
-    .get(apiUrl + server.LIST_ALL_EVENTTEAMINFORMATION_URL, {
+    .post(apiUrl + server.LIST_ALL_EVENTTEAMINFORMATION_URL,data, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
       }
@@ -488,6 +488,7 @@ export const getEventteaminformation = () => {
     });
 };
 
+//เมนู ข้อมูลทีมจัดงาน => รายการจัดทีม หาช่วงเวลา
 export const Findmoment = data => {
   return axios
     .post(apiUrl + server.FIND_MOMENT_URL,data, {
@@ -540,81 +541,17 @@ export const List_SHIPPING_TO_SEE = data => {
 };
 
 
-export const getTeamstoAssign = () => {
-  return axios
-    .get(apiUrl + server.LIST_TEAMS_ASSIGN_EVENTTEAMINFORMATION_URL, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
-      }
-    })
-    .catch(error => {
-      redirectLogin(error);
-    });
-};
-
-
-
-export const getListallTeams = () => {
-  return axios
-    .get(apiUrl + server.LIST_ALL_CUSTOMIZETHESYSTEM_URL, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
-      }
-    })
-    .catch(error => {
-      redirectLogin(error);
-    });
-};
-
-export const getListtoCreateTeam = () => {
-  return axios
-    .get(apiUrl + server.LIST_ALL_CREATE_CUSTOMIZETHESYSTEM_URL, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
-      }
-    })
-    .catch(error => {
-      redirectLogin(error);
-    });
-};
-
-export const getListTeamtoEdit = data => {
-  return axios
-    .post(apiUrl + server.LIST_EDIT_CUSTOMIZETHESYSTEM_URL, data, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
-      }
-    })
-    .catch(error => {
-      redirectLogin(error);
-    });
-};
-
-export const addNewTeam = data => {
-  return axios
-    .post(apiUrl + server.ADD_CUSTOMIZETHESYSTEM_URL, data, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
-      }
-    })
-    .catch(error => {
-      redirectLogin(error);
-    });
-};
-
-export const editTeam = data => {
-  return axios
-    .post(apiUrl + server.PUT_EDIT_CUSTOMIZETHESYSTEM_URL, data, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
-      }
-    })
-    .catch(error => {
-      redirectLogin(error);
-    });
-};
-
-
+// export const getTeamstoAssign = () => {
+//   return axios
+//     .get(apiUrl + server.LIST_TEAMS_ASSIGN_EVENTTEAMINFORMATION_URL, {
+//       headers: {
+//         Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+//       }
+//     })
+//     .catch(error => {
+//       redirectLogin(error);
+//     });
+// };
 export const TeamSurvey = ()  => {
   return axios
     .get(apiUrl + server.LIST_ALL_SURVEY_TEAM_URL, {
@@ -626,3 +563,92 @@ export const TeamSurvey = ()  => {
       redirectLogin(error);
     });
 };
+
+//Team Management
+export const getListallTeams = () => {
+  return axios
+    .get(apiUrl + server.LIST_MANAGETEAM_URL, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+//Team Management
+export const getListtoCreateTeam = () => {
+  return axios
+    .get(apiUrl + server.LIST_CREATE_TO_MANAGETEAM_URL, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+//Team Management
+export const getListTeamtoEdit = data => {
+  return axios
+    .post(apiUrl + server.LIST_EDIT_TO_MANAGETEAM_URL, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+//Team Management
+export const addNewTeam = data => {
+  return axios
+    .post(apiUrl + server.ADD_MANAGETEAM_URL, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+//Team Management
+export const editTeam = data => {
+  return axios
+    .post(apiUrl + server.PUT_EDIT_MANAGETEAM_URL, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+//Team Management
+export const deleteTeam = data => {
+  return axios
+    .post(apiUrl + server.DEL_MANAGETEAM_URL, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+
+//Checklists
+export const getListtoChecklists = () => {
+  return axios
+    .get(apiUrl + server.LIST_ALL_CHECKLISTS_URL, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+
+
+
