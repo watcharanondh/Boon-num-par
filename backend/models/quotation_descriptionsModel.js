@@ -1,23 +1,22 @@
 module.exports = (sequelize, DataTypes) => {
-  const checklists = sequelize.define("checklists", {
+  const quotation_descriptions = sequelize.define("quotation_descriptions", {
     id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
     },
-    checklist_code: {
-      type: DataTypes.STRING(11),
-      allowNull: false,
-      unique: true,
-    },
-    name: {
-      type: DataTypes.STRING(255),
+    quotation_id: {
+      type: DataTypes.INTEGER(11),
       allowNull: false,
     },
     description: {
       type: DataTypes.STRING(255),
       allowNull: true,
+    },
+    description_type: {
+      type: DataTypes.INTEGER(1),
+      allowNull: false,
     },
     createdAt: {
       field: "created_at",
@@ -51,6 +50,9 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 0,
     },
   });
+  quotation_descriptions.associate = models => {
+    quotation_descriptions.belongsTo(models.quotations, { foreignKey: "quotation_id" });
+  };
 
-  return checklists;
+  return quotation_descriptions;
 };

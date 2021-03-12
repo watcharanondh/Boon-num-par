@@ -5,18 +5,25 @@ const authorize = require('../../middleware/authorize');
 const surveyTeamContrllers = require("../../controllers/teamBNP/surveyTeam");
 
 /* List All SurveyTeam */
-router.get("/listallsurveyteam", authorize, surveyTeamContrllers.listAllSurveyTeam);
+router.post("/listallsurveyteam", authorize, surveyTeamContrllers.listAllSurveyTeam);
 
-// /* Create Checklist */
-// router.post("/createchecklist", authorize, surveyTeamContrllers.CreateChecklist);
+/* Manage task */
+router.post("/managetask", authorize, surveyTeamContrllers.manageTeamTask);
 
-// /* list Checklist to Edit */
-// router.post("/listchecklist", authorize, surveyTeamContrllers.listChecklistToEdit);
+/* Create Checklist for Surveyteam */
+router.post("/createchecklistsurvey", authorize, surveyTeamContrllers.createChecklistSurvey);
+/* list Checklist to Edit Surveyteam */
+router.post("/listchecklistsurvey", authorize, surveyTeamContrllers.listChecklistToEditSurvey);
+/* Edit Checklist of Surveyteam */
+router.post("/editchecklistsurvey", authorize, surveyTeamContrllers.editChecklistSurvey);
+/* Delete Checklist */
+router.post("/delchecklistsurvey", authorize, surveyTeamContrllers.deleteChecklistSurvey);
+/* Update Checklist of Surveyteam */
+router.post("/updatechecklistsurvey", authorize, surveyTeamContrllers.updateChecklistSurvey);
 
-// /* Edit Checklist */
-// router.post("/editchecklist", authorize, surveyTeamContrllers.editChecklist);
-
-// /* Delete Checklist */
-// router.post("/delchecklist", authorize, surveyTeamContrllers.deleteChecklist);
+/* Create Image Survey */
+router.post("/createimgsurvey", authorize, surveyTeamContrllers.createImageSurvey);
+/* Create Image Survey */
+router.post("/delimgsurvey", authorize, surveyTeamContrllers.deleteImageSurvey);
 
 module.exports = router;

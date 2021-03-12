@@ -10,11 +10,29 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER(11),
       allowNull: false,
     },
-    checklist_id: {
-      type: DataTypes.INTEGER(11),
+    name: {
+      type: DataTypes.STRING(255),
       allowNull: false,
     },
+    description: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
     status: {
+      type: DataTypes.INTEGER(1),
+      allowNull: false,
+      defaultValue: 0,
+    },
+    returned_status: {
+      type: DataTypes.INTEGER(1),
+      allowNull: false,
+      defaultValue: 0,
+    },
+    checklist_type: {
+      type: DataTypes.INTEGER(1),
+      allowNull: false,
+    },
+    is_editable: {
       type: DataTypes.INTEGER(1),
       allowNull: false,
       defaultValue: 0,
@@ -53,7 +71,6 @@ module.exports = (sequelize, DataTypes) => {
   });
   quotation_checklists.associate = models => {
     quotation_checklists.belongsTo(models.quotations, { foreignKey: "quotation_id" });
-    quotation_checklists.belongsTo(models.checklists, { foreignKey: "checklist_id" });
   };
 
   return quotation_checklists;

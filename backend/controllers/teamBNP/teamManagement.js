@@ -1,7 +1,6 @@
 const { team_users, teams, users, user_details, positions } = require("../../models");
 const { Op, Sequelize } = require("sequelize");
 const helper = require("../../helper/sku");
-const { post } = require("../../routes/users/Users");
 
 /* List All BNP Teams */
 exports.listAllTeams = async (req, res) => {
@@ -163,7 +162,12 @@ exports.listTeamToEdit = async (req, res) => {
                       model: positions,
                       attributes: ['position_code', ['name', 'position_name'], 'description']
                     }
-                  ]
+                  ],
+                  where: {
+                    position_id: {
+                      [Op.in]: ['6', '7']
+                    }
+                  }
                 }
               ],
               where: { is_active: 1, is_delete: 0 }

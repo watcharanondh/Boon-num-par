@@ -1,17 +1,16 @@
-const { customers, districts, quotations, teams, quotation_checklists, quotation_images } = require("../../models");
+const { customers, districts, quotations, teams, quotation_checklists, quotation_descriptions, quotation_images } = require("../../models");
 const { Op, Sequelize } = require("sequelize");
 const { find_between_date } = require("../../helper/finddate");
 
-/* List All Survey Team task */
-exports.listAllSurveyTeam = async (req, res) => {
+/* List All Setup Team task */
+exports.listAllSetupTeam = async (req, res) => {
   try {
     let count_total = 0;
     const _where = find_between_date(req.body.startdate, req.body.enddate)
-
     const result = await quotations.findAll({
       attributes: ["quotation_code",
-        [Sequelize.fn("date_format", Sequelize.col("`quotations`.`area_viewing_date`"), "%b %d, %Y"), "area_viewing_date"],
-        [Sequelize.fn("date_format", Sequelize.col("`quotations`.`area_viewing_date`"), "%h:%i %p"), "area_viewing_date_datetime"]
+        [Sequelize.fn("date_format", Sequelize.col("`quotations`.`event_date`"), "%b %d, %Y"), "event_date"],
+        [Sequelize.fn("date_format", Sequelize.col("`quotations`.`event_date`"), "%h:%i %p"), "event_date_datetime"]
       ],
       include: [
         {
@@ -26,14 +25,14 @@ exports.listAllSurveyTeam = async (req, res) => {
         },
         {
           model: teams,
-          as: 'area_viewing_team',
+          as: 'event_team',
           attributes: ['team_code', ['name', 'team_name']]
         },
       ],
       where: {
         quotation_status_id: 1,
-        area_viewing_team_id: { [Op.ne]: null },
-        area_viewing_date: _where,
+        event_team_id: { [Op.ne]: null },
+        event_date: _where,
         is_active: 1,
         is_delete: 0
       },
@@ -41,12 +40,14 @@ exports.listAllSurveyTeam = async (req, res) => {
     }).then(quotation_data => {
       quotation_data.map((data) => {
         data.dataValues = {
-          ...data.dataValues.area_viewing_team.dataValues,
+          ...data.dataValues.event_team.dataValues,
           address: `${data.dataValues.customer.dataValues.address} ต.${data.dataValues.customer.dataValues.district.dataValues.district} อ.${data.dataValues.customer.dataValues.district.dataValues.amphoe} ${data.dataValues.customer.dataValues.district.dataValues.province} ${data.dataValues.customer.dataValues.district.dataValues.zipcode}`,
-          ...data.dataValues
+          ...data.dataValues,
+          progress: '0 จาก 3',
+          progress_status: 0
         }
         delete data.dataValues.customer;
-        delete data.dataValues.area_viewing_team;
+        delete data.dataValues.event_team;
         count_total++;
       });
       return quotation_data;
@@ -92,7 +93,7 @@ exports.manageTeamTask = async (req, res) => {
         },
         {
           model: teams,
-          as: 'area_viewing_team',
+          as: 'event_team',
           attributes: ['team_code', ['name', 'team_name']]
         },
       ],
@@ -104,46 +105,163 @@ exports.manageTeamTask = async (req, res) => {
     }).then(quotation_data => {
       if (quotation_data && quotation_data.length > 0) {
         quotation_data.map((data) => {
-          if (data.dataValues.area_viewing_team) {
-            data.dataValues = { ...data.dataValues, ...data.dataValues.area_viewing_team.dataValues }
+          if (data.dataValues.event_team) {
+            data.dataValues = { ...data.dataValues, ...data.dataValues.event_team.dataValues, }
           }
           data.dataValues = {
             ...data.dataValues,
             address: `${data.dataValues.customer.dataValues.address} ต.${data.dataValues.customer.dataValues.district.dataValues.district} อ.${data.dataValues.customer.dataValues.district.dataValues.amphoe} ${data.dataValues.customer.dataValues.district.dataValues.province} ${data.dataValues.customer.dataValues.district.dataValues.zipcode}`,
           }
-          delete data.dataValues.area_viewing_team;
+          delete data.dataValues.event_team;
           delete data.dataValues.customer;
         });
       }
       return quotation_data;
     });
 
-    /* Checklist body */
-    const checklists = await quotation_checklists.findAll({
+    /* -------------- BEFORE -------------- */
+    /* Checklist before */
+    const checklists_before = await quotation_checklists.findAll({
       attributes: ['id', 'name', 'description', 'status', ['is_editable', 'isEdit']],
       where: {
         quotation_id: headInfo[0].dataValues.id,
-        checklist_type: 0,
+        checklist_type: 1,
         is_active: 1,
         is_delete: 0
       }
     }).then(x => {
-      x.map(o => {
-        o.dataValues.isEdit = parseInt(o.dataValues.isEdit) == 1 ? true : false
-      })
+      if (x && x.length > 0) {
+        x.map(o => {
+          o.dataValues.isEdit = parseInt(o.dataValues.isEdit) == 1 ? true : false
+        })
+      }
       return x
     })
 
-    /* Image body */
-    const img = await quotation_images.findAll({ attributes: [['id', 'uid'], 'name', 'url'], where: { quotation_id: headInfo[0].dataValues.id, is_active: 1, is_delete: 0 } })
+    /* description before */
+    const description_before = await quotation_descriptions.findOne({
+      attributes: ['description'],
+      where: {
+        quotation_id: headInfo[0].dataValues.id,
+        description_type: 1,
+        is_active: 1,
+        is_delete: 0
+      }
+    })
+
+    /* Image before */
+    const img_before = await quotation_images.findAll({
+      attributes: [['id', 'uid'], 'name', 'url'],
+      where: {
+        quotation_id: headInfo[0].dataValues.id,
+        img_type: 1,
+        is_active: 1,
+        is_delete: 0
+      }
+    })
+    /* ------------------------------------- */
+
+
+    /* -------------- BETWEEN -------------- */
+    /* Image ดูพื้นที่ */
+    const img_viewing_area = await quotation_images.findAll({
+      attributes: [['id', 'uid'], 'name', 'url'],
+      where: {
+        quotation_id: headInfo[0].dataValues.id,
+        img_type: 0,
+        is_active: 1,
+        is_delete: 0
+      }
+    })
+
+
+    /* description between */
+    const description_between = await quotation_descriptions.findOne({
+      attributes: ['description'],
+      where: {
+        quotation_id: headInfo[0].dataValues.id,
+        description_type: 1,
+        is_active: 1,
+        is_delete: 0
+      }
+    })
+
+    /* Image between */
+    const img_between = await quotation_images.findAll({
+      attributes: [['id', 'uid'], 'name', 'url'],
+      where: {
+        quotation_id: headInfo[0].dataValues.id,
+        img_type: 2,
+        is_active: 1,
+        is_delete: 0
+      }
+    })
+    /* ------------------------------------- */
+
+
+    /* -------------- AFTER -------------- */
+    /* Checklist after */
+    const checklists_after = await quotation_checklists.findAll({
+      attributes: ['id', 'name', 'description', ['returned_status', 'status'], ['is_editable', 'isEdit']],
+      where: {
+        quotation_id: headInfo[0].dataValues.id,
+        checklist_type: 1,
+        is_active: 1,
+        is_delete: 0
+      }
+    }).then(x => {
+      if (x && x.length > 0) {
+        x.map(o => {
+          o.dataValues.isEdit = parseInt(o.dataValues.isEdit) == 1 ? true : false
+        })
+      }
+      return x
+    })
+
+    /* description after */
+    const description_after = await quotation_descriptions.findOne({
+      attributes: ['description'],
+      where: {
+        quotation_id: headInfo[0].dataValues.id,
+        description_type: 2,
+        is_active: 1,
+        is_delete: 0
+      }
+    })
+
+    /* Image after */
+    const img_after = await quotation_images.findAll({
+      attributes: [['id', 'uid'], 'name', 'url'],
+      where: {
+        quotation_id: headInfo[0].dataValues.id,
+        img_type: 3,
+        is_active: 1,
+        is_delete: 0
+      }
+    })
+    /* ------------------------------------- */
 
     res.json({
       response: "OK",
       result: {
         info: headInfo[0],
-        checklist_count: checklists ? checklists.length : 0,
-        checklists,
-        img
+        before: {
+          checklist_count: checklists_before ? checklists_before.length : 0,
+          checklists: checklists_before,
+          description: description_before ? description_before.dataValues.description : '',
+          img: img_before
+        },
+        between: {
+          viewing_img: img_viewing_area,
+          description: description_between ? description_between.dataValues.description : '',
+          img: img_between
+        },
+        after: {
+          checklist_count: checklists_after ? checklists_after.length : 0,
+          checklists: checklists_after,
+          description: description_after ? description_after.dataValues.description : '',
+          img: img_after
+        },
       }
     });
   } catch (error) {
@@ -152,8 +270,8 @@ exports.manageTeamTask = async (req, res) => {
   }
 };
 
-/* Create Checklist for Surveyteam */
-exports.createChecklistSurvey = async (req, res) => {
+/* Create Checklist for Setupteam */
+exports.createChecklistSetup = async (req, res) => {
   try {
     const { name, quotation_code } = req.body
     if (!name) {
@@ -170,9 +288,8 @@ exports.createChecklistSurvey = async (req, res) => {
       quotation_id: get_id_quotation.dataValues.id,
       name: name,
       description: '',
-      status: 0,
-      checklist_type: 0,
-      is_editable: 1
+      returned_status: 0,
+      checklist_type: 1
     });
     res.json({
       response: "OK",
@@ -183,8 +300,8 @@ exports.createChecklistSurvey = async (req, res) => {
     res.json({ response: "FAILED", result: error });
   }
 };
-/* List Checklist to Edit Surveyteam*/
-exports.listChecklistToEditSurvey = async (req, res) => {
+/* List Checklist to Edit Setupteam*/
+exports.listChecklistToEdit = async (req, res) => {
   try {
     const result = await quotation_checklists.findAll({
       attributes: ['id', 'name', 'description'],
@@ -207,8 +324,8 @@ exports.listChecklistToEditSurvey = async (req, res) => {
     res.json({ response: "FAILED", result: error });
   }
 };
-/* Edit Checklist of Surveyteam */
-exports.editChecklistSurvey = async (req, res) => {
+/* Edit Checklist of Setupteam */
+exports.editChecklistSetup = async (req, res) => {
   try {
     const { id, name } = req.body;
     if (!name) {
@@ -232,7 +349,9 @@ exports.editChecklistSurvey = async (req, res) => {
       name: name
     }, {
       where: {
-        id: id
+        id: id,
+        is_active: 1,
+        is_delete: 0
       }
     });
     res.json({
@@ -244,8 +363,8 @@ exports.editChecklistSurvey = async (req, res) => {
     res.json({ response: "FAILED", result: error });
   }
 };
-/* Delete Checklist of Survey (Update is_delete) */
-exports.deleteChecklistSurvey = async (req, res) => {
+/* Delete Checklist of Setupteam (Update is_delete) */
+exports.deleteChecklistSetup = async (req, res) => {
   try {
     const is_check_editable = await quotation_checklists.findOne({ attributes: ['is_editable'], where: { id: req.body.id } })
     if (!is_check_editable || parseInt(is_check_editable.dataValues.is_editable) === 0) {
@@ -278,8 +397,8 @@ exports.deleteChecklistSurvey = async (req, res) => {
     res.json({ response: "FAILED", result: error });
   }
 };
-/* Update Checklist of Survey */
-exports.updateChecklistSurvey = async (req, res) => {
+/* Update Checklist of Setupteam */
+exports.updateChecklistSetup = async (req, res) => {
   try {
     const { id, status } = req.body;
     /*update checklists*/
@@ -302,10 +421,10 @@ exports.updateChecklistSurvey = async (req, res) => {
   }
 };
 
-/* Create Image Survey */
-exports.createImageSurvey = async (req, res) => {
+/* Create Image Setup */
+exports.createImageSetup = async (req, res) => {
   try {
-    const { quotation_code, name, url } = req.body
+    const { quotation_code, name, url, img_type } = req.body
     if (!url) {
       res.json({ response: "FAILED", result: "invalid URL." });
       return
@@ -318,12 +437,16 @@ exports.createImageSurvey = async (req, res) => {
       res.json({ response: "FAILED", result: "invalid quotation_code." });
       return
     }
+    if (!img_type) {
+      res.json({ response: "FAILED", result: "invalid img_type." });
+      return
+    }
     const get_id_quotation = await quotations.findOne({ where: { quotation_code: quotation_code } })
     const result = await quotation_images.create({
       quotation_id: get_id_quotation.dataValues.id,
-      name: name,
       url: url,
-      img_type: 0
+      name: name,
+      img_type: parseInt(img_type)
     })
     if (result != '' && result !== null) {
       res.json({
@@ -338,9 +461,8 @@ exports.createImageSurvey = async (req, res) => {
     res.json({ response: "FAILED", result: error });
   }
 };
-
-/* Delete Image of Survey (Update is_delete) */
-exports.deleteImageSurvey = async (req, res) => {
+/* Delete Image of Setup (Update is_delete) */
+exports.deleteImageSetup = async (req, res) => {
   try {
     const result = await quotation_images.update({
       is_delete: 1

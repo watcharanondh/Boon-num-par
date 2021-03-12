@@ -1,4 +1,4 @@
-const { checklists, teams, users, user_details, positions } = require("../../models");
+const { checklists } = require("../../models");
 const { Op, Sequelize } = require("sequelize");
 const helper = require("../../helper/sku");
 
@@ -6,7 +6,7 @@ const helper = require("../../helper/sku");
 exports.listAllChecklists = async (req, res) => {
   try {
     const result = await checklists.findAll({
-      attributes: ["checklist_code", "name", "description"],
+      attributes: ["id", "name", "description"],
       where: {
         is_active: 1,
         is_delete: 0
@@ -59,7 +59,7 @@ exports.listChecklistToEdit = async (req, res) => {
   try {
     const result = await checklists.findAll({
       where: {
-        checklist_code: req.body.checklist_code,
+        id: req.body.id,
         is_active: 1,
         is_delete: 0
       }
@@ -81,12 +81,12 @@ exports.listChecklistToEdit = async (req, res) => {
 /* Edit Checklist */
 exports.editChecklist = async (req, res) => {
   try {
-    const { checklist_code, name } = req.body;
+    const { id, name } = req.body;
     if (!name) {
-      res.json({ response: "FAILED", result: "invalid team name." });
+      res.json({ response: "FAILED", result: "please enter name." });
       return
     }
-    if (!checklist_code) {
+    if (!id) {
       res.json({ response: "FAILED", result: "checklist is not found." });
       return
     }
@@ -95,7 +95,7 @@ exports.editChecklist = async (req, res) => {
       name: name
     }, {
       where: {
-        checklist_code: checklist_code
+        id: id
       }
     });
     res.json({
@@ -108,7 +108,6 @@ exports.editChecklist = async (req, res) => {
   }
 };
 
-
 /* Delete Checklist (Update is_delete) */
 exports.deleteChecklist = async (req, res) => {
   try {
@@ -116,18 +115,18 @@ exports.deleteChecklist = async (req, res) => {
       is_delete: 1
     }, {
       where: {
-        checklist_code: req.body.checklist_code
+        id: req.body.id
       }
     });
     if (result != 0) {
       res.json({
         response: "OK",
-        result: "Checklist: " + req.body.checklist_code + " Deleted. Result: " + result,
+        result: "Checklist: " + req.body.id + " Deleted. Result: " + result,
       });
     } else {
       res.json({
         response: "FAILED",
-        result: "Checklist: " + req.body.checklist_code + " Not Found. Result: " + result,
+        result: "Checklist: " + req.body.id + " Not Found. Result: " + result,
       });
     }
   } catch (error) {

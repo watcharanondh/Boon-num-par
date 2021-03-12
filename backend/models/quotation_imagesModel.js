@@ -1,23 +1,26 @@
 module.exports = (sequelize, DataTypes) => {
-  const checklists = sequelize.define("checklists", {
+  const quotation_images = sequelize.define("quotation_images", {
     id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
     },
-    checklist_code: {
-      type: DataTypes.STRING(11),
+    quotation_id: {
+      type: DataTypes.INTEGER(11),
       allowNull: false,
-      unique: true,
     },
     name: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+    },
+    url: {
       type: DataTypes.STRING(255),
       allowNull: false,
     },
-    description: {
-      type: DataTypes.STRING(255),
-      allowNull: true,
+    img_type: {
+      type: DataTypes.INTEGER(1),
+      allowNull: false,
     },
     createdAt: {
       field: "created_at",
@@ -51,6 +54,9 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 0,
     },
   });
+  quotation_images.associate = models => {
+    quotation_images.belongsTo(models.quotations, { foreignKey: "quotation_id" });
+  };
 
-  return checklists;
+  return quotation_images;
 };

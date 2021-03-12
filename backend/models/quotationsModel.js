@@ -50,6 +50,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER(1),
       allowNull: false,
     },
+    progress_status_id: {
+      type: DataTypes.INTEGER(1),
+      allowNull: false,
+    },    
     note: {
       type: DataTypes.STRING(255),
       allowNull: true,
@@ -92,6 +96,11 @@ module.exports = (sequelize, DataTypes) => {
     quotations.belongsTo(models.quotation_statuses, { foreignKey: "quotation_status_id" });
     quotations.belongsTo(models.teams, { foreignKey: "event_team_id", as: "event_team" });
     quotations.belongsTo(models.teams, { foreignKey: "area_viewing_team_id", as: "area_viewing_team" });
+    quotations.hasMany(models.quotation_checklists, { foreignKey: "quotation_id" });
+    quotations.hasMany(models.quotation_descriptions, { foreignKey: "quotation_id" });
+    quotations.hasMany(models.quotation_drivers, { foreignKey: "quotation_id", as: "event_driver" });
+    quotations.hasMany(models.quotation_drivers, { foreignKey: "quotation_id", as: "area_viewing_driver" });
+    quotations.hasMany(models.quotation_images, { foreignKey: "quotation_id" });
     quotations.hasMany(models.quotation_packages, { foreignKey: "quotation_id" });
     quotations.hasMany(models.quotation_promotions, { foreignKey: "quotation_id" });
   };

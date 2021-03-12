@@ -1,4 +1,4 @@
-const { sequelize, quotations, customer_tax_invoices, quotation_statuses, quotation_packages, quotation_promotions, customers, customer_types, districts, packages, promotions } = require("../../models");
+const { checklists, sequelize, quotations, customer_tax_invoices, quotation_checklists, quotation_statuses, quotation_packages, quotation_promotions, customers, customer_types, districts, packages, package_equipments, equipments, promotions } = require("../../models");
 const { Op, Sequelize } = require("sequelize");
 const helper = require("../../helper/sku");
 
@@ -94,7 +94,63 @@ exports.comfirmQuotationStatus = async (req, res) => {
         quotation_code: req.body.quotation_code
       }
     });
-    if (result == 1) {
+    if (parseInt(req.body.status) === 1) {
+      const get_id_quotation = await quotations.findOne({ where: { quotation_code: req.body.quotation_code } })
+      /* เพิ่ม checklistดูพื้นที่ ดึงจากข้อมูล checklistที่มีอยู่แล้ว  เมื่อเปลี่ยนสถานะเป็น confirm */
+      const all_checklists = await checklists.findAll({ attributes: ['name', 'description'], where: { is_active: 1, is_delete: 0 } })
+      if (all_checklists && all_checklists.length > 0) {
+        const quot_checklists = all_checklists.map(checklist => {
+          return { "quotation_id": get_id_quotation.dataValues.id, "name": checklist.name, "description": checklist.description, "status": 0, "checklist_type": 0, "is_editable": 0 }
+        }
+        );
+        await quotation_checklists.bulkCreate(quot_checklists).then(() => { result.quotation_checklists = 'SUCCESS.' })
+      }
+      /* เพิ่ม checklistจัดงาน ดึงจากข้อมูล package เมื่อเปลี่ยนสถานะเป็น confirm */
+      const get_equip_quot = await quotations.findAll({
+        attributes: ['quotation_code'],
+        include: [
+          {
+            model: quotation_packages,
+            attributes: ['id'],
+            include: [
+              {
+                model: packages,
+                attributes: ['name'],
+                include: [
+                  {
+                    model: package_equipments,
+                    attributes: ['id'],
+                    include: [
+                      {
+                        model: equipments,
+                        attributes: ['id', 'name']
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        where: {
+          id: get_id_quotation.dataValues.id,
+          is_active: 1,
+          is_delete: 0
+        }
+      }).then(async datas => {
+        if (datas && datas[0].dataValues.quotation_packages[0].dataValues.package.dataValues.package_equipments.length > 0) {
+          const get_package_equipments = datas[0].dataValues.quotation_packages[0].dataValues.package.dataValues.package_equipments
+          const equipname = get_package_equipments.map(data => {
+            return { "quotation_id": get_id_quotation.dataValues.id, "name": data.dataValues.equipment.dataValues.name, "description": '', "status": 0, "returned_status": 0, "checklist_type": 1, "is_editable": 0 }
+          })
+          if (equipname && equipname.length > 0) {
+            await quotation_checklists.bulkCreate(equipname).then((r) => { result.package = r })
+          }
+        }
+      })
+    }
+
+    if (result !== 0) {
       res.json({
         response: "OK",
         result: req.body.quotation_code + ": Updated. Result: " + result,
@@ -160,15 +216,15 @@ exports.listFindCustomerInformation = async (req, res) => {
     });
     if (parseInt(check_type_id.dataValues.type_id) === 1) {
       const result = await customers.findAll({
-        attributes: ["customer_code", "name", "telephone_number", "mobile_phone_number", "address",["type_id","customer_type_id"]],
+        attributes: ["customer_code", "name", "telephone_number", "mobile_phone_number", "address", ["type_id", "customer_type_id"]],
         include: [
           {
             model: districts,
             attributes: [["id", "district_id"], "district", "amphoe", "province", "zipcode", "district_code", "amphoe_code", "province_code"]
           },
           {
-            model:customer_types,
-            attributes:[["name","customer_type_name"]]
+            model: customer_types,
+            attributes: [["name", "customer_type_name"]]
           }
         ],
         where: {
@@ -198,7 +254,7 @@ exports.listFindCustomerInformation = async (req, res) => {
       });
     } else if (parseInt(check_type_id.dataValues.type_id) === 2) {
       const result = await customers.findAll({
-        attributes: ["customer_code", "name",["type_id","customer_type_id"]],
+        attributes: ["customer_code", "name", ["type_id", "customer_type_id"]],
         include: [
           {
             model: customer_tax_invoices,
@@ -211,8 +267,8 @@ exports.listFindCustomerInformation = async (req, res) => {
             ]
           },
           {
-            model:customer_types,
-            attributes:[["name","customer_type_name"]]
+            model: customer_types,
+            attributes: [["name", "customer_type_name"]]
           }
         ],
         where: {
@@ -528,7 +584,7 @@ exports.listQuotationsToEdit = async (req, res) => {
               include: [
                 {
                   model: districts,
-                  attributes: [["id","district_id"],"district", "amphoe", "province", "zipcode", "district_code", "amphoe_code", "province_code"]
+                  attributes: [["id", "district_id"], "district", "amphoe", "province", "zipcode", "district_code", "amphoe_code", "province_code"]
                 }
               ]
             },
@@ -537,8 +593,8 @@ exports.listQuotationsToEdit = async (req, res) => {
               attributes: [["id", "district_id"], "district", "amphoe", "province", "zipcode", "district_code", "amphoe_code", "province_code"]
             },
             {
-              model:customer_types,
-              attributes:[["name","customer_type_name"]]
+              model: customer_types,
+              attributes: [["name", "customer_type_name"]]
             }
           ],
         },
@@ -570,7 +626,7 @@ exports.listQuotationsToEdit = async (req, res) => {
             tax_id: "-",
             flash_number: "-",
             email: "-",
-            customer_type_id:data.dataValues.customer.type_id,
+            customer_type_id: data.dataValues.customer.type_id,
             ...data.dataValues.customer.customer_type.dataValues,
             ...data.dataValues.customer.dataValues
           };
@@ -611,14 +667,14 @@ exports.listQuotationsToEdit = async (req, res) => {
         {
           model: packages,
           attributes: ["id",
-          "package_code",
-          "name",
-          "amount_savory_food",
-          "amount_sweet_food",
-          "amount_drink",
-          [Sequelize.fn("date_format", Sequelize.col("`package`.`updated_at`"), "%d-%m-%Y"), "update"],
-          [Sequelize.fn("CONCAT", "อาหารคาว ", Sequelize.col("`package`.`amount_savory_food`"), ", อาหารหวาน ", Sequelize.col("`package`.`amount_sweet_food`"), ", เครื่องดื่ม ", Sequelize.col("`package`.`amount_drink`")), "food_des"],
-          "price"]
+            "package_code",
+            "name",
+            "amount_savory_food",
+            "amount_sweet_food",
+            "amount_drink",
+            [Sequelize.fn("date_format", Sequelize.col("`package`.`updated_at`"), "%d-%m-%Y"), "update"],
+            [Sequelize.fn("CONCAT", "อาหารคาว ", Sequelize.col("`package`.`amount_savory_food`"), ", อาหารหวาน ", Sequelize.col("`package`.`amount_sweet_food`"), ", เครื่องดื่ม ", Sequelize.col("`package`.`amount_drink`")), "food_des"],
+            "price"]
         }
       ],
       where: {
@@ -774,7 +830,7 @@ exports.printOutQuotation = async (req, res) => {
                   attributes: [["district", "cti_district"], ["amphoe", "cti_amphoe"], ["province", "cti_province"], ["zipcode", "cti_zipcode"]]
                 }
               ]
-            },            {
+            }, {
               model: districts,
               attributes: [["district", "cti_district"], ["amphoe", "cti_amphoe"], ["province", "cti_province"], ["zipcode", "cti_zipcode"]]
             }

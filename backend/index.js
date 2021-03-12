@@ -46,12 +46,16 @@ app.use(START_PART_WITH + "/sale/promotions", require("./routes/sales/Promotions
 /*---------------------- TEAM BNP ----------------------*/
 /* Shipping Route */
 app.use(START_PART_WITH + "/bnp/shipping", require("./routes/teamBNP/listShipping"));
-/* Team Manangement Route */
-app.use(START_PART_WITH + "/bnp/teammanage", require("./routes/teamBNP/teamManagement"));
 /* CheckList Route */
 app.use(START_PART_WITH + "/bnp/checklists", require("./routes/teamBNP/checklists"));
 /* Survey Team Route */
 app.use(START_PART_WITH + "/bnp/surveyteam", require("./routes/teamBNP/surveyTeam"));
+/* Setup Team Route */
+app.use(START_PART_WITH + "/bnp/setupteam", require("./routes/teamBNP/setupTeam"));
+/* Progresses Route */
+app.use(START_PART_WITH + "/bnp/progress", require("./routes/teamBNP/progresses"));
+/* Team Manangement Route */
+app.use(START_PART_WITH + "/bnp/teammanage", require("./routes/teamBNP/teamManagement"));
 
 /*---------------------- TEAM HONG ----------------------*/
 
