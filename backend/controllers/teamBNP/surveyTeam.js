@@ -29,6 +29,15 @@ exports.listAllSurveyTeam = async (req, res) => {
           as: 'area_viewing_team',
           attributes: ['team_code', ['name', 'team_name']]
         },
+        {
+          model: quotation_checklists,
+          attributes: ['status'],
+          where: {
+            checklist_type: 0,
+            is_active: 1,
+            is_delete: 0
+          }
+        }
       ],
       where: {
         quotation_status_id: 1,
@@ -40,13 +49,21 @@ exports.listAllSurveyTeam = async (req, res) => {
       order: [["id", "DESC"]]
     }).then(quotation_data => {
       quotation_data.map((data) => {
+        var isCheckAll = []
+        if (data.dataValues.quotation_checklists.length > 0) {
+          data.dataValues.quotation_checklists.map(x => {
+            isCheckAll.push(x.status)
+          })
+        }
         data.dataValues = {
           ...data.dataValues.area_viewing_team.dataValues,
           address: `${data.dataValues.customer.dataValues.address} ต.${data.dataValues.customer.dataValues.district.dataValues.district} อ.${data.dataValues.customer.dataValues.district.dataValues.amphoe} ${data.dataValues.customer.dataValues.district.dataValues.province} ${data.dataValues.customer.dataValues.district.dataValues.zipcode}`,
-          ...data.dataValues
+          ...data.dataValues,
+          progress_status: isCheckAll.includes(1) || isCheckAll.includes(2) ? (isCheckAll.includes(0) || isCheckAll.includes(2) ? 1 : 2) : 0,
         }
-        delete data.dataValues.customer;
         delete data.dataValues.area_viewing_team;
+        delete data.dataValues.customer;
+        delete data.dataValues.quotation_checklists;
         count_total++;
       });
       return quotation_data;
@@ -119,6 +136,7 @@ exports.manageTeamTask = async (req, res) => {
     });
 
     /* Checklist body */
+    var isCheckAll = [];
     const checklists = await quotation_checklists.findAll({
       attributes: ['id', 'name', 'description', 'status', ['is_editable', 'isEdit']],
       where: {
@@ -129,6 +147,7 @@ exports.manageTeamTask = async (req, res) => {
       }
     }).then(x => {
       x.map(o => {
+        isCheckAll.push(parseInt(o.dataValues.status))
         o.dataValues.isEdit = parseInt(o.dataValues.isEdit) == 1 ? true : false
       })
       return x
@@ -141,6 +160,7 @@ exports.manageTeamTask = async (req, res) => {
       response: "OK",
       result: {
         info: headInfo[0],
+        checklist_check_all: isCheckAll.includes(0) || isCheckAll.includes(2) ? 0 : 1,
         checklist_count: checklists ? checklists.length : 0,
         checklists,
         img
@@ -281,17 +301,34 @@ exports.deleteChecklistSurvey = async (req, res) => {
 /* Update Checklist of Survey */
 exports.updateChecklistSurvey = async (req, res) => {
   try {
-    const { id, status } = req.body;
-    /*update checklists*/
-    const result = await quotation_checklists.update({
-      status: status
-    }, {
-      where: {
-        id: id,
-        is_active: 1,
-        is_delete: 0
-      }
-    });
+    const dataBody = req.body
+    var result = "loop updated"
+    if (Array.isArray(dataBody)) {
+      dataBody.map(async x => {
+        /*update many checklists*/
+        const o = await quotation_checklists.update({
+          status: x.status
+        }, {
+          where: {
+            id: x.id,
+            is_active: 1,
+            is_delete: 0
+          }
+        });
+        result = o
+      })
+    } else {
+      /*update one checklists*/
+      result = await quotation_checklists.update({
+        status: dataBody.status
+      }, {
+        where: {
+          id: dataBody.id,
+          is_active: 1,
+          is_delete: 0
+        }
+      });
+    }
     res.json({
       response: "OK",
       result

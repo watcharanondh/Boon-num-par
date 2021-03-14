@@ -8,7 +8,7 @@ exports.listAllSetupTeam = async (req, res) => {
     let count_total = 0;
     const _where = find_between_date(req.body.startdate, req.body.enddate)
     const result = await quotations.findAll({
-      attributes: ["quotation_code",
+      attributes: ["id", "quotation_code",
         [Sequelize.fn("date_format", Sequelize.col("`quotations`.`event_date`"), "%b %d, %Y"), "event_date"],
         [Sequelize.fn("date_format", Sequelize.col("`quotations`.`event_date`"), "%h:%i %p"), "event_date_datetime"]
       ],
@@ -28,6 +28,14 @@ exports.listAllSetupTeam = async (req, res) => {
           as: 'event_team',
           attributes: ['team_code', ['name', 'team_name']]
         },
+        {
+          model: quotation_checklists,
+          attributes: ['status', 'returned_status', 'checklist_type'],
+          where: {
+            is_active: 1,
+            is_delete: 0
+          }
+        }
       ],
       where: {
         quotation_status_id: 1,
@@ -39,15 +47,39 @@ exports.listAllSetupTeam = async (req, res) => {
       order: [["id", "DESC"]]
     }).then(quotation_data => {
       quotation_data.map((data) => {
+        const getChecklists = data.dataValues.quotation_checklists
+        const status_before = []
+        const status_between = []
+        const status_after = []
+
+        if (getChecklists && getChecklists.length > 0) {
+          getChecklists.map(x => {
+            if (x.checklist_type == 1) {
+              status_before.push(x.status)
+            } else if (x.checklist_type == 2) {
+              status_between.push(x.status)
+            } else if (x.checklist_type == 3) {
+              status_after.push(x.returned_status)
+            }
+          })
+        }
+
+        const progress_before = status_before.includes(0) || status_before.includes(2) ? 0 : 1
+        const progress_between = status_between.includes(0) || status_between.includes(2) ? 0 : 1
+        const progress_after = status_after.includes(0) || status_after.includes(2) ? 0 : 1
+        const progress_total = progress_before + progress_between + progress_after
+
+        console.log(progress_before, progress_between, progress_after);
         data.dataValues = {
           ...data.dataValues.event_team.dataValues,
           address: `${data.dataValues.customer.dataValues.address} ต.${data.dataValues.customer.dataValues.district.dataValues.district} อ.${data.dataValues.customer.dataValues.district.dataValues.amphoe} ${data.dataValues.customer.dataValues.district.dataValues.province} ${data.dataValues.customer.dataValues.district.dataValues.zipcode}`,
           ...data.dataValues,
-          progress: '0 จาก 3',
-          progress_status: 0
+          progress: progress_total + ' จาก 3',
+          progress_status: progress_total == 3 ? 2 : (progress_total == 1 || progress_total == 2 ? 1 : 0)
         }
         delete data.dataValues.customer;
         delete data.dataValues.event_team;
+        delete data.dataValues.quotation_checklists;
         count_total++;
       });
       return quotation_data;
@@ -121,6 +153,7 @@ exports.manageTeamTask = async (req, res) => {
 
     /* -------------- BEFORE -------------- */
     /* Checklist before */
+    var isCheckAllBefore = []
     const checklists_before = await quotation_checklists.findAll({
       attributes: ['id', 'name', 'description', 'status', ['is_editable', 'isEdit']],
       where: {
@@ -132,6 +165,7 @@ exports.manageTeamTask = async (req, res) => {
     }).then(x => {
       if (x && x.length > 0) {
         x.map(o => {
+          isCheckAllBefore.push(parseInt(o.dataValues.status))
           o.dataValues.isEdit = parseInt(o.dataValues.isEdit) == 1 ? true : false
         })
       }
@@ -173,7 +207,16 @@ exports.manageTeamTask = async (req, res) => {
         is_delete: 0
       }
     })
-
+    /* Checklist between */
+    const checklists_between = await quotation_checklists.findOne({
+      attributes: ['id', 'status'],
+      where: {
+        quotation_id: headInfo[0].dataValues.id,
+        checklist_type: 2,
+        is_active: 1,
+        is_delete: 0
+      }
+    })
 
     /* description between */
     const description_between = await quotation_descriptions.findOne({
@@ -201,6 +244,7 @@ exports.manageTeamTask = async (req, res) => {
 
     /* -------------- AFTER -------------- */
     /* Checklist after */
+    var isCheckAllAfter = []
     const checklists_after = await quotation_checklists.findAll({
       attributes: ['id', 'name', 'description', ['returned_status', 'status'], ['is_editable', 'isEdit']],
       where: {
@@ -212,6 +256,7 @@ exports.manageTeamTask = async (req, res) => {
     }).then(x => {
       if (x && x.length > 0) {
         x.map(o => {
+          isCheckAllAfter.push(parseInt(o.dataValues.status))
           o.dataValues.isEdit = parseInt(o.dataValues.isEdit) == 1 ? true : false
         })
       }
@@ -247,17 +292,21 @@ exports.manageTeamTask = async (req, res) => {
         info: headInfo[0],
         before: {
           checklist_count: checklists_before ? checklists_before.length : 0,
+          checklist_check_all: isCheckAllBefore.includes(0) || isCheckAllBefore.includes(2) ? 0 : 1,
           checklists: checklists_before,
           description: description_before ? description_before.dataValues.description : '',
           img: img_before
         },
         between: {
           viewing_img: img_viewing_area,
+          checklists: checklists_between,
+          checklist_check_all: checklists_between && checklists_between.dataValues.status == 1 ? 1 : 0,
           description: description_between ? description_between.dataValues.description : '',
           img: img_between
         },
         after: {
           checklist_count: checklists_after ? checklists_after.length : 0,
+          checklist_check_all: isCheckAllAfter.includes(0) || isCheckAllAfter.includes(2) ? 0 : 1,
           checklists: checklists_after,
           description: description_after ? description_after.dataValues.description : '',
           img: img_after
@@ -289,7 +338,8 @@ exports.createChecklistSetup = async (req, res) => {
       name: name,
       description: '',
       returned_status: 0,
-      checklist_type: 1
+      checklist_type: 1,
+      is_editable: 1
     });
     res.json({
       response: "OK",
@@ -400,17 +450,74 @@ exports.deleteChecklistSetup = async (req, res) => {
 /* Update Checklist of Setupteam */
 exports.updateChecklistSetup = async (req, res) => {
   try {
-    const { id, status } = req.body;
-    /*update checklists*/
-    const result = await quotation_checklists.update({
-      status: status
-    }, {
-      where: {
-        id: id,
-        is_active: 1,
-        is_delete: 0
-      }
+    const dataBody = req.body;
+    var result = "loop updated"
+    if (Array.isArray(dataBody)) {
+      dataBody.map(async x => {
+        /*update many checklists*/
+        const o = await quotation_checklists.update({
+          status: x.status
+        }, {
+          where: {
+            id: x.id,
+            is_active: 1,
+            is_delete: 0
+          }
+        });
+        result = o
+      })
+    } else {
+      /*update one checklists*/
+      result = await quotation_checklists.update({
+        status: dataBody.status
+      }, {
+        where: {
+          id: dataBody.id,
+          is_active: 1,
+          is_delete: 0
+        }
+      });
+    }
+    res.json({
+      response: "OK",
+      result
     });
+  } catch (error) {
+    console.log(error);
+    res.json({ response: "FAILED", result: error });
+  }
+};
+/* Update Checklist of Setupteam (Returned)*/
+exports.updateChecklistSetupReturn = async (req, res) => {
+  try {
+    const dataBody = req.body;
+    var result = "loop updated"
+    if (Array.isArray(dataBody)) {
+      dataBody.map(async x => {
+        /*update many checklists*/
+        const o = await quotation_checklists.update({
+          returned_status: x.status
+        }, {
+          where: {
+            id: x.id,
+            is_active: 1,
+            is_delete: 0
+          }
+        });
+        result = o
+      })
+    } else {
+      /*update one checklists*/
+      result = await quotation_checklists.update({
+        returned_status: dataBody.status
+      }, {
+        where: {
+          id: dataBody.id,
+          is_active: 1,
+          is_delete: 0
+        }
+      });
+    }
     res.json({
       response: "OK",
       result

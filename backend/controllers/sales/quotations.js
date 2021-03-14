@@ -148,6 +148,15 @@ exports.comfirmQuotationStatus = async (req, res) => {
           }
         }
       })
+      await quotation_checklists.create({
+        quotation_id: get_id_quotation.dataValues.id,
+        name: "รายการตรวจสอบระหว่างงาน ใช้แสดงปุ้มเสร็จสิ้น",
+        description: '',
+        status: 0,
+        returned_status: 0,
+        checklist_type: 2,
+        is_editable: 0
+      })
     }
 
     if (result !== 0) {

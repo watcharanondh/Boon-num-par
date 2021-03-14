@@ -20,6 +20,8 @@ router.post("/editchecklistsetup", authorize, setupTeamContrllers.editChecklistS
 router.post("/delchecklistsetup", authorize, setupTeamContrllers.deleteChecklistSetup);
 /* Update Checklist of Setupteam */
 router.post("/updatechecklistsetup", authorize, setupTeamContrllers.updateChecklistSetup);
+/* Update Checklist of Setupteam (Returned) */
+router.post("/updatereturnchecklistsetup", authorize, setupTeamContrllers.updateChecklistSetupReturn);
 
 /* Create Image Setup */
 router.post("/createimgsetup", authorize, setupTeamContrllers.createImageSetup);
