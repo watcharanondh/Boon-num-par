@@ -177,7 +177,7 @@ exports.manageTeamTask = async (req, res) => {
       attributes: ['description'],
       where: {
         quotation_id: headInfo[0].dataValues.id,
-        description_type: 1,
+        description_type: 0,
         is_active: 1,
         is_delete: 0
       }
@@ -518,6 +518,43 @@ exports.updateChecklistSetupReturn = async (req, res) => {
         }
       });
     }
+    res.json({
+      response: "OK",
+      result
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({ response: "FAILED", result: error });
+  }
+};
+
+/* Update Description of Setupteam */
+exports.updateDescriptionSetup = async (req, res) => {
+  try {
+    const { quotation_code, description, description_type } = req.body;
+    const get_id_quotation = await quotations.findOne({ where: { quotation_code: quotation_code } })
+    const isCheckDesc = await quotation_descriptions.findOne({ where: { quotation_id: get_id_quotation.dataValues.id, is_active: 1, is_delete: 0, description_type: description_type } })
+    var result = null
+    if (isCheckDesc) {
+      /*update quotation description*/
+      result = await quotation_descriptions.update({
+        description: description
+      }, {
+        where: {
+          id: isCheckDesc.dataValues.id,
+          is_active: 1,
+          is_delete: 0
+        }
+      });
+    } else {
+      /*Create new quotation description*/
+      result = await quotation_descriptions.create({
+        quotation_id: get_id_quotation.dataValues.id,
+        description: description,
+        description_type: description_type
+      });
+    }
+
     res.json({
       response: "OK",
       result

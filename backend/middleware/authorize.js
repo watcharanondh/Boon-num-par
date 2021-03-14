@@ -28,8 +28,8 @@ const authorization = (req, res, next) => {
     });
 
     /* --------------------- only On development ---------------------*/
-  // } else if (isBearer == "Basic" && token == "BNP*1234") {
-  //   next();
+  } else if (isBearer == "Basic" && token == "BNP*1234") {
+    next();
     /* ---------------------------------------------------------------*/
 
   } else {

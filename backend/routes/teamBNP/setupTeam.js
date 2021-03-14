@@ -23,6 +23,9 @@ router.post("/updatechecklistsetup", authorize, setupTeamContrllers.updateCheckl
 /* Update Checklist of Setupteam (Returned) */
 router.post("/updatereturnchecklistsetup", authorize, setupTeamContrllers.updateChecklistSetupReturn);
 
+/* Update Description of Setupteam */
+router.post("/updatedestsetup", authorize, setupTeamContrllers.updateDescriptionSetup);
+
 /* Create Image Setup */
 router.post("/createimgsetup", authorize, setupTeamContrllers.createImageSetup);
 /* Delete Image Setup */
