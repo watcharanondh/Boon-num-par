@@ -113,6 +113,7 @@ export const server = {
   DEL_IMG_SETUP_TEAM_URL:`/bnp/setupteam/delimgsetup`,
   RECHECK_BEFORE_SETUP_TEAM_URL:`/bnp/setupteam/updatechecklistsetup`,
   RECHECK_AFTER_SETUP_TEAM_URL:`/bnp/setupteam/updatereturnchecklistsetup`,
+  DESCRIPTION_SETUP_TEAM_URL:`/bnp/setupteam/updatedestsetup`,
   ///////////////////////////////////////////////////////////////////////
 
   ///////////////Manageteamlists (setup) (Team Management)////////////////

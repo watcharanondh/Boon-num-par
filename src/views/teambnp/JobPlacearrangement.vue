@@ -333,7 +333,7 @@
                     <a-upload
                       style="zoom:2; padding: 0px;"
                       list-type="picture-card"
-                      :file-list="fileList"
+                      :file-list="fileList_before"
                       :customRequest="uploadSinglePic"
                       @preview="handlePreview"
                       @change="handleChange"
@@ -354,39 +354,6 @@
                 </v-card>
               </v-col>
             </v-row>
-            <v-card v-if="tab==2" class="mx-10 pa-5 rounded-lg" outlined>
-              <v-row>
-                <v-col>
-                  <div class="create-edit-title">
-                    รูปภาพสถานที่
-                  </div>
-                </v-col>
-              </v-row>
-
-              <div class="clearfix">
-                <a-upload
-                  style="zoom:2; padding: 0px;"
-                  list-type="picture-card"
-                  :file-list="fileList"
-                  :customRequest="uploadSinglePic"
-                  @preview="handlePreview"
-                  @change="handleChange"
-                >
-                  <a-icon type="plus" />
-                  <div class="ant-upload-text">
-                      Upload
-                  </div>
-                </a-upload>
-                <a-modal
-                  :visible="previewVisible"
-                  :footer="null"
-                  @cancel="handleCancel"
-                >
-                <!-- :showUploadList="{ showPreviewIcon: true, showRemoveIcon: false }"  -->
-                  <img alt="example" style="width: 100%" :src="previewImage" />
-                </a-modal>
-              </div>
-            </v-card>
           </v-col>
         </v-row>
 
@@ -401,7 +368,7 @@
               </v-col>
             </v-row>
             <br />
-              <v-textarea solo></v-textarea>
+              <v-textarea v-model="description_before" v-on:blur="updatedescription_before()" solo></v-textarea>
           </v-card>
         </v-col>
     </v-row>
@@ -424,21 +391,16 @@
                 <a-upload
                   style="zoom:2; padding: 0px;"
                   list-type="picture-card"
-                  :file-list="fileList"
-                  :customRequest="uploadSinglePic"
+                  :file-list="fileList_between_viewing_img"
                   @preview="handlePreview"
-                  @change="handleChange"
+                  :showUploadList="{ showPreviewIcon: true, showRemoveIcon: false }"
                 >
-                  <a-icon type="plus" />
-                  <div class="ant-upload-text">
-                      Upload
-                  </div>
                 </a-upload>
                 <a-modal
                   :visible="previewVisible"
                   :footer="null"
                   @cancel="handleCancel"
-                  :showUploadList="{ showPreviewIcon: true, showRemoveIcon: false }"
+                  
                 >
                   <img alt="example" style="width: 100%" :src="previewImage" />
                 </a-modal>
@@ -469,7 +431,7 @@
                     <a-upload
                       style="zoom:2; padding: 0px;"
                       list-type="picture-card"
-                      :file-list="fileList"
+                      :file-list="fileList_between"
                       :customRequest="uploadSinglePic"
                       @preview="handlePreview"
                       @change="handleChange"
@@ -501,7 +463,7 @@
                   </v-col>
                 </v-row>
                 <br />
-                  <v-textarea solo></v-textarea>
+                  <v-textarea v-model="description_between" v-on:blur="updatedescription_between()" solo></v-textarea>
               </v-card>
             </v-col>
             </v-row>
@@ -611,7 +573,7 @@
                     <a-upload
                       style="zoom:2; padding: 0px;"
                       list-type="picture-card"
-                      :file-list="fileList"
+                      :file-list="fileList_after"
                       :customRequest="uploadSinglePic"
                       @preview="handlePreview"
                       @change="handleChange"
@@ -647,7 +609,7 @@
               </v-col>
             </v-row>
             <br />
-              <v-textarea solo></v-textarea>
+              <v-textarea v-model="description_after" v-on:blur="updatedescription_after()" solo></v-textarea>
           </v-card>
         </v-col>
     </v-row>
@@ -666,6 +628,7 @@ function getBase64(file) {
 }
 
 import api from "@/services/api";
+import axios from "axios";
 export default {
   name: "JobPlacearrangement",
   mounted() {
@@ -692,6 +655,7 @@ export default {
     Create_checklists_JobPlacearrangement: null,
     Edit_checklists_JobPlacearrangement: null,
     EditChkID:null,
+    description_before:null,
     totalbefore: null,
     table_manageplace_before_item: [],
     headers_table_manageplace_before: [
@@ -702,10 +666,12 @@ export default {
     ],
 
     //tab2=>between
+    description_between: null,
 
 
     //tab3=>after
     Allchk_after:null,
+    description_after: null,
     totalafter: null,
     table_manageplace_after_item: [],
     headers_table_manageplace_after: [
@@ -719,7 +685,10 @@ export default {
 
     previewVisible: false,
     previewImage: "",
-    fileList: [],
+    fileList_before: [],
+    fileList_between_viewing_img: [],
+    fileList_between: [],
+    fileList_after: [],
   }),
 
   methods: { 
@@ -739,16 +708,33 @@ export default {
       this.Tax_invoice_name = result.data.result.info.team_name;
       this.Event_venue = result.data.result.info.address;
       this.look_location = result.data.result.info.area_viewing_date;
+
+
       //รายการที่ต้องตรวจสอบของ-นำไป
       this.table_manageplace_before_item = result.data.result.before.checklists;
+      //เข็ครายการตรวจสอบ
+      this.Allchk_before=result.data.result.before.checklist_check_all;
+      //เพิ่มเติม
+      this.description_before=result.data.result.before.description;
+      //รูป
+      this.fileList_before=result.data.result.before.img;
+
+      //ตรวจเช็ควันจัดสถานที่
+      this.Allchk_between=result.data.result.between.checklist_check_all;
+      //เพิ่มเติม
+      this.description_between=result.data.result.between.description;
+      //รูป
+      this.fileList_between_viewing_img=result.data.result.between.viewing_img;
+      this.fileList_between=result.data.result.between.img;
+
       //รายการที่ต้องตรวจสอบของ-นำกลับ
       this.table_manageplace_after_item = result.data.result.after.checklists;
       //เข็ครายการตรวจสอบ
-      this.Allchk_before=result.data.result.before.checklist_check_all;
-      // this.Allchk_between=result.data.result.between.checklist_check_all;
       this.Allchk_after=result.data.result.after.checklist_check_all;
+      //เพิ่มเติม
+      this.description_after=result.data.result.after.description;
       //รูป
-      this.fileList=result.data.result.img
+      this.fileList_after=result.data.result.after.img;
     },
 
     async chk_all_before_list() {
@@ -759,9 +745,7 @@ export default {
           status: `1`,
         });
       })
-      console.log(recheckLists);
       let result = await api.RecheckTeamSetup(recheckLists);
-      console.log(result.data.response);
       if (result.data.response == "OK") {
         this.loadJobPlacearrangement();
       } 
@@ -786,7 +770,7 @@ export default {
     async past_before(item, status) {
       let recheckLists = {id:item.id ,status:status};
       let result = await api.RecheckbeforeTeamSetup(recheckLists);
-      console.log(result);
+      //console.log(result);
       if (result.data.response == "OK") {
         this.loadJobPlacearrangement();
       } 
@@ -794,9 +778,9 @@ export default {
 
     async past_after(item, status) {
       let recheckLists = {id:item.id ,status:status};
-      console.log(recheckLists);
+      // console.log(recheckLists);
       let result = await api.RecheckafterTeamSetup(recheckLists);
-      console.log(result);
+      // console.log(result);
       if (result.data.response == "OK") {
         this.loadJobPlacearrangement();
       } 
@@ -905,22 +889,77 @@ export default {
         });
     },
 
+async  updatedescription_before(){
+      let setdescription = {quotation_code:this.qc ,description:this.description_before ,description_type:0}
+      let result = await api.descriptionTeamSetup(setdescription);
+      if (result.data.response == "OK") {
+        this.$swal.fire("บันทึกเพิ่มเติมเรียบร้อยแล้ว", "", "success");
+        this.loadJobPlacearrangement();
+      } 
+
+    },
+ async  updatedescription_between(){
+      let setdescription = {quotation_code:this.qc ,description:this.description_between ,description_type:1}
+      let result = await api.descriptionTeamSetup(setdescription);
+      if (result.data.response == "OK") {
+        this.$swal.fire("บันทึกเพิ่มเติมเรียบร้อยแล้ว", "", "success");
+        this.loadJobPlacearrangement();
+      } 
+
+    },
+  async  updatedescription_after(){
+      let setdescription = {quotation_code:this.qc ,description:this.description_after ,description_type:2}
+      let result = await api.descriptionTeamSetup(setdescription);
+      if (result.data.response == "OK") {
+        this.$swal.fire("บันทึกเพิ่มเติมเรียบร้อยแล้ว", "", "success");
+        this.loadJobPlacearrangement();
+      } 
+
+    },
 
     
-      handleCancel() {
-      this.previewVisible = false;
-    },
+    // รูป
     async handlePreview(file) {
-      if (!file.url && !file.preview) {
+    if (!file.url && !file.preview) {
         file.preview = await getBase64(file.originFileObj);
       }
       this.previewImage = file.url || file.preview;
       this.previewVisible = true;
     },
-    handleChange({ fileList }) {
-      this.fileList = fileList;
+    handleCancel() {
+      this.previewVisible = false;
     },
 
+    handleChange({ file, fileList }) {
+      this.fileList = fileList;
+      console.log("ไฟล์", file);
+      console.log("ไฟล์ลิดส", fileList);
+    
+    },
+
+    async uploadSinglePic({ file, onSuccess }) {
+      console.log('ไฟล์ssssssss',file);
+      const reader = new FileReader();
+          reader.readAsDataURL(file);
+          let data = new FormData();
+          data.append('image', file)
+
+      var config = {
+        method: 'post',
+        url: 'https://api.imgur.com/3/image',
+        headers: {
+          'Authorization': 'Client-ID 546c25a59c58ad7', 
+        },
+        data : data
+      };
+
+      await axios(config).then((response ) => {
+      alert('อัพโหลดรูปเรียบร้อยแล้ว')
+      this.Put_Users.profile_img = response.data.data.link;
+      //console.log(this.Put_Users.profile_img);
+    });
+      onSuccess('Ok')
+    },
   },
 };
 </script>

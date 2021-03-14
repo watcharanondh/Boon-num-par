@@ -733,7 +733,7 @@ export const DELimgTeamSetup = data  => {
 };
 export const RecheckbeforeTeamSetup = data  => {
   return axios
-    .post(apiUrl + server.RECHECK_SETUP_TEAM_URL,data, {
+    .post(apiUrl + server.RECHECK_BEFORE_SETUP_TEAM_URL,data, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
       }
@@ -746,6 +746,18 @@ export const RecheckbeforeTeamSetup = data  => {
 export const RecheckafterTeamSetup = data  => {
   return axios
     .post(apiUrl + server.RECHECK_AFTER_SETUP_TEAM_URL,data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+
+export const descriptionTeamSetup = data  => {
+  return axios
+    .post(apiUrl + server.DESCRIPTION_SETUP_TEAM_URL,data, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
       }
