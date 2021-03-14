@@ -31,9 +31,9 @@ import Workprogress from "@/views/teambnp/Workprogress.vue";
 import Manageteamlists from "@/views/teambnp/Manageteamlists.vue"; 
 
 import Explorearea from "@/views/teambnp/Explorearea.vue";
-import CheckLocation from "@/views/teambnp/CheckLocation.vue";
+import JobExplorearea from "@/views/teambnp/JobExplorearea.vue";
 import Placearrangement from "@/views/teambnp/Placearrangement.vue"; 
-import Checkaftershipping from "@/views/teambnp/Checkaftershipping.vue"; 
+import JobPlacearrangement from "@/views/teambnp/JobPlacearrangement.vue"; 
 
 import Createmanageteam from "@/views/teambnp/Createmanageteam.vue";
 import Editmanageteam from "@/views/teambnp/Editmanageteam.vue"; 
@@ -181,9 +181,9 @@ const routes = [
       component: Explorearea
     },
     {
-      path: "/teambnp/CheckLocation",
-      name: "menuCheckLocation",
-      component: CheckLocation
+      path: "/teambnp/JobExplorearea",
+      name: "menuJobExplorearea",
+      component: JobExplorearea
     },
     {
       path: "/teambnp/Placearrangement",
@@ -191,9 +191,9 @@ const routes = [
       component: Placearrangement
     },
     {
-      path: "/teambnp/Checkaftershipping",
-      name: "menuCheckaftershipping",
-      component: Checkaftershipping
+      path: "/teambnp/JobPlacearrangement",
+      name: "menuJobPlacearrangement",
+      component: JobPlacearrangement
     },
 
 

@@ -1410,7 +1410,7 @@ export default {
         let resultCreateNewQuotation = await api.addQuotation(
           CreateNewQuotation
         );
-        console.log(resultCreateNewQuotation);
+        //console.log(resultCreateNewQuotation);
         if (resultCreateNewQuotation.data.response == "OK") {
           this.$swal.fire(
             "สำเร็จ",
@@ -1439,7 +1439,7 @@ export default {
           amount_drink: this.package_amount_drink,
           note: this.Quotation_note
         };
-        console.log("quotation_code", EditQuotation);
+        //console.log("quotation_code", EditQuotation);
         let resultEditQuotation = await api.editQuotation(EditQuotation);
         //console.log(resultEditQuotation);
         if (resultEditQuotation.data.response == "OK") {

@@ -86,21 +86,36 @@ export const server = {
   LIST_UPDATELOOKANDMANAGEAPPOINTMENT_URL:`/bnp/shipping/listteamtoshipping`,
   LIST_UPDATE_ASSIGNWORKTEAM_URL:`/bnp/shipping/assignworkteam`,
   //Findmoment
-  FIND_MOMENT_URL:``,
+  FIND_MOMENT_URL:`/bnp/shipping/listallshipping`,
   //List Shipping to SEE
   List_SHIPPING_TO_SEE:`/bnp/shipping/listshippingtosee`,
-  ///////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////
 
-
-
-  //ModalUpdateLook&ManageAppointment
+  ////////////////Explorearea CheckLocation (Survey Team)/////////////////
   LIST_ALL_SURVEY_TEAM_URL:`/bnp/surveyteam/listallsurveyteam`,
+  LIST_MANAGETASK_SURVEY_TEAM_URL:`/bnp/surveyteam/managetask`,
+  LIST_CREATE_LIST_SURVEY_TEAM_URL:`/bnp/surveyteam/createchecklistsurvey`,
+  LIST_CHECK_SURVEY_TEAM_URL:`/bnp/surveyteam/listchecklistsurvey`,
+  EDIT_CHECK_LIST_SURVEY_TEAM_URL:`/bnp/surveyteam/editchecklistsurvey`,
+  DEL_CHECK_LIST_SURVEY_TEAM_URL:`/bnp/surveyteam/delchecklistsurvey`,
+  CREATE_IMG_SURVEY_TEAM_URL:`/bnp/surveyteam/createimgsurvey`,
+  DEL_IMG_SURVEY_TEAM_URL:`/bnp/surveyteam/createimgsurvey`,
+  RECHECK_SURVEY_TEAM_URL:`/bnp/surveyteam/updatechecklistsurvey`,
 
+  ////////////////////Checkaftershipping (Setup Team)/////////////////////
+  LIST_ALL_SETUP_TEAM_URL:`/bnp/setupteam/listallsetupteam`,
+  LIST_MANAGETASK_SETUP_TEAM_URL:`/bnp/setupteam/managetask`,
+  LIST_CREATE_LIST_SETUP_TEAM_URL:`/bnp/setupteam/createchecklistsetup`,
+  LIST_CHECK_SETUP_TEAM_URL:`/bnp/setupteam/listchecklistsetup`,
+  EDIT_CHECK_LIST_SETUP_TEAM_URL:`/bnp/setupteam/editchecklistsetup`,
+  DEL_CHECK_LIST_SETUP_TEAM_URL:`/bnp/setupteam/delchecklistsetup`,
+  CREATE_IMG_SETUP_TEAM_URL:`/bnp/setupteam/createimgsetup`,
+  DEL_IMG_SETUP_TEAM_URL:`/bnp/setupteam/delimgsetup`,
+  RECHECK_BEFORE_SETUP_TEAM_URL:`/bnp/setupteam/updatechecklistsetup`,
+  RECHECK_AFTER_SETUP_TEAM_URL:`/bnp/setupteam/updatereturnchecklistsetup`,
+  ///////////////////////////////////////////////////////////////////////
 
-
-
-
-  ///////////////Manageteamlists (setup) (Team Management)///////////
+  ///////////////Manageteamlists (setup) (Team Management)////////////////
   //Team Management
   LIST_MANAGETEAM_URL:`/bnp/teammanage/listallteams`,
   LIST_CREATE_TO_MANAGETEAM_URL:`/bnp/teammanage/listuserstocreateteam`,
@@ -116,10 +131,12 @@ export const server = {
   PUT_EDIT_CHECKLISTS_URL:`/bnp/checklists/editchecklist`,
   DEL_CHECKLISTS_URL:`/bnp/checklists/delchecklist`,
 
-  ///////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////
 
 
+  //Team HONG
 
+  
 
 
 };

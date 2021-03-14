@@ -278,6 +278,57 @@
   color: red;
 }
 
+/* ปุ่มผ่าน ไม่ผ่าน */
+.button-left {
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.2px;
+  padding: 5px 25px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #9fa2b4;
+  border: 2px solid #9fa2b4;
+  border-radius: 15px 0px 0px 15px;
+}
+
+.button-right {
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.2px;
+  padding: 5px 20px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #9fa2b4;
+  border: 2px solid #9fa2b4;
+  border-radius: 0px 15px 15px 0px;
+}
+
+.active {
+  background-color: #666;
+  color: white;
+}
+
+/* ant */
+.ant-upload-list-picture .ant-upload-list-item, .ant-upload-list-picture-card .ant-upload-list-item{
+  padding: 0px
+ }
+ 
+.v-input.v-input--switch--inset .v-input--switch__track:after {
+     content: "No";
+     color: #333333;
+     font-size: 10px;
+ }
+ 
+.v-input.v-input--switch--inset.v-input--is-label-active.v-input--is-dirty .v-input--switch__track:after{
+    content: "Yes";
+    color: #28A745;
+ }
+/* ant */
+
 /* หน้า menuteambnp */
 .menu-teambnp{
   height: 100%;
@@ -359,4 +410,7 @@
   }
 }
 /*จบ หน้า menuteambnp */
+
+
+
 

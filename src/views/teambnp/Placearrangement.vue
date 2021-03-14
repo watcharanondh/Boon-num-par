@@ -12,9 +12,80 @@
     <v-col>
       <v-row> </v-row>
     </v-col>
+    <!-- ปฎิทิน -->
     <v-row>
-      <!-- ปฎิทิน -->
-      <ModalCalendar />
+      <v-row>
+      <v-col sm="3" cols="12">
+      <v-menu
+        ref="menu"
+        class="menupick"
+        v-model="menu"
+        :close-on-content-click="false"
+        :return-value.sync="dates"
+        offset-y
+        min-width="auto"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            v-model="dateRangeText"
+            label="ค้นหาวันที่มีงาน"
+            prepend-icon="mdi-calendar"
+            dense
+            solo
+            outlined
+            readonly
+            clearable
+            v-bind="attrs"
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-row cols="12" sm="12">
+          <v-col>
+            <v-date-picker
+              v-model="dates"
+              locale="th"
+              color="yellow darken-3"
+              range
+              no-title
+              scrollable
+            >
+              <v-col>
+                <v-row justify="center">
+                  <v-col cols="12" sm="12">
+                    <v-btn
+                      color="#29CC97"
+                      block
+                      large
+                      rounded
+                      small
+                      @click="$refs.menu.save(dates); BetweenDate()"
+                    >
+                      ตกลง
+                    </v-btn>
+                  </v-col>
+                </v-row>
+                <v-row justify="center">
+                  <v-col cols="12" sm="12">
+                    <v-btn
+                      block
+                      large
+                      rounded
+                      outlined
+                      small
+                      color="warning"
+                      @click="menu = false"
+                    >
+                      ปิด
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-date-picker>
+          </v-col>
+        </v-row>
+      </v-menu>
+    </v-col>
+    </v-row>
       <v-btn
         class="mx-10"
         color="#C4C4C4"
@@ -32,8 +103,8 @@
         <v-card>
           <v-data-table
             :search="search"
-            :headers="headers_table_explorearea"
-            :items="table_explorearea_item"
+            :headers="headers_table_placearrangement"
+            :items="table_placearrangement_item"
             class="elevation-1"
           >
             <!-- table top section -->
@@ -64,14 +135,28 @@
                   {{ item.address }}
                 </td>
                 <td>
-                  {{ item.area_viewing_date }}<br />
-                  <span class="quotation-font-color">{{item.area_viewing_date_datetime}}</span>
+                  {{ item.event_date }}<br />
+                  <span class="quotation-font-color">{{item.event_date_datetime}}</span>
                 </td>
                 <td>
-                    <v-btn
-                        @click="$router.push({ name: 'menuCheckaftershipping' })"
-                        rounded>
-                        <span class="#606771--text">อัพเดทสถานะงาน</span></v-btn>
+                  {{ item.progress }}
+                </td>
+                <td>
+                  <div v-if="item.progress_status == 0">
+                    <v-btn outlined rounded  @click="updatejobstatus(item)">
+                        <span class="#606771--text">อัพเดทสถานะงาน</span>
+                    </v-btn>
+                 </div>
+                  <div v-if="item.progress_status == 1">
+                    <v-btn  rounded  color="#E4E4E4" @click="updatejobstatus(item)">
+                        <span class="#606771--text">กำลังดำเนินงาน</span>
+                    </v-btn>
+                  </div>
+                  <div v-if="item.progress_status == 2">
+                    <v-btn  rounded color="#C4C4C4" @click="updatejobstatus(item)">
+                        <span class="#606771--text">เสร็จสมบูรณ์</span>
+                    </v-btn>
+                  </div>
                 </td>
                 <td>
                   <!-- <v-btn icon>
@@ -88,52 +173,73 @@
 </template>
 
 <script>
-import ModalCalendar from "@/components/dialog/ModalCalendar.vue";
 import api from "@/services/api";
 
 export default {
-  name: "Explorearea",
-  components: {
-    ModalCalendar
-  },
+  name: "Placearrangement",
   mounted() {
-    this.loadExplorearea();
+    this.loadPlacearrangement();
     this.$store.dispatch({
       type: "inputRoutepath",
       RT: this.$route.path
     });
   },
   data: () => ({
+    dates: [],
+    menu: false,
     search: "",
-    idq: null,
     total: null,
-    table_explorearea_item: [],
-    headers_table_explorearea: [
-      { text: "รหัสทีม",value: "team_code", sortable: true, align: "start"},
+    table_placearrangement_item: [],
+    headers_table_placearrangement: [
+      { text: "รหัสทีม",value: "team_code", sortable: false, align: "start"},
       { text: "ชื่อทีม",value: "team_name",sortable: false, align: "start"},
-      { text: "สถานที่จัดงาน", value: "address", sortable: true, align: "start" },
-      { text: "วันเวลานัดดูสถานที่", value: "area_viewing_date", sortable: true,  align: "start" },
-      { text: "ความคืบหน้างาน", value: "area_viewing_date", sortable: true,  align: "start" },
+      { text: "สถานที่จัดงาน", value: "address", sortable: false, align: "start" },
+      { text: "วันเวลานัดดูสถานที่", value: "area_viewing_date", sortable: false,  align: "start" },
+      { text: "ความคืบหน้างาน", value: "progress", sortable: false,  align: "start" },
       { text: "", value: "", sortable: false, align: "start" },
       { text: "", value: "", sortable: false, align: "start" },
     ]
   }),
 
+    computed: {
+    dateRangeText() {
+      return this.dates.join(" ~ ");
+    },
+  },
+
   methods: {
-    async loadExplorearea() {
-      let result = await api.TeamSurvey();
-      this.table_explorearea_item = result.data.result;
+    async loadPlacearrangement() {
+      let Datemoment ={ startdate:"" , enddate:"" }
+      let result = await api.TeamSetup(Datemoment);
+      this.table_placearrangement_item = result.data.result;
       this.total = result.data.total;
     },
 
-    async MonitorTeaminformation() {
-    //   await this.$store.dispatch({
-    //     type: "doEditBNPID",
-    //     BNP_ID: item.quotation_code
-    //   });
-      await this.$router.push({ name: "menuMonitorteaminformation" });
+    async BetweenDate(){
+      let Datemoment ={ startdate:this.dates[0] , enddate:this.dates[1] }
+      let result = await api.TeamSetup(Datemoment);
+      //console.log('ช่วงเวลา',result);
+      if(result.data.response=="OK"){
+      this.table_placearrangement_item = [];
+      this.table_placearrangement_item = result.data.result;
+      this.total = result.data.total;
+      }else{
+             this.$swal.fire(
+              "ไม่พบช่วงเวลาดังกล่าว",
+              `กรุณาค้นหาช่วงเวลาใหม่อีกครั้ง ${result.data.response} ${result.data.result} `,
+              "error"
+            );
+      }
     },
 
+      async updatejobstatus(item) {
+      //console.log(item);
+      await this.$store.dispatch({
+        type: "setBNPDATA",
+        bnpdata: item.quotation_code
+      });
+      await this.$router.push({ name: "menuJobPlacearrangement" });
+    },
   }
 };
 </script>

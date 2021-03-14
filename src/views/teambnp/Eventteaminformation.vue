@@ -12,6 +12,7 @@
     <v-col>
       <v-row> </v-row>
     </v-col>
+    <!-- ปฎิทิน -->
     <v-row>
       <v-col sm="3" cols="12">
       <v-menu
@@ -32,6 +33,7 @@
             solo
             outlined
             readonly
+            clearable
             v-bind="attrs"
             v-on="on"
           ></v-text-field>
@@ -171,9 +173,9 @@
 </template>
 
 <script>
-import ModalUpdateLookAppointment from "@/components/dialog/ModalUpdateLookAppointment.vue";
-import ModalUpdateManageAppointment from "@/components/dialog/ModalUpdateManageAppointment.vue";
 import api from "@/services/api";
+import ModalUpdateLookAppointment from "@/components/dialog/teambnp/ModalUpdateLookAppointment.vue";
+import ModalUpdateManageAppointment from "@/components/dialog/teambnp/ModalUpdateManageAppointment.vue";
 
 export default {
   name: "Eventteaminformation",
@@ -216,18 +218,25 @@ export default {
     async loadEventteaminformation() {
       let Datemoment ={ startdate:"" , enddate:"" }
       let result = await api.getEventteaminformation(Datemoment);
-      console.log('test',result);
       this.table_Teaminglist_item = result.data.result;
       this.total = result.data.total;
     },
 
-    BetweenDate(){
+  async BetweenDate(){
       let Datemoment ={ startdate:this.dates[0] , enddate:this.dates[1] }
-      console.log(Datemoment);
-      // let result = await api.Findmoment(Datemoment);
-      // this.table_Teaminglist_item = result.data.result;
-      // this.total = result.data.total;
-
+      let result = await api.Findmoment(Datemoment);
+      //console.log('ช่วงเวลา',result);
+      if(result.data.response=="OK"){
+      this.table_Teaminglist_item = [];
+      this.table_Teaminglist_item = result.data.result;
+      this.total = result.data.total;
+      }else{
+             this.$swal.fire(
+              "ไม่พบช่วงเวลาดังกล่าว",
+              `กรุณาค้นหาช่วงเวลาใหม่อีกครั้ง ${result.data.response} ${result.data.result} `,
+              "error"
+            );
+      }
     },
 
     async MonitorTeaminformation(item) {

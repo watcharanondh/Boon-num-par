@@ -540,21 +540,10 @@ export const List_SHIPPING_TO_SEE = data => {
     });
 };
 
-
-// export const getTeamstoAssign = () => {
-//   return axios
-//     .get(apiUrl + server.LIST_TEAMS_ASSIGN_EVENTTEAMINFORMATION_URL, {
-//       headers: {
-//         Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
-//       }
-//     })
-//     .catch(error => {
-//       redirectLogin(error);
-//     });
-// };
-export const TeamSurvey = ()  => {
+//Explorearea
+export const TeamSurvey = data  => {
   return axios
-    .get(apiUrl + server.LIST_ALL_SURVEY_TEAM_URL, {
+    .post(apiUrl + server.LIST_ALL_SURVEY_TEAM_URL,data, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
       }
@@ -563,6 +552,209 @@ export const TeamSurvey = ()  => {
       redirectLogin(error);
     });
 };
+export const ListmanagetaskTeamSurvey = data  => {
+  return axios
+    .post(apiUrl + server.LIST_MANAGETASK_SURVEY_TEAM_URL,data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+export const ListchkcreateTeamSurvey = data  => {
+  return axios
+    .post(apiUrl + server.LIST_CREATE_LIST_SURVEY_TEAM_URL,data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+export const getListchkTeamSurvey = data  => {
+  return axios
+    .post(apiUrl + server.LIST_CHECK_SURVEY_TEAM_URL,data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+export const EditchklistTeamSurvey = data  => {
+  return axios
+    .post(apiUrl + server.EDIT_CHECK_LIST_SURVEY_TEAM_URL,data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+export const DelchklistTeamSurvey = data  => {
+  return axios
+    .post(apiUrl + server.DEL_CHECK_LIST_SURVEY_TEAM_URL,data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+export const CreateimgTeamSurvey = data  => {
+  return axios
+    .post(apiUrl + server.CREATE_IMG_SURVEY_TEAM_URL,data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+export const DELimgTeamSurvey = data  => {
+  return axios
+    .post(apiUrl + server.DEL_IMG_SURVEY_TEAM_URL,data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+
+export const RecheckTeamSurvey= data => {
+  return axios
+    .post(apiUrl + server.RECHECK_SURVEY_TEAM_URL, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+
+//Manageplace  Placearrangement
+export const TeamSetup = data  => {
+  return axios
+    .post(apiUrl + server.LIST_ALL_SETUP_TEAM_URL,data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+export const ListmanagetaskTeamSetup = data  => {
+  return axios
+    .post(apiUrl + server.LIST_MANAGETASK_SETUP_TEAM_URL,data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+export const ListchkcreateTeamSetup = data  => {
+  return axios
+    .post(apiUrl + server.LIST_CREATE_LIST_SETUP_TEAM_URL,data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+export const ListchkTeamSetup = data  => {
+  return axios
+    .post(apiUrl + server.LIST_CHECK_SETUP_TEAM_URL,data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+export const EditchklistTeamSetup = data  => {
+  return axios
+    .post(apiUrl + server.EDIT_CHECK_LIST_SETUP_TEAM_URL,data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+export const DelchklistTeamSetup = data  => {
+  return axios
+    .post(apiUrl + server.DEL_CHECK_LIST_SETUP_TEAM_URL,data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+export const CreateimgTeamSetup = data  => {
+  return axios
+    .post(apiUrl + server.CREATE_IMG_SETUP_TEAM_URL,data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+export const DELimgTeamSetup = data  => {
+  return axios
+    .post(apiUrl + server.DEL_IMG_SETUP_TEAM_URL,data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+export const RecheckbeforeTeamSetup = data  => {
+  return axios
+    .post(apiUrl + server.RECHECK_SETUP_TEAM_URL,data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+
+export const RecheckafterTeamSetup = data  => {
+  return axios
+    .post(apiUrl + server.RECHECK_AFTER_SETUP_TEAM_URL,data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+
 
 //Team Management
 export const getListallTeams = () => {
@@ -637,6 +829,9 @@ export const deleteTeam = data => {
     });
 };
 
+
+
+
 //Checklists
 export const getListtoChecklists = () => {
   return axios
@@ -649,6 +844,55 @@ export const getListtoChecklists = () => {
       redirectLogin(error);
     });
 };
+//Checklists
+export const getListEdittoChecklists = data => {
+  return axios
+    .post(apiUrl + server.LIST_EDIT_TO_CHECKLISTS_URL,data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+//Checklists
+export const AddChecklists = data => {
+  return axios
+    .post(apiUrl + server.LIST_ADD_CHECKLISTS_URL,data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+//Checklists
+export const EditChecklists = data => {
+  return axios
+    .post(apiUrl + server.PUT_EDIT_CHECKLISTS_URL,data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+//Checklists
+export const DelChecklists = data => {
+  return axios
+    .post(apiUrl + server.DEL_CHECKLISTS_URL,data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+
 
 
 

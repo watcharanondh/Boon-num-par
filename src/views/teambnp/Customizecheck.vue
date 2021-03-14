@@ -13,19 +13,141 @@
       <v-row> </v-row>
     </v-col>
     <v-col>
+      <!-- สร้างเคสตรวจสอบ -->
       <v-row justify="end">
-        <v-btn
-          @click="Bringto"
-          rounded
+        <v-dialog
+          v-model="dialogCreateCheckListdefault"
+          :retain-focus="false"
+          transition="dialog-top-transition"
+          persistent
+          width="25%"
         >
-          <span class="white--text">ตรวจเช็คของ-นำไป</span></v-btn>
-        <v-btn
-          @click="Bringback"
-          rounded
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn v-bind="attrs" v-on="on" color="#29CC97" rounded>
+              <span class="white--text">สร้างเคสตรวจสอบ</span>
+            </v-btn>
+          </template>
+          <v-card>
+            <v-card-title>
+              <v-row>
+                <v-col>
+                  <div class="update-head-title">
+                    เพิ่มรายการตรวจสอบ
+                  </div>
+                </v-col>
+              </v-row>
+            </v-card-title>
+            <v-card-title>
+              <v-row>
+                <v-col>
+                  <div class="update-sub-title">
+                    รายการตรวจสอบ
+                  </div>
+                </v-col>
+              </v-row>
+            </v-card-title>
+            <v-card-text>
+              <v-row class="justify-center">
+                <v-col class="justify-center">
+                  <v-text-field v-model="Create_checklists_default" clearable>
+                  </v-text-field>
+                  <v-card-actions class="justify-center pa-0 mb-0">
+                    <v-col lg="6" md="6" sm="12" cols="12">
+                      <v-btn
+                        color="#29CC97"
+                        block
+                        large
+                        rounded
+                        @click="CreatecheckList_submit_default()"
+                        ><span class=" white--text">อัพเดท</span></v-btn>
+                    </v-col>
+                  </v-card-actions>
+                  <v-card-actions class="justify-center pa-0">
+                    <v-col lg="6" md="6" sm="12" cols="12">
+                      <v-btn
+                        block
+                        large
+                        rounded
+                        outlined
+                        color="warning"
+                        @click="dialogCreateCheckListdefault = false"
+                      >
+                        ปิด
+                      </v-btn>
+                    </v-col>
+                  </v-card-actions>
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </v-card>
+        </v-dialog>
+        <!-- แก้ไขรายการตรวจสอบ -->
+        <v-dialog
+          v-model="dialogEditchecklistdefault"
+          :retain-focus="false"
+          transition="dialog-top-transition"
+          persistent
+          width="25%"
         >
-          <span class="white--text">ตรวจเช็คของ-นำกลับ</span></v-btn>
-        <v-spacer></v-spacer>
-        <ModalAddchecklist />
+          <v-card>
+            <v-card-title>
+              <v-row>
+                <v-col>
+                  <div class="update-head-title">
+                    แก้ไขรายการตรวจสอบ
+                  </div>
+                </v-col>
+              </v-row>
+            </v-card-title>
+            <v-card-title>
+              <v-row>
+                <v-col>
+                  <div class="update-sub-title">
+                    รายการตรวจสอบ
+                  </div>
+                </v-col>
+              </v-row>
+            </v-card-title>
+            <v-card-text>
+              <v-row class="justify-center">
+                <v-col class="justify-center">
+                  <v-text-field
+                    v-model="Edit_checklists_default"
+                    clearable
+                  >
+                  </v-text-field>
+
+                  <v-card-actions class="justify-center pa-0 mb-0">
+                    <v-col lg="6" md="6" sm="12" cols="12">
+                      <v-btn
+                        color="#29CC97"
+                        block
+                        large
+                        rounded
+                        @click="EditChacklist_submit_default()"
+                        ><span class=" white--text">อัพเดท</span></v-btn
+                      >
+                    </v-col>
+                  </v-card-actions>
+                  <v-card-actions class="justify-center pa-0">
+                    <v-col lg="6" md="6" sm="12" cols="12">
+                      <v-btn
+                        block
+                        large
+                        rounded
+                        outlined
+                        color="warning"
+                        @click="dialogEditchecklistdefault = false"
+                      >
+                        ปิด
+                      </v-btn>
+                    </v-col>
+                  </v-card-actions>
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </v-card>
+        </v-dialog>
       </v-row>
     </v-col>
     <v-col>
@@ -33,7 +155,7 @@
     </v-col>
     <v-row>
       <v-col lg="12" md="12" sm="12" cols="12">
-        <!-- รายชื่อที่ออกงาน -->
+        <!-- รายการตรวจสอบสถานที่ -->
         <v-card>
           <v-data-table
             :headers="headers_table_Customizechecks"
@@ -45,11 +167,8 @@
             <!-- table top section -->
             <template v-slot:top>
               <v-toolbar flat>
-                <v-toolbar-title
-                  ><span class="header-table-title"
-                    >รายชื่อที่ออกงาน</span
-                  ></v-toolbar-title
-                >
+                <v-toolbar-title><span class="header-table-title">รายการตรวจสอบสถานที่</span></v-toolbar-title>
+                <v-toolbar-title><span class="order">{{ total }}</span></v-toolbar-title>
                 <v-spacer></v-spacer>
                 <!-- <v-divider class="mx-4" inset vertical></v-divider>
                 <v-text-field
@@ -100,11 +219,12 @@
             </template>
             <template v-slot:item="{ item }">
               <tr>
-                <td>{{ item.customer_code }}</td>
+                <td>{{ item.name }}</td>
                 <td>
                   <v-row>
+                    <!-- <ModalEditchecklistdefault :IDchecklist="item.id" /> -->
                     <v-btn
-                      @click="EditCustomizecheck(item)"
+                      @click="EditChacklist_default(item)"
                       fab
                       icon
                       outlined
@@ -123,11 +243,11 @@
                     </v-btn>
                   </v-row>
                 </td>
-                <td>
-                  <!-- <v-btn icon>
+                <!-- <td>
+                   <v-btn icon>
                     <v-icon>mdi-dots-vertical</v-icon>
-                  </v-btn> -->
-                </td>
+                  </v-btn> 
+                </td>-->
               </tr>
             </template>
           </v-data-table>
@@ -139,13 +259,9 @@
 
 <script>
 import api from "@/services/api";
-import ModalAddchecklist from "@/components/dialog/ModalAddchecklist.vue";
 
 export default {
   name: "Customizecheck",
-  components: {
-    ModalAddchecklist,
-  },
   mounted() {
     this.loadCustomizechecks();
     this.$store.dispatch({
@@ -155,38 +271,65 @@ export default {
   },
 
   data: () => ({
+    dialogCreateCheckListdefault: false,
+    dialogEditchecklistdefault: false,
+
+    Create_checklists_default: null,
+    Edit_checklists_default: null,
+
+    IDchecklistdefault: null,
+    total: null,
     table_Customizechecks: [],
     headers_table_Customizechecks: [
-      { text: "รายการตรวจสอบ", value: "customizechecks_code",sortable: true, align: "start"},
-      { text: "", value: "", sortable: false, align: "start" },
+      { text: "รายการตรวจสอบ", value: "name", sortable: true, align: "start" },
       { text: "", value: "", sortable: false, align: "start" },
     ],
   }),
 
   methods: {
     async loadCustomizechecks() {
-      let result = await api.getListallCustomizechecks();
-      this.table_teams = result.data.result;
+      let result = await api.getListtoChecklists();
+      this.table_Customizechecks = result.data.result;
       this.total = result.data.total;
     },
 
-    async MonitorTeam(item) {
-      await this.$store.dispatch({
-        type: "doEditBNPID",
-        BNP_ID: item.customer_code,
-      });
-      await this.$router.push({ name: "menueonitorteam" });
+    async CreatecheckList_submit_default() {
+      let CreateChklistdefault = { name: this.Create_checklists_default };
+      let result = await api.AddChecklists(CreateChklistdefault);
+      if (result.data.response == "OK") {
+          this.$swal.fire("สร้างรายการตรวจสอบเรียบร้อย", "", "success");
+          this.loadCustomizechecks();
+          this.dialogCreateCheckListdefault= false
+      } 
     },
 
-    async Editmanageteam(item) {
-      await this.$store.dispatch({
-        type: "doEditBNPID",
-        BNP_ID: item.customer_code,
-      });
-      await this.$router.push({ name: "menueditmanageteam" });
+    async EditChacklist_default(item){
+        let EditChkshowID = { id: item.id };
+        this.IDchecklistdefault = item.id;
+        let result = await api.getListEdittoChecklists(EditChkshowID);
+        if (result.data.response == "OK") {
+          this.Edit_checklists_default = result.data.result[0].name;
+          this.dialogEditchecklistdefault= true
+        }  
     },
 
-    async DeleteTeam(item) {
+    async EditChacklist_submit_default() {
+      let checkLists = { id: this.IDchecklistdefault, name: this.Edit_checklists_default };
+      let result = await api.EditChecklists(checkLists);
+      if (result.data.response == "OK") {
+        this.$swal.fire("แก้ไขรายการตรวจสอบเรียบร้อย", "", "success");
+        this.loadCustomizechecks();
+        this.dialogEditchecklistdefault=false
+      } else {
+        this.$swal.fire(
+          "เกิดข้อผิดพลาด",
+          `แก้ไขรายการตรวจสอบไม่สำเร็จ ${result.data.response} เนื่องจาก ${result.data.result} `,
+          "error"
+        );
+      }
+    },
+
+    async DeleteCustomizecheck(item) {
       this.$swal
         .fire({
           title: `ต้องการลบรายการตรวจสอบนี้ใช่หรือไม่ ?`,
@@ -196,11 +339,11 @@ export default {
         })
         .then(async (result) => {
           if (result.isConfirmed) {
-            let delTeam = { customer_code: item.customer_code };
-            let resultdel = await api.delteam(delTeam);
+            let delCustomizecheck = { id: item.id };
+            let resultdel = await api.DelChecklists(delCustomizecheck);
             if (resultdel.data.response == "OK") {
               this.$swal.fire("ยืนยันการลบเรียบร้อย", "", "success");
-              this.loadTeams();
+              this.loadCustomizechecks();
             }
           } else if (result.isDenied) {
             this.$swal.fire("ยกเลิกการลบ", "", "error");
