@@ -743,6 +743,18 @@ export const RecheckbeforeTeamSetup = data  => {
     });
 };
 
+export const RecheckbetweenTeamSetup = data  => {
+  return axios
+    .post(apiUrl + server.RECHECK_BETWEEN_SETUP_TEAM_URL,data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+
 export const RecheckafterTeamSetup = data  => {
   return axios
     .post(apiUrl + server.RECHECK_AFTER_SETUP_TEAM_URL,data, {

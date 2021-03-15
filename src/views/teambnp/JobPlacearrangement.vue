@@ -412,10 +412,10 @@
                 <v-card class="mx-10 pa-5 rounded-lg" outlined>
                   <v-row>
                     <span v-if="Allchk_between==0">
-                      <v-btn @click="chk_all_between_list()" outlined rounded><span><v-icon>done</v-icon> ทำเครื่องหมายเสร็จสมบูรณ์</span></v-btn>
+                      <v-btn @click="chk_all_between_list(1)" outlined rounded><span><v-icon>done</v-icon> ทำเครื่องหมายเสร็จสมบูรณ์</span></v-btn>
                     </span>
                     <span v-if="Allchk_between==1">
-                      <v-btn color="#606771" rounded><span class="white--text">เสร็จสมบูรณ์</span></v-btn>
+                      <v-btn @click="chk_all_between_list(2)" color="#606771" rounded><span class="white--text">เสร็จสมบูรณ์</span></v-btn>
                     </span>
                   </v-row>
                   <br/>
@@ -574,7 +574,7 @@
                       style="zoom:2; padding: 0px;"
                       list-type="picture-card"
                       :file-list="fileList_after"
-                      :customRequest="uploadSinglePic"
+                      :customRequest="uploadbefore"
                       @preview="handlePreview"
                       @change="handleChange"
                     >
@@ -647,7 +647,7 @@ export default {
     active1: true,
     active2: false,
     active3: false,
-    
+
     //tab1=>before
     Allchk_before:null,
     dialogCreatChecklistJobPlacearrangement: false,
@@ -667,6 +667,7 @@ export default {
 
     //tab2=>between
     description_between: null,
+    Isactive:null,
 
 
     //tab3=>after
@@ -720,7 +721,7 @@ export default {
       this.fileList_before=result.data.result.before.img;
 
       //ตรวจเช็ควันจัดสถานที่
-      this.Allchk_between=result.data.result.between.checklist_check_all;
+      this.Allchk_between=result.data.result.between.checklists.status;
       //เพิ่มเติม
       this.description_between=result.data.result.between.description;
       //รูป
@@ -745,11 +746,28 @@ export default {
           status: `1`,
         });
       })
-      let result = await api.RecheckTeamSetup(recheckLists);
+      let result = await api.RecheckbeforeTeamSetup(recheckLists);
       if (result.data.response == "OK") {
         this.loadJobPlacearrangement();
       } 
     },
+
+    async chk_all_between_list(Isactive) {
+      if(Isactive==1){
+          let recheckLists = {id:55,status: 1}
+      let result = await api.RecheckbetweenTeamSetup(recheckLists);
+        if (result.data.response == "OK") {
+          this.loadJobPlacearrangement();
+        } 
+      }else if(Isactive==2){
+          let recheckLists = {id:55,status: 0}
+      let result = await api.RecheckbetweenTeamSetup(recheckLists);
+        if (result.data.response == "OK") {
+          this.loadJobPlacearrangement();
+        } 
+      }
+    },
+
 
     async chk_all_after_list() {
       this.Allchk_after=1
@@ -759,9 +777,7 @@ export default {
           status: `1`,
         });
       })
-      console.log(recheckLists);
       let result = await api.RecheckafterTeamSetup(recheckLists);
-      console.log(result.data.response);
       if (result.data.response == "OK") {
         this.loadJobPlacearrangement();
       } 
@@ -937,7 +953,7 @@ async  updatedescription_before(){
     
     },
 
-    async uploadSinglePic({ file, onSuccess }) {
+    async uploadbefore({ file, onSuccess }) {
       console.log('ไฟล์ssssssss',file);
       const reader = new FileReader();
           reader.readAsDataURL(file);
