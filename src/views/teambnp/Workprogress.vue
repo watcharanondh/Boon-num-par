@@ -1,11 +1,9 @@
 <template>
-  <v-container style="background:#E5E5E5;color:white;height:100%">
+  <v-container style="background: #e5e5e5; color: white; height: 100%">
     <v-col>
       <v-row>
         <v-card flat color="#E5E5E5">
-          <div class="header-title">
-            ความคืบหน้างาน
-          </div>
+          <div class="header-title">ความคืบหน้างาน</div>
         </v-card>
       </v-row>
     </v-col>
@@ -23,67 +21,80 @@
       >
     </v-row>
     <v-row>
-      <v-card class="mx-10 pa-5 rounded-lg" outlined>
-        <v-card width="1000" height="auto" class="mx-auto">
-          <v-container>
-            <v-row>
-              <v-col lg="12" md="12" sm="12" cols="12">
-                <v-card class="mx-10 pa-5 rounded-lg">
-                  <v-card-title>
-                    บริษัท ทวีสตูดิโอจำกัด
-                  </v-card-title>
-                  <v-card-subtitle>วันเดือนปี:ธันวาคม 23, 2564</v-card-subtitle>
-                  <v-row justify="end">
-                    <v-card-text>
-                      TEAM
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-btn color="green" class="white--text">
-                        สำเร็จ
-                      </v-btn>
-                    </v-card-actions>
-                  </v-row>
-                </v-card>
-                <v-card class="mx-10 pa-5 rounded-lg">
-                  <v-card-title>
-                    บริษัท ทวีสตูดิโอจำกัด
-                  </v-card-title>
-                  <v-card-subtitle>วันเดือนปี:ธันวาคม 23, 2564</v-card-subtitle>
-                  <v-row justify="end">
-                    <v-card-actions>
-                      <v-btn color="green" class="white--text">
-                        สำเร็จ
-                      </v-btn>
-                    </v-card-actions>
-                  </v-row>
-                </v-card>
-                <v-card class="mx-10 pa-5 rounded-lg">
-                  <v-card-title>
-                    บริษัท ทวีสตูดิโอจำกัด
-                  </v-card-title>
-                  <v-card-subtitle>วันเดือนปี:ธันวาคม 23, 2564</v-card-subtitle>
-                  <v-row justify="end">
-                    <v-card-actions>
-                      <v-btn color="green" class="white--text">
-                        สำเร็จ
-                      </v-btn>
-                    </v-card-actions>
-                  </v-row>
-                </v-card>
-              </v-col>
-            </v-row>
-          </v-container>
+      <v-col>
+        <v-card class="mx-10 pa-5 rounded-lg" outlined>
+          <v-card width="1000" height="auto" class="mx-auto">
+            <v-container>
+              <v-row>
+                <v-col lg="12" md="12" sm="12" cols="12">
+                  <v-card class="mx-10 pa-5 rounded-lg">
+                    <v-card-title>8/10</v-card-title>
+                    <v-progress-linear
+                      color="#2ED47A"
+                      height="5"
+                      v-model="workProgress"
+                    ></v-progress-linear>
+                    <v-card-title>วันนี้ 23 ธันวาคม , วันอาทิตย์</v-card-title>
+                  </v-card>
+                  <v-card class="mx-10 pa-5 rounded-lg">
+                    <v-card-title> บริษัท ทวีสตูดิโอจำกัด </v-card-title>
+                    <v-card-subtitle
+                      >วันเดือนปี:ธันวาคม 23, 2564</v-card-subtitle
+                    >
+                    <v-row justify="end">
+                      <v-card-text> TEAM </v-card-text>
+                      <v-card-actions>
+                        <v-btn color="green" class="white--text">
+                          สำเร็จ
+                        </v-btn>
+                      </v-card-actions>
+                    </v-row>
+                  </v-card>
+                  <v-card class="mx-10 pa-5 rounded-lg">
+                    <v-card-title> บริษัท ทวีสตูดิโอจำกัด </v-card-title>
+                    <v-card-subtitle
+                      >วันเดือนปี:ธันวาคม 23, 2564</v-card-subtitle
+                    >
+                    <v-row justify="end">
+                      <v-card-actions>
+                        <v-btn color="green" class="white--text">
+                          สำเร็จ
+                        </v-btn>
+                      </v-card-actions>
+                    </v-row>
+                  </v-card>
+                  <v-card class="mx-10 pa-5 rounded-lg">
+                    <v-card-title> บริษัท ทวีสตูดิโอจำกัด </v-card-title>
+                    <v-card-subtitle
+                      >วันเดือนปี:ธันวาคม 23, 2564</v-card-subtitle
+                    >
+                    <v-row justify="end">
+                      <v-card-actions>
+                        <v-btn color="green" class="white--text">
+                          สำเร็จ
+                        </v-btn>
+                      </v-card-actions>
+                    </v-row>
+                  </v-card>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card>
         </v-card>
-      </v-card>
-
-      <figure class="highcharts-figure">
-        <div id="container"></div>
-      </figure>
+      </v-col>
+      <v-col>
+        <v-card>
+          <figure class="highcharts-figure">
+            <div id="container"></div>
+          </figure>
+        </v-card>
+      </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data: () => ({
     items: [
@@ -100,13 +111,22 @@ export default {
         artist: "Ellie Goulding",
       },
     ],
+    workProgress: 0,
   }),
   mounted() {
     // console.log("test::", window.Highcharts);
     this.test();
   },
   methods: {
-    test() {
+    async test() {
+      const result = await axios.post(
+        process.env.VUE_APP_NODE_URL + "/bnp/progress/listchart",
+        { startdate: "", enddate: "" },
+        { headers: { Authorization: `Basic BNP*1234` } }
+      );
+      console.log(result);
+      this.workProgress = result.data.result[0].y;
+      console.log(this.workProgress);
       // Build the chart
       window.Highcharts.chart("container", {
         chart: {
@@ -114,9 +134,31 @@ export default {
           plotBorderWidth: null,
           plotShadow: false,
           type: "pie",
+          width: 540,
         },
         title: {
           text: "งานทั้งหมด",
+          align: "left",
+        },
+        subtitle: {
+          text: this.workProgress.toFixed(0) + "%",
+          style: {
+            color: "#2ED47A",
+            fontSize: "90px",
+          },
+          align: "center",
+          verticalAlign: "middle",
+          floating: true,
+          y: 100,
+          x: -50,
+        },
+        legend: {
+          layout: "vertical",
+          align: "right",
+          verticalAlign: "middle",
+          itemMarginTop: 10,
+          itemMarginBottom: 10,
+          // borderWidth:1,
         },
         tooltip: {
           pointFormat: "{series.name}: <b>{point.percentage:.1f}%</b>",
@@ -134,28 +176,15 @@ export default {
               enabled: false,
             },
             showInLegend: true,
+            startAngle: -130,
           },
         },
         series: [
           {
-            name: "Brands",
+            name: "Progress",
             colorByPoint: true,
-            data: [
-              {
-                name: "สำเร็จ",
-                y: 61.41,
-                sliced: true,
-                selected: true,
-              },
-              {
-                name: "ดำเนินการอยู่",
-                y: 11.84,
-              },
-              {
-                name: "ไม่สำเร็จ",
-                y: 10.85,
-              },
-            ],
+            innerSize: "93%",
+            data: result.data.result
           },
         ],
       });
@@ -169,13 +198,23 @@ export default {
   width: 100%;
   height: 100%;
 }
+.highcharts-container {
+  position: absolute !important;
+}
 .highcharts-figure,
 .highcharts-data-table table {
   min-width: 320px;
   max-width: 660px;
-  margin: 1em auto;
 }
-
+.highcharts-credits {
+  display: none;
+}
+.highcharts-exporting-group {
+  display: none;
+}
+.highcharts-a11y-proxy-container {
+  display: none;
+}
 .highcharts-data-table table {
   font-family: Verdana, sans-serif;
   border-collapse: collapse;
