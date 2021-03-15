@@ -334,7 +334,7 @@
                       style="zoom:2; padding: 0px;"
                       list-type="picture-card"
                       :file-list="fileList_before"
-                      :customRequest="uploadSinglePic"
+                      :customRequest="uploadbefore"
                       @preview="handlePreview"
                       @change="handleChange"
                     >
@@ -432,7 +432,7 @@
                       style="zoom:2; padding: 0px;"
                       list-type="picture-card"
                       :file-list="fileList_between"
-                      :customRequest="uploadSinglePic"
+                      :customRequest="uploadbetween"
                       @preview="handlePreview"
                       @change="handleChange"
                     >
@@ -574,7 +574,7 @@
                       style="zoom:2; padding: 0px;"
                       list-type="picture-card"
                       :file-list="fileList_after"
-                      :customRequest="uploadbefore"
+                      :customRequest="uploadafter"
                       @preview="handlePreview"
                       @change="handleChange"
                     >
@@ -946,34 +946,96 @@ async  updatedescription_before(){
       this.previewVisible = false;
     },
 
-    handleChange({ file, fileList }) {
+   async handleChange({ file, fileList }) {
       this.fileList = fileList;
-      console.log("ไฟล์", file);
-      console.log("ไฟล์ลิดส", fileList);
+      // console.log("ไฟล์", file);
+      // console.log("ไฟล์ลิดส", fileList);
+      if(file.status=="removed"){
+        let uplondimg = {uid:file.uid}
+        let result = await api.DELimgTeamSetup(uplondimg);
+        // console.log('ลบ',result);
+        if (result.data.response == "OK") {
+          this.$swal.fire("บันทึกรูปเรียบร้อยแล้ว", "", "success");
+          this.loadJobPlacearrangement();
+        }   
+      }
+   
     
     },
 
     async uploadbefore({ file, onSuccess }) {
-      console.log('ไฟล์ssssssss',file);
-      const reader = new FileReader();
-          reader.readAsDataURL(file);
-          let data = new FormData();
-          data.append('image', file)
-
-      var config = {
-        method: 'post',
-        url: 'https://api.imgur.com/3/image',
-        headers: {
-          'Authorization': 'Client-ID 546c25a59c58ad7', 
-        },
-        data : data
-      };
-
-      await axios(config).then((response ) => {
-      alert('อัพโหลดรูปเรียบร้อยแล้ว')
-      this.Put_Users.profile_img = response.data.data.link;
-      //console.log(this.Put_Users.profile_img);
-    });
+      // console.log('ไฟล์ssssssss',file);
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset","lkp8jzgy");
+      axios.post(`https://api.cloudinary.com/v1_1/digisolution/image/upload`,formData).then(async(res) => {
+        // console.log('ได้',res.data);
+        this.fileList_before=[...this.fileList_before, {name:res.data.original_filename, uid:res.data.asset_id, url:res.data.url}]
+      let uplondimg = {quotation_code:this.qc ,name:res.data.original_filename, url:res.data.url, img_type:1}
+      let result = await api.CreateimgTeamSetup(uplondimg);
+      console.log('ds',result);
+      if (result.data.response == "OK") {
+        this.$swal.fire("บันทึกรูปเรียบร้อยแล้ว", "", "success");
+        this.loadJobPlacearrangement();
+      }   
+      });
+      onSuccess('Ok')
+    },
+    async uploadbetween({ file, onSuccess }) {
+      // console.log('ไฟล์ssssssss',file);
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset","lkp8jzgy");
+      axios.post(`https://api.cloudinary.com/v1_1/digisolution/image/upload`,formData).then(async(res) => {
+        console.log('ได้',res.data);
+        this.fileList_between=[...this.fileList_between, {name:res.data.original_filename, uid:res.data.asset_id, url:res.data.url}]
+      let uplondimg = {quotation_code:this.qc ,name:res.data.original_filename, url:res.data.url, img_type:2}
+      let result = await api.CreateimgTeamSetup(uplondimg);
+      // console.log('ds',result);
+      if (result.data.response == "OK") {
+        this.$swal.fire("บันทึกรูปเรียบร้อยแล้ว", "", "success");
+        this.loadJobPlacearrangement();
+      } 
+        
+      });
+      onSuccess('Ok')
+    },
+    async uploadbetween_viwe({ file, onSuccess }) {
+      // console.log('ไฟล์ssssssss',file);
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset","lkp8jzgy");
+      axios.post(`https://api.cloudinary.com/v1_1/digisolution/image/upload`,formData).then(async(res) => {
+        // console.log('ได้',res.data);
+        this.fileList_between=[...this.fileList_between, {name:res.data.original_filename, uid:res.data.asset_id, url:res.data.url}]
+      let uplondimg = {quotation_code:this.qc ,name:res.data.original_filename, url:res.data.url, img_type:2}
+      let result = await api.CreateimgTeamSetup(uplondimg);
+      // console.log('ds',result);
+      if (result.data.response == "OK") {
+        this.$swal.fire("บันทึกรูปเรียบร้อยแล้ว", "", "success");
+        this.loadJobPlacearrangement();
+      } 
+        
+      });
+      onSuccess('Ok')
+    },
+    async uploadafter({ file, onSuccess }) {
+      // console.log('ไฟล์ssssssss',file);
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset","lkp8jzgy");
+      axios.post(`https://api.cloudinary.com/v1_1/digisolution/image/upload`,formData).then(async(res) => {
+        // console.log('ได้',res.data);
+        this.fileList_after=[...this.fileList_after, {name:res.data.original_filename, uid:res.data.asset_id, url:res.data.url}]
+      let uplondimg = {quotation_code:this.qc ,name:res.data.original_filename, url:res.data.url, img_type:3}
+      let result = await api.CreateimgTeamSetup(uplondimg);
+      // console.log('ds',result);
+      if (result.data.response == "OK") {
+        this.$swal.fire("บันทึกรูปเรียบร้อยแล้ว", "", "success");
+        this.loadJobPlacearrangement();
+      } 
+        
+      });
       onSuccess('Ok')
     },
   },

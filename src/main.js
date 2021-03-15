@@ -12,6 +12,15 @@ import VueHtmlToPaper from "vue-html-to-paper";
 import VueSweetalert2 from "vue-sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 import VuetifyMask from "vuetify-mask";
+// import Cloudinary, { CldImage, CldTransformation } from "cloudinary-vue";
+
+// Vue.use(Cloudinary, {
+//   configuration: { cloudName: "demo" },
+//   components: {
+//     CldImage,
+//     CldTransformation
+//   }
+// });
 
 
 import { Icon,Modal,Upload } from 'ant-design-vue';

@@ -298,6 +298,7 @@ export default {
       let result = await api.AddChecklists(CreateChklistdefault);
       if (result.data.response == "OK") {
           this.$swal.fire("สร้างรายการตรวจสอบเรียบร้อย", "", "success");
+          this.Create_checklists_default=null;
           this.loadCustomizechecks();
           this.dialogCreateCheckListdefault= false
       } 
