@@ -13,6 +13,8 @@ router.get("/statusquotationtoselect", authorize, QuotationsContrllers.listStatu
 router.post("/confirmquotstat", authorize, QuotationsContrllers.comfirmQuotationStatus);
 /* List All Customer */
 router.get("/listallcustomers", authorize, QuotationsContrllers.listAllCustomers);
+/* List All Food Items */
+router.post("/listallfooditems", authorize, QuotationsContrllers.listAllFoodItems);
 /* List Customer information to Create Quotations */
 router.post("/findcustomerinfo", authorize, QuotationsContrllers.listFindCustomerInformation);
 /* Select Package to Create Quotations */

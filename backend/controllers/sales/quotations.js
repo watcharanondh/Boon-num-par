@@ -1,4 +1,4 @@
-const { checklists, sequelize, quotations, customer_tax_invoices, quotation_checklists, quotation_statuses, quotation_packages, quotation_promotions, customers, customer_types, districts, packages, package_equipments, equipments, promotions } = require("../../models");
+const { checklists, food_items, quotations, customer_tax_invoices, quotation_checklists, quotation_statuses, quotation_packages, quotation_promotions, customers, customer_types, districts, packages, package_equipments, equipments, promotions } = require("../../models");
 const { Op, Sequelize } = require("sequelize");
 const helper = require("../../helper/sku");
 
@@ -194,6 +194,33 @@ exports.listAllCustomers = async (req, res) => {
       });
       return arr;
     });
+    if (result != '' && result !== null) {
+      res.json({
+        response: "OK",
+        result: result
+      });
+    } else {
+      res.json({ response: "FAILED", result: "Not Found." });
+    }
+  } catch (error) {
+    console.log(error);
+    res.json({ response: "FAILED", result: error });
+  }
+};
+/* List All Food Items  */
+exports.listAllFoodItems = async (req, res) => {
+  try {
+    const result = await food_items.findAll({
+      attributes: [
+        "id",
+        "name"
+      ],
+      where: {
+        food_type: req.body.food_type,
+        is_active: 1,
+        is_delete: 0
+      }
+    })
     if (result != '' && result !== null) {
       res.json({
         response: "OK",

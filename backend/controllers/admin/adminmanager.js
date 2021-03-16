@@ -23,7 +23,11 @@ exports.listAllUserAdmins = async (req, res) => {
           ],
           required: true
         }
-      ]
+      ],
+      where: {
+        is_active: 1,
+        is_delete: 0
+      }
     }).then(admins => {
       if (admins && admins.length != 0) {
         admins.map((admin) => {
@@ -34,10 +38,15 @@ exports.listAllUserAdmins = async (req, res) => {
       }
       return admins;
     })
-    res.json({
-      response: "OK",
-      result: result
-    });
+    if (result != '' && result !== null) {
+      res.json({
+        response: "OK",
+        total: result.length + " รายการ",
+        result: result,
+      });
+    } else {
+      res.json({ response: "FAILED", result: "Not Found." });
+    }
   } catch (error) {
     console.log(error);
     res.json({ response: "FAILED", result: error });

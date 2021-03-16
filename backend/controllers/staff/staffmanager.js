@@ -17,6 +17,7 @@ exports.listAllPositions = async (req, res) => {
     if (result != '' && result !== null) {
       res.json({
         response: "OK",
+        total: result.length + " รายการ",
         result: result,
       });
     } else {
@@ -197,11 +198,12 @@ exports.listAllStaff = async (req, res) => {
     if (result != '' && result !== null) {
       res.json({
         response: "OK",
+        total: result.length + " รายการ",
         result: result,
       });
     } else {
       res.json({ response: "FAILED", result: "Not Found." });
-    };
+    }
   } catch (error) {
     console.log(error);
     res.json({ response: "FAILED", result: error });
