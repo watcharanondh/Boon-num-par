@@ -154,7 +154,7 @@ exports.manageTeamTask = async (req, res) => {
     })
 
     /* Image body */
-    const img = await quotation_images.findAll({ attributes: [['id', 'uid'], 'name', 'url'], where: { quotation_id: headInfo[0].dataValues.id, is_active: 1, is_delete: 0 } })
+    const img = await quotation_images.findAll({ attributes: [['id', 'uid'], 'name', 'url'], where: { quotation_id: headInfo[0].dataValues.id, img_type: 0, is_active: 1, is_delete: 0 } })
 
     res.json({
       response: "OK",

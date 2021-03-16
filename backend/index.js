@@ -25,6 +25,13 @@ app.get(START_PART_WITH + "/", authorize, (req, res) => {
   res.send("Hello World");
 });
 
+/*---------------------- ADMIN ----------------------*/
+/* Manage Admin */
+app.use(START_PART_WITH + "/admin", require("./routes/admin/AdminManager"));
+/*---------------------- STAFF ----------------------*/
+/* Manage Staff */
+app.use(START_PART_WITH + "/staff", require("./routes/staff/StaffManager"));
+
 /*---------------------- SALE ----------------------*/
 /* DashBoard Route */
 app.use(START_PART_WITH + "/sale/dashboard", require("./routes/sales/Dashboard"));

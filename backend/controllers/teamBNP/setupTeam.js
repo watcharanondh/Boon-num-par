@@ -30,7 +30,7 @@ exports.listAllSetupTeam = async (req, res) => {
         },
         {
           model: quotation_checklists,
-          attributes: ['status', 'returned_status', 'checklist_type'],
+          attributes: ['id', 'status', 'returned_status', 'checklist_type'],
           where: {
             is_active: 1,
             is_delete: 0
@@ -56,10 +56,9 @@ exports.listAllSetupTeam = async (req, res) => {
           getChecklists.map(x => {
             if (x.checklist_type == 1) {
               status_before.push(x.status)
+              status_after.push(x.returned_status)
             } else if (x.checklist_type == 2) {
               status_between.push(x.status)
-            } else if (x.checklist_type == 3) {
-              status_after.push(x.returned_status)
             }
           })
         }
@@ -69,6 +68,8 @@ exports.listAllSetupTeam = async (req, res) => {
         const progress_after = status_after.includes(0) || status_after.includes(2) ? 0 : 1
         const progress_total = progress_before + progress_between + progress_after
 
+        console.log(status_before, status_between, status_after);
+        console.log('-----------------------------');
         console.log(progress_before, progress_between, progress_after);
         data.dataValues = {
           ...data.dataValues.event_team.dataValues,

@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     address: {
       type: DataTypes.INTEGER(10),
-      allowNull: false,
+      allowNull: true,
     },
     district_id: {
       type: DataTypes.INTEGER(10),

@@ -25,11 +25,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     event_team_id: {
       type: DataTypes.INTEGER(10),
-      allowNull: false,
+      allowNull: true,
     },
     area_viewing_team_id: {
       type: DataTypes.INTEGER(10),
-      allowNull: false,
+      allowNull: true,
     },
     amount_savory_food: {
       type: DataTypes.INTEGER(5),
@@ -49,11 +49,7 @@ module.exports = (sequelize, DataTypes) => {
     quotation_status_id: {
       type: DataTypes.INTEGER(1),
       allowNull: false,
-    },
-    progress_status_id: {
-      type: DataTypes.INTEGER(1),
-      allowNull: false,
-    },    
+    },   
     note: {
       type: DataTypes.STRING(255),
       allowNull: true,
