@@ -331,6 +331,7 @@
                   <br/>
                   <div class="clearfix">
                     <a-upload
+                      accept="image/*"
                       style="zoom:2; padding: 0px;"
                       list-type="picture-card"
                       :file-list="fileList_before"
@@ -389,6 +390,7 @@
               <br/>
               <div class="clearfix">
                 <a-upload
+                  accept="image/*"
                   style="zoom:2; padding: 0px;"
                   list-type="picture-card"
                   :file-list="fileList_between_viewing_img"
@@ -429,6 +431,7 @@
                   <br/>
                   <div class="clearfix">
                     <a-upload
+                      accept="image/*"
                       style="zoom:2; padding: 0px;"
                       list-type="picture-card"
                       :file-list="fileList_between"
@@ -571,6 +574,7 @@
                   <br/>
                   <div class="clearfix">
                     <a-upload
+                      accept="image/*"
                       style="zoom:2; padding: 0px;"
                       list-type="picture-card"
                       :file-list="fileList_after"
@@ -667,6 +671,7 @@ export default {
 
     //tab2=>between
     description_between: null,
+    Allchk_betweenid: null,
     Isactive:null,
 
 
@@ -704,6 +709,7 @@ export default {
         return;
       }
       let result = await api.ListmanagetaskTeamSetup(JobPlacearrangementID);
+      // console.log(result);
       //รายละเอียดพื้นที่
       this.team_code = result.data.result.info.quotation_code;
       this.Tax_invoice_name = result.data.result.info.team_name;
@@ -722,6 +728,7 @@ export default {
 
       //ตรวจเช็ควันจัดสถานที่
       this.Allchk_between=result.data.result.between.checklists.status;
+      this.Allchk_betweenid=result.data.result.between.checklists.id;
       //เพิ่มเติม
       this.description_between=result.data.result.between.description;
       //รูป
@@ -754,13 +761,14 @@ export default {
 
     async chk_all_between_list(Isactive) {
       if(Isactive==1){
-          let recheckLists = {id:55,status: 1}
+        console.log(Isactive);
+          let recheckLists = {id:this.Allchk_betweenid,status: 1}
       let result = await api.RecheckbetweenTeamSetup(recheckLists);
         if (result.data.response == "OK") {
           this.loadJobPlacearrangement();
         } 
       }else if(Isactive==2){
-          let recheckLists = {id:55,status: 0}
+          let recheckLists = {id:this.Allchk_betweenid,status: 0}
       let result = await api.RecheckbetweenTeamSetup(recheckLists);
         if (result.data.response == "OK") {
           this.loadJobPlacearrangement();

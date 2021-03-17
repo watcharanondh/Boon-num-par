@@ -94,7 +94,8 @@
 </template>
 
 <script>
-import axios from "axios";
+
+import api from "@/services/api";
 export default {
   data: () => ({
     items: [
@@ -119,14 +120,12 @@ export default {
   },
   methods: {
     async test() {
-      const result = await axios.post(
-        process.env.VUE_APP_NODE_URL + "/bnp/progress/listchart",
-        { startdate: "", enddate: "" },
-        { headers: { Authorization: `Basic BNP*1234` } }
-      );
-      console.log(result);
-      this.workProgress = result.data.result[0].y;
-      console.log(this.workProgress);
+       let workProgressDATE ={ startdate: "", enddate: "" }
+       let result = await api.ListTaskChart(workProgressDATE);
+        if (result.data.response == "OK") {
+          this.workProgress = result.data.result[0].y;
+        } 
+      
       // Build the chart
       window.Highcharts.chart("container", {
         chart: {

@@ -138,9 +138,6 @@ export default {
 
 
     async ManageAllteam() {
-      console.log("a SelectTeams", this.SelectTeams);
-      console.log("a SelectDrivings", this.SelectDrivings);
-
       let submitmanage = {
         quotation_code: this.quotation_code,
         team_code: this.SelectTeams,

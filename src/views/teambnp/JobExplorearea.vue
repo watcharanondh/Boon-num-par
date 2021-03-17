@@ -312,6 +312,7 @@
           <br/>
           <div class="clearfix">
             <a-upload
+              accept="image/*"
               style="zoom:2; padding: 0px;"
               list-type="picture-card"
               :file-list="fileList"

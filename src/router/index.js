@@ -3,6 +3,10 @@ import VueRouter from "vue-router";
 import Login from "@/views/Login.vue";
 import HomeMainAdmin from "@/views/HomeMainAdmin.vue";
 
+import Adminmanager from "@/views/adminmanager/Adminmanager.vue";
+import Staffmanager from "@/views/staffmanager/Staffmanager.vue";
+import Staffpositionmanager from "@/views/staffmanager/Staffpositionmanager.vue";
+
 import Menusale from "@/views/sale/Menusale.vue";
 import Home from "@/views/sale/Home.vue";
 import Customer from "@/views/sale/Customer.vue";
@@ -58,6 +62,23 @@ const routes = [
     component: HomeMainAdmin
   },
 
+  //Adminmenger
+  {
+    path: "/adminmanager/Adminmanager",
+    name: "menuAdminmenger",
+    component: Adminmanager
+  },
+  //staffmenger
+  {
+    path: "/staffmanager/Staffmanager",
+    name: "menuStaffmanager",
+    component: Staffmanager
+  },
+  {
+    path: "/staffmanager/Staffpositionmanager",
+    name: "menuStaffpositionmanager",
+    component: Staffpositionmanager
+  },
   // sale
   {
     path: "/sale/Menusale",

@@ -94,6 +94,30 @@
           </v-hover>
         </div>
 
+
+        <div class="menu-box-size-homemainadmin">
+          <v-hover v-slot="{ hover }">
+            <v-card
+              :elevation="hover ? 16 : 2"
+              :class="{ 'on-hover': hover }"
+              class="mx-auto"
+              height="150"
+              max-width="215"
+              @click="Pagestaffmenger"
+            >
+              <div class="menu-img">
+                <!-- <img src="@/assets/Eventteaminfo.svg" /> -->
+              </div>
+              <v-card-text
+                class=" text-center black--text"
+                @click="Pagestaffmenger"
+              >
+                <span class="front-menu">STAFF MENAGER</span>
+              </v-card-text>
+            </v-card>
+          </v-hover>
+        </div>
+
         <div class="menu-box-size-homemainadmin">
           <v-hover v-slot="{ hover }">
             <v-card
@@ -155,6 +179,10 @@ export default {
     },
     Pageteamkitchen() {
       this.$router.push({ name: "menuTeamkitchen" });
+      window.location.reload();
+    },
+    Pagestaffmenger() {
+      this.$router.push({ name: "menuStaffmanager" });
       window.location.reload();
     },
     Pageadminmenger() {

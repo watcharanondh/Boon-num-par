@@ -134,7 +134,7 @@
         </v-list-item>
       </v-navigation-drawer>
     </div>
-            <div v-else-if="RouterPath == 3">
+    <div v-else-if="RouterPath == 3">
       <!-- MenusteambnpCustomizethesyste -->
       <v-navigation-drawer v-model="drawer" app>
         <div @click="onClickteambnp" class="justify-center d-flex pointer">
@@ -182,7 +182,7 @@
         </v-list-item>
       </v-navigation-drawer>
     </div>
-        <div v-else-if="RouterPath == 4">
+    <div v-else-if="RouterPath == 4">
       <!-- MenusteambnpCustomizethesyste -->
       <v-navigation-drawer v-model="drawer" app>
         <div @click="onClickteambnp" class="justify-center d-flex pointer">
@@ -217,6 +217,102 @@
           v-for="([title, route], i) in BackMenuteambnp"
           :key="i"
           @click="onClickBackteambnp(route)"
+        >
+          <v-list-item-icon>
+            <v-icon color="white"></v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title
+              ><span>{{ title }}</span></v-list-item-title
+            >
+          </v-list-item-content>
+        </v-list-item>
+      </v-navigation-drawer>
+    </div>
+    <div v-else-if="RouterPath == 5">
+      <!-- MenuAdminmanager -->
+      <v-navigation-drawer v-model="drawer" app>
+        <div @click="onClickBackMenuaMainadmin" class="justify-center d-flex pointer">
+          <v-img
+            :src="require('@/assets/AW-Logo-Boonumpar.webp')"
+            max-height="100%"
+            max-width="60%"
+          />
+        </div>
+
+        <v-list>
+          <v-list-item-group v-model="selectedMenu" mandatory color="primary">
+            <v-list-item
+              class="tile"
+              v-for="([title, route], i) in menusAdminmanager"
+              :key="i"
+              @click="onClickMenu(route)"
+            >
+              <v-list-item-icon>
+                <v-icon color="white"></v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-content>
+                <v-list-item-title>{{ title }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+        <v-divider></v-divider>
+
+        <v-list-item
+          v-for="([title, route], i) in BackMenuaMainadmin"
+          :key="i"
+          @click="onClickBackMenuaMainadmin(route)"
+        >
+          <v-list-item-icon>
+            <v-icon color="white"></v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title
+              ><span>{{ title }}</span></v-list-item-title
+            >
+          </v-list-item-content>
+        </v-list-item>
+      </v-navigation-drawer>
+    </div>
+    <div v-else-if="RouterPath == 6">
+      <!-- MenuStaffmanager -->
+      <v-navigation-drawer v-model="drawer" app>
+        <div @click="onClickBackMenuaMainadmin" class="justify-center d-flex pointer">
+          <v-img
+            :src="require('@/assets/AW-Logo-Boonumpar.webp')"
+            max-height="100%"
+            max-width="60%"
+          />
+        </div>
+
+        <v-list>
+          <v-list-item-group v-model="selectedMenu" mandatory color="primary">
+            <v-list-item
+              class="tile"
+              v-for="([title, route], i) in menusStaffmanager"
+              :key="i"
+              @click="onClickMenu(route)"
+            >
+              <v-list-item-icon>
+                <v-icon color="white"></v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-content>
+                <v-list-item-title>{{ title }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+        <v-divider></v-divider>
+
+        <v-list-item
+          v-for="([title, route], i) in BackMenuaMainadmin"
+          :key="i"
+          @click="onClickBackMenuaMainadmin(route)"
         >
           <v-list-item-icon>
             <v-icon color="white"></v-icon>
@@ -282,6 +378,16 @@ export default {
       this.RouterPath == "/teambnp/Customizecheck" 
     ) {
       return (this.RouterPath = 4);
+    } else if (
+      this.RouterPath == "/adminmanager/Adminmanager"||
+      this.RouterPath == "/adminmanager/Adminmanager"
+    ) {
+      return (this.RouterPath = 5);
+    } else if (
+      this.RouterPath == "/staffmanager/Staffmanager"||
+      this.RouterPath == "/staffmanager/Staffpositionmanager"
+    ) {
+      return (this.RouterPath = 6);
     } else {
       return (this.RouterPath = -1);
     }
@@ -309,8 +415,17 @@ export default {
         ["ปรับแต่งทีม", "/teambnp/Manageteamlists"],
         ["ปรับแต่งการตรวจสอบ", "/teambnp/Customizecheck"],
       ],
+      menusAdminmanager: [
+        ["รายชื่อแอดมิน", "/adminmanager/Adminmanager"],
+        ["ตารางแอดมิน", "/adminmanager/Adminmanager"],
+      ],
+      menusStaffmanager: [
+        ["รายการสมาชิก", "/staffmanager/Staffmanager"],
+        ["รายการตำแหน่ง", "/staffmanager/Staffpositionmanager"],
+      ],
       BackMenusale: [["ย้อนกลับ", "/sale/Menusale"]],
       BackMenuteambnp: [["กลับสู่เมนูหลัก", "/team/Menuteambnp"]],
+      BackMenuaMainadmin: [["กลับสู่เมนูหลัก", "/team/Menuteambnp"]],
     };
   },
 
@@ -323,6 +438,7 @@ export default {
     },
   },
   methods: {
+    
     onClickLogOff() {
       this.$store.dispatch("doLogout");
     },
@@ -344,11 +460,17 @@ export default {
       this.$router.push("/teambnp/Menuteambnp");
       window.location.reload();
     },
+
+    onClickBackMenuaMainadmin(){
+      this.$router.push("/HomeMainAdmin");
+      window.location.reload();
+    },
     
     onClickBackteambnp() {
       this.$router.push("/teambnp/Menuteambnp");
       window.location.reload();
     },
+
   },
 
   // watch: {

@@ -12,6 +12,47 @@ const redirectLogin = error => {
   //window.location.href="bnp/Login"
 };
 
+//Admin
+export const getListalladminuser = () => {return axios.get(apiUrl + server.LIST_ALL_ADMIN_USER_MANAGER_URL, {headers: {Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}})
+            .catch(error => {redirectLogin(error);});};
+export const getListsetinmodaladminuser = () => {return axios.get(apiUrl + server.LIST_SETINMODAL_POSITION_ADMIN_USER_MANAGER_URL, {headers: {Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}})
+            .catch(error => {redirectLogin(error);});};
+export const addadminuser = data => {return axios.post(apiUrl + server.ADD_ADMIN_USER_MANAGER_URL,data, {headers: {Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}})
+            .catch(error => {redirectLogin(error);});};
+export const getEditadminuser = data => {return axios.post(apiUrl + server.LIST_EDIT_ADMIN_USER_MANAGER_URL,data, {headers: {Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}})
+            .catch(error => {redirectLogin(error);});};
+export const editadminuser = data => {return axios.post(apiUrl + server.EDIT_ADMIN_USER_MANAGER_URL,data, {headers: {Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}})
+            .catch(error => {redirectLogin(error);});};
+export const deladminuser = data => {return axios.post(apiUrl + server.DEL_ADMIN_USER_MANAGER_URL,data, {headers: {Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}})
+            .catch(error => {redirectLogin(error);});};
+//Staff
+export const getListallstaffuser = () => {return axios.get(apiUrl + server.LIST_ALL_STAFF_USER_MANAGER_URL, {headers: {Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}})
+            .catch(error => {redirectLogin(error);});};
+export const getListsetinmodalstaffuser = () => {return axios.get(apiUrl + server.LIST_SETINMODAL_POSITION_STAFF_USER_MANAGER_URL, {headers: {Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}})
+            .catch(error => {redirectLogin(error);});};
+export const addstaffuser = data => {return axios.post(apiUrl + server.ADD_STAFF_USER_MANAGER_URL,data, {headers: {Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}})
+            .catch(error => {redirectLogin(error);});};
+export const getEditstaffuser = data => {return axios.post(apiUrl + server.LIST_EDIT_STAFF_USER_MANAGER_URL,data, {headers: {Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}})
+            .catch(error => {redirectLogin(error);});};
+export const editstaffuser = data => {return axios.post(apiUrl + server.EDIT_STAFF_USER_MANAGER_URL,data, {headers: {Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}})
+            .catch(error => {redirectLogin(error);});};
+export const delstaffuser = data => {return axios.post(apiUrl + server.DEL_STAFF_USER_MANAGER_URL,data, {headers: {Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}})
+            .catch(error => {redirectLogin(error);});};
+//Staff_Position
+export const getListallstaffpositionuser = () => {return axios.get(apiUrl + server.LIST_ALL_STAFF_POSITION_USER_MANAGER_URL, {headers: {Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}})
+            .catch(error => {redirectLogin(error);});};
+export const getListsetinmodalstaffpositionuser = () => {return axios.get(apiUrl + server.LIST_ROLES_STAFF_USER_MANAGER_URL, {headers: {Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}})
+            .catch(error => {redirectLogin(error);});};
+export const addstaffpositionuser = data => {return axios.post(apiUrl + server.ADD_POSITION_STAFF_USER_MANAGER_URL,data, {headers: {Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}})
+            .catch(error => {redirectLogin(error);});};
+export const getEditstaffpositionuser = data => {return axios.post(apiUrl + server.LIST_POSITION_EDIT_STAFF_USER_MANAGER_URL,data, {headers: {Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}})
+            .catch(error => {redirectLogin(error);});};
+export const editstaffpositionuser = data => {return axios.post(apiUrl + server.EDIT_POSITION_STAFF_USER_MANAGER_URL,data, {headers: {Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}})
+            .catch(error => {redirectLogin(error);});};
+export const delstaffpositionuser = data => {return axios.post(apiUrl + server.DEL_POSITION_STAFF_USER_MANAGER_URL,data, {headers: {Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`}})
+            .catch(error => {redirectLogin(error);});};
+
+
 //Dashboard
 export const getDashboard = () => {
   return axios
@@ -854,8 +895,6 @@ export const deleteTeam = data => {
 };
 
 
-
-
 //Checklists
 export const getListtoChecklists = () => {
   return axios
@@ -908,6 +947,32 @@ export const EditChecklists = data => {
 export const DelChecklists = data => {
   return axios
     .post(apiUrl + server.DEL_CHECKLISTS_URL,data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+
+
+//workprogress
+export const ListDoneTask = data => {
+  return axios
+    .post(apiUrl + server.LIST_DONE_TASK_URL,data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+//workprogress
+export const ListTaskChart = data => {
+  return axios
+    .post(apiUrl + server.LIST_DONE_CHART_URL,data, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
       }

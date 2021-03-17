@@ -9,7 +9,32 @@ export const server = {
   TOKEN_KEY: `token`,
   USERNAME: `username`,
 
-  // Sale
+  //Admin
+  LIST_ALL_ADMIN_USER_MANAGER_URL:`/admin/listalladmins`,
+  LIST_SETINMODAL_POSITION_ADMIN_USER_MANAGER_URL:`/admin/listpostocreate`,
+  ADD_ADMIN_USER_MANAGER_URL:`/admin/createadmin`,
+  LIST_EDIT_ADMIN_USER_MANAGER_URL:`/admin/listadmin`,
+  EDIT_ADMIN_USER_MANAGER_URL:`/admin/editadmin`,
+  DEL_ADMIN_USER_MANAGER_URL:`/admin/deladmin`,
+
+  //Staff
+  LIST_ALL_STAFF_USER_MANAGER_URL: `/staff/listallstaff`,
+  LIST_SETINMODAL_POSITION_STAFF_USER_MANAGER_URL: `/staff/listpostocreate`,
+  ADD_STAFF_USER_MANAGER_URL:`/staff/createstaff`,
+  LIST_EDIT_STAFF_USER_MANAGER_URL:`/staff/liststaff`,
+  EDIT_STAFF_USER_MANAGER_URL:`/staff/editstaff`,
+  DEL_STAFF_USER_MANAGER_URL:`/staff/delstaff`,
+
+  //Staffposition
+  LIST_ALL_STAFF_POSITION_USER_MANAGER_URL: `/staff/listallpositions`,
+  LIST_ROLES_STAFF_USER_MANAGER_URL: `/staff/listpostocreate`,
+  ADD_POSITION_STAFF_USER_MANAGER_URL:`/staff/createposition`,
+  LIST_POSITION_EDIT_STAFF_USER_MANAGER_URL:`/staff/listposition`,
+  EDIT_POSITION_STAFF_USER_MANAGER_URL:`/staff/editposition`,
+  DEL_POSITION_STAFF_USER_MANAGER_URL:`/staff/delposition`,
+
+
+  //Sale
 
   //Home
   DASHBOARD_URL: `/sale/dashboard/showall`,
@@ -17,19 +42,15 @@ export const server = {
   //Customer
   CUSTOMERTYPESELECTOR_URL: `/sale/customers/customertypeselector`,
   LISTALLCUSTOMERS_URL: `/sale/customers/listallcustomers`,
-
   NEWCUSTOMER_URL: `/sale/customers/newcustomer`,
   NEWCUSTOMER_TAX_INVOICE_URL: `/sale/customers/newcustomertaxinv`,
   LIST_CUSTOMER_EDIT_URL: `/sale/customers/listcustomer`,
-
   EDIT_CUSTOMER_URL: `/sale/customers/editcustomer`,
   DELETE_CUSTOMER_URL: `/sale/customers/delcustomer`,
 
   //Province, Amphoe, Districts
   LIST_FIND_PROVINCE_URL: `/districts/findprovince`,
-
   LIST_FIND_AMPHOE_URL: `/districts/findamphoe`,
-
   LIST_FIND_DISTRICT_URL: `/districts/finddistrict`,
 
   //Quotation
@@ -41,19 +62,14 @@ export const server = {
   LIST_CUSTOMER_CREATE_QUOTATION_URL: `/sale/quotations/findcustomerinfo`,
   LIST_ALL_PACKAGE_QUOTATION_URL: `/sale/packages/listallpackage`,
   LIST_ALL_PROMOTION_QUOTATION_URL: `/sale/quotations/listallpromotions`,
-
   LIST_EDIT_QUOTATION_URL: `/sale/quotations/listquotation`,
-
   ADD_QUOTATION_URL: `/sale/quotations/newquotations`,
-
   PUT_EDIT_SET_QUOTATION_URL: `/sale/quotations/editquotation`,
-
   DELETE_QUOTATION_URL: `/sale/quotations/delquotation`,
 
   //Equipment
   LIST_ALL_EQUIPMENT_URL: `/sale/equipments/listallequipment`,
   LIST_EDIT_EQUIPMENT_URL: `/sale/equipments/listequipment`,
-
   ADD_EQUIPMENT_URL: `/sale/equipments/addnewequipment`,
   PUT_EDIT_EQUIPMENT_URL: `/sale/equipments/editequipment`,
   DELETE_EQUIPMENT_URL: `/sale/equipments/delequipment`,
@@ -62,7 +78,6 @@ export const server = {
   LIST_ALL_PACKAGE_URL: `/sale/packages/listallpackage`,
   LIST_ALL_Equipments_PackageUse_URL: `/sale/packages/listallequiptopackuse`,
   LIST_EDIT_PACKAGE_URL: `/sale/packages/listpackages`,
-
   ADD_PACKAGE_URL: `/sale/packages/addnewpackage`,
   PUT_EDIT_PACKAGE_URL: `/sale/packages/editpackage`,
   DELETE_PACKAGE_URL: `/sale/packages/delpackage`,
@@ -70,7 +85,6 @@ export const server = {
   //Promotion
   LIST_ALL_PROMOTION_URL: `/sale/promotions/listallpromotions`,
   LIST_EDIT_PROMOTION_URL: `/sale/promotions/listpromotions`,
-
   ADD_PROMOTION_URL: `/sale/promotions/addnewpromotion`,
   PUT_EDIT_PROMOTION_URL: `/sale/promotions/editpromotion`,
   DELETE_PROMOTION_URL: `/sale/promotions/delpromotion`,
@@ -89,7 +103,6 @@ export const server = {
   FIND_MOMENT_URL:`/bnp/shipping/listallshipping`,
   //List Shipping to SEE
   List_SHIPPING_TO_SEE:`/bnp/shipping/listshippingtosee`,
-  /////////////////////////////////////////////////////////////////////////
 
   ////////////////Explorearea CheckLocation (Survey Team)/////////////////
   LIST_ALL_SURVEY_TEAM_URL:`/bnp/surveyteam/listallsurveyteam`,
@@ -132,9 +145,14 @@ export const server = {
   LIST_ADD_CHECKLISTS_URL:`/bnp/checklists/createchecklist`,
   PUT_EDIT_CHECKLISTS_URL:`/bnp/checklists/editchecklist`,
   DEL_CHECKLISTS_URL:`/bnp/checklists/delchecklist`,
+  
 
-  //////////////////////////////////////////////////////////////////////
 
+  /////////////////////////////Workprogress/////////////////////////////
+  LIST_DONE_TASK_URL:`/bnp/progress/listtask`,
+  LIST_DONE_CHART_URL:`/bnp/progress/listchart`,
+
+  //จบ teambnp
 
   //Team HONG
 
