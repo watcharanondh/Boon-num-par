@@ -982,6 +982,68 @@ export const ListTaskChart = data => {
     });
 };
 
+//teamhong
+/* ------- shipping ------- */
+//เมนู ข้อมูลทีมจัดงาน => รายการจัดทีมทั้งหมด
+export const Listshippinglineupfoods = data => {
+  return axios
+    .post(apiUrl + server.LIST_ALL_SHIPPING_LINEUP_FOOD_URL, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+//เมนู ข้อมูลทีมจัดงาน => รายการจัดทีม หาช่วงเวลา
+export const Findmomentlineupfood = data => {
+  return axios
+    .post(apiUrl + server.FIND_MOMENT_LINEUP_FOOD_URL,data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+//Modal รับ อัพเดท นัดดู&จัดสถานที่
+export const getupdateshippinglineupfood = () => {
+  return axios
+    .get(apiUrl + server.LIST_TEAMS_AND_DRIVERS_LINEUP_FOOD_URL, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+//Modal ส่ง อัพเดท นัดดู&จัดสถานที่
+export const AssignTeamtoWorklineupfood = data => {
+  return axios
+    .post(apiUrl + server.UPDATE_ASSIGNWORKTEAM_LINEUP_FOOD_URL,data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
+//เมนู ข้อมูลทีมจัดงาน => ดูข้อมูลรายละเอียด รายการจัดทีม
+export const listshippingtosee = data => {
+  return axios
+    .post(apiUrl + server.LIST_SHIPPING_TO_SEE_LINEUP_FOOD_URL,data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`
+      }
+    })
+    .catch(error => {
+      redirectLogin(error);
+    });
+};
 
 
 

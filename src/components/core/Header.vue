@@ -326,6 +326,102 @@
         </v-list-item>
       </v-navigation-drawer>
     </div>
+     <div v-else-if="RouterPath == 7">
+      <!-- MenuManageSystem -->
+      <v-navigation-drawer v-model="drawer" app>
+        <div @click="onClickteamhong" class="justify-center d-flex pointer">
+          <v-img
+            :src="require('@/assets/AW-Logo-Boonumpar.webp')"
+            max-height="100%"
+            max-width="60%"
+          />
+        </div>
+
+        <v-list>
+          <v-list-item-group v-model="selectedMenu" mandatory color="primary">
+            <v-list-item
+              class="tile"
+              v-for="([title, route], i) in menusShipping"
+              :key="i"
+              @click="onClickMenu(route)"
+            >
+              <v-list-item-icon>
+                <v-icon color="white"></v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-content>
+                <v-list-item-title>{{ title }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+        <v-divider></v-divider>
+
+        <v-list-item
+          v-for="([title, route], i) in BackMenuteamhong"
+          :key="i"
+          @click="onClickteamhong(route)"
+        >
+          <v-list-item-icon>
+            <v-icon color="white"></v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title
+              ><span>{{ title }}</span></v-list-item-title
+            >
+          </v-list-item-content>
+        </v-list-item>
+      </v-navigation-drawer>
+    </div>
+    <div v-else-if="RouterPath == 8">
+      <!-- MenusteambnpCustomizethesyste -->
+      <v-navigation-drawer v-model="drawer" app>
+        <div @click="onClickteamhong" class="justify-center d-flex pointer">
+          <v-img
+            :src="require('@/assets/AW-Logo-Boonumpar.webp')"
+            max-height="100%"
+            max-width="60%"
+          />
+        </div>
+
+        <v-list>
+          <v-list-item-group v-model="selectedMenu" mandatory color="primary">
+            <v-list-item
+              class="tile"
+              v-for="([title, route], i) in menusteamhongCustomizethesyste"
+              :key="i"
+              @click="onClickMenu(route)"
+            >
+              <v-list-item-icon>
+                <v-icon color="white"></v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-content>
+                <v-list-item-title>{{ title }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+        <v-divider></v-divider>
+
+        <v-list-item
+          v-for="([title, route], i) in BackMenuteamhong"
+          :key="i"
+          @click="onClickBackteamhong(route)"
+        >
+          <v-list-item-icon>
+            <v-icon color="white"></v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title
+              ><span>{{ title }}</span></v-list-item-title
+            >
+          </v-list-item-content>
+        </v-list-item>
+      </v-navigation-drawer>
+    </div>
 
 
     <div v-else></div>
@@ -388,6 +484,15 @@ export default {
       this.RouterPath == "/staffmanager/Staffpositionmanager"
     ) {
       return (this.RouterPath = 6);
+    }else if(
+      this.RouterPath == "/teamhong/Shipping"
+    ){
+      return (this.RouterPath = 7);
+    }else if(
+      this.RouterPath == "/teamhong/Manageteamhong"||
+      this.RouterPath == "/teamhong/Customizecheckhong"
+    ){
+      return (this.RouterPath = 8);
     } else {
       return (this.RouterPath = -1);
     }
@@ -411,6 +516,13 @@ export default {
       menusEventteaminformation: [
         ["รายการจัดทีม", "/teambnp/Eventteaminformation"],
       ],
+      menusShipping: [
+        ["รายการจัดทีม", "/teamhong/Shipping"],
+      ],
+      menusteamhongCustomizethesyste: [
+        ["ปรับแต่งทีม", "/teamhong/Manageteamhong"],
+        ["ปรับแต่งการตรวจสอบ", "/teamhong/Customizecheck"],
+      ],
       menusteambnpCustomizethesyste: [
         ["ปรับแต่งทีม", "/teambnp/Manageteamlists"],
         ["ปรับแต่งการตรวจสอบ", "/teambnp/Customizecheck"],
@@ -425,6 +537,7 @@ export default {
       ],
       BackMenusale: [["ย้อนกลับ", "/sale/Menusale"]],
       BackMenuteambnp: [["กลับสู่เมนูหลัก", "/team/Menuteambnp"]],
+      BackMenuteamhong: [["กลับสู่เมนูหลัก", "/team/Menuteamhong"]],
       BackMenuaMainadmin: [["กลับสู่เมนูหลัก", "/team/Menuteambnp"]],
     };
   },
@@ -461,6 +574,11 @@ export default {
       window.location.reload();
     },
 
+    onClickteamhong() {
+      this.$router.push("/teamhong/Menuteamhong");
+      window.location.reload();
+    },
+
     onClickBackMenuaMainadmin(){
       this.$router.push("/HomeMainAdmin");
       window.location.reload();
@@ -468,6 +586,11 @@ export default {
     
     onClickBackteambnp() {
       this.$router.push("/teambnp/Menuteambnp");
+      window.location.reload();
+    },
+
+    onClickBackteamhong() {
+      this.$router.push("/teamhong/Menuteamhong");
       window.location.reload();
     },
 

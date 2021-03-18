@@ -47,6 +47,26 @@ import Monitorteamlists from "@/views/teambnp/Monitorteamlists.vue";
 import Customizecheck from "@/views/teambnp/Customizecheck.vue";
 
 
+import Menuteamhong from "@/views/teamhong/Menuteamhong.vue";
+
+import Shipping from "@/views/teamhong/Shipping.vue";
+// import Menuteambnp_eapa from "@/views/teamhong/Menuteambnp_eapa.vue";
+import Workprogresshong from "@/views/teamhong/Workprogress.vue";
+import Manageteamhong from "@/views/teamhong/Manageteamhong.vue"; 
+
+// import Explorearea from "@/views/teamhong/Explorearea.vue";
+// import JobExplorearea from "@/views/teamhong/JobExplorearea.vue";
+import Lineupfood from "@/views/teamhong/Lineupfood.vue"; 
+// import JobPlacearrangement from "@/views/teamhong/JobPlacearrangement.vue"; 
+
+// import Createmanageteam from "@/views/teamhong/Createmanageteam.vue";
+// import Editmanageteam from "@/views/teamhong/Editmanageteam.vue"; 
+// import MonitorTeaminformation from "@/views/teamhong/MonitorTeaminformation.vue";
+// import Monitorteamlists from "@/views/teamhong/Monitorteamlists.vue";
+
+import Customizecheckhong from "@/views/teamhong/Customizecheck.vue";
+
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -258,6 +278,39 @@ const routes = [
 
   //จบ Team bnp
 
+  //Team hong
+  {
+    path: "/teamhong/Menuteamhong",
+    name: "menuTeamhong",
+    component: Menuteamhong
+  },
+  {
+    path: "/teamhong/Shipping",
+    name: "menuShipping",
+    component: Shipping
+  },
+  {
+    path: "/teamhong/Lineupfood",
+    name: "menuLineupfood",
+    component: Lineupfood
+  },
+  {
+    path: "/teamhong/Workprogress",
+    name: "menuWorkprogresshong",
+    component: Workprogresshong
+  },
+  {
+    path: "/teamhong/Manageteamhong",
+    name: "menuManageteamhong",
+    component: Manageteamhong
+  },
+  {
+    path: "/teamhong/Customizecheck",
+    name: "menuCustomizecheckhong",
+    component: Customizecheckhong
+  },
+  // จบ Team hong
+  
   {
     path: "/",
     redirect: "/Login"

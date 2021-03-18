@@ -154,8 +154,17 @@ export const server = {
 
   //จบ teambnp
 
-  //Team HONG
-
+  /* Team HONG */
+  ////////////////////SHIPPING////////////////////////////
+  //shipping
+  LIST_ALL_SHIPPING_LINEUP_FOOD_URL:`/hong/shipping/listallshipping`,
+  //ModalManageAppointment and assignwork
+  LIST_TEAMS_AND_DRIVERS_LINEUP_FOOD_URL:`/hong/shipping/listteamtoshipping`,
+  UPDATE_ASSIGNWORKTEAM_LINEUP_FOOD_URL:`/hong/shipping/assignworkteam`,
+  //Findmoment
+  FIND_MOMENT_LINEUP_FOOD_URL:`/hong/shipping/listallshipping`,
+  //List Shipping to SEE
+  LIST_SHIPPING_TO_SEE_LINEUP_FOOD_URL:`/hong/shipping/listshippingtosee`,
   
 
 
