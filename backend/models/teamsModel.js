@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(20),
       allowNull: false,
     },
+    team_type: {
+      type: DataTypes.INTEGER(1),
+      allowNull: false,
+    },
     createdAt: {
       field: "created_at",
       type: DataTypes.DATE,

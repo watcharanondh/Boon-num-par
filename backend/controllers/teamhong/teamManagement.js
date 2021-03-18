@@ -29,7 +29,7 @@ exports.listAllTeams = async (req, res) => {
       where: {
         is_active: 1,
         is_delete: 0,
-        team_type: 0
+        team_type: 1
       },
       order: [["id", "DESC"]]
     }).then(teams => {
@@ -105,13 +105,17 @@ exports.listUserstoCreateTeam = async (req, res) => {
 /* Create Team */
 exports.CreateTeam = async (req, res) => {
   try {
-    const { name, tel_no, team_members } = req.body
+    const { name, tel_no, team_type,team_members } = req.body
     if (!name) {
       res.json({ response: "FAILED", result: "invalid team name." });
       return
     }
     if (!tel_no) {
       res.json({ response: "FAILED", result: "invalid telephone number." });
+      return
+    }
+    if (!team_type) {
+      res.json({ response: "FAILED", result: "invalid team_type." });
       return
     }
     if (!team_members && team_members.length == 0) {
@@ -124,8 +128,8 @@ exports.CreateTeam = async (req, res) => {
     const teamsResult = await teams.create({
       team_code: newTeamCode,
       name: name,
-      mobile_phone_number: tel_no,
-      team_type:0
+      team_type:1,
+      mobile_phone_number: tel_no
     });
     /*สร้างรายการสมาชิก สำหรับทีมนั้นๆ*/
     var ObjUsers = team_members.map(user => { return { "team_id": teamsResult.dataValues.id, "user_id": user.id } });

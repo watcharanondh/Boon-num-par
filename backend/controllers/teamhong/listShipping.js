@@ -13,8 +13,6 @@ exports.listAllShipping = async (req, res) => {
       attributes: ["quotation_code",
         [Sequelize.fn("date_format", Sequelize.col("`quotations`.`event_date`"), "%b %d, %Y"), "event_date"],
         [Sequelize.fn("date_format", Sequelize.col("`quotations`.`event_date`"), "%h:%i %p"), "event_date_datetime"],
-        [Sequelize.fn("date_format", Sequelize.col("`quotations`.`area_viewing_date`"), "%b %d, %Y"), "area_viewing_date"],
-        [Sequelize.fn("date_format", Sequelize.col("`quotations`.`area_viewing_date`"), "%h:%i %p"), "area_viewing_date_datetime"],
         [Sequelize.fn("date_format", Sequelize.col("`quotations`.`updated_at`"), "%d.%m.%Y"), "update"],
       ],
       include: [
@@ -29,61 +27,36 @@ exports.listAllShipping = async (req, res) => {
           ],
         },
         {
-          model: teams, as: 'area_viewing_team',
-          where: {
-            team_type:0
-          }
-        },
-        {
-          model: quotation_drivers, as: 'area_viewing_driver',
+          model: quotation_drivers, as: "lineup_food_driver",
           attributes: ["id"],
           include: [
             {
               model: users,
-              attributes: ['email'],
+              attributes: ['id'],
               include: [
                 {
                   model: user_details,
-                  attributes: ['id', 'name']
+                  attributes: ['name']
                 }
               ]
             }
           ],
           where: {
-            driver_type: 0,
+            driver_type: 2,
             is_active: 1,
             is_delete: 0
+            
           },
           required: false
         },
         {
-          model: teams, as: 'event_team',
+          model: teams, as: "lineup_food_team",
           where:{
-            team_type:0
-          }
-        },
-        {
-          model: quotation_drivers, as: 'event_driver',
-          attributes: ["id"],
-          include: [
-            {
-              model: users,
-              attributes: ['email'],
-              include: [
-                {
-                  model: user_details,
-                  attributes: ['id', 'name']
-                }
-              ]
-            }
-          ],
-          where: {
-            driver_type: 1,
-            is_active: 1,
-            is_delete: 0
+            team_type:1
           },
           required: false
         },
+
       ],
       where: {
         quotation_status_id: 1,
@@ -92,25 +65,25 @@ exports.listAllShipping = async (req, res) => {
         is_delete: 0
       },
       order: [["id", "DESC"]]
-    }).then(async quotation_data => {
+    })
+    .then(async quotation_data => {
       quotation_data.map(async (data) => {
         /* ชื่อลูกค้า */
         data.dataValues.customer_name = data.dataValues.customer.name
-        data.dataValues.customer_tax_invoices = data.dataValues.customer.customer_tax_invoices != '' ? data.dataValues.customer.customer_tax_invoices[0].title : data.dataValues.customer.name;
+        data.dataValues.customer_tax_invoices = data.dataValues.customer.customer_tax_invoices.length > 0 ? data.dataValues.customer.customer_tax_invoices[0].title : data.dataValues.customer.name;
 
         /* ชื่อทีม */
-        data.dataValues.event_team = data.dataValues.event_team != null ? data.dataValues.event_team.name : '-'
-        data.dataValues.area_viewing_team = data.dataValues.area_viewing_team != null ? data.dataValues.area_viewing_team.name : '-'
+        data.dataValues.lineup_food_team = data.dataValues.lineup_food_team != null ? data.dataValues.lineup_food_team.name : '-'
+        
 
         /* คนขับรถ */
-        data.dataValues.event_driver = data.dataValues.event_driver && data.dataValues.event_driver.length > 0 ? data.dataValues.event_driver[0].dataValues.user.dataValues.user_detail.name : '-'
-        data.dataValues.area_viewing_driver = data.dataValues.area_viewing_driver && data.dataValues.area_viewing_driver.length > 0 ? data.dataValues.area_viewing_driver[0].dataValues.user.dataValues.user_detail.name : '-'
-
+        data.dataValues.lineup_food_driver = data.dataValues.lineup_food_driver && data.dataValues.lineup_food_driver.length > 0 ? data.dataValues.lineup_food_driver[0].dataValues.user.dataValues.user_detail.name : '-'
         delete data.dataValues.customer;
         count_total++;
       });
       return quotation_data;
     });
+    console.log('test',result);
     if (result != '' && result !== null) {
       res.json({
         response: "OK",
@@ -203,8 +176,7 @@ exports.listTeamstoAssignShipping = async (req, res) => {
       attributes: ['id', 'team_code', 'name'],
       where: {
         is_active: 1,
-        is_delete: 0,
-        team_type:0
+        is_delete: 0
       }
     })
     const getAllDrivers = await users.findAll({

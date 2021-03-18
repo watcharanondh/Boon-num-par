@@ -65,7 +65,9 @@ app.use(START_PART_WITH + "/bnp/progress", require("./routes/teamBNP/progresses"
 app.use(START_PART_WITH + "/bnp/teammanage", require("./routes/teamBNP/teamManagement"));
 
 /*---------------------- TEAM HONG ----------------------*/
-
+/* Shipping Route */
+app.use(START_PART_WITH + "/hong/shipping", require("./routes/teamhong/listShipping"));
+app.use(START_PART_WITH + "/hong/teammanage", require("./routes/teamhong/teamManagement"));
 
 /*---------------------- TEAM KITCHEN ----------------------*/
 

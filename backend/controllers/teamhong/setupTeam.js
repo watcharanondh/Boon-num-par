@@ -26,10 +26,7 @@ exports.listAllSetupTeam = async (req, res) => {
         {
           model: teams,
           as: 'event_team',
-          attributes: ['team_code', ['name', 'team_name']],
-          where:{
-            team_type:0
-          }
+          attributes: ['team_code', ['name', 'team_name']]
         },
         {
           model: quotation_checklists,
