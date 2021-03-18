@@ -219,7 +219,7 @@ exports.listTeamstoAssignShipping = async (req, res) => {
 /* Assign Team to Work */
 exports.AssignWorkTeam = async (req, res) => {
   try {
-    const { team_type, quotation_code, team_code, user_code } = req.body
+    const { quotation_code, team_code, user_code } = req.body
     if (!quotation_code) {
       res.json({ response: "FAILED", result: "Invalid quotation_code." });
       return
@@ -245,17 +245,10 @@ exports.AssignWorkTeam = async (req, res) => {
     })
     /*Assign Team*/
     let result = false
-    if (parseInt(team_type) === 0) {
-      result = await quotations.update(
-        { area_viewing_team_id: get_id_team.dataValues.id },
-        { where: { quotation_code: quotation_code } }
-      )
-    } else if (parseInt(team_type) === 1) {
-      result = await quotations.update(
-        { event_team_id: get_id_team.dataValues.id },
-        { where: { quotation_code: quotation_code } }
-      )
-    }
+    result = await quotations.update(
+      { lineup_food_team_id: get_id_team.dataValues.id },
+      { where: { quotation_code: quotation_code } }
+    )
     /*Assign Driver*/
     if (result) {
       console.log(is_check_driver);
