@@ -68,9 +68,6 @@ exports.listAllSetupTeam = async (req, res) => {
         const progress_after = status_after.includes(0) || status_after.includes(2) ? 0 : 1
         const progress_total = progress_before + progress_between + progress_after
 
-        console.log(status_before, status_between, status_after);
-        console.log('-----------------------------');
-        console.log(progress_before, progress_between, progress_after);
         data.dataValues = {
           ...data.dataValues.event_team.dataValues,
           address: `${data.dataValues.customer.dataValues.address} ต.${data.dataValues.customer.dataValues.district.dataValues.district} อ.${data.dataValues.customer.dataValues.district.dataValues.amphoe} ${data.dataValues.customer.dataValues.district.dataValues.province} ${data.dataValues.customer.dataValues.district.dataValues.zipcode}`,

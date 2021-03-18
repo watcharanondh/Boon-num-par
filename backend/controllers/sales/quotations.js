@@ -1,4 +1,4 @@
-const { checklists, food_items, quotations, customer_tax_invoices, quotation_checklists, quotation_statuses, quotation_packages, quotation_promotions, customers, customer_types, districts, packages, package_equipments, equipments, promotions } = require("../../models");
+const { checklists, food_items, quotations, customer_tax_invoices, quotation_checklists, quotation_food_items, quotation_statuses, quotation_packages, quotation_promotions, customers, customer_types, districts, packages, package_equipments, equipments, promotions } = require("../../models");
 const { Op, Sequelize } = require("sequelize");
 const helper = require("../../helper/sku");
 
@@ -87,6 +87,11 @@ exports.listStatusQuotations = async (req, res) => {
 /* Update Quotation Confirm Status  */
 exports.comfirmQuotationStatus = async (req, res) => {
   try {
+    const isCheckStatus = await quotations.findOne({ where: { quotation_code: req.body.quotation_code } })
+    if (parseInt(isCheckStatus.dataValues.quotation_status_id) === parseInt(req.body.status)) {
+      res.json({ response: "OK", result: "Old:" + isCheckStatus.dataValues.quotation_status_id + " , Now:" + req.body.status, });
+      return
+    }
     const result = await quotations.update({
       quotation_status_id: req.body.status
     }, {
@@ -96,7 +101,7 @@ exports.comfirmQuotationStatus = async (req, res) => {
     });
     if (parseInt(req.body.status) === 1) {
       const get_id_quotation = await quotations.findOne({ where: { quotation_code: req.body.quotation_code } })
-      /* เพิ่ม checklistดูพื้นที่ ดึงจากข้อมูล checklistที่มีอยู่แล้ว  เมื่อเปลี่ยนสถานะเป็น confirm */
+      /* เพิ่ม checklistดูพื้นที่ ดึงจากข้อมูล checklistที่สร้างไว้  เมื่อเปลี่ยนสถานะเป็น confirm */
       const all_checklists = await checklists.findAll({ attributes: ['name', 'description'], where: { is_active: 1, is_delete: 0 } })
       if (all_checklists && all_checklists.length > 0) {
         const quot_checklists = all_checklists.map(checklist => {
@@ -105,7 +110,7 @@ exports.comfirmQuotationStatus = async (req, res) => {
         );
         await quotation_checklists.bulkCreate(quot_checklists).then(() => { result.quotation_checklists = 'SUCCESS.' })
       }
-      /* เพิ่ม checklistจัดงาน ดึงจากข้อมูล package เมื่อเปลี่ยนสถานะเป็น confirm */
+      /* เพิ่ม checklistจัดงาน & ทีมหงษ์ */
       const get_equip_quot = await quotations.findAll({
         attributes: ['quotation_code'],
         include: [
@@ -130,6 +135,16 @@ exports.comfirmQuotationStatus = async (req, res) => {
                 ]
               }
             ]
+          },
+          {
+            model: quotation_food_items,
+            attributes: ['id'],
+            include: [
+              {
+                model: food_items,
+                attributes: ['name', 'amount_person']
+              }
+            ]
           }
         ],
         where: {
@@ -138,6 +153,7 @@ exports.comfirmQuotationStatus = async (req, res) => {
           is_delete: 0
         }
       }).then(async datas => {
+        /* เพิ่ม checklistจัดงาน ดึงจากข้อมูล package เมื่อเปลี่ยนสถานะเป็น confirm */
         if (datas && datas[0].dataValues.quotation_packages[0].dataValues.package.dataValues.package_equipments.length > 0) {
           const get_package_equipments = datas[0].dataValues.quotation_packages[0].dataValues.package.dataValues.package_equipments
           const equipname = get_package_equipments.map(data => {
@@ -147,15 +163,36 @@ exports.comfirmQuotationStatus = async (req, res) => {
             await quotation_checklists.bulkCreate(equipname).then((r) => { result.package = r })
           }
         }
-      })
-      await quotation_checklists.create({
-        quotation_id: get_id_quotation.dataValues.id,
-        name: "รายการตรวจสอบระหว่างงาน ใช้แสดงปุ้มเสร็จสิ้น",
-        description: '',
-        status: 0,
-        returned_status: 0,
-        checklist_type: 2,
-        is_editable: 0
+        await quotation_checklists.create({
+          quotation_id: get_id_quotation.dataValues.id,
+          name: "รายการตรวจสอบระหว่างงาน ใช้แสดงปุ่มเสร็จสิ้น",
+          description: '',
+          status: 0,
+          returned_status: 0,
+          checklist_type: 2,
+          is_editable: 0
+        })
+
+        /*เพิ่ม checklistอาหารและอุปกรณ์ ของทีมหงษ์ เมื่อconfirm */
+        if (datas && datas[0].dataValues.quotation_food_items.length > 0) {
+          const get_food_items = datas[0].dataValues.quotation_food_items
+          const foodnames = get_food_items.map(data => {
+            return { "quotation_id": get_id_quotation.dataValues.id, "name": `${data.dataValues.food_item.dataValues.name} (${data.dataValues.food_item.dataValues.amount_person})`, "description": '', "status": 0, "returned_status": 0, "checklist_type": 4, "is_editable": 0 }
+          })
+          if (foodnames && foodnames.length > 0) {
+            console.log(foodnames);
+            await quotation_checklists.bulkCreate(foodnames).then((r) => { result.package = r })
+          }
+        }
+        await quotation_checklists.create({
+          quotation_id: get_id_quotation.dataValues.id,
+          name: "รายการตรวจสอบระหว่างงานทีมหงษ์ ใช้แสดงปุ่มเสร็จสิ้น",
+          description: '',
+          status: 0,
+          returned_status: 0,
+          checklist_type: 5,
+          is_editable: 0
+        })
       })
     }
 
@@ -210,25 +247,43 @@ exports.listAllCustomers = async (req, res) => {
 /* List All Food Items  */
 exports.listAllFoodItems = async (req, res) => {
   try {
-    const result = await food_items.findAll({
+    const savory = await food_items.findAll({
       attributes: [
-        "id",
+        "food_item_code",
         "name"
       ],
       where: {
-        food_type: req.body.food_type,
+        food_type: 1,
         is_active: 1,
         is_delete: 0
       }
     })
-    if (result != '' && result !== null) {
-      res.json({
-        response: "OK",
-        result: result
-      });
-    } else {
-      res.json({ response: "FAILED", result: "Not Found." });
-    }
+    const sweet = await food_items.findAll({
+      attributes: [
+        "food_item_code",
+        "name"
+      ],
+      where: {
+        food_type: 2,
+        is_active: 1,
+        is_delete: 0
+      }
+    })
+    const drink = await food_items.findAll({
+      attributes: [
+        "food_item_code",
+        "name"
+      ],
+      where: {
+        food_type: 3,
+        is_active: 1,
+        is_delete: 0
+      }
+    })
+    res.json({
+      response: "OK",
+      result: { savory, sweet, drink }
+    });
   } catch (error) {
     console.log(error);
     res.json({ response: "FAILED", result: error });
@@ -496,7 +551,7 @@ exports.createNewQuotation = async (req, res) => {
       }
 
       /* สร้างใบเสนอราคา ตาราง quotations */
-      const { package_code, promotion_code, event_date, area_viewing_date, amount_savory_food, amount_sweet_food, amount_drink, note } = req.body;
+      const { package_code, food_item_code, promotion_code, event_date, area_viewing_date, amount_savory_food, amount_sweet_food, amount_drink, note } = req.body;
       const getMaxQuotaCode = await quotations.findOne({ attributes: [[Sequelize.fn('MAX', Sequelize.col('quotation_code')), "maxQuotaCode"]] });
       const newQuotaCode = getMaxQuotaCode.dataValues.maxQuotaCode !== null ? helper.SKUincrementer(getMaxQuotaCode.dataValues.maxQuotaCode) : "BNPQU0000001"
       const Quotationresult = await quotations.create({
@@ -529,6 +584,18 @@ exports.createNewQuotation = async (req, res) => {
       var ObjPromotions = findPromoId.map(promoId => { return { "quotation_id": Quotationresult.dataValues.id, "promotion_id": promoId.id } });
       console.log(ObjPromotions);
       const selectPromotionresult = await quotation_promotions.bulkCreate(ObjPromotions);
+      /* สร้างรายการอาหาร */
+      const findFoodsId = await food_items.findAll({
+        attributes: ['id'],
+        where: {
+          food_item_code: {
+            [Op.in]: food_item_code
+          }
+        }
+      });
+      var ObjFoodItems = findFoodsId.map(foodsId => { return { "quotation_id": Quotationresult.dataValues.id, "food_item_id": foodsId.id } });
+      console.log(ObjFoodItems);
+      const selectFooditemsresult = await quotation_food_items.bulkCreate(ObjFoodItems);
 
       res.json({
         response: "OK",
@@ -536,12 +603,13 @@ exports.createNewQuotation = async (req, res) => {
           "CreateCustomer": customer_result,
           "Quotation": Quotationresult,
           "selectPackage": selectPackageresult,
+          "selectFooditems": selectFooditemsresult,
           "selectPromotion": selectPromotionresult
         }
       });
 
     } else {
-      const { customer_code, package_code, promotion_code, event_date, area_viewing_date, amount_savory_food, amount_sweet_food, amount_drink, note } = req.body;
+      const { customer_code, package_code, food_item_code, promotion_code, event_date, area_viewing_date, amount_savory_food, amount_sweet_food, amount_drink, note } = req.body;
       /* สร้างใบเสนอราคา ตาราง quotations */
       const findCustomerId = await customers.findOne({ attributes: ['id'], where: { customer_code: customer_code } })
       const getMaxQuotaCode = await quotations.findOne({ attributes: [[Sequelize.fn('MAX', Sequelize.col('quotation_code')), "maxQuotaCode"]] });
@@ -576,12 +644,25 @@ exports.createNewQuotation = async (req, res) => {
       var ObjPromotions = findPromoId.map(promoId => { return { "quotation_id": Quotationresult.dataValues.id, "promotion_id": promoId.id } });
       console.log(ObjPromotions);
       const selectPromotionresult = await quotation_promotions.bulkCreate(ObjPromotions);
+      /* สร้างรายการอาหาร */
+      const findFoodsId = await food_items.findAll({
+        attributes: ['id'],
+        where: {
+          food_item_code: {
+            [Op.in]: food_item_code
+          }
+        }
+      });
+      var ObjFoodItems = findFoodsId.map(foodsId => { return { "quotation_id": Quotationresult.dataValues.id, "food_item_id": foodsId.id } });
+      console.log(ObjFoodItems);
+      const selectFooditemsresult = await quotation_food_items.bulkCreate(ObjFoodItems);
 
       res.json({
         response: "OK",
         result: {
           "Quotation": Quotationresult,
           "selectPackage": selectPackageresult,
+          "selectFooditems": selectFooditemsresult,
           "selectPromotion": selectPromotionresult
         }
       });
@@ -695,6 +776,74 @@ exports.listQuotationsToEdit = async (req, res) => {
       return promo_data
     });
 
+    /* Fooditems Data  */
+    const savory_fooditems_result = await quotation_food_items.findAll({
+      attributes: ["quotation_id", "food_item_id"],
+      include: [
+        {
+          model: food_items,
+          attributes: ["food_item_code", "name"],
+          where: {
+            food_type: 1
+          },
+          required: true
+        }
+      ],
+      where: {
+        quotation_id: quotation_customers_result[0].dataValues.id,
+      }
+    }).then(foods_data => {
+      foods_data.map(data => {
+        Object.assign(data.dataValues, data.dataValues.food_item.dataValues)
+        delete data.dataValues.food_item;
+      });
+      return foods_data
+    });
+    const sweet_fooditems_result = await quotation_food_items.findAll({
+      attributes: ["quotation_id", "food_item_id"],
+      include: [
+        {
+          model: food_items,
+          attributes: ["food_item_code", "name"],
+          where: {
+            food_type: 2
+          },
+          required: true
+        }
+      ],
+      where: {
+        quotation_id: quotation_customers_result[0].dataValues.id,
+      }
+    }).then(foods_data => {
+      foods_data.map(data => {
+        Object.assign(data.dataValues, data.dataValues.food_item.dataValues)
+        delete data.dataValues.food_item;
+      });
+      return foods_data
+    });
+    const drink_fooditems_result = await quotation_food_items.findAll({
+      attributes: ["quotation_id", "food_item_id"],
+      include: [
+        {
+          model: food_items,
+          attributes: ["food_item_code", "name"],
+          where: {
+            food_type: 3
+          },
+          required: true
+        }
+      ],
+      where: {
+        quotation_id: quotation_customers_result[0].dataValues.id,
+      }
+    }).then(foods_data => {
+      foods_data.map(data => {
+        Object.assign(data.dataValues, data.dataValues.food_item.dataValues)
+        delete data.dataValues.food_item;
+      });
+      return foods_data
+    });
+
 
     /* Packages Data  */
     const quotation_packages_result = await quotation_packages.findAll({
@@ -728,9 +877,10 @@ exports.listQuotationsToEdit = async (req, res) => {
       res.json({
         response: "OK",
         result: {
-          "customers_data": quotation_customers_result,
-          "promotions_data": quotation_promotions_result,
-          "packages_data": quotation_packages_result
+          customers_data: quotation_customers_result,
+          promotions_data: quotation_promotions_result,
+          fooditems_data: { savory: savory_fooditems_result, sweet: sweet_fooditems_result, drink: drink_fooditems_result },
+          packages_data: quotation_packages_result
         }
       });
     } else {
@@ -745,7 +895,7 @@ exports.listQuotationsToEdit = async (req, res) => {
 /* Edit Quotation */
 exports.editQuotation = async (req, res) => {
   try {
-    const { quotation_code, customer_code, package_code, promotion_code, event_date, area_viewing_date, amount_savory_food, amount_sweet_food, amount_drink, note } = req.body;
+    const { quotation_code, customer_code, package_code, food_item_code, promotion_code, event_date, area_viewing_date, amount_savory_food, amount_sweet_food, amount_drink, note } = req.body;
     /* แก้ไขใบเสนอราคา ตาราง quotations */
     const findCustomerId = await customers.findOne({ attributes: ['id'], where: { customer_code: customer_code } });
     const findQuotaId = await quotations.findOne({ attributes: ['id'], where: { quotation_code: quotation_code } });
@@ -793,14 +943,33 @@ exports.editQuotation = async (req, res) => {
     var ObjPromotions = findPromoId.map(promoId => { return { "quotation_id": findQuotaId.dataValues.id, "promotion_id": promoId.id } });
     console.log(ObjPromotions);
     const selectPromotionresult = await quotation_promotions.bulkCreate(ObjPromotions);
+    /*ลบ และ เพิ่ม รายการอาหาร */
+    const findFoodsId = await food_items.findAll({
+      attributes: ['id'],
+      where: {
+        food_item_code: {
+          [Op.in]: food_item_code
+        }
+      }
+    });
+    const del_foods_quotation = await quotation_food_items.destroy({
+      where: {
+        quotation_id: findQuotaId.dataValues.id,
+      }
+    });
+    var ObjFoodItems = findFoodsId.map(foodsId => { return { "quotation_id": findQuotaId.dataValues.id, "food_item_id": foodsId.id } });
+    console.log(ObjFoodItems);
+    const selectFooditemsresult = await quotation_food_items.bulkCreate(ObjFoodItems);
 
     res.json({
       response: "OK",
       result: {
-        "delete_package_quotation": del_pack_quotation,
-        "select_new_package_quotation": selectPackageresult,
-        "delete_promotion_quotation": del_promo_quotation,
-        "select_new_promotion_quotation": selectPromotionresult
+        delete_package_quotation: del_pack_quotation,
+        select_new_package_quotation: selectPackageresult,
+        delete_foods_quotation: del_foods_quotation,
+        select_new_foods_quotation: selectFooditemsresult,
+        delete_promotion_quotation: del_promo_quotation,
+        select_new_promotion_quotation: selectPromotionresult
       }
     });
   } catch (error) {

@@ -96,6 +96,7 @@ module.exports = (sequelize, DataTypes) => {
     quotations.hasMany(models.quotation_descriptions, { foreignKey: "quotation_id" });
     quotations.hasMany(models.quotation_drivers, { foreignKey: "quotation_id", as: "event_driver" });
     quotations.hasMany(models.quotation_drivers, { foreignKey: "quotation_id", as: "area_viewing_driver" });
+    quotations.hasMany(models.quotation_food_items, { foreignKey: "quotation_id" });
     quotations.hasMany(models.quotation_images, { foreignKey: "quotation_id" });
     quotations.hasMany(models.quotation_packages, { foreignKey: "quotation_id" });
     quotations.hasMany(models.quotation_promotions, { foreignKey: "quotation_id" });

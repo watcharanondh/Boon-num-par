@@ -14,7 +14,7 @@ router.post("/confirmquotstat", authorize, QuotationsContrllers.comfirmQuotation
 /* List All Customer */
 router.get("/listallcustomers", authorize, QuotationsContrllers.listAllCustomers);
 /* List All Food Items */
-router.post("/listallfooditems", authorize, QuotationsContrllers.listAllFoodItems);
+router.get("/listallfooditems", authorize, QuotationsContrllers.listAllFoodItems);
 /* List Customer information to Create Quotations */
 router.post("/findcustomerinfo", authorize, QuotationsContrllers.listFindCustomerInformation);
 /* Select Package to Create Quotations */

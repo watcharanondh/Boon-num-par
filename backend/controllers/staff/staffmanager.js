@@ -79,7 +79,7 @@ exports.CreatePosition = async (req, res) => {
 exports.listPositiontoEdit = async (req, res) => {
   try {
     const result = await positions.findOne({
-      attributes: ['id', 'position_code', 'name', 'description'],
+      attributes: ['id', 'name', 'description', 'role_id'],
       where: {
         id: req.body.id,
         is_active: 1,
@@ -128,11 +128,12 @@ exports.deletePosition = async (req, res) => {
 /* Edit Position */
 exports.editPosition = async (req, res) => {
   try {
-    const { id, name, description } = req.body
+    const { id, name, description, role_id } = req.body
     if (!id) { res.json({ response: "FAILED", result: "Invalid id" }); return }
     if (!name) { res.json({ response: "FAILED", result: "Invalid name" }); return }
     const result = await positions.update({
       name: name,
+      role_id: role_id,
       description: description
     }, {
       where: {

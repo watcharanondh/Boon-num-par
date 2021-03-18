@@ -88,6 +88,7 @@ exports.CreateUserAdmin = async (req, res) => {
   try {
     const { name, position_id, telephone_number } = req.body
     const uname = 'bnpadmin'
+    const pword = await bcrypt.hash('1234', 8)
     if (!name) { res.json({ response: "FAILED", result: "Invalid name" }); return }
     if (!position_id) { res.json({ response: "FAILED", result: "Invalid position_id" }); return }
     if (!telephone_number) { res.json({ response: "FAILED", result: "Invalid telephone_number" }); return }
@@ -137,9 +138,7 @@ exports.CreateUserAdmin = async (req, res) => {
       where: {
         username: {
           [Op.substring]: uname.replace(/\s/g, '')
-        },
-        is_active: 1,
-        is_delete: 0
+        }
       }
 
     })
@@ -147,7 +146,7 @@ exports.CreateUserAdmin = async (req, res) => {
 
     const createUsers = await users.create({
       username: newAdminUsername,
-      password: "1234",
+      password: pword,
       remember_token: '',
     })
     const createUserDetail = await user_details.create({

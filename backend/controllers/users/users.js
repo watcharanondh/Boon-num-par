@@ -3,7 +3,6 @@ const { Op, Sequelize } = require("sequelize");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const fs = require('fs');
-// const { Op } = require("sequelize");
 
 /* User Loging In */
 exports.userLogin = async (req, res) => {
@@ -37,30 +36,31 @@ exports.userLogin = async (req, res) => {
   try {
     if (result) {
       if (bcrypt.compareSync(password, result.password)) {
-        if (result.is_active == 1 && result.is_delete == 0) {
-          await users.update({ last_login: new Date() }, { where: { username: username, password: result.password } })
-          const _payload = {
-            name: result.user_detail.name,
-            role_id: result.user_detail.position.role.id,
-            role_name: result.user_detail.position.role.name,
-            profile_url: result.profile_url,
-            remember_token: result.remember_token,
-            last_login: result.last_login
-          };
-          const accessToken = jwt.sign(_payload, fs.readFileSync(__dirname + '/../../middleware/private.key'), { expiresIn: '10h' })
-          res.json({
-            response: "OK",
-            accessToken: accessToken,
-            result: _payload
-          });
+        if (result.is_delete == 0) {
+          if (result.is_active == 1) {
+            await users.update({ last_login: new Date() }, { where: { id: result.id } })
+            const _payload = {
+              name: result.user_detail.name,
+              role_id: result.user_detail.position.role.id,
+              role_name: result.user_detail.position.role.name,
+              profile_url: result.profile_url,
+              remember_token: result.remember_token,
+              last_login: result.last_login
+            };
+            const accessToken = jwt.sign(_payload, fs.readFileSync(__dirname + '/../../middleware/private.key'), { expiresIn: '10h' })
+            res.json({
+              response: "OK",
+              accessToken: accessToken,
+              result: _payload
+            });
+          } else {
+            res.json({ response: "FAILED", result: "This User has been Suspended.", });
+          }
         } else {
-          res.json({
-            response: "FAILED",
-            result: "This User has been Suspended or Deleted.",
-          });
+          res.json({ response: "FAILED", result: "This User has been Deleted.", });
         }
       } else {
-        res.json({ response: "FAILED", result: "Invalid Password." });
+        res.json({ response: "FAILED", result: "Incorrect Password." });
       }
     } else {
       res.json({ response: "FAILED", result: "Invalid Username." });
