@@ -2,8 +2,8 @@ const { customers, districts, quotations, teams, quotation_checklists, quotation
 const { Op, Sequelize } = require("sequelize");
 const { find_between_date } = require("../../helper/finddate");
 
-/* List All Setup Team task */
-exports.listAllSetupTeam = async (req, res) => {
+/* List All LineUP Food Team task */
+exports.listAllLineUpFoodTeam = async (req, res) => {
   try {
     let count_total = 0;
     const _where = find_between_date(req.body.startdate, req.body.enddate)
@@ -25,7 +25,7 @@ exports.listAllSetupTeam = async (req, res) => {
         },
         {
           model: teams,
-          as: 'event_team',
+          as: 'lineup_food_team',
           attributes: ['team_code', ['name', 'team_name']]
         },
         {
@@ -39,7 +39,7 @@ exports.listAllSetupTeam = async (req, res) => {
       ],
       where: {
         quotation_status_id: 1,
-        event_team_id: { [Op.ne]: null },
+        lineup_food_team_id: { [Op.ne]: null },
         event_date: _where,
         is_active: 1,
         is_delete: 0
@@ -54,10 +54,10 @@ exports.listAllSetupTeam = async (req, res) => {
 
         if (getChecklists && getChecklists.length > 0) {
           getChecklists.map(x => {
-            if (x.checklist_type == 1) {
+            if (x.checklist_type == 4) {
               status_before.push(x.status)
               status_after.push(x.returned_status)
-            } else if (x.checklist_type == 2) {
+            } else if (x.checklist_type == 5) {
               status_between.push(x.status)
             }
           })
@@ -67,16 +67,17 @@ exports.listAllSetupTeam = async (req, res) => {
         const progress_between = status_between.includes(0) || status_between.includes(2) ? 0 : 1
         const progress_after = status_after.includes(0) || status_after.includes(2) ? 0 : 1
         const progress_total = progress_before + progress_between + progress_after
+        console.log(progress_before, progress_between, progress_after, '=', progress_total);
 
         data.dataValues = {
-          ...data.dataValues.event_team.dataValues,
+          ...data.dataValues.lineup_food_team.dataValues,
           address: `${data.dataValues.customer.dataValues.address} ต.${data.dataValues.customer.dataValues.district.dataValues.district} อ.${data.dataValues.customer.dataValues.district.dataValues.amphoe} ${data.dataValues.customer.dataValues.district.dataValues.province} ${data.dataValues.customer.dataValues.district.dataValues.zipcode}`,
           ...data.dataValues,
           progress: progress_total + ' จาก 3',
           progress_status: progress_total == 3 ? 2 : (progress_total == 1 || progress_total == 2 ? 1 : 0)
         }
         delete data.dataValues.customer;
-        delete data.dataValues.event_team;
+        delete data.dataValues.lineup_food_team;
         delete data.dataValues.quotation_checklists;
         count_total++;
       });
@@ -98,7 +99,7 @@ exports.listAllSetupTeam = async (req, res) => {
 };
 
 /* Manage task */
-exports.manageTeamTask = async (req, res) => {
+exports.manageLineUpFoodTeamTask = async (req, res) => {
   try {
     const { quotation_code } = req.body
     if (!quotation_code) {
@@ -156,7 +157,7 @@ exports.manageTeamTask = async (req, res) => {
       attributes: ['id', 'name', 'description', 'status', ['is_editable', 'isEdit']],
       where: {
         quotation_id: headInfo[0].dataValues.id,
-        checklist_type: 1,
+        checklist_type: 4,
         is_active: 1,
         is_delete: 0
       }
@@ -175,7 +176,7 @@ exports.manageTeamTask = async (req, res) => {
       attributes: ['description'],
       where: {
         quotation_id: headInfo[0].dataValues.id,
-        description_type: 0,
+        description_type: 3,
         is_active: 1,
         is_delete: 0
       }
@@ -186,7 +187,7 @@ exports.manageTeamTask = async (req, res) => {
       attributes: [['id', 'uid'], 'name', 'url'],
       where: {
         quotation_id: headInfo[0].dataValues.id,
-        img_type: 1,
+        img_type: 4,
         is_active: 1,
         is_delete: 0
       }
@@ -210,7 +211,7 @@ exports.manageTeamTask = async (req, res) => {
       attributes: ['id', 'status'],
       where: {
         quotation_id: headInfo[0].dataValues.id,
-        checklist_type: 2,
+        checklist_type: 5,
         is_active: 1,
         is_delete: 0
       }
@@ -221,7 +222,7 @@ exports.manageTeamTask = async (req, res) => {
       attributes: ['description'],
       where: {
         quotation_id: headInfo[0].dataValues.id,
-        description_type: 1,
+        description_type: 4,
         is_active: 1,
         is_delete: 0
       }
@@ -232,7 +233,7 @@ exports.manageTeamTask = async (req, res) => {
       attributes: [['id', 'uid'], 'name', 'url'],
       where: {
         quotation_id: headInfo[0].dataValues.id,
-        img_type: 2,
+        img_type: 5,
         is_active: 1,
         is_delete: 0
       }
@@ -247,7 +248,7 @@ exports.manageTeamTask = async (req, res) => {
       attributes: ['id', 'name', 'description', ['returned_status', 'status'], ['is_editable', 'isEdit']],
       where: {
         quotation_id: headInfo[0].dataValues.id,
-        checklist_type: 1,
+        checklist_type: 4,
         is_active: 1,
         is_delete: 0
       }
@@ -266,7 +267,7 @@ exports.manageTeamTask = async (req, res) => {
       attributes: ['description'],
       where: {
         quotation_id: headInfo[0].dataValues.id,
-        description_type: 2,
+        description_type: 5,
         is_active: 1,
         is_delete: 0
       }
@@ -277,7 +278,7 @@ exports.manageTeamTask = async (req, res) => {
       attributes: [['id', 'uid'], 'name', 'url'],
       where: {
         quotation_id: headInfo[0].dataValues.id,
-        img_type: 3,
+        img_type: 6,
         is_active: 1,
         is_delete: 0
       }
@@ -317,8 +318,8 @@ exports.manageTeamTask = async (req, res) => {
   }
 };
 
-/* Create Checklist for Setupteam */
-exports.createChecklistSetup = async (req, res) => {
+/* Create Checklist for LineUpFood team */
+exports.createChecklistLineUpFood = async (req, res) => {
   try {
     const { name, quotation_code } = req.body
     if (!name) {
@@ -336,7 +337,7 @@ exports.createChecklistSetup = async (req, res) => {
       name: name,
       description: '',
       returned_status: 0,
-      checklist_type: 1,
+      checklist_type: 4,
       is_editable: 1
     });
     res.json({
@@ -348,7 +349,7 @@ exports.createChecklistSetup = async (req, res) => {
     res.json({ response: "FAILED", result: error });
   }
 };
-/* List Checklist to Edit Setupteam*/
+/* List Checklist to Edit LineUpFoodteam*/
 exports.listChecklistToEdit = async (req, res) => {
   try {
     const result = await quotation_checklists.findAll({
@@ -372,8 +373,8 @@ exports.listChecklistToEdit = async (req, res) => {
     res.json({ response: "FAILED", result: error });
   }
 };
-/* Edit Checklist of Setupteam */
-exports.editChecklistSetup = async (req, res) => {
+/* Edit Checklist of LineUpFoodteam */
+exports.editChecklistLineUpFood = async (req, res) => {
   try {
     const { id, name } = req.body;
     if (!name) {
@@ -411,8 +412,8 @@ exports.editChecklistSetup = async (req, res) => {
     res.json({ response: "FAILED", result: error });
   }
 };
-/* Delete Checklist of Setupteam (Update is_delete) */
-exports.deleteChecklistSetup = async (req, res) => {
+/* Delete Checklist of LineUpFoodteam (Update is_delete) */
+exports.deleteChecklistLineUpFood = async (req, res) => {
   try {
     const is_check_editable = await quotation_checklists.findOne({ attributes: ['is_editable'], where: { id: req.body.id } })
     if (!is_check_editable || parseInt(is_check_editable.dataValues.is_editable) === 0) {
@@ -445,8 +446,8 @@ exports.deleteChecklistSetup = async (req, res) => {
     res.json({ response: "FAILED", result: error });
   }
 };
-/* Update Checklist of Setupteam */
-exports.updateChecklistSetup = async (req, res) => {
+/* Update Checklist of LineUpFoodteam */
+exports.updateChecklistLineUpFood = async (req, res) => {
   try {
     const dataBody = req.body;
     var result = "loop updated"
@@ -485,8 +486,8 @@ exports.updateChecklistSetup = async (req, res) => {
     res.json({ response: "FAILED", result: error });
   }
 };
-/* Update Checklist of Setupteam (Returned)*/
-exports.updateChecklistSetupReturn = async (req, res) => {
+/* Update Checklist of LineUpFoodteam (Returned)*/
+exports.updateChecklistLineUpFoodReturn = async (req, res) => {
   try {
     const dataBody = req.body;
     var result = "loop updated"
@@ -526,8 +527,8 @@ exports.updateChecklistSetupReturn = async (req, res) => {
   }
 };
 
-/* Update Description of Setupteam */
-exports.updateDescriptionSetup = async (req, res) => {
+/* Update Description of LineUpFoodteam */
+exports.updateDescriptionLineUpFood = async (req, res) => {
   try {
     const { quotation_code, description, description_type } = req.body;
     const get_id_quotation = await quotations.findOne({ where: { quotation_code: quotation_code } })
@@ -563,8 +564,8 @@ exports.updateDescriptionSetup = async (req, res) => {
   }
 };
 
-/* Create Image Setup */
-exports.createImageSetup = async (req, res) => {
+/* Create Image LineUpFood */
+exports.createImageLineUpFood = async (req, res) => {
   try {
     const { quotation_code, name, url, img_type } = req.body
     if (!url) {
@@ -603,8 +604,8 @@ exports.createImageSetup = async (req, res) => {
     res.json({ response: "FAILED", result: error });
   }
 };
-/* Delete Image of Setup (Update is_delete) */
-exports.deleteImageSetup = async (req, res) => {
+/* Delete Image of LineUpFood (Update is_delete) */
+exports.deleteImageLineUpFood = async (req, res) => {
   try {
     const result = await quotation_images.update({
       is_delete: 1

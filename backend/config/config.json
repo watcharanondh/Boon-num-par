@@ -24,7 +24,7 @@
     "username": "dem_bnpprod",
     "password": "BucXKFed12",
     "database": "dem_bnpprod",
-    "host": "localhost",
+    "host": "103.82.248.102",
     "dialect": "mysql"
   }
 }

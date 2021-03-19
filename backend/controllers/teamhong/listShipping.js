@@ -45,18 +45,17 @@ exports.listAllShipping = async (req, res) => {
             driver_type: 2,
             is_active: 1,
             is_delete: 0
-            
+
           },
           required: false
         },
         {
           model: teams, as: "lineup_food_team",
-          where:{
-            team_type:1
+          where: {
+            team_type: 1
           },
           required: false
         },
-
       ],
       where: {
         quotation_status_id: 1,
@@ -66,24 +65,23 @@ exports.listAllShipping = async (req, res) => {
       },
       order: [["id", "DESC"]]
     })
-    .then(async quotation_data => {
-      quotation_data.map(async (data) => {
-        /* ชื่อลูกค้า */
-        data.dataValues.customer_name = data.dataValues.customer.name
-        data.dataValues.customer_tax_invoices = data.dataValues.customer.customer_tax_invoices.length > 0 ? data.dataValues.customer.customer_tax_invoices[0].title : data.dataValues.customer.name;
+      .then(async quotation_data => {
+        quotation_data.map(async (data) => {
+          /* ชื่อลูกค้า */
+          data.dataValues.customer_name = data.dataValues.customer.name
+          data.dataValues.customer_tax_invoices = data.dataValues.customer.customer_tax_invoices.length > 0 ? data.dataValues.customer.customer_tax_invoices[0].title : data.dataValues.customer.name;
 
-        /* ชื่อทีม */
-        data.dataValues.lineup_food_team = data.dataValues.lineup_food_team != null ? data.dataValues.lineup_food_team.name : '-'
-        
+          /* ชื่อทีม */
+          data.dataValues.lineup_food_team = data.dataValues.lineup_food_team != null ? data.dataValues.lineup_food_team.name : '-'
 
-        /* คนขับรถ */
-        data.dataValues.lineup_food_driver = data.dataValues.lineup_food_driver && data.dataValues.lineup_food_driver.length > 0 ? data.dataValues.lineup_food_driver[0].dataValues.user.dataValues.user_detail.name : '-'
-        delete data.dataValues.customer;
-        count_total++;
+          /* คนขับรถ */
+          data.dataValues.lineup_food_driver = data.dataValues.lineup_food_driver && data.dataValues.lineup_food_driver.length > 0 ? data.dataValues.lineup_food_driver[0].dataValues.user.dataValues.user_detail.name : '-'
+          delete data.dataValues.customer;
+          count_total++;
+        });
+        return quotation_data;
       });
-      return quotation_data;
-    });
-    console.log('test',result);
+    console.log('test', result);
     if (result != '' && result !== null) {
       res.json({
         response: "OK",
@@ -124,11 +122,12 @@ exports.listShippingtoSee = async (req, res) => {
           ],
         },
         {
-          model: teams, as: 'event_team'
+          model: teams, as: "lineup_food_team",
+          where: {
+            team_type: 1
+          },
+          required: false
         },
-        {
-          model: teams, as: 'area_viewing_team'
-        }
       ],
       where: {
         quotation_status_id: 1,
@@ -144,8 +143,7 @@ exports.listShippingtoSee = async (req, res) => {
         data.dataValues.customer_tax_invoices = data.dataValues.customer.customer_tax_invoices != '' ? data.dataValues.customer.customer_tax_invoices[0].title : data.dataValues.customer.name;
 
         /* ชื่อทีม */
-        data.dataValues.event_team = data.dataValues.event_team != null ? data.dataValues.event_team.name : '-'
-        data.dataValues.area_viewing_team = data.dataValues.area_viewing_team != null ? data.dataValues.area_viewing_team.name : '-'
+        data.dataValues.lineup_food_team = data.dataValues.lineup_food_team != null ? data.dataValues.lineup_food_team.name : '-'
 
         data.dataValues.address = `${data.dataValues.customer.dataValues.address} ต.${data.dataValues.customer.dataValues.district.dataValues.district} อ.${data.dataValues.customer.dataValues.district.dataValues.amphoe} ${data.dataValues.customer.dataValues.district.dataValues.province} ${data.dataValues.customer.dataValues.district.dataValues.zipcode}`
 
@@ -175,6 +173,7 @@ exports.listTeamstoAssignShipping = async (req, res) => {
     const getAllTeams = await teams.findAll({
       attributes: ['id', 'team_code', 'name'],
       where: {
+        team_type: 1,
         is_active: 1,
         is_delete: 0
       }
@@ -238,7 +237,7 @@ exports.AssignWorkTeam = async (req, res) => {
     const is_check_driver = await quotation_drivers.findOne({
       where: {
         quotation_id: get_id_quotation.dataValues.id,
-        driver_type: team_type,
+        driver_type: 2,
         is_active: 1,
         is_delete: 0
       }
@@ -264,7 +263,7 @@ exports.AssignWorkTeam = async (req, res) => {
       } else {
         const createDriver = await quotation_drivers.create({
           quotation_id: get_id_quotation.dataValues.id,
-          driver_type: team_type,
+          driver_type: 2,
           user_id: get_id_user.dataValues.id
         })
         result = { ...result, ...createDriver.dataValues }

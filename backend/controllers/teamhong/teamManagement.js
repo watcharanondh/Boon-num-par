@@ -105,7 +105,7 @@ exports.listUserstoCreateTeam = async (req, res) => {
 /* Create Team */
 exports.CreateTeam = async (req, res) => {
   try {
-    const { name, tel_no, team_type,team_members } = req.body
+    const { name, tel_no, team_members } = req.body
     if (!name) {
       res.json({ response: "FAILED", result: "invalid team name." });
       return
@@ -114,21 +114,21 @@ exports.CreateTeam = async (req, res) => {
       res.json({ response: "FAILED", result: "invalid telephone number." });
       return
     }
-    if (!team_type) {
-      res.json({ response: "FAILED", result: "invalid team_type." });
+    if (tel_no.length != 10) {
+      res.json({ response: "FAILED", result: "please input telephone number 10 digit." });
       return
     }
     if (!team_members && team_members.length == 0) {
       res.json({ response: "FAILED", result: "please choose member." });
       return
     }
-    const getMaxTeamCode = await teams.findOne({ attributes: [[Sequelize.fn('MAX', Sequelize.col('team_code')), "maxTeamCode"]] })
-    const newTeamCode = getMaxTeamCode.dataValues.maxTeamCode !== null ? helper.SKUincrementer(getMaxTeamCode.dataValues.maxTeamCode) : "BNPM000001";
+    const getMaxTeamCode = await teams.findOne({ attributes: [[Sequelize.fn('MAX', Sequelize.col('team_code')), "maxTeamCode"]], where: { team_type: 1 } })
+    const newTeamCode = getMaxTeamCode.dataValues.maxTeamCode !== null ? helper.SKUincrementer(getMaxTeamCode.dataValues.maxTeamCode) : "HNGT000001";
     /*สร้าง Team*/
     const teamsResult = await teams.create({
       team_code: newTeamCode,
       name: name,
-      team_type:1,
+      team_type: 1,
       mobile_phone_number: tel_no
     });
     /*สร้างรายการสมาชิก สำหรับทีมนั้นๆ*/
