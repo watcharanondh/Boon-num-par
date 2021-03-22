@@ -1,12 +1,12 @@
-const { checklists } = require("../../models");
+const { lineupfood_equipments } = require("../../models");
 const { Op, Sequelize } = require("sequelize");
 const helper = require("../../helper/sku");
 
 /* List All Checklist */
 exports.listAllChecklists = async (req, res) => {
   try {
-    const result = await checklists.findAll({
-      attributes: ["id", "name", "description"],
+    const result = await lineupfood_equipments.findAll({
+      attributes: ["id", "name", "description", "stock_in", "stock_out"],
       where: {
         is_active: 1,
         is_delete: 0
@@ -31,18 +31,24 @@ exports.listAllChecklists = async (req, res) => {
 /* Create Checklist */
 exports.CreateChecklist = async (req, res) => {
   try {
-    const { name } = req.body
+    const { name, stock_in } = req.body
     if (!name) {
       res.json({ response: "FAILED", result: "please enter name." });
       return
     }
-    const getMaxChecklistCode = await checklists.findOne({ attributes: [[Sequelize.fn('MAX', Sequelize.col('checklist_code')), "maxChecklistCode"]] })
-    const newChecklistCode = getMaxChecklistCode.dataValues.maxChecklistCode !== null ? helper.SKUincrementer(getMaxChecklistCode.dataValues.maxChecklistCode) : "CHKL000001";
+    if (!stock_in) {
+      res.json({ response: "FAILED", result: "please enter stock_in." });
+      return
+    }
+    const getMaxChecklistCode = await lineupfood_equipments.findOne({ attributes: [[Sequelize.fn('MAX', Sequelize.col('code')), "maxChecklistCode"]] })
+    const newChecklistCode = getMaxChecklistCode.dataValues.maxChecklistCode !== null ? helper.SKUincrementer(getMaxChecklistCode.dataValues.maxChecklistCode) : "EQUP000001";
     /*สร้าง checklists*/
-    const checklistsResult = await checklists.create({
-      checklist_code: newChecklistCode,
+    const checklistsResult = await lineupfood_equipments.create({
+      code: newChecklistCode,
       name: name,
       description: '',
+      stock_in: stock_in,
+      stock_out: 0,
     });
     res.json({
       response: "OK",
@@ -57,7 +63,8 @@ exports.CreateChecklist = async (req, res) => {
 /* List Team to Edit */
 exports.listChecklistToEdit = async (req, res) => {
   try {
-    const result = await checklists.findAll({
+    const result = await lineupfood_equipments.findAll({
+      attributes: ['id', 'name', 'description', 'stock_in'],
       where: {
         id: req.body.id,
         is_active: 1,
@@ -81,18 +88,28 @@ exports.listChecklistToEdit = async (req, res) => {
 /* Edit Checklist */
 exports.editChecklist = async (req, res) => {
   try {
-    const { id, name } = req.body;
+    const { id, name, stock_in } = req.body;
     if (!name) {
       res.json({ response: "FAILED", result: "please enter name." });
+      return
+    }
+    if (!stock_in) {
+      res.json({ response: "FAILED", result: "please enter stock_in." });
       return
     }
     if (!id) {
       res.json({ response: "FAILED", result: "checklist is not found." });
       return
     }
+    const equip = await lineupfood_equipments.findOne({ where: { id: id } })
+    if (stock_in < parseInt(equip.dataValues.stock_out)) {
+      res.json({ response: "FAILED", result: "please input stock_in more than stock_out." });
+      return
+    }
     /*แก้ไข checklists*/
-    const result = await checklists.update({
-      name: name
+    const result = await lineupfood_equipments.update({
+      name: name,
+      stock_in: stock_in
     }, {
       where: {
         id: id
@@ -111,7 +128,7 @@ exports.editChecklist = async (req, res) => {
 /* Delete Checklist (Update is_delete) */
 exports.deleteChecklist = async (req, res) => {
   try {
-    const result = await checklists.update({
+    const result = await lineupfood_equipments.update({
       is_delete: 1
     }, {
       where: {

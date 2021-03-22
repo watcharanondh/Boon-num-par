@@ -1,4 +1,4 @@
-const { customers, districts, quotations, teams, quotation_checklists, quotation_descriptions, quotation_images } = require("../../models");
+const { customers, districts, quotations, teams, lineupfood_equipments, quotation_checklists, quotation_descriptions, quotation_images, quotation_lineupfood_equiptment_checklists } = require("../../models");
 const { Op, Sequelize } = require("sequelize");
 const { find_between_date } = require("../../helper/finddate");
 
@@ -141,6 +141,7 @@ exports.manageLineUpFoodTeamTask = async (req, res) => {
           }
           data.dataValues = {
             ...data.dataValues,
+            customer_name: data.dataValues.customer.name ? data.dataValues.customer.name : '-',
             address: `${data.dataValues.customer.dataValues.address} ต.${data.dataValues.customer.dataValues.district.dataValues.district} อ.${data.dataValues.customer.dataValues.district.dataValues.amphoe} ${data.dataValues.customer.dataValues.district.dataValues.province} ${data.dataValues.customer.dataValues.district.dataValues.zipcode}`,
           }
           delete data.dataValues.event_team;
@@ -153,7 +154,8 @@ exports.manageLineUpFoodTeamTask = async (req, res) => {
     /* -------------- BEFORE -------------- */
     /* Checklist before */
     var isCheckAllBefore = []
-    const checklists_before = await quotation_checklists.findAll({
+    /* check อาหาร */
+    const food_checklists_before = await quotation_checklists.findAll({
       attributes: ['id', 'name', 'description', 'status', ['is_editable', 'isEdit']],
       where: {
         quotation_id: headInfo[0].dataValues.id,
@@ -166,6 +168,30 @@ exports.manageLineUpFoodTeamTask = async (req, res) => {
         x.map(o => {
           isCheckAllBefore.push(parseInt(o.dataValues.status))
           o.dataValues.isEdit = parseInt(o.dataValues.isEdit) == 1 ? true : false
+        })
+      }
+      return x
+    })
+    /* check อุปกรณ์ */
+    const equip_checklists_before = await quotation_lineupfood_equiptment_checklists.findAll({
+      attributes: ['id', 'description', 'amount', 'status'],
+      include: [
+        {
+          model: lineupfood_equipments,
+          attributes: ['name']
+        }
+      ],
+      where: {
+        quotation_id: headInfo[0].dataValues.id,
+        is_active: 1,
+        is_delete: 0
+      }
+    }).then(x => {
+      if (x && x.length > 0) {
+        x.map(o => {
+          isCheckAllBefore.push(parseInt(o.dataValues.status))
+          o.dataValues = { ...o.dataValues, ...o.dataValues.lineupfood_equipment.dataValues }
+          delete o.dataValues.lineupfood_equipment
         })
       }
       return x
@@ -244,7 +270,8 @@ exports.manageLineUpFoodTeamTask = async (req, res) => {
     /* -------------- AFTER -------------- */
     /* Checklist after */
     var isCheckAllAfter = []
-    const checklists_after = await quotation_checklists.findAll({
+    /* check อุปกรณ์ */
+    const food_checklists_after = await quotation_checklists.findAll({
       attributes: ['id', 'name', 'description', ['returned_status', 'status'], ['is_editable', 'isEdit']],
       where: {
         quotation_id: headInfo[0].dataValues.id,
@@ -261,7 +288,31 @@ exports.manageLineUpFoodTeamTask = async (req, res) => {
       }
       return x
     })
-
+    /* check อุปกรณ์ */
+    const equip_checklists_after = await quotation_lineupfood_equiptment_checklists.findAll({
+      attributes: ['id', 'description', 'amount', ['returned_status', 'status']],
+      include: [
+        {
+          model: lineupfood_equipments,
+          attributes: ['name']
+        }
+      ],
+      where: {
+        quotation_id: headInfo[0].dataValues.id,
+        is_active: 1,
+        is_delete: 0
+      }
+    }).then(x => {
+      if (x && x.length > 0) {
+        x.map(o => {
+          isCheckAllAfter.push(parseInt(o.dataValues.status))
+          o.dataValues = { ...o.dataValues, ...o.dataValues.lineupfood_equipment.dataValues }
+          delete o.dataValues.lineupfood_equipment
+        })
+      }
+      return x
+    })
+    console.log(equip_checklists_after);
     /* description after */
     const description_after = await quotation_descriptions.findOne({
       attributes: ['description'],
@@ -290,9 +341,12 @@ exports.manageLineUpFoodTeamTask = async (req, res) => {
       result: {
         info: headInfo[0],
         before: {
-          checklist_count: checklists_before ? checklists_before.length : 0,
+          checklist_count: (food_checklists_before ? food_checklists_before.length : 0) + (equip_checklists_before ? equip_checklists_before.length : 0),
           checklist_check_all: isCheckAllBefore.includes(0) || isCheckAllBefore.includes(2) ? 0 : 1,
-          checklists: checklists_before,
+          checklists: {
+            foods: food_checklists_before,
+            equiptments: equip_checklists_before
+          },
           description: description_before ? description_before.dataValues.description : '',
           img: img_before
         },
@@ -304,9 +358,12 @@ exports.manageLineUpFoodTeamTask = async (req, res) => {
           img: img_between
         },
         after: {
-          checklist_count: checklists_after ? checklists_after.length : 0,
+          checklist_count: (food_checklists_after ? food_checklists_after.length : 0) + (equip_checklists_after ? equip_checklists_after.length : 0),
           checklist_check_all: isCheckAllAfter.includes(0) || isCheckAllAfter.includes(2) ? 0 : 1,
-          checklists: checklists_after,
+          checklists: {
+            foods: food_checklists_after,
+            equiptments: equip_checklists_after
+          },
           description: description_after ? description_after.dataValues.description : '',
           img: img_after
         },
@@ -526,6 +583,236 @@ exports.updateChecklistLineUpFoodReturn = async (req, res) => {
     res.json({ response: "FAILED", result: error });
   }
 };
+
+/* List Equiptment to Create LineUpEquipment*/
+exports.listEquipmenttoCreate = async (req, res) => {
+  try {
+    const result = await lineupfood_equipments.findAll({
+      attributes: ['id', 'name', [Sequelize.literal("`stock_in`- `stock_out`"), 'amount'], 'description'],
+      where: {
+        is_active: 1,
+        is_delete: 0
+      }
+    })
+    if (result != '' && result !== null) {
+      res.json({
+        response: "OK",
+        result: result,
+      });
+    } else {
+      res.json({ response: "FAILED", result: "Not Found." });
+    }
+  } catch (error) {
+    console.log(error);
+    res.json({ response: "FAILED", result: error });
+  }
+};
+/* Create Checklist for LineUpEquipment  */
+exports.createChecklistLineUpEquipment = async (req, res) => {
+  try {
+    const { quotation_code, equipments } = req.body
+    if (!equipments && equipments.length == 0) {
+      res.json({ response: "FAILED", result: "please input equipments." });
+      return
+    }
+    if (!quotation_code) {
+      res.json({ response: "FAILED", result: "Invalid quotation_code." });
+      return
+    }
+    const get_id_quotation = await quotations.findOne({ where: { quotation_code: quotation_code } })
+    const equip = equipments.map(o => {
+      lineupfood_equipments.update({ stock_out: Sequelize.literal('stock_out +' + o.amount) }, { where: { id: o.id } })
+      return { quotation_id: get_id_quotation.dataValues.id, lineupfood_equipment_id: o.id, amount: o.amount }
+    })
+    /*สร้าง checklists*/
+    const checklistsResult = await quotation_lineupfood_equiptment_checklists.bulkCreate(equip);
+    res.json({
+      response: "OK",
+      result: checklistsResult
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({ response: "FAILED", result: error });
+  }
+};
+/* List Checklist to Edit LineUpEquipment*/
+exports.listEquipChecklistToEdit = async (req, res) => {
+  try {
+    const result = await quotation_checklists.findAll({
+      attributes: ['id', 'name', 'description'],
+      where: {
+        id: req.body.id,
+        is_active: 1,
+        is_delete: 0
+      }
+    })
+    if (result != '' && result !== null) {
+      res.json({
+        response: "OK",
+        result: result,
+      });
+    } else {
+      res.json({ response: "FAILED", result: "Not Found." });
+    }
+  } catch (error) {
+    console.log(error);
+    res.json({ response: "FAILED", result: error });
+  }
+};
+/* Edit Checklist of LineUpEquipment */
+exports.editChecklistLineUpEquipment = async (req, res) => {
+  try {
+    const { id, name } = req.body;
+    if (!name) {
+      res.json({ response: "FAILED", result: "please enter name." });
+      return
+    }
+    if (!id) {
+      res.json({ response: "FAILED", result: "checklist is not found." });
+      return
+    }
+    const is_check_editable = await quotation_checklists.findOne({ attributes: ['is_editable'], where: { id: id } })
+    if (!is_check_editable || parseInt(is_check_editable.dataValues.is_editable) === 0) {
+      res.json({
+        response: "FAILED",
+        result: "this checklist cannot edit.",
+      });
+      return
+    }
+    /*แก้ไข checklists*/
+    const result = await quotation_checklists.update({
+      name: name
+    }, {
+      where: {
+        id: id,
+        is_active: 1,
+        is_delete: 0
+      }
+    });
+    res.json({
+      response: "OK",
+      result
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({ response: "FAILED", result: error });
+  }
+};
+/* Delete Checklist of LineUpEquipment (Update is_delete) */
+exports.deleteChecklistLineUpEquipment = async (req, res) => {
+  try {
+    const is_check_editable = await quotation_checklists.findOne({ attributes: ['is_editable'], where: { id: req.body.id } })
+    if (!is_check_editable || parseInt(is_check_editable.dataValues.is_editable) === 0) {
+      res.json({
+        response: "FAILED",
+        result: "this checklist cannot delete.",
+      });
+      return
+    }
+    const result = await quotation_checklists.update({
+      is_delete: 1
+    }, {
+      where: {
+        id: req.body.id
+      }
+    });
+    if (result != 0) {
+      res.json({
+        response: "OK",
+        result: "Checklist: " + req.body.id + " Deleted. Result: " + result,
+      });
+    } else {
+      res.json({
+        response: "FAILED",
+        result: "Checklist: " + req.body.id + " Not Found. Result: " + result,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.json({ response: "FAILED", result: error });
+  }
+};
+/* Update Checklist of LineUpEquipment */
+exports.updateChecklistLineUpEquipment = async (req, res) => {
+  try {
+    const dataBody = req.body;
+    var result = "loop updated"
+    if (Array.isArray(dataBody)) {
+      dataBody.map(async x => {
+        /*update many checklists*/
+        const o = await quotation_checklists.update({
+          status: x.status
+        }, {
+          where: {
+            id: x.id,
+            is_active: 1,
+            is_delete: 0
+          }
+        });
+        result = o
+      })
+    } else {
+      /*update one checklists*/
+      result = await quotation_checklists.update({
+        status: dataBody.status
+      }, {
+        where: {
+          id: dataBody.id,
+          is_active: 1,
+          is_delete: 0
+        }
+      });
+    }
+    res.json({
+      response: "OK",
+      result
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({ response: "FAILED", result: error });
+  }
+};
+/* Update Checklist of LineUpEquipment (Returned)*/
+exports.updateChecklistLineUpEquipmentReturn = async (req, res) => {
+  try {
+    const dataBody = req.body;
+    var result = "loop updated"
+    if (Array.isArray(dataBody)) {
+      dataBody.map(async x => {
+        /*update many checklists*/
+        const o = await quotation_checklists.update({
+          returned_status: x.status
+        }, {
+          where: {
+            id: x.id,
+            is_active: 1,
+            is_delete: 0
+          }
+        });
+        result = o
+      })
+    } else {
+      /*update one checklists*/
+      result = await quotation_checklists.update({
+        returned_status: dataBody.status
+      }, {
+        where: {
+          id: dataBody.id,
+          is_active: 1,
+          is_delete: 0
+        }
+      });
+    }
+    res.json({
+      response: "OK",
+      result
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({ response: "FAILED", result: error });
+  }
+};
+
 
 /* Update Description of LineUpFoodteam */
 exports.updateDescriptionLineUpFood = async (req, res) => {

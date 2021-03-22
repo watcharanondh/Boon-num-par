@@ -67,13 +67,18 @@ app.use(START_PART_WITH + "/bnp/teammanage", require("./routes/teamBNP/teamManag
 /*---------------------- TEAM HONG ----------------------*/
 /* Shipping Route */
 app.use(START_PART_WITH + "/hong/shipping", require("./routes/teamhong/listShipping"));
-/* Team Manangement Route */
-app.use(START_PART_WITH + "/hong/teammanage", require("./routes/teamhong/teamManagement"));
 /* LineUpFood Team Route */
 app.use(START_PART_WITH + "/hong/lineupfoodteam", require("./routes/teamhong/lineupFoodTeam"));
+/* Progresses Route */
+app.use(START_PART_WITH + "/hong/progress", require("./routes/teamhong/progresses"));
+/* Team Manangement Route */
+app.use(START_PART_WITH + "/hong/teammanage", require("./routes/teamhong/teamManagement"));
+/* CheckList Route */
+app.use(START_PART_WITH + "/hong/checklists", require("./routes/teamhong/checklists"));
 
 /*---------------------- TEAM KITCHEN ----------------------*/
-
+/* Shipping Route */
+app.use(START_PART_WITH + "/kitchen/shipping", require("./routes/teamKitchen/listShipping"));
 
 /*---------------------- DISTRICTS ----------------------*/
 /* Districts Route */

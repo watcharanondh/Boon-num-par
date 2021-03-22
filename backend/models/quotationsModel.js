@@ -130,6 +130,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "quotation_id",
     });
     quotations.hasMany(models.quotation_images, { foreignKey: "quotation_id" });
+    quotations.hasMany(models.quotation_lineupfood_equiptment_checklists, { foreignKey: "quotation_id" });
     quotations.hasMany(models.quotation_packages, {
       foreignKey: "quotation_id",
     });

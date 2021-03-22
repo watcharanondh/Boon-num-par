@@ -130,6 +130,7 @@ exports.manageTeamTask = async (req, res) => {
           }
           data.dataValues = {
             ...data.dataValues,
+            customer_name: data.dataValues.customer.name ? data.dataValues.customer.name : '-',
             address: `${data.dataValues.customer.dataValues.address} ต.${data.dataValues.customer.dataValues.district.dataValues.district} อ.${data.dataValues.customer.dataValues.district.dataValues.amphoe} ${data.dataValues.customer.dataValues.district.dataValues.province} ${data.dataValues.customer.dataValues.district.dataValues.zipcode}`,
           }
           delete data.dataValues.area_viewing_team;

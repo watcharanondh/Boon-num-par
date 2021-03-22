@@ -5,7 +5,6 @@ const { find_between_date } = require("../../helper/finddate");
 /* List All Shipping */
 exports.listAllShipping = async (req, res) => {
   try {
-    let count_total = 0;
     const { startdate, enddate } = req.body
     const where = find_between_date(startdate, enddate)
 
@@ -13,7 +12,7 @@ exports.listAllShipping = async (req, res) => {
       attributes: ["quotation_code",
         [Sequelize.fn("date_format", Sequelize.col("`quotations`.`event_date`"), "%b %d, %Y"), "event_date"],
         [Sequelize.fn("date_format", Sequelize.col("`quotations`.`event_date`"), "%h:%i %p"), "event_date_datetime"],
-        [Sequelize.fn("date_format", Sequelize.col("`quotations`.`updated_at`"), "%d.%m.%Y"), "update"],
+        [Sequelize.literal(`(quotations.amount_savory_food + quotations.amount_sweet_food + quotations.amount_drink)`), "count_foods"],
       ],
       include: [
         {
@@ -25,37 +24,7 @@ exports.listAllShipping = async (req, res) => {
               attributes: ["title"],
             },
           ],
-        },
-        {
-          model: quotation_drivers, as: "lineup_food_driver",
-          attributes: ["id"],
-          include: [
-            {
-              model: users,
-              attributes: ['id'],
-              include: [
-                {
-                  model: user_details,
-                  attributes: ['name']
-                }
-              ]
-            }
-          ],
-          where: {
-            driver_type: 2,
-            is_active: 1,
-            is_delete: 0
-
-          },
-          required: false
-        },
-        {
-          model: teams, as: "lineup_food_team",
-          where: {
-            team_type: 1
-          },
-          required: false
-        },
+        }
       ],
       where: {
         quotation_status_id: 1,
@@ -70,21 +39,17 @@ exports.listAllShipping = async (req, res) => {
           /* ชื่อลูกค้า */
           data.dataValues.customer_name = data.dataValues.customer.name
           data.dataValues.customer_tax_invoices = data.dataValues.customer.customer_tax_invoices.length > 0 ? data.dataValues.customer.customer_tax_invoices[0].title : data.dataValues.customer.name;
+          /* รายการอาหาร */
+          data.dataValues.count_foods = data.dataValues.count_foods + " รายการ"
 
-          /* ชื่อทีม */
-          data.dataValues.lineup_food_team = data.dataValues.lineup_food_team != null ? data.dataValues.lineup_food_team.name : '-'
-
-          /* คนขับรถ */
-          data.dataValues.lineup_food_driver = data.dataValues.lineup_food_driver && data.dataValues.lineup_food_driver.length > 0 ? data.dataValues.lineup_food_driver[0].dataValues.user.dataValues.user_detail.name : '-'
           delete data.dataValues.customer;
-          count_total++;
         });
         return quotation_data;
       });
     if (result != '' && result !== null) {
       res.json({
         response: "OK",
-        total: count_total + " รายการ",
+        total: result.length + " รายการ",
         result: result,
       });
     } else {
