@@ -27,9 +27,10 @@ exports.listAllSetupTeam = async (req, res) => {
           model: teams,
           as: 'event_team',
           attributes: ['team_code', ['name', 'team_name']],
-          where:{
-            team_type:0
-          }
+          where: {
+            team_type: 0
+          },
+          required: false
         },
         {
           model: quotation_checklists,
@@ -37,7 +38,8 @@ exports.listAllSetupTeam = async (req, res) => {
           where: {
             is_active: 1,
             is_delete: 0
-          }
+          },
+          required: false
         }
       ],
       where: {

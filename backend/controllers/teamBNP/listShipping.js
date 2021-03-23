@@ -32,7 +32,8 @@ exports.listAllShipping = async (req, res) => {
           model: teams, as: 'area_viewing_team',
           where: {
             team_type:0
-          }
+          },
+          // required: false
         },
         {
           model: quotation_drivers, as: 'area_viewing_driver',
@@ -60,7 +61,8 @@ exports.listAllShipping = async (req, res) => {
           model: teams, as: 'event_team',
           where:{
             team_type:0
-          }
+          },
+          // required: false
         },
         {
           model: quotation_drivers, as: 'event_driver',

@@ -25,20 +25,22 @@ router.post("/updatechecklistlineupfood", authorize, lineupFoodTeamContrllers.up
 router.post("/updatereturnchecklistlineupfood", authorize, lineupFoodTeamContrllers.updateChecklistLineUpFoodReturn);
 
 /* -------- EQUIPMENTS -------- */
-/* list all Equipment to Edit LineUpFoodTeam */
+/* list all Equipment to Edit LineUpEquipment */
 router.get("/listallequip", authorize, lineupFoodTeamContrllers.listEquipmenttoCreate);
-/* Create Checklist for LineUpFoodTeam */
-router.post("/createchecklistlineupequiptment", authorize, lineupFoodTeamContrllers.createChecklistLineUpEquipment);
-/* list Checklist to Edit LineUpFoodTeam */
+/* list Checklist to Edit LineUpEquipment */
+router.post("/listallequiptmenttocreate", authorize, lineupFoodTeamContrllers.listEquipChecklistToEditAndCreate);
+/* Update Checklist of LineUpEquipment */
+router.post("/updatechecklistlineupequiptment", authorize, lineupFoodTeamContrllers.createAndupdateChecklistLineUpEquipment);
+/* list Checklist to Edit LineUpEquipment */
 router.post("/listchecklistlineupequiptment", authorize, lineupFoodTeamContrllers.listEquipChecklistToEdit);
-/* Edit Checklist of LineUpFoodTeam */
+/* Edit Checklist of LineUpEquipment */
 router.post("/editchecklistlineupequiptment", authorize, lineupFoodTeamContrllers.editChecklistLineUpEquipment);
-/* Delete Checklist of LineUpFoodTeam */
-router.post("/delchecklistlineupequiptment", authorize, lineupFoodTeamContrllers.deleteChecklistLineUpEquipment);
-/* Update Checklist of LineUpFoodTeam */
-router.post("/updatechecklistlineupequiptment", authorize, lineupFoodTeamContrllers.updateChecklistLineUpEquipment);
-/* Update Checklist of LineUpFoodTeam (Returned) */
+/* Update Checklist of LineUpEquipment (Returned) */
 router.post("/updatereturnchecklistlineupequiptment", authorize, lineupFoodTeamContrllers.updateChecklistLineUpEquipmentReturn);
+/* Update Checklist of LineUpEquipment */
+router.post("/updatestatuschecklistlineupequiptment", authorize, lineupFoodTeamContrllers.updateChecklistLineUpEquipment);
+/* Delete Checklist of LineUpEquipment */
+router.post("/delchecklistlineupequiptment", authorize, lineupFoodTeamContrllers.deleteChecklistLineUpEquipment);
 
 /* Update Description of LineUpFoodTeam */
 router.post("/updatedestlineupfood", authorize, lineupFoodTeamContrllers.updateDescriptionLineUpFood);

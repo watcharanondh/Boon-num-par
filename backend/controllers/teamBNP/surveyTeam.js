@@ -28,10 +28,10 @@ exports.listAllSurveyTeam = async (req, res) => {
           model: teams,
           as: 'area_viewing_team',
           attributes: ['team_code', ['name', 'team_name']],
-          where:{
-            team_type:0
-          }
-
+          where: {
+            team_type: 0
+          },
+          required: false
         },
         {
           model: quotation_checklists,
@@ -40,7 +40,8 @@ exports.listAllSurveyTeam = async (req, res) => {
             checklist_type: 0,
             is_active: 1,
             is_delete: 0
-          }
+          },
+          required: false
         }
       ],
       where: {

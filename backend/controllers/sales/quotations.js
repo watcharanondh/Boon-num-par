@@ -177,7 +177,7 @@ exports.comfirmQuotationStatus = async (req, res) => {
         if (datas && datas[0].dataValues.quotation_food_items.length > 0) {
           const get_food_items = datas[0].dataValues.quotation_food_items
           const foodnames = get_food_items.map(data => {
-            return { "quotation_id": get_id_quotation.dataValues.id, "name": `${data.dataValues.food_item.dataValues.name} (${data.dataValues.food_item.dataValues.amount_person})`, "description": '', "status": 0, "returned_status": 0, "checklist_type": 4, "is_editable": 0 }
+            return { "quotation_id": get_id_quotation.dataValues.id, "name": `${data.dataValues.food_item.dataValues.name} (${data.dataValues.food_item.dataValues.amount_person} หัว)`, "description": '', "status": 0, "returned_status": 0, "checklist_type": 4, "is_editable": 0 }
           })
           if (foodnames && foodnames.length > 0) {
             console.log(foodnames);
