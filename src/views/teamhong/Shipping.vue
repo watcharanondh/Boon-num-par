@@ -104,8 +104,8 @@
                 <v-toolbar-title><span class="header-table-title">รายชื่องาน</span></v-toolbar-title>
                 <v-toolbar-title><span class="order">{{ total }}</span></v-toolbar-title>
                 <v-spacer></v-spacer>
-                <v-divider class="mx-4" inset vertical></v-divider>
-                <!-- <v-text-field
+               <!-- <v-divider class="mx-4" inset vertical></v-divider>
+                 <v-text-field
                   v-model="search"
                   prepend-inner-icon="mdi-magnify"
                   label="ค้นหาช่วงเวลาที่ต้องการ"
@@ -126,12 +126,12 @@
                   <span class="quotation-font-color">{{item.event_date_datetime}}</span>
                 </td>
                 <td>
-                  {{ item.event_team }}<br />
-                  <span class="quotation-font-color">{{item.event_driver}}</span>
+                  {{ item.lineup_food_team }}<br />
+                  <span class="quotation-font-color">{{item.lineup_food_driver}}</span>
                 </td>
                 <td>
                   <br />
-                  <ModalUpdateManageAppointment :quotation_code="item.quotation_code" /><br />
+                  <ModalUpdateManagefood :quotation_code="item.quotation_code" /><br />
                 </td>
                 <td>
                   <v-row>
@@ -165,15 +165,15 @@
 
 <script>
 import api from "@/services/api";
-import ModalUpdateManageAppointment from "@/components/dialog/teamhong/ModalUpdateManageAppointment.vue";
+import ModalUpdateManagefood from "@/components/dialog/teamhong/ModalUpdateManagefood.vue";
 
 export default {
   name: "Shipping",
   components: {
-    ModalUpdateManageAppointment
+    ModalUpdateManagefood
   },
   mounted() {
-    this.loadEventteaminformation();
+    this.loadShipping();
     this.$store.dispatch({
       type: "inputRoutepath",
       RT: this.$route.path
@@ -202,16 +202,17 @@ export default {
   },
 
   methods: {
-    async loadEventteaminformation() {
+    async loadShipping() {
       let Datemoment ={ startdate:"" , enddate:"" }
-      let result = await api.getEventteaminformation(Datemoment);
+      let result = await api.Listshippinglineupfoods(Datemoment);
+      //console.log('loadShipping',result.data.result);
       this.table_Teaminglist_item = result.data.result;
       this.total = result.data.total;
     },
 
   async BetweenDate(){
       let Datemoment ={ startdate:this.dates[0] , enddate:this.dates[1] }
-      let result = await api.Findmoment(Datemoment);
+      let result = await api.Findmomentlineupfood(Datemoment);
       //console.log('ช่วงเวลา',result);
       if(result.data.response=="OK"){
       this.table_Teaminglist_item = [];
@@ -231,7 +232,7 @@ export default {
         type: "setBNPDATA",
         databnp: item.quotation_code
       });
-      await this.$router.push({ name: "menuMonitorteaminformation" });
+      await this.$router.push({ name: "menuMonitorTeaminformationfood" });
     },
   }
 };

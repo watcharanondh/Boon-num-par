@@ -103,8 +103,8 @@
         <v-card>
           <v-data-table
             :search="search"
-            :headers="headers_table_placearrangement"
-            :items="table_placearrangement_item"
+            :headers="headers_table_lineupfood"
+            :items="table_lineupfood_item"
             class="elevation-1"
           >
             <!-- table top section -->
@@ -176,9 +176,9 @@
 import api from "@/services/api";
 
 export default {
-  name: "Placearrangement",
+  name: "Lineupfood",
   mounted() {
-    this.loadPlacearrangement();
+    this.loadLineupfood();
     this.$store.dispatch({
       type: "inputRoutepath",
       RT: this.$route.path
@@ -189,8 +189,8 @@ export default {
     menu: false,
     search: "",
     total: null,
-    table_placearrangement_item: [],
-    headers_table_placearrangement: [
+    table_lineupfood_item: [],
+    headers_table_lineupfood: [
       { text: "รหัสทีม",value: "team_code", sortable: false, align: "start"},
       { text: "ชื่อทีม",value: "team_name",sortable: false, align: "start"},
       { text: "สถานที่จัดงาน", value: "address", sortable: false, align: "start" },
@@ -208,20 +208,21 @@ export default {
   },
 
   methods: {
-    async loadPlacearrangement() {
+    async loadLineupfood() {
       let Datemoment ={ startdate:"" , enddate:"" }
-      let result = await api.TeamSetup(Datemoment);
-      this.table_placearrangement_item = result.data.result;
+      let result = await api.getListAllLineupfood(Datemoment);
+      //console.log('M',result);
+      this.table_lineupfood_item = result.data.result;
       this.total = result.data.total;
     },
 
     async BetweenDate(){
       let Datemoment ={ startdate:this.dates[0] , enddate:this.dates[1] }
-      let result = await api.TeamSetup(Datemoment);
+      let result = await api.getListAllLineupfood(Datemoment);
       //console.log('ช่วงเวลา',result);
       if(result.data.response=="OK"){
-      this.table_placearrangement_item = [];
-      this.table_placearrangement_item = result.data.result;
+      this.table_lineupfood_item = [];
+      this.table_lineupfood_item = result.data.result;
       this.total = result.data.total;
       }else{
              this.$swal.fire(
@@ -238,7 +239,7 @@ export default {
         type: "setBNPDATA",
         bnpdata: item.quotation_code
       });
-      await this.$router.push({ name: "menuJobPlacearrangement" });
+      await this.$router.push({ name: "menuJobLineupfood" });
     },
   }
 };

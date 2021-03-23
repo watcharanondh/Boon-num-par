@@ -4,7 +4,7 @@
       <v-row>
         <v-card flat color="#E5E5E5">
           <div class="header-title">
-            รายชื่อทีมออกงาน
+            รายการทีมออกงาน
           </div>
         </v-card>
       </v-row>
@@ -13,24 +13,38 @@
       <v-row> </v-row>
     </v-col>
       <v-col>
-         <v-row justify="end">
+        <v-row justify="end">
         <v-btn
-          color="#29CC97"
-          @click="$router.push({ name: 'menuCreateManageteamhong' })"
+          color="#C4C4C4"
+          @click="$router.push({ name: 'menuManageteamhong' })"
           rounded
         >
-          <span class="white--text">สร้างทีมงาน</span></v-btn>
-        </v-row>
+          <span class="white--text">ย้อนกลับ</span></v-btn>
+            </v-row>
       </v-col>
     <v-col>
       <v-row> </v-row>
     </v-col>
     <v-row>
       <v-col lg="12" md="12" sm="12" cols="12">
-        <!-- รายชื่อที่ออกงาน -->
+        <!-- ข้อมูลพื้นฐาน -->
         <v-card>
+          <v-col lg="3" md="3" sm="12" cols="12">
+            <div class="header-title">
+              ข้อมูลพื้นฐาน
+            </div>
+            <br/>
+            <div class="name_team">ชื่อทีม</div>
+            <v-row class="no-gutters">
+              <v-text-field
+                v-model="teamname"
+                disabled
+              ></v-text-field>
+            </v-row>
+          </v-col>
+
+          <!-- ข้อมูลสมาชิกทีม -->
           <v-data-table
-            :search="search"
             :headers="headers_table_teams"
             :items="table_teams"
             :items-per-page="10"
@@ -40,8 +54,7 @@
             <!-- table top section -->
             <template v-slot:top>
               <v-toolbar flat>
-                <v-toolbar-title><span class="header-table-title">รายชื่อที่ออกงาน</span></v-toolbar-title>
-                <v-toolbar-title><span class="order">{{ total }}</span></v-toolbar-title>
+                <v-toolbar-title><span class="header-table-title">ข้อมูลสมาชิกทีม</span></v-toolbar-title>
                 <v-spacer></v-spacer>
                 <!-- <v-divider class="mx-4" inset vertical></v-divider>
                 <v-text-field
@@ -92,34 +105,9 @@
             </template>
             <template v-slot:item="{ item }">
               <tr>
-                <td>{{ item.team_code }}</td>
                 <td>{{ item.name }}</td>
-                <td>{{ item.team_users}}</td>
-                <td>
-                  <v-row>
-                    <v-btn
-                      @click="Monitorteam(item)"
-                      fab
-                      icon
-                      outlined
-                      small
-                    >
-                      <v-icon>visibility</v-icon>
-                    </v-btn>
-                    <v-btn @click="Editteam(item)" fab icon outlined small>
-                      <v-icon>edit</v-icon>
-                    </v-btn>
-                    <v-btn
-                      @click="DeleteTeam(item)"
-                      fab
-                      icon
-                      outlined
-                      small
-                    >
-                      <v-icon>delete</v-icon>
-                    </v-btn>
-                  </v-row>
-                </td>
+                <td>{{ item.description }}</td>
+                <td>{{ item.telephone_number }}</td>
                 <td>
                   <!-- <v-btn icon>
                     <v-icon>mdi-dots-vertical</v-icon>
@@ -136,75 +124,41 @@
 
 <script>
 import api from "@/services/api";
+
 export default {
-  name: "Customizethesystem",
+  name: "Monitorteamhonglists",
   mounted() {
-    this.loadTeams();
+    this.loadTeamInfo();
     this.$store.dispatch({
       type: "inputRoutepath",
-      RT: this.$route.path
+      RT: this.$route.path,
     });
-
   },
 
   data: () => ({
-    search: "",
-    total: "",
+    teamname:"",
     table_teams: [],
     headers_table_teams: [
-      { text: "รหัสทีม", value: "team_code",sortable: true,  align: "start",color: "black"},
-      { text: "ชื่อทีม", value: "name", sortable: false, align: "start" },
-      { text: "สมาชิกทีม", value: "team_users", sortable: false,align: "start"},
-      { text: "", value: "", sortable: false, align: "start" },
-      { text: "", value: "", sortable: false, align: "start" }
-    ]
+      { text: "ชื่อ", value: "name", sortable: false, align: "start"},
+      { text: "ตำแหน่ง", value: "description", sortable: false, align: "start" },
+      { text: "เบอร์โทรศัพท์", value: "telephone_number", sortable: false, align: "start" },
+    ],
+
   }),
 
   methods: {
-    async loadTeams() {
-      let result = await api.getListallTeamhong();
-      this.table_teams = result.data.result;
-      this.total = result.data.total;
+    async loadTeamInfo() {
+      let senteamcodeID ={team_code: this.$store.getters["BNP_DATA"].databnp }
+      let result = await api.getListTeamhongtoEdit(senteamcodeID);
+      if (!result.data.result.length) {
+          window.location.href = `${process.env.VUE_APP_SUB_PATH}/teamhong/Monitorteamhonglists`;
+          //this.$router.push({name:''})
+          return;
+      }
+      this.teamname = result.data.result[0].name;
+      this.table_teams = result.data.result[0].team_users;
     },
-
-    async Monitorteam(item) {
-      await this.$store.dispatch({
-        type: "setBNPDATA",
-        databnp: item.team_code
-      });
-      await this.$router.push({ name: "menuMonitorteamhonglists" });
-    },
-
-    async Editteam(item) {
-      await this.$store.dispatch({
-        type: "setBNPDATA",
-        databnp: item.team_code
-      });
-      await this.$router.push({ name: "menuEditManageteamhong" });
-    },
-
-    async DeleteTeam(item) {
-      this.$swal
-        .fire({
-          title: `คุณต้องการลบทีมนี้ใช่หรือไม่ ?`,
-          showDenyButton: true,
-          confirmButtonText: `ยืนยัน`,
-          denyButtonText: `ยกเลิก`
-        })
-        .then(async result => {
-          if (result.isConfirmed) {
-            let delTeam = { team_code: item.team_code };
-            let resultdel = await api.deleteTeamhong(delTeam);
-            if (resultdel.data.response == "OK") {
-              this.$swal.fire("ยืนยันการลบเรียบร้อย", "", "success");
-              this.loadTeams();
-            }
-          } else if (result.isDenied) {
-            this.$swal.fire("ยกเลิกการลบ", "", "error");
-          }
-        });
-    }
-  }
+  },
 };
 </script>
 

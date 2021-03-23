@@ -490,7 +490,7 @@ export default {
       return (this.RouterPath = 7);
     }else if(
       this.RouterPath == "/teamhong/Manageteamhong"||
-      this.RouterPath == "/teamhong/Customizecheckhong"
+      this.RouterPath == "/teamhong/Customizecheckteamhong"
     ){
       return (this.RouterPath = 8);
     } else {
@@ -521,7 +521,7 @@ export default {
       ],
       menusteamhongCustomizethesyste: [
         ["ปรับแต่งทีม", "/teamhong/Manageteamhong"],
-        ["ปรับแต่งการตรวจสอบ", "/teamhong/Customizecheck"],
+        ["ปรับแต่งการตรวจสอบ", "/teamhong/Customizecheckteamhong"],
       ],
       menusteambnpCustomizethesyste: [
         ["ปรับแต่งทีม", "/teambnp/Manageteamlists"],

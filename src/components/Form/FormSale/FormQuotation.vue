@@ -515,10 +515,7 @@
               <v-row>
                 <v-col lg="12" md="12" sm="12" cols="12">
                   <v-row class="no-gutters">
-                    <span class="quotation-package">แพ็กเกจที่ท่านเลือก</span
-                    ><span class="quotation-package-red"
-                      >(เลือกได้แค่แพ็กเกจเดียว)</span
-                    >
+                    <span class="quotation-package">แพ็กเกจที่ท่านเลือก</span><span class="quotation-package-red">(เลือกได้แค่แพ็กเกจเดียว)</span>
                   </v-row>
                 </v-col>
               </v-row>
@@ -573,17 +570,18 @@
                 <v-col lg="12" md="12" sm="12" cols="12">
                   <div>
                     อาหารคาว
-                    <span class="package"
-                      >เลือก {{ check_select_savory_food }} เหลือ
-                      {{ package_amount_savory_food }}</span
-                    >
+                    <span class="package">เลือก {{ check_select_savory_food }} เหลือ
+                      {{ package_amount_savory_food }}</span>
                   </div>
                   <v-row class="no-gutters">
                     <v-combobox
                       v-model="select_savory_food"
                       :items="savory_food_items"
                       :search-input.sync="search_savory_food"
+                      item-text="name"
+                      item-value="food_item_code"
                       class="combo"
+                      return-object
                       hide-selected
                       label="เลือกอาหารคาว"
                       multiple
@@ -614,17 +612,17 @@
                 <v-col lg="12" md="12" sm="12" cols="12">
                   <div>
                     อาหารหวาน
-                    <span class="package"
-                      >เลือก {{ check_select_sweet_food }} เหลือ
-                      {{ package_amount_sweet_food }}</span
-                    >
+                    <span class="package">เลือก {{ check_select_sweet_food }} เหลือ{{ package_amount_sweet_food }}</span>
                   </div>
                   <v-row class="no-gutters">
                     <v-combobox
                       v-model="select_sweet_food"
                       :items="sweet_food_items"
                       :search-input.sync="search_sweet_food"
+                      item-text="name"
+                      item-value="food_item_code"
                       class="combo"
+                      return-object
                       hide-selected
                       label="เลือกอาหารคาว"
                       multiple
@@ -664,6 +662,9 @@
                       v-model="select_drink"
                       :items="drink_items"
                       :search-input.sync="search_drink"
+                      item-text="name"
+                      item-value="food_item_code"
+                      return-object
                       class="combo"
                       hide-selected
                       label="เลือกเครื่องดืม"
@@ -847,6 +848,7 @@ export default {
     await this.loadDataCustomer();
     await this.loadDataProvince();
     await this.loadDataPackage();
+    await this.loadDataFoodItems();
     await this.loadDataPromotion();
     await this.$store.dispatch({
       type: "inputRoutepath",
@@ -906,84 +908,32 @@ export default {
     select_savory_food: [],
     select_sweet_food: [],
     select_drink: [],
-    savory_food_items: [
-      "ขนมจีนน้ำเงี้ยว",
-      "ยำวุ้นเส้น",
-      "หมูไข่พะโล้",
-      "ลาบหมู",
-      "แกงอ่อมไก่",
-      "แกงเขียวหวานไก่",
-      "แกงจืดหน่อไม้ไก่",
-      "ยำถั่วพู",
-      "ต้มข่าไก่",
-      "ต้มยำกุ้ง"
-    ],
-    sweet_food_items: [
-      "กล้วยเชื่อม",
-      "วุ้นกะทิ",
-      "บัวลอยไข่หวาน",
-      "ฟักทองแกงบวด",
-      "สังขยา",
-      "สาคูเปียกมะพร้าวอ่อน",
-      "ถั่วกวน",
-      "ขนมโค",
-      "ขนมหยกมณี",
-      "ถั่วเขียวต้มน้ำตาล"
-    ],
-    drink_items: [
-      "กาแฟ",
-      "น้ำทับทิม",
-      "น้ำแตงโม",
-      "โอวัลติน",
-      "น้ําโค้ก",
-      "ชาเย็น",
-      "นํ้าส้ม",
-      "ชาเขียว",
-      "นํ้าใบบัวบก",
-      "น้ำอัญชันมะนาว"
-    ],
+
+    savory_food_items: [],
+    sweet_food_items: [],
+    drink_items: [],
+
     search_savory_food: null,
     search_sweet_food: null,
     search_drink: null,
+
+    alldatafood:[],
+
     check_select_savory_food: 0,
     check_select_sweet_food: 0,
     check_select_drink: 0,
 
     package_data_items: [],
     headers_package_data: [
-      {
-        text: "",
-        value: "name",
-        sortable: false,
-        align: "start",
-        color: "black"
-      },
-      {
-        text: "",
-        value: "food_des",
-        sortable: false,
-        align: "start",
-        color: "black"
-      },
+      { text: "", value:"name", sortable: false, align: "start",color: "black"},
+      { text: "", value: "food_des", sortable: false,align: "start",color: "black"},
       { text: "", value: "", sortable: false, align: "start", color: "black" }
     ],
 
     package_selected_items: [],
     headers_package_selected_data: [
-      {
-        text: "",
-        value: "name",
-        sortable: false,
-        align: "start",
-        color: "black"
-      },
-      {
-        text: "",
-        value: "food_des",
-        sortable: false,
-        align: "start",
-        color: "black"
-      },
+      { text: "",value: "name",sortable: false,align: "start",color: "black"},
+      { text: "",value: "food_des",sortable: false,align: "start",color: "black"},
       { text: "", value: "", sortable: false, align: "start", color: "black" }
     ],
 
@@ -995,25 +945,13 @@ export default {
 
     promotion_table_items: [],
     headers_promotion_table: [
-      {
-        text: "",
-        value: "name",
-        sortable: false,
-        align: "start",
-        color: "black"
-      },
-      { text: "", value: "", sortable: false, align: "start", color: "black" }
+      { text: "",value: "name",sortable: false,align: "start",color: "black"},
+      { text: "", value: "", sortable: false, align: "start", color: "black"}
     ],
 
     promotion_table_selected_items: [],
     headers_promotion_selected_table: [
-      {
-        text: "",
-        value: "name",
-        sortable: false,
-        align: "start",
-        color: "black"
-      },
+      { text: "",value: "name",sortable: false,align: "start",color: "black"},
       { text: "", value: "", sortable: false, align: "start", color: "black" }
     ],
 
@@ -1119,9 +1057,7 @@ export default {
           return;
         }
 
-        this.EditQuotation_ID = this.$store.getters[
-          "Newpersonal_BNP_ID"
-        ].BNP_ID;
+        this.EditQuotation_ID = this.$store.getters["Newpersonal_BNP_ID"].BNP_ID;
         let DataEditFindCustomer = { quotation_code: this.EditQuotation_ID };
         let result = await api.getEditQuotation(DataEditFindCustomer);
         // console.log(result);
@@ -1143,18 +1079,13 @@ export default {
 
         this.Quotation_fax = result.data.result.customers_data[0].flash_number;
         this.Quotation_email = result.data.result.customers_data[0].email;
-        this.Quotation_telephone_number =
-          result.data.result.customers_data[0].telephone_number;
-        this.Quotation_mobile_phone_number =
-          result.data.result.customers_data[0].mobile_phone_number;
-        this.Quotation_event_date =
-          result.data.result.customers_data[0].event_date;
-        this.Quotation_area_viewing_date =
-          result.data.result.customers_data[0].area_viewing_date;
+        this.Quotation_telephone_number = result.data.result.customers_data[0].telephone_number;
+        this.Quotation_mobile_phone_number = result.data.result.customers_data[0].mobile_phone_number;
+        this.Quotation_event_date = result.data.result.customers_data[0].event_date;
+        this.Quotation_area_viewing_date = result.data.result.customers_data[0].area_viewing_date;
 
         this.Quotation_address = result.data.result.customers_data[0].address;
-        this.Quotation_district_id =
-          result.data.result.customers_data[0].district_id;
+        this.Quotation_district_id = result.data.result.customers_data[0].district_id;
         this.Quotation_SelectProvinces = {
           province_Name: result.data.result.customers_data[0].province,
           province_Code: result.data.result.customers_data[0].province_code
@@ -1179,29 +1110,33 @@ export default {
           district_Name: result.data.result.customers_data[0].district,
           amphoe_Code: result.data.result.customers_data[0].district_code
         });
-        this.Quotation_SelectZipcode =
-          result.data.result.customers_data[0].zipcode;
+        this.Quotation_SelectZipcode = result.data.result.customers_data[0].zipcode;
         this.Quotation_note = result.data.result.customers_data[0].note;
-        this.package_amount_savory_food =
-          result.data.result.customers_data[0].amount_savory_food;
-        this.package_amount_sweet_food =
-          result.data.result.customers_data[0].amount_sweet_food;
-        this.package_amount_drink =
-          result.data.result.customers_data[0].amount_drink;
+
+        this.package_amount_savory_food = result.data.result.customers_data[0].amount_savory_food;
+        console.log('อะไรวะ',this.package_amount_savory_food);
+        this.package_amount_sweet_food =result.data.result.customers_data[0].amount_sweet_food;
+        this.package_amount_drink =result.data.result.customers_data[0].amount_drink;
+
+        // this.alldatafood = 
+        this.select_savory_food= result.data.result.fooditems_data.savory;
+        console.log('นี่ๆ',result.data.result.fooditems_data);
+        this.select_sweet_food= result.data.result.fooditems_data.sweet;
+        this.select_drink= result.data.result.fooditems_data.drink;
 
         this.package_selected_items.push(result.data.result.packages_data[0]);
 
         this.Package_ID = result.data.result.packages_data[0].package_code;
 
-        for (let i = 0; i < this.package_amount_savory_food; i++) {
-          this.select_savory_food.push(this.savory_food_items[i]);
-        }
-        for (let i = 0; i < this.package_amount_sweet_food; i++) {
-          this.select_sweet_food.push(this.savory_food_items[i]);
-        }
-        for (let i = 0; i < this.package_amount_drink; i++) {
-          this.select_drink.push(this.savory_food_items[i]);
-        }
+        // for (let i = 0; i < this.package_amount_savory_food; i++) {
+        //   this.select_savory_food.push(this.savory_food_items[i]);
+        // }
+        // for (let i = 0; i < this.package_amount_sweet_food; i++) {
+        //   this.select_sweet_food.push(this.savory_food_items[i]);
+        // }
+        // for (let i = 0; i < this.package_amount_drink; i++) {
+        //   this.select_drink.push(this.savory_food_items[i]);
+        // }
 
         //โปรโมชั่น
         let promotion_table_selected = result.data.result.promotions_data;
@@ -1228,8 +1163,7 @@ export default {
       this.Quotation_fax = result.data.result[0].flash_number;
       this.Quotation_email = result.data.result[0].email;
       this.Quotation_telephone_number = result.data.result[0].telephone_number;
-      this.Quotation_mobile_phone_number =
-        result.data.result[0].mobile_phone_number;
+      this.Quotation_mobile_phone_number = result.data.result[0].mobile_phone_number;
       this.Quotation_address = result.data.result[0].address;
       this.Quotation_district_id = result.data.result[0].district_id;
       this.Quotation_SelectProvinces = {
@@ -1263,6 +1197,7 @@ export default {
       let result = await api.getPackageQuotation();
       this.package_data_items = result.data.result;
     },
+
     selectedPackage(item) {
       if (this.package_selected_items.length <= 0) {
         this.package_selected_items.push(item);
@@ -1286,6 +1221,13 @@ export default {
       this.select_savory_food = [];
       this.select_sweet_food = [];
       this.select_drink = [];
+    },
+
+    async loadDataFoodItems(){
+      let result = await api.getListAllFoodItems();
+      this.savory_food_items = result.data.result.savory;
+      this.sweet_food_items = result.data.result.sweet;
+      this.drink_items = result.data.result.drink;
     },
 
     async loadDataPromotion() {
@@ -1385,6 +1327,8 @@ export default {
     async submit() {
       //สร้างใบเสนอราคา
       let Quotation_type_Pid = this.Quotation_Person_type.id;
+      this.alldatafood =[ ...this.select_savory_food, ...this.select_sweet_food , ...this.select_drink];
+      this.alldatafood = this.alldatafood.map( val => { return val.food_item_code })
       if (this.CreateorEdittype == true) {
         let CreateNewQuotation = {
           customer_code: this.Quotation_customer_id,
@@ -1399,6 +1343,7 @@ export default {
           district_id: this.Quotation_district_id,
           note: this.Quotation_note,
           package_code: this.Package_ID,
+          food_item_code: this.alldatafood,
           promotion_code: this.promotion_selectd_id,
           event_date: this.Quotation_event_date,
           area_viewing_date: this.Quotation_area_viewing_date,
@@ -1427,10 +1372,13 @@ export default {
         }
       } else {
         //แก้ไขใบเสนอราคา
+        this.alldatafood =[ ...this.select_savory_food, ...this.select_sweet_food , ...this.select_drink];
+        this.alldatafood = this.alldatafood.map( val => { return val.food_item_code })
         let EditQuotation = {
           quotation_code: this.EditQuotation_ID,
           customer_code: this.Quotation_customer_id,
           package_code: this.Package_ID,
+          food_item_code: this.alldatafood,
           promotion_code: this.promotion_selectd_id,
           event_date: this.Quotation_event_date,
           area_viewing_date: this.Quotation_area_viewing_date,

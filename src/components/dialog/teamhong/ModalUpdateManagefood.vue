@@ -104,7 +104,7 @@
 <script>
 import api from "@/services/api";
 export default {
-  name: "ModalUpdateManageAppointment",
+  name: "ModalUpdateManagefood",
   props: ["quotation_code"],
   mounted() {
     this.getStatus();
@@ -119,8 +119,9 @@ export default {
   },
   methods: {
     async getStatus() {
-      let result = await api.getupdatelookandmanageappointment();
+      let result = await api.getupdateshippinglineupfood();
       this.Teams = result.data.result.teams;
+      //console.log('modal',result.data.result);
       this.SelectTeams = result.data.result.teams[0].team_code;
       this.Drivings = result.data.result.drivers;
       this.SelectDrivings = result.data.result.drivers[0].user_code;
@@ -131,9 +132,8 @@ export default {
         quotation_code: this.quotation_code,
         team_code: this.SelectTeams,
         user_code: this.SelectDrivings,
-        team_type: "2",
       };
-      let result = await api.AssignTeamtoWork(submitmanage);
+      let result = await api.AssignTeamtoWorklineupfood(submitmanage);
       console.log(result.data.response);
       if (result.data.response == "OK") {
         // this.$swal.fire("อัพเดทนัดดูสถานที่เรียบร้อย", "", "success");

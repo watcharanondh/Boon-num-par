@@ -165,30 +165,10 @@ export default {
     total: null,
     table_quotation_item: [],
     headers_table_quotation: [
-      {
-        text: "หมายเลขใบเสร็จ",
-        value: "quotation_code",
-        sortable: true,
-        align: "start"
-      },
-      {
-        text: "ชื่อใบกำกับภาษี",
-        value: "customer_tax_invoices",
-        sortable: false,
-        align: "start"
-      },
-      {
-        text: "วันเดือนปี",
-        value: "event_date",
-        sortable: true,
-        align: "start"
-      },
-      {
-        text: "สถานะ",
-        value: "quotation_status",
-        sortable: true,
-        align: "start"
-      },
+      { text: "หมายเลขใบเสร็จ", value: "quotation_code", sortable: true, align: "start"},
+      { text: "ชื่อใบกำกับภาษี", value: "customer_tax_invoices", sortable: false, align: "start"},
+      { text: "วันเดือนปี", value: "event_date", sortable: true,align: "start"},
+      { text: "สถานะ", value: "quotation_status", sortable: true, align: "start"},
       { text: "", value: "", sortable: false, align: "start" },
       { text: "", value: "", sortable: false, align: "start" },
       { text: "", value: "", sortable: false, align: "start" }

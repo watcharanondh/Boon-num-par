@@ -50,21 +50,20 @@ import Customizecheck from "@/views/teambnp/Customizecheck.vue";
 import Menuteamhong from "@/views/teamhong/Menuteamhong.vue";
 
 import Shipping from "@/views/teamhong/Shipping.vue";
-// import Menuteambnp_eapa from "@/views/teamhong/Menuteambnp_eapa.vue";
+
+
+import Lineupfood from "@/views/teamhong/Lineupfood.vue";
+import JobLineupfood from "@/views/teamhong/JobLineupfood.vue";
+import MonitorTeaminformationfood from "@/views/teamhong/MonitorTeaminformationfood.vue";
+
 import Workprogresshong from "@/views/teamhong/Workprogress.vue";
+
 import Manageteamhong from "@/views/teamhong/Manageteamhong.vue"; 
+import Monitorteamhonglists from "@/views/teamhong/Monitorteamhonglists.vue"; 
+import CreateManageteamhong from "@/views/teamhong/CreateManageteamhong.vue";
+import EditManageteamhong from "@/views/teamhong/EditManageteamhong.vue";
 
-// import Explorearea from "@/views/teamhong/Explorearea.vue";
-// import JobExplorearea from "@/views/teamhong/JobExplorearea.vue";
-import Lineupfood from "@/views/teamhong/Lineupfood.vue"; 
-// import JobPlacearrangement from "@/views/teamhong/JobPlacearrangement.vue"; 
-
-// import Createmanageteam from "@/views/teamhong/Createmanageteam.vue";
-// import Editmanageteam from "@/views/teamhong/Editmanageteam.vue"; 
-// import MonitorTeaminformation from "@/views/teamhong/MonitorTeaminformation.vue";
-// import Monitorteamlists from "@/views/teamhong/Monitorteamlists.vue";
-
-import Customizecheckhong from "@/views/teamhong/Customizecheck.vue";
+import Customizecheckteamhong from "@/views/teamhong/Customizecheckteamhong";
 
 
 Vue.use(VueRouter);
@@ -88,6 +87,7 @@ const routes = [
     name: "menuAdminmenger",
     component: Adminmanager
   },
+
   //staffmenger
   {
     path: "/staffmanager/Staffmanager",
@@ -99,6 +99,7 @@ const routes = [
     name: "menuStaffpositionmanager",
     component: Staffpositionmanager
   },
+
   // sale
   {
     path: "/sale/Menusale",
@@ -130,7 +131,6 @@ const routes = [
     name: "saleEditPersoneltype",
     component: EditPersoneltype
   },
-
   {
     path: "/sale/Quotation",
     name: "saleQuotation",
@@ -204,7 +204,6 @@ const routes = [
     name: "menuTeambnp",
     component: Menuteambnp
   },
-
   {
     path: "/teambnp/Eventteaminformation",
     name: "menuEventteaminformation",
@@ -237,7 +236,6 @@ const routes = [
       component: JobPlacearrangement
     },
 
-
   {
     path: "/teambnp/Workprogress",
     name: "menuWorkprogress",
@@ -248,8 +246,6 @@ const routes = [
     name: "menuManageteamlists",
     component: Manageteamlists
   },
-
-
   {
     path: "/teambnp/MonitorTeaminformation",
     name: "menuMonitorteaminformation",
@@ -290,9 +286,19 @@ const routes = [
     component: Shipping
   },
   {
+    path: "/teamhong/MonitorTeaminformationfood",
+    name: "menuMonitorTeaminformationfood",
+    component: MonitorTeaminformationfood
+  },
+  {
     path: "/teamhong/Lineupfood",
     name: "menuLineupfood",
     component: Lineupfood
+  },
+  {
+    path: "/teamhong/JobLineupfood",
+    name: "menuJobLineupfood",
+    component: JobLineupfood
   },
   {
     path: "/teamhong/Workprogress",
@@ -305,9 +311,24 @@ const routes = [
     component: Manageteamhong
   },
   {
-    path: "/teamhong/Customizecheck",
-    name: "menuCustomizecheckhong",
-    component: Customizecheckhong
+    path: "/teamhong/Monitorteamhonglists",
+    name: "menuMonitorteamhonglists",
+    component: Monitorteamhonglists
+  },
+  {
+    path: "/teamhong/CreateManageteamhong",
+    name: "menuCreateManageteamhong",
+    component: CreateManageteamhong
+  },
+  {
+    path: "/teamhong/EditManageteamhong",
+    name: "menuEditManageteamhong",
+    component: EditManageteamhong
+  },
+  {
+    path: "/teamhong/Customizecheckteamhong",
+    name: "menuCustomizecheckteamhong",
+    component: Customizecheckteamhong
   },
   // จบ Team hong
   

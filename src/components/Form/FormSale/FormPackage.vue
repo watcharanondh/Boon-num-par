@@ -291,39 +291,15 @@ export default {
 
     equipment_data_items: [],
     headers_equipment_data: [
-      {
-        text: "ชื่ออุปกรณ์",
-        value: "name",
-        sortable: false,
-        align: "start",
-        color: "black"
-      },
-      {
-        text: "จำนวน",
-        value: "stock_balance",
-        sortable: false,
-        align: "start",
-        color: "black"
-      },
+      { text: "ชื่ออุปกรณ์", value: "name", sortable: false, align: "start", color: "black"},
+      { text: "จำนวน",value: "stock_balance", sortable: false, align: "start", color: "black"},
       { text: "", value: "", sortable: false, align: "start", color: "black" }
     ],
 
     equipment_selected_items: [],
     headers_equipment_selected_data: [
-      {
-        text: "ชื่ออุปกรณ์",
-        value: "name",
-        sortable: false,
-        align: "start",
-        color: "black"
-      },
-      {
-        text: "จำนวน",
-        value: "stock_balance",
-        sortable: false,
-        align: "start",
-        color: "black"
-      },
+      { text: "ชื่ออุปกรณ์", value: "name",sortable: false,align: "start", color: "black"},
+      { text: "จำนวน", value: "stock_balance", sortable: false,align: "start", color: "black"},
       { text: "", value: "", sortable: false, align: "start", color: "black" }
     ],
 

@@ -47,10 +47,31 @@
               </v-row>
             </v-card-title>
             <v-card-text>
-              <v-row class="justify-center">
-                <v-col class="justify-center">
+              <v-row>
+                <v-col>
                   <v-text-field v-model="Create_checklists_default" clearable>
                   </v-text-field>
+                </v-col>
+              </v-row>
+            </v-card-text>
+            <v-card-title>
+              <v-row>
+                <v-col>
+                  <div class="update-sub-title">
+                    จำนวน
+                  </div>
+                </v-col>
+              </v-row>
+            </v-card-title>
+            <v-card-text>
+              <v-row class="justify-center">
+                <v-col class="justify-center">
+                  <v-text-field
+                    v-model="Equipment_Stock_IN"
+                    type="number"
+                    min="1"
+                    clearable
+                  ></v-text-field>
                   <v-card-actions class="justify-center pa-0 mb-0">
                     <v-col lg="6" md="6" sm="12" cols="12">
                       <v-btn
@@ -109,14 +130,31 @@
               </v-row>
             </v-card-title>
             <v-card-text>
+              <v-row>
+                <v-col>
+                  <v-text-field v-model="Edit_checklists_default" clearable>
+                  </v-text-field>
+                </v-col>
+              </v-row>
+            </v-card-text>
+            <v-card-title>
+              <v-row>
+                <v-col>
+                  <div class="update-sub-title">
+                    จำนวน
+                  </div>
+                </v-col>
+              </v-row>
+            </v-card-title>
+            <v-card-text>
               <v-row class="justify-center">
                 <v-col class="justify-center">
                   <v-text-field
-                    v-model="Edit_checklists_default"
+                    v-model="Edit_Equipment_Stock_IN"
+                    type="number"
+                    min="1"
                     clearable
-                  >
-                  </v-text-field>
-
+                  ></v-text-field>
                   <v-card-actions class="justify-center pa-0 mb-0">
                     <v-col lg="6" md="6" sm="12" cols="12">
                       <v-btn
@@ -261,7 +299,7 @@
 import api from "@/services/api";
 
 export default {
-  name: "Customizecheck",
+  name: "Customizecheckteamhong",
   mounted() {
     this.loadCustomizechecks();
     this.$store.dispatch({
@@ -275,7 +313,9 @@ export default {
     dialogEditchecklistdefault: false,
 
     Create_checklists_default: null,
+    Equipment_Stock_IN:null,
     Edit_checklists_default: null,
+    Edit_Equipment_Stock_IN:null,
 
     IDchecklistdefault: null,
     total: null,
@@ -288,17 +328,18 @@ export default {
 
   methods: {
     async loadCustomizechecks() {
-      let result = await api.getListtoChecklists();
+      let result = await api.getListtoChecklistsTeamhong();
       this.table_Customizechecks = result.data.result;
       this.total = result.data.total;
     },
 
     async CreatecheckList_submit_default() {
-      let CreateChklistdefault = { name: this.Create_checklists_default };
-      let result = await api.AddChecklists(CreateChklistdefault);
+      let CreateChklistdefault = { name: this.Create_checklists_default ,stock_in:this.Equipment_Stock_IN };
+      let result = await api.AddChecklistsTeamhong(CreateChklistdefault);
       if (result.data.response == "OK") {
           this.$swal.fire("สร้างรายการตรวจสอบเรียบร้อย", "", "success");
           this.Create_checklists_default=null;
+          this.Equipment_Stock_IN=null;
           this.loadCustomizechecks();
           this.dialogCreateCheckListdefault= false
       } 
@@ -307,16 +348,17 @@ export default {
     async EditChacklist_default(item){
         let EditChkshowID = { id: item.id };
         this.IDchecklistdefault = item.id;
-        let result = await api.getListEdittoChecklists(EditChkshowID);
+        let result = await api.getListEdittoChecklistsTeamhong(EditChkshowID);
         if (result.data.response == "OK") {
           this.Edit_checklists_default = result.data.result[0].name;
+          this.Edit_Equipment_Stock_IN = result.data.result[0].stock_in;
           this.dialogEditchecklistdefault= true
         }  
     },
 
     async EditChacklist_submit_default() {
-      let checkLists = { id: this.IDchecklistdefault, name: this.Edit_checklists_default };
-      let result = await api.EditChecklists(checkLists);
+      let checkLists = { id: this.IDchecklistdefault, name: this.Edit_checklists_default  ,stock_in:this.Edit_Equipment_Stock_IN};
+      let result = await api.EditChecklistsTeamhong(checkLists);
       if (result.data.response == "OK") {
         this.$swal.fire("แก้ไขรายการตรวจสอบเรียบร้อย", "", "success");
         this.loadCustomizechecks();
@@ -341,7 +383,7 @@ export default {
         .then(async (result) => {
           if (result.isConfirmed) {
             let delCustomizecheck = { id: item.id };
-            let resultdel = await api.DelChecklists(delCustomizecheck);
+            let resultdel = await api.DelChecklistsTeamhong(delCustomizecheck);
             if (resultdel.data.response == "OK") {
               this.$swal.fire("ยืนยันการลบเรียบร้อย", "", "success");
               this.loadCustomizechecks();

@@ -66,6 +66,7 @@ export const server = {
   ADD_QUOTATION_URL: `/sale/quotations/newquotations`,
   PUT_EDIT_SET_QUOTATION_URL: `/sale/quotations/editquotation`,
   DELETE_QUOTATION_URL: `/sale/quotations/delquotation`,
+  LIST_All_FOODITEMS_QUOTATION_URL: `/sale/quotations/listallfooditems`,
 
   //Equipment
   LIST_ALL_EQUIPMENT_URL: `/sale/equipments/listallequipment`,
@@ -165,7 +166,55 @@ export const server = {
   FIND_MOMENT_LINEUP_FOOD_URL:`/hong/shipping/listallshipping`,
   //List Shipping to SEE
   LIST_SHIPPING_TO_SEE_LINEUP_FOOD_URL:`/hong/shipping/listshippingtosee`,
+
+  ////////////////////Lineupfood////////////////////////////////////////
+  LIST_All_LINEUPFOODTEAM:`/hong/lineupfoodteam/listalllineupfoodteam`,
+  MANAGE_TASK_LINEUPFOODTEAM:`/hong/lineupfoodteam/managetask`,
+  CREATE_CHECKLIST_LINEUPFOODTEAM:`/hong/lineupfoodteam/createchecklistlineupfood`,
+  LIST_CHECKLIST_TO_EDIT_LINEUPFOODTEAM:`/hong/lineupfoodteam/listchecklistlineupfood`,
+  EDIT_CHECKLIST_LINEUPFOODTEAM:`/hong/lineupfoodteam/editchecklistlineupfood`,
+  UPDATE_CHECKLIST_LINEUPFOODTEAM:`/hong/lineupfoodteam/updatechecklistlineupfood`,
+  UPDATE_RETURNED_CHECKLIST_LINEUPFOODTEAM:`/hong/lineupfoodteam/updatereturnchecklistlineupfood`,
+  DELETE_CHECKLIST_LINEUPFOODTEAM:`/hong/lineupfoodteam/delchecklistlineupfood`,
+  UPDATE_DESCRIPTION:`/hong/lineupfoodteam/updatedestlineupfood`,
+  CREATE_IMAGE_LINEUPFOODTEAM:`/hong/lineupfoodteam/createimglineupfood`,
+  DELETE_IMAGE_LINEUPFOODTEAM:`/hong/lineupfoodteam/delimglineupfood`,
   
+  ////////////////////ModulChklistEquipmentteamhong//////////////////////
+  LIST_All_INMODUL_CHECKLISTEQUIPMENT_TEAMHONG:`/hong/lineupfoodteam/listchecklistlineupequiptment`,
+  CREATE_AND_UPDATE_INMODUL_CHECKLISTEQUIPMENT_TEAMHONG:`/hong/lineupfoodteam/updatechecklistlineupequiptment`,
+  UPDATE_INMODUL_CHECKLISTEQUIPMENT_TEAMHONG:`/hong/lineupfoodteam/updatechecklistlineupequiptment`,
+  UPDATE_RETURNED_INMODUL_CHECKLISTEQUIPMENT_TEAMHONG:`/hong/lineupfoodteam/updatereturnchecklistlineupfood`,
+  DELETE_INMODU_CHECKLISTEQUIPMENT_TEAMHONG:`/hong/lineupfoodteam/delchecklistlineupfood`,
+
+  ////////////////////Progresses////////////////////////////////////////
+  LIST_DONE_TASK:`/hong/progress/listtask`,
+  LIST_TASK_CHART:`/hong/progress/listchart`,
+
+
+  ////////////////////Team Management///////////////////////////////////
+  LIST_ALL_TEAMS:`/hong/teammanage/listallteams`,
+  LIST_ALL_USERS_TO_CREATETEAM:`/hong/teammanage/listuserstocreateteam`,
+  CREATE_NEW_TEAM:`/hong/teammanage/createteam`,
+  LIST_TEAM_TO_EDIT:`/hong/teammanage/listteam`,
+  EDIT_TEAM:`/hong/teammanage/editteam`,
+  DELETE_TEAMHONG:`/hong/teammanage/delteam`,
+
+  ////////////////////Checklists///////////////////////////////////
+  LIST_ALL_CHECKLISTS_TEAMHONG:`/hong/checklists/listallchecklists`,
+  CREATE_NEW_CHECKLIST_TEAMHONG:`/hong/checklists/createchecklist`,
+  LIST_CHECKLISTS_TO_EDIT_TEAMHONG:`/hong/checklists/listchecklist`,
+  EDIT_CHECKLISS_TEAMHONG:`/hong/checklists/editchecklist`,
+  DELETE_CHECKLIST_TEAMHONG:`/hong/checklists/delchecklist`,
+
+
+   /*จบ Team HONG */
+
+
+
+
+
+
 
 
 };
