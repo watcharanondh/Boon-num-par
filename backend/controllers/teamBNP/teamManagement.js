@@ -118,14 +118,14 @@ exports.CreateTeam = async (req, res) => {
       res.json({ response: "FAILED", result: "please choose member." });
       return
     }
-    const getMaxTeamCode = await teams.findOne({ attributes: [[Sequelize.fn('MAX', Sequelize.col('team_code')), "maxTeamCode"]] })
-    const newTeamCode = getMaxTeamCode.dataValues.maxTeamCode !== null ? helper.SKUincrementer(getMaxTeamCode.dataValues.maxTeamCode) : "BNPM000001";
+    const getMaxTeamCode = await teams.findOne({ attributes: [[Sequelize.fn('MAX', Sequelize.col('team_code')), "maxTeamCode"]], where: { team_type: 0 } })
+    const newTeamCode = getMaxTeamCode.dataValues.maxTeamCode !== null ? helper.SKUincrementer(getMaxTeamCode.dataValues.maxTeamCode) : "BNPT000001";
     /*สร้าง Team*/
     const teamsResult = await teams.create({
       team_code: newTeamCode,
       name: name,
       mobile_phone_number: tel_no,
-      team_type:0
+      team_type: 0
     });
     /*สร้างรายการสมาชิก สำหรับทีมนั้นๆ*/
     var ObjUsers = team_members.map(user => { return { "team_id": teamsResult.dataValues.id, "user_id": user.id } });
