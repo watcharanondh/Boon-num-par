@@ -1174,7 +1174,7 @@ export const listshippingtosee = (data) => {
 };
 
 
-/* ------- Lineupfood ------- */
+/* ------- Lineupfood Process ALL ------- */
 export const getListAllLineupfood = (data) => {
   return axios
     .post(apiUrl + server.LIST_All_LINEUPFOODTEAM, data, {
@@ -1197,6 +1197,31 @@ export const ListmanagetaskLineupfood = (data) => {
       redirectLogin(error);
     });
 };
+export const CreateimgLineupfood = (data) => {
+  return axios
+    .post(apiUrl + server.CREATE_IMAGE_LINEUPFOODTEAM, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`,
+      },
+    })
+    .catch((error) => {
+      redirectLogin(error);
+    });
+};
+export const DELimgLineupfood = (data) => {
+  return axios
+    .post(apiUrl + server.DELETE_IMAGE_LINEUPFOODTEAM, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`,
+      },
+    })
+    .catch((error) => {
+      redirectLogin(error);
+    });
+};
+
+
+/* ------- ChklistLineupfoodteamhong ------- */
 export const ListchkcreateLineupfood = (data) => {
   return axios
     .post(apiUrl + server.CREATE_CHECKLIST_LINEUPFOODTEAM, data, {
@@ -1230,39 +1255,6 @@ export const EditchklistLineupfood = (data) => {
       redirectLogin(error);
     });
 };
-export const DelchklistLineupfood = (data) => {
-  return axios
-    .post(apiUrl + server.DELETE_CHECKLIST_LINEUPFOODTEAM, data, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`,
-      },
-    })
-    .catch((error) => {
-      redirectLogin(error);
-    });
-};
-export const CreateimgLineupfood = (data) => {
-  return axios
-    .post(apiUrl + server.CREATE_IMAGE_LINEUPFOODTEAM, data, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`,
-      },
-    })
-    .catch((error) => {
-      redirectLogin(error);
-    });
-};
-export const DELimgLineupfood = (data) => {
-  return axios
-    .post(apiUrl + server.DELETE_IMAGE_LINEUPFOODTEAM, data, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`,
-      },
-    })
-    .catch((error) => {
-      redirectLogin(error);
-    });
-};
 export const RecheckbeforeLineupfood = (data) => {
   return axios
     .post(apiUrl + server.UPDATE_CHECKLIST_LINEUPFOODTEAM, data, {
@@ -1274,20 +1266,9 @@ export const RecheckbeforeLineupfood = (data) => {
       redirectLogin(error);
     });
 };
-export const RecheckbetweenLineupfood = (data) => {
-  return axios
-    .post(apiUrl + server.RECHECK_BETWEEN_SETUP_TEAM_URL, data, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`,
-      },
-    })
-    .catch((error) => {
-      redirectLogin(error);
-    });
-};
 export const RecheckafterLineupfood = (data) => {
   return axios
-    .post(apiUrl + server.RECHECK_AFTER_SETUP_TEAM_URL, data, {
+    .post(apiUrl + server.UPDATE_RETURNED_CHECKLIST_LINEUPFOODTEAM, data, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`,
       },
@@ -1296,21 +1277,87 @@ export const RecheckafterLineupfood = (data) => {
       redirectLogin(error);
     });
 };
-// export const descriptionLineupfood = (data) => {
-//   return axios
-//     .post(apiUrl + server.DESCRIPTION_SETUP_TEAM_URL, data, {
-//       headers: {
-//         Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`,
-//       },
-//     })
-//     .catch((error) => {
-//       redirectLogin(error);
-//     });
-// };
-/* ------- ModulChklistEquipmentteamhong ------- */
+export const DelchklistLineupfood = (data) => {
+  return axios
+    .post(apiUrl + server.DELETE_CHECKLIST_LINEUPFOODTEAM, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`,
+      },
+    })
+    .catch((error) => {
+      redirectLogin(error);
+    });
+};
+/* ------- ChklistEquipmentteamhong ------- */
 export const getChklistEquipmentteamhong = (data) => {
   return axios
-    .post(apiUrl + server.DESCRIPTION_SETUP_TEAM_URL, data, {
+    .post(apiUrl + server.LIST_All_INMODUL_CHECKLISTEQUIPMENT_TEAMHONG, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`,
+      },
+    })
+    .catch((error) => {
+      redirectLogin(error);
+    });
+};
+export const createandupdatequipmentteamhong = (data) => {
+  return axios
+    .post(apiUrl + server.CREATE_AND_UPDATE_INMODUL_CHECKLISTEQUIPMENT_TEAMHONG, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`,
+      },
+    })
+    .catch((error) => {
+      redirectLogin(error);
+    });
+};
+export const Recheckbeforeequipmentteamhong = (data) => {
+  return axios
+    .post(apiUrl + server.UPDATE_INMODUL_CHECKLISTEQUIPMENT_TEAMHONG, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`,
+      },
+    })
+    .catch((error) => {
+      redirectLogin(error);
+    });
+};
+export const Recheckafterbeforeequipmentteamhong = (data) => {
+  return axios
+    .post(apiUrl + server.UPDATE_RETURNED_INMODUL_CHECKLISTEQUIPMENT_TEAMHONG, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`,
+      },
+    })
+    .catch((error) => {
+      redirectLogin(error);
+    });
+};
+export const getDescriptionafterequipmentteamhong = (data) => {
+  return axios
+    .post(apiUrl + server.DESCRIPTION_INMODUL_CHECKLISTEQUIPMENT_TEAMHONG, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`,
+      },
+    })
+    .catch((error) => {
+      redirectLogin(error);
+    });
+};
+export const addDescriptionafterequipmentteamhong = (data) => {
+  return axios
+    .post(apiUrl + server.EDIT_DESCRIPTION_INMODUL_CHECKLISTEQUIPMENT_TEAMHONG, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`,
+      },
+    })
+    .catch((error) => {
+      redirectLogin(error);
+    });
+};
+export const deleteChklistEquipmentteamhong = (data) => {
+  return axios
+    .post(apiUrl + server.DELETE_INMODU_CHECKLISTEQUIPMENT_TEAMHONG, data, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`,
       },

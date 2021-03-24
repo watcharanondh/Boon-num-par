@@ -181,11 +181,13 @@ export const server = {
   DELETE_IMAGE_LINEUPFOODTEAM:`/hong/lineupfoodteam/delimglineupfood`,
   
   ////////////////////ModulChklistEquipmentteamhong//////////////////////
-  LIST_All_INMODUL_CHECKLISTEQUIPMENT_TEAMHONG:`/hong/lineupfoodteam/listchecklistlineupequiptment`,
+  LIST_All_INMODUL_CHECKLISTEQUIPMENT_TEAMHONG:`/hong/lineupfoodteam/listallequiptmenttocreate`,
   CREATE_AND_UPDATE_INMODUL_CHECKLISTEQUIPMENT_TEAMHONG:`/hong/lineupfoodteam/updatechecklistlineupequiptment`,
-  UPDATE_INMODUL_CHECKLISTEQUIPMENT_TEAMHONG:`/hong/lineupfoodteam/updatechecklistlineupequiptment`,
-  UPDATE_RETURNED_INMODUL_CHECKLISTEQUIPMENT_TEAMHONG:`/hong/lineupfoodteam/updatereturnchecklistlineupfood`,
-  DELETE_INMODU_CHECKLISTEQUIPMENT_TEAMHONG:`/hong/lineupfoodteam/delchecklistlineupfood`,
+  UPDATE_INMODUL_CHECKLISTEQUIPMENT_TEAMHONG:`/hong/lineupfoodteam/updatestatuschecklistlineupequiptment`,
+  UPDATE_RETURNED_INMODUL_CHECKLISTEQUIPMENT_TEAMHONG:`/hong/lineupfoodteam/updatereturnchecklistlineupequiptment`,
+  DESCRIPTION_INMODUL_CHECKLISTEQUIPMENT_TEAMHONG:`/hong/lineupfoodteam/listchecklistlineupequiptment`,
+  EDIT_DESCRIPTION_INMODUL_CHECKLISTEQUIPMENT_TEAMHONG:`/hong/lineupfoodteam/editchecklistlineupequiptment`,
+  DELETE_INMODU_CHECKLISTEQUIPMENT_TEAMHONG:`/hong/lineupfoodteam/delchecklistlineupequiptment`,
 
   ////////////////////Progresses////////////////////////////////////////
   LIST_DONE_TASK:`/hong/progress/listtask`,

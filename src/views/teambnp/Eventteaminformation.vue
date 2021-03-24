@@ -22,6 +22,7 @@
         :close-on-content-click="false"
         :return-value.sync="dates"
         offset-y
+        scrollable
         min-width="auto"
       >
         <template v-slot:activator="{ on, attrs }">

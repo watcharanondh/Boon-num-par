@@ -267,14 +267,6 @@
                       </v-card-text>
                     </v-card>
                   </v-dialog>
-                    <!--   <v-divider class="mx-4" inset vertical></v-divider>
-                  <v-text-field
-                    v-model="search"
-                    prepend-inner-icon="mdi-magnify"
-                    label="ค้นหาชื่อลูกค้าบุคคล/บริษัท"
-                    single-line
-                    hide-details
-                  ></v-text-field> -->
                   </v-toolbar>
                 </template>
                 <template v-slot:item="{ item }">
@@ -310,7 +302,7 @@
                         <v-icon>edit</v-icon>
                       </v-btn>
                       <v-btn
-                        @click="DeleteChacklist_JobPlacearrangement(item)"
+                        @click="DeleteChacklist_JobLineupfood(item)"
                         fab
                         icon
                         outlined
@@ -341,33 +333,26 @@
                   <v-toolbar flat>
                     <v-toolbar-title><span class="header-table-title">รายการที่ต้องตรวจสอบ - ก่อนจัดงาน</span></v-toolbar-title>
                     <v-spacer></v-spacer>
-                      <v-btn v-on:Cilck="getChklistEquipment()" color="#29CC97" rounded>
-                          <span class="white--text">สร้างรายการตรวจสอบ</span>
+                      <v-btn @click="getChklistEquipment()" color="#29CC97" rounded>
+                          <span class="white--text">สร้าง/แก้ไข รายการตรวจสอบอุปกรณ์</span>
                       </v-btn>
-                  <!-- สร้างรายการตรวจสอบอุปกรณ์ -->
+                  <!-- สร้าง/แก้ไข รายการตรวจสอบอุปกรณ์ -->
                   <v-dialog
-                    v-model="dialogCreatChecklistJobEquipment"
+                    v-model="dialogCreateandUpdateChecklistJobEquipment"
                     :retain-focus="false"
                     transition="dialog-top-transition"
                     persistent
-                    width="25%"
+                    scrollable
+                    width="40%"
                   >
-                    <!-- <template v-slot:activator="{ on, attrs }">
-                      <v-btn color="#29CC97" rounded>
-                        <span class="white--text">สร้างรายการตรวจสอบ</span>
-                      </v-btn>
-                    </template> -->
-
-                    <v-card>
-                      <!-- สร้างรายการอุปกรณ์ -->
+                    <v-card class="rounded-lg">
+                      <v-card class="pa-10 flat rounded-lg">
                       <v-row>
                         <v-col lg="6" md="6" sm="12" cols="12">
                           <v-row class="no-gutters">
                             <h3>รายการอุปกรณ์</h3>
-                            <span class="order mt-2">{{ Equipment_table_all_total }} รายการ</span>
+                            <span class="order mt-1">{{ Equipment_table_all_total }} รายการ</span>
                           </v-row>
-
-                          <!-- สร้างรายการอุปกรณ์ -->
                           <v-row>
                             <v-col lg="12" md="12" sm="12" cols="12">
                               <v-row class="no-gutters">
@@ -382,7 +367,7 @@
                                     <tr>
                                       <td>{{ item.name }}</td>
                                       <td class="info--text">
-                                        {{ item.stock_balance }}
+                                        {{ item.amount}}
                                       </td>
                                       <td>
                                         <v-btn
@@ -405,9 +390,7 @@
                         <v-col lg="6" md="6" sm="12" cols="12">
                           <v-row class="no-gutters">
                             <h3>อุปกรณ์ที่เลือก</h3>
-                            <span class="order mt-2"
-                              >{{ Equipment_table_selected_total }} รายการ</span
-                            >
+                            <span class="order mt-1">{{ Equipment_table_selected_total }} รายการ</span>
                           </v-row>
 
                           <!-- สร้างอุปกรณ์ที่เลือก -->
@@ -425,11 +408,11 @@
                                   <template v-slot:item="{ item }">
                                     <tr>
                                       <td>{{ item.name }}</td>
-                                      <td width="32%" class="info--text pt-6">
+                                      <td width="40%" class="info--text pt-6">
                                         <v-text-field
-                                          v-model="item.amount"
+                                          v-model="item.amounts"
                                           type="number"
-                                          :max="item.stock_balance"
+                                          :max="item.amount"
                                           min="1"
                                           small
                                           dense
@@ -464,7 +447,7 @@
                                   block
                                   large
                                   rounded
-                                  @click="CreatecheckListsJobEquipment()"
+                                  @click="CreateandUpdatecheckListsEquipment()"
                                   ><span class=" white--text">อัพเดท</span></v-btn>
                               </v-col>
                             </v-card-actions>
@@ -476,7 +459,7 @@
                                   rounded
                                   outlined
                                   color="warning"
-                                  @click="dialogCreatChecklistJobEquipment = false"
+                                  @click="dialogCreateandUpdateChecklistJobEquipment = false"
                                 >
                                   ปิด</v-btn>
                               </v-col>
@@ -484,162 +467,18 @@
                           </v-col>
                         </v-row>
                       </v-card-text>
+                      </v-card>
                     </v-card>
                   </v-dialog>
-                  <!-- แก้ไขรายการตรวจสอบอุปกรณ์ -->
-                  <v-dialog
-                    v-model="dialogEditchecklistJobEquipment"
-                    :retain-focus="false"
-                    transition="dialog-top-transition"
-                    persistent
-                    width="25%"
-                  >
-                    <v-card>
-                      <!-- แก้ไขรายการอุปกรณ์ -->
-                      <v-row>
-                        <v-col lg="6" md="6" sm="12" cols="12">
-                          <v-row class="no-gutters">
-                            <h3>รายการอุปกรณ์</h3>
-                            <span class="order mt-2">{{ Equipment_table_all_total }} รายการ</span
-                            >
-                          </v-row>
-
-                          <!-- แก้ไขรายการอุปกรณ์ -->
-                          <v-row>
-                            <v-col lg="12" md="12" sm="12" cols="12">
-                              <v-row class="no-gutters">
-                                <v-data-table
-                                  :headers="headers_equipment_data"
-                                  :items="equipment_data_items"
-                                  :items-per-page="10"
-                                  mobile-breakpoint="0"
-                                  class="elevation-1"
-                                >
-                                  <template v-slot:item="{ item }">
-                                    <tr>
-                                      <td>{{ item.name }}</td>
-                                      <td class="info--text">
-                                        {{ item.stock_balance }}
-                                      </td>
-                                      <td>
-                                        <v-btn
-                                          small
-                                          elevation="1"
-                                          color="success"
-                                          @click="selectedAddEquipment(item)"
-                                          >เพิ่ม</v-btn
-                                        >
-                                      </td>
-                                    </tr>
-                                  </template>
-                                </v-data-table>
-                              </v-row>
-                            </v-col>
-                          </v-row>
-                        </v-col>
-
-                        <!-- แก้ไขอุปกรณ์ที่เลือก -->
-                        <v-col lg="6" md="6" sm="12" cols="12">
-                          <v-row class="no-gutters">
-                            <h3>อุปกรณ์ที่เลือก</h3>
-                            <span class="order mt-2"
-                              >{{ Equipment_table_selected_total }} รายการ</span
-                            >
-                          </v-row>
-
-                          <!-- แก้ไขอุปกรณ์ที่เลือก -->
-                          <v-row>
-                            <v-col lg="12" md="12" sm="12" cols="12">
-                              <v-row class="no-gutters">
-                                <v-data-table
-                                  :headers="headers_equipment_selected_data"
-                                  :items="equipment_selected_items"
-                                  :items-per-page="10"
-                                  hide-default-footer
-                                  mobile-breakpoint="0"
-                                  class="elevation-1"
-                                >
-                                  <template v-slot:item="{ item }">
-                                    <tr>
-                                      <td>{{ item.name }}</td>
-                                      <td width="32%" class="info--text pt-6">
-                                        <v-text-field
-                                          v-model="item.amount"
-                                          type="number"
-                                          :max="item.stock_balance"
-                                          min="1"
-                                          small
-                                          dense
-                                          solo
-                                          outlined
-                                        ></v-text-field>
-                                      </td>
-                                      <td>
-                                        <v-btn
-                                          small
-                                          elevation="1"
-                                          color="error"
-                                          @click="DeleteEquipment(item)"
-                                          >ลบ</v-btn
-                                        >
-                                      </td>
-                                    </tr>
-                                  </template>
-                                </v-data-table>
-                              </v-row>
-                            </v-col>
-                          </v-row>
-                        </v-col>
-                      </v-row>
-                      <v-card-text>
-                        <v-row class="justify-center">
-                          <v-col class="justify-center">
-                            <v-card-actions class="justify-center pa-0 mb-0">
-                              <v-col lg="6" md="6" sm="12" cols="12">
-                                <v-btn
-                                  color="#29CC97"
-                                  block
-                                  large
-                                  rounded
-                                  @click="EditChacklist_submit_JobEquipment()"
-                                  ><span class=" white--text">อัพเดท</span></v-btn
-                                >
-                              </v-col>
-                            </v-card-actions>
-                            <v-card-actions class="justify-center pa-0">
-                              <v-col lg="6" md="6" sm="12" cols="12">
-                                <v-btn
-                                  block
-                                  large
-                                  rounded
-                                  outlined
-                                  color="warning"
-                                  @click="dialogEditchecklistJobEquipment = false"
-                                >
-                                  ปิด
-                                </v-btn>
-                              </v-col>
-                            </v-card-actions>
-                          </v-col>
-                        </v-row>
-                      </v-card-text>
-                    </v-card>
-                  </v-dialog>
-                    <!--   <v-divider class="mx-4" inset vertical></v-divider>
-                  <v-text-field
-                    v-model="search"
-                    prepend-inner-icon="mdi-magnify"
-                    label="ค้นหาชื่อลูกค้าบุคคล/บริษัท"
-                    single-line
-                    hide-details
-                  ></v-text-field> -->
                   </v-toolbar>
                 </template>
                 <template v-slot:item="{ item }">
                   <tr>
                     <td>
-                      {{ item.name }}
-                      <div v-if="item.isEdit==true" style="font-size: 12px;color: #A4A6B3;">รายการตรวจสอบเพิ่มเติม</div>
+                      {{ item.name}}
+                    </td>
+                    <td >
+                      {{item.amount}}
                     </td>
                     <td align="center">
                       <button
@@ -657,16 +496,7 @@
                       </button>
                     </td>
                   <td>
-                    <v-row v-if="item.isEdit==true">
-                      <v-btn
-                        @click="EditChacklist_JobEquipment(item)"
-                        fab
-                        icon
-                        outlined
-                        small
-                      >
-                        <v-icon>edit</v-icon>
-                      </v-btn>
+                    <v-row>
                       <v-btn
                         @click="DeleteChacklist_JobEquipment(item)"
                         fab
@@ -728,22 +558,6 @@
             </v-row>
           </v-col>
         </v-row>
-
-        <!-- <v-row>
-        <v-col lg="12" md="12" sm="12" cols="12">
-          <v-card class="mx-10 pa-5 rounded-lg" outlined>
-            <v-row>
-              <v-col>
-                <div class="create-edit-title">
-                  เพิ่มเติม
-                </div>
-              </v-col>
-            </v-row>
-            <br />
-              <v-textarea v-model="description_before" v-on:blur="updatedescription_before()" solo></v-textarea>
-          </v-card>
-        </v-col>
-    </v-row> -->
   </div>
 
       <!-- betweenTab2 -->
@@ -858,10 +672,73 @@
               <v-btn color="#606771" rounded><span class="white--text">เสร็จสมบูรณ์</span></v-btn>
             </span>
             <br />
+              <!-- เพิ่มคำอธิบายรายการตรวจสอบอุปกรณ์-->
+              <v-dialog
+                    v-model="dialogDescriptionChecklistJobEquipment"
+                    :retain-focus="false"
+                    transition="dialog-top-transition"
+                    persistent
+                    width="25%"
+                  >
+                    <v-card>
+                      <v-card-title>
+                        <v-row>
+                          <v-col>
+                            <div class="update-head-title">
+                              เพิ่มคำอธิบายในการตรวจสอบ
+                            </div>
+                          </v-col>
+                        </v-row>
+                      </v-card-title>
+                      <v-card-title>
+                        <v-row>
+                          <v-col>
+                            <div class="update-sub-title">
+                              {{Description_checklists_JobEquipmentName}}
+                            </div>
+                          </v-col>
+                        </v-row>
+                      </v-card-title>
+                      <v-card-text>
+                        <v-row class="justify-center">
+                          <v-col class="justify-center">
+                            <v-text-field label="คำอธิบาย" v-model="Description_checklists_JobEquipment" clearable> </v-text-field>
+
+                            <v-card-actions class="justify-center pa-0 mb-0">
+                              <v-col lg="6" md="6" sm="12" cols="12">
+                                <v-btn
+                                  color="#29CC97"
+                                  block
+                                  large
+                                  rounded
+                                  @click="DescriptionChacklist_submit_JobEquipment()"
+                                  ><span class=" white--text">อัพเดท</span></v-btn
+                                >
+                              </v-col>
+                            </v-card-actions>
+                            <v-card-actions class="justify-center pa-0">
+                              <v-col lg="6" md="6" sm="12" cols="12">
+                                <v-btn
+                                  block
+                                  large
+                                  rounded
+                                  outlined
+                                  color="warning"
+                                  @click="dialogDescriptionChecklistJobEquipment = false"
+                                >
+                                  ปิด
+                                </v-btn>
+                              </v-col>
+                            </v-card-actions>
+                          </v-col>
+                        </v-row>
+                      </v-card-text>
+                    </v-card>
+                  </v-dialog>
             <br />
               <v-data-table
-                :headers="headers_table_manageplace_after"
-                :items="table_manageplace_after_item"
+                :headers="headers_table_manageequipment_after"
+                :items="table_manageequipment_after_item"
                 class="elevation-1"
               >
                 <!-- table top section -->
@@ -869,41 +746,32 @@
                   <v-toolbar flat>
                     <v-toolbar-title><span class="header-table-title">ตรวจเช็คของ - นำกลับ</span></v-toolbar-title>
                     <v-spacer></v-spacer>
-                    <!--   <v-divider class="mx-4" inset vertical></v-divider>
-                  <v-text-field
-                    v-model="search"
-                    prepend-inner-icon="mdi-magnify"
-                    label="ค้นหาชื่อลูกค้าบุคคล/บริษัท"
-                    single-line
-                    hide-details
-                  ></v-text-field> -->
                   </v-toolbar>
                 </template>
                 <template v-slot:item="{ item }">
                   <tr>
                     <td>
-                      {{ item.name }}
-                      <div v-if="item.isEdit==true" style="font-size: 12px;color: #A4A6B3;">รายการตรวจสอบเพิ่มเติม</div>
+                      {{ item.name }} <span v-if="item.description" style="font-size: 12px;color: #A4A6B3;">({{item.description}})</span>
                     </td>
                     <td align="center">
                       <button
                         class="button-left"
                         :class="{ 'active': item.status == 1 }"
-                        @click="past_chkfood_before(item, 1)">
+                        @click="past_chkequipment_after(item, 1)">
                         ผ่าน
                       </button>
                       <button
                         class="button-right"
                         :class="{ 'active': item.status == 2 }"
-                        @click="Notpass_chkfood_before(item, 2)"
+                        @click="Notpass_chkequipment_after(item, 2)"
                       >
                         ไม่ผ่าน
                       </button>
                     </td>
                  <td>
-                     <!-- <v-row v-if="item.isEdit==true">
+                     <v-row>
                       <v-btn
-                        @click="EditChacklist_JobLineupfood(item)"
+                        @click="EditChacklist_JobEquipment(item)"
                         fab
                         icon
                         outlined
@@ -911,16 +779,7 @@
                       >
                         <v-icon>edit</v-icon>
                       </v-btn>
-                      <v-btn
-                        @click="DeleteChacklist_JobPlacearrangement(item)"
-                        fab
-                        icon
-                        outlined
-                        small
-                      >
-                        <v-icon>delete</v-icon>
-                      </v-btn>
-                    </v-row>-->
+                    </v-row>
                   </td> 
                     <td>
                       <!-- <v-btn icon>
@@ -969,25 +828,8 @@
                 </v-card>
               </v-col>
             </v-row>
-
           </v-col>
         </v-row>
-
-        <!-- <v-row>
-        <v-col lg="12" md="12" sm="12" cols="12">
-          <v-card class="mx-10 pa-5 rounded-lg" outlined>
-            <v-row>
-              <v-col>
-                <div class="create-edit-title">
-                  เพิ่มเติม
-                </div>
-              </v-col>
-            </v-row>
-            <br />
-              <v-textarea v-model="description_after" v-on:blur="updatedescription_after()" solo></v-textarea>
-          </v-card>
-        </v-col>
-    </v-row> -->
   </div>
   </v-container>
 </template>
@@ -1036,10 +878,7 @@ export default {
     Create_checklists_JobLineupfood: null,
     Edit_checklists_JobLineupfood: null,
     //JobEquipment
-    dialogCreatChecklistJobEquipment: false,
-    dialogEditchecklistJobEquipment: false,
-    Create_checklists_JobEquipment: null,
-    Edit_checklists_JobEquipment: null,
+    dialogCreateandUpdateChecklistJobEquipment: false,
 
     EditChkID:null,
     description_before:null,
@@ -1056,7 +895,8 @@ export default {
     table_manageequipment_before_item: [],
     headers_table_manageequipment_before: [
       { text: "รายการ", value: "name", sortable: true, align: "start" },
-      { text: "สถานะ", value: "", sortable: false, align: "center" },
+      { text: "จำนวน", value: "", sortable: false, align: "start" },
+      { text: "", value: "", sortable: false, align: "start" },
       { text: "", value: "", sortable: false, align: "start" },
       { text: "", value: "", sortable: false, align: "start" },
     ],
@@ -1086,15 +926,19 @@ export default {
 
 
     //tab3=>after
+    dialogDescriptionChecklistJobEquipment:false,
+    Description_checklists_JobEquipmentName:null,
+    Description_checklists_JobEquipment:null,
+    ID_JobEquipments:null,
     Allchk_after:null,
-    description_after: null,
     totalafter: null,
-    table_manageplace_after_item: [],
-    headers_table_manageplace_after: [
+    table_manageequipment_after_item: [],
+    headers_table_manageequipment_after: [
       { text: "รายการ", value: "name", sortable: true, align: "start" },
       { text: "สถานะ", value: "", sortable: false, align: "center" },
       { text: "", value: "", sortable: false, align: "start" },
       { text: "", value: "", sortable: false, align: "start" },
+
     ],
 
     previewVisible: false,
@@ -1117,7 +961,6 @@ export default {
         return;
       }
       let result = await api.ListmanagetaskLineupfood(JobLineupfoodID);
-      console.log('ไลน์',result);
       //รายละเอียดพื้นที่
       this.team_code = result.data.result.info.quotation_code;
       this.Tax_invoice_name = result.data.result.info.customer_name;
@@ -1131,27 +974,20 @@ export default {
       //console.log('ouj',this.table_managefood_before_item);
       //เข็ครายการตรวจสอบ
       this.Allchk_before=result.data.result.before.checklist_check_all;
-      console.log('เช็ครายการตรวจสอบ',this.Allchk_before);
-      //เพิ่มเติม
-      this.description_before=result.data.result.before.description;
       //รูป
       this.fileList_before=result.data.result.before.img;
 
       //ตรวจเช็ควันจัดสถานที่
       this.Allchk_between=result.data.result.between.checklists.status;
       this.Allchk_betweenid=result.data.result.between.checklists.id;
-      //เพิ่มเติม
-      this.description_between=result.data.result.between.description;
       //รูป
       this.fileList_between_viewing_img=result.data.result.between.viewing_img;
       this.fileList_between=result.data.result.between.img;
 
       //รายการที่ต้องตรวจสอบของ-นำกลับ
-      this.table_manageplace_after_item = result.data.result.after.checklists;
+      this.table_manageequipment_after_item = result.data.result.after.checklists.equiptments;
       //เข็ครายการตรวจสอบ
       this.Allchk_after=result.data.result.after.checklist_check_all;
-      //เพิ่มเติม
-      this.description_after=result.data.result.after.description;
       //รูป
       this.fileList_after=result.data.result.after.img;
     },
@@ -1169,6 +1005,7 @@ export default {
       //   this.JobLineupfood();
       // } 
     },
+    
 
     async chk_all_between_list(Isactive) {
       if(Isactive==1){
@@ -1191,7 +1028,7 @@ export default {
     async chk_all_after_list() {
       // this.Allchk_after=1
       // let recheckLists = [];
-      // this.table_manageplace_after_item.forEach(value => {recheckLists.push({
+      // this.table_manageequipment_after_item.forEach(value => {recheckLists.push({
       //     id: `${value.id}`,
       //     status: `1`,
       //   });
@@ -1204,47 +1041,48 @@ export default {
 
     async past_chkfood_before(item, status) {
       let recheckLists = {id:item.id ,status:status};
-      let result = await api.RecheckbeforeTeamSetup(recheckLists);
+      let result = await api.RecheckbeforeLineupfood(recheckLists);
       //console.log(result);
       if (result.data.response == "OK") {
         this.JobLineupfood();
       } 
     },
-    async past_chkequipment_before(item, status) {
-      let recheckLists = {id:item.id ,status:status};
-      let result = await api.RecheckbeforeTeamSetup(recheckLists);
-      //console.log(result);
-      if (result.data.response == "OK") {
-        this.JobLineupfood();
-      } 
-    },
-    async past_chkequipment_after(item, status) {
-      let recheckLists = {id:item.id ,status:status};
-      // console.log(recheckLists);
-      let result = await api.RecheckafterTeamSetup(recheckLists);
-      // console.log(result);
-      if (result.data.response == "OK") {
-        this.JobLineupfood();
-      } 
-    },
-
     async Notpass_chkfood_before(item, status) {
       let recheckLists = {id:item.id ,status:status};
-      let result = await api.RecheckbeforeTeamSetup(recheckLists);
+      let result = await api.RecheckbeforeLineupfood(recheckLists);
       if (result.data.response == "OK") {
         this.JobLineupfood();
       }
+    },
+
+    async past_chkequipment_before(item, status) {
+      let recheckLists = {id:item.id ,status:status};
+      let result = await api.Recheckbeforeequipmentteamhong(recheckLists);
+      //console.log(result);
+      if (result.data.response == "OK") {
+        this.JobLineupfood();
+      } 
     },
     async Notpass_chkequipment_before(item, status) {
       let recheckLists = {id:item.id ,status:status};
-      let result = await api.RecheckbeforeTeamSetup(recheckLists);
+      let result = await api.Recheckbeforeequipmentteamhong(recheckLists);
       if (result.data.response == "OK") {
         this.JobLineupfood();
       }
     },
+
+    async past_chkequipment_after(item, status) {
+      let recheckLists = {id:item.id ,status:status};
+      //console.log(recheckLists);
+      let result = await api.Recheckafterbeforeequipmentteamhong(recheckLists);
+      //console.log(result);
+      if (result.data.response == "OK") {
+        this.JobLineupfood();
+      } 
+    },
     async Notpass_chkequipment_after(item, status) {
       let recheckLists = {id:item.id ,status:status};
-      let result = await api.RecheckafterTeamSetup(recheckLists);
+      let result = await api.Recheckafterbeforeequipmentteamhong(recheckLists);
       if (result.data.response == "OK") {
         this.JobLineupfood();
       }
@@ -1285,7 +1123,6 @@ export default {
         quotation_code: this.qc,
         name: this.Create_checklists_JobLineupfood,
       };
-      console.log(checkLists);
       let result = await api.ListchkcreateLineupfood(checkLists);
       if (result.data.response == "OK") {
         this.JobLineupfood();
@@ -1305,7 +1142,6 @@ export default {
         let EditChkshowID = { id: item.id };
         this.EditChkID = item.id;
         let result = await api.ListchktoEditLineupfood(EditChkshowID);
-        console.log('ดูแก้ไข',result.data.response);
         if (result.data.response == "OK") {
           this.Edit_checklists_JobLineupfood = result.data.result[0].name;
           this.dialogEditchecklistJobLineupfood= true
@@ -1328,7 +1164,7 @@ export default {
         }
     },
 
-    async DeleteChacklist_JobPlacearrangement(item) {
+    async DeleteChacklist_JobLineupfood(item) {
       this.$swal
         .fire({
           title: `ต้องการลบรายการตรวจสอบนี้ใช่หรือไม่ ?`,
@@ -1339,7 +1175,7 @@ export default {
         .then(async (result) => {
           if (result.isConfirmed) {
             let delCustomizecheck = { id: item.id };
-            let resultdel = await api.DelchklistTeamSetup(delCustomizecheck);
+            let resultdel = await api.DelchklistLineupfood(delCustomizecheck);
             if (resultdel.data.response == "OK") {
               this.$swal.fire("ยืนยันการลบเรียบร้อย", "", "success");
               this.JobLineupfood();
@@ -1354,37 +1190,116 @@ export default {
       let getChklistEquipmentID = {quotation_code:this.qc }
       let result = await api.getChklistEquipmentteamhong(getChklistEquipmentID);
       if (result.data.response == "OK") {
-          this.dialogCreatChecklistJobEquipment=true;
-      } 
+        this.equipment_data_items = result.data.result.left;
+        this.equipment_selected_items = result.data.result.right;
+          
+      let total_left = result.data.result.left
+      this.Equipment_table_all_total= total_left.length;
+      // this.Equipment_table_selected_total=0
+      let Data_Seleted_Edit_Equipment = result.data.result.right;
+      if(Data_Seleted_Edit_Equipment.length){
+          this.equipment_selected_items = Data_Seleted_Edit_Equipment.map(val => {
+          return {
+            id: val.id,
+            name: val.name,
+            amounts: val.amount
+          };
+        });
+        this.Equipment_table_selected_total=Data_Seleted_Edit_Equipment.length;
+      }
+        this.dialogCreateandUpdateChecklistJobEquipment=true;
+     } 
    },
+      selectedAddEquipment(item) {
+      var items = this.equipment_selected_items.find(
+        val => val.id == item.id
+      );
+      if (items) {
+        this.equipment_selected_items.map(val => {
+          if (items.id == val.id) {
+            if (val.amounts < item.amount) {
+              //console.log('มีจะเข้านี้');
+              val.amounts++;
+            }
+          }
+        });
+      } else {
+        //console.log('ไม่มีจะเข้านี้');
+        this.equipment_selected_items.push({
+          id: item.id,
+          name: item.name,
+          amounts: 1
+        });
+      }
+      this.Equipment_table_selected_total = this.equipment_selected_items.length;
+    },
 
-// async  updatedescription_before(){
-//       let setdescription = {quotation_code:this.qc ,description:this.description_before ,description_type:0}
-//       let result = await api.descriptionTeamSetup(setdescription);
-//       if (result.data.response == "OK") {
-//         this.$swal.fire("บันทึกเพิ่มเติมเรียบร้อยแล้ว", "", "success");
-//         this.JobLineupfood();
-//       } 
+    
+    DeleteEquipment(item) {
+      this.editedIndex = this.equipment_selected_items.indexOf(item);
+      this.equipment_selected_items.splice(this.editedIndex, 1);
+      this.Equipment_table_selected_total = this.equipment_selected_items.length;
+    },
 
-//     },
-//  async  updatedescription_between(){
-//       let setdescription = {quotation_code:this.qc ,description:this.description_between ,description_type:1}
-//       let result = await api.descriptionTeamSetup(setdescription);
-//       if (result.data.response == "OK") {
-//         this.$swal.fire("บันทึกเพิ่มเติมเรียบร้อยแล้ว", "", "success");
-//         this.JobLineupfood();
-//       } 
-//     },
-  // async  updatedescription_after(){
-  //     let setdescription = {quotation_code:this.qc ,description:this.description_after ,description_type:2}
-  //     let result = await api.descriptionTeamSetup(setdescription);
-  //     if (result.data.response == "OK") {
-  //       this.$swal.fire("บันทึกเพิ่มเติมเรียบร้อยแล้ว", "", "success");
-  //       this.JobLineupfood();
-  //     } 
+ async  CreateandUpdatecheckListsEquipment(){
+      let ALLequipments = [];
+      ALLequipments = this.equipment_selected_items.map(val => {return {id:val.id,amount:val.amounts};
+        });
+      let CreateandUpdate = {quotation_code:this.qc ,equipments:ALLequipments}
+      let result = await api.createandupdatequipmentteamhong(CreateandUpdate);
+      if (result.data.response == "OK") {
+        this.$swal.fire("บันทึกอุปกรณ์เรียบร้อยแล้ว", "", "success");
+        this.dialogCreateandUpdateChecklistJobEquipment=false;
+        this.JobLineupfood();
+      } 
+    },
 
-  //   },
+  async DeleteChacklist_JobEquipment(item){
+        this.$swal
+        .fire({
+          title: `ต้องการลบรายการตรวจสอบนี้ใช่หรือไม่ ?`,
+          showDenyButton: true,
+          confirmButtonText: `ยืนยัน`,
+          denyButtonText: `ยกเลิก`,
+        })
+        .then(async (result) => {
+          if (result.isConfirmed) {
+            let delCustomizecheck = {id:item.id};
+            let resultdel = await api.deleteChklistEquipmentteamhong(delCustomizecheck);
+            if (resultdel.data.response == "OK") {
+              this.$swal.fire("ยืนยันการลบเรียบร้อย", "", "success");
+              this.JobLineupfood();
+            }
+          } else if (result.isDenied) {
+            this.$swal.fire("ยกเลิกการลบ", "", "error");
+          }
+        });
+    },
 
+  async EditChacklist_JobEquipment(item){
+    let ID_JobEquipment = {id:item.id};
+    this.ID_JobEquipments = item.id
+    let result = await api.getDescriptionafterequipmentteamhong(ID_JobEquipment);
+      if (result.data.response == "OK") {;
+        // this.$swal.fire("เพิ่มคำอธิบายเรียบร้อยแล้ว", "", "success");
+        this.Description_checklists_JobEquipmentName = result.data.result.name;
+        this.Description_checklists_JobEquipment = result.data.result.description;
+        this.dialogDescriptionChecklistJobEquipment=true;
+        this.JobLineupfood();
+      } 
+    },
+
+  async DescriptionChacklist_submit_JobEquipment(){
+    let ID_setJobEquipment = {id:this.ID_JobEquipments ,description:this.Description_checklists_JobEquipment};
+    let result = await api.addDescriptionafterequipmentteamhong(ID_setJobEquipment);
+      if (result.data.response == "OK") {
+        this.$swal.fire("เพิ่มคำอธิบายเรียบร้อยแล้ว", "", "success");
+        this.Description_checklists_JobEquipmentName = null;
+        this.Description_checklists_JobEquipment = null;
+        this.dialogDescriptionChecklistJobEquipment=false;
+        this.JobLineupfood();
+      } 
+    },
     
     // รูป
     async handlePreview(file) {
@@ -1448,7 +1363,7 @@ export default {
         this.fileList_before=[...this.fileList_before, {name:res.data.original_filename, uid:res.data.asset_id, url:res.data.url}]
       let uplondimg = {quotation_code:this.qc ,name:res.data.original_filename, url:res.data.url, img_type:4}
       let result = await api.CreateimgLineupfood(uplondimg);
-      console.log('ds',result);
+      //console.log('ds',result);
       if (result.data.response == "OK") {
         this.$swal.fire("บันทึกรูปเรียบร้อยแล้ว", "", "success");
         this.JobLineupfood();
@@ -1462,7 +1377,7 @@ export default {
       formData.append("file", file);
       formData.append("upload_preset","lkp8jzgy");
       axios.post(`https://api.cloudinary.com/v1_1/digisolution/image/upload`,formData).then(async(res) => {
-        console.log('ได้',res.data);
+        //console.log('ได้',res.data);
         this.fileList_between=[...this.fileList_between, {name:res.data.original_filename, uid:res.data.asset_id, url:res.data.url}]
       let uplondimg = {quotation_code:this.qc ,name:res.data.original_filename, url:res.data.url, img_type:5}
       let result = await api.CreateimgLineupfood(uplondimg);

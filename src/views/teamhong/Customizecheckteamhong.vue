@@ -72,7 +72,7 @@
                     min="1"
                     clearable
                   ></v-text-field>
-                  <v-card-actions class="justify-center pa-0 mb-0">
+                  <v-card-actions class="justify-center">
                     <v-col lg="6" md="6" sm="12" cols="12">
                       <v-btn
                         color="#29CC97"
@@ -258,6 +258,8 @@
             <template v-slot:item="{ item }">
               <tr>
                 <td>{{ item.name }}</td>
+                <td>{{ item.stock_in }}</td>
+                <!-- <td>{{ item.stock_out }}</td> -->
                 <td>
                   <v-row>
                     <!-- <ModalEditchecklistdefault :IDchecklist="item.id" /> -->
@@ -322,6 +324,7 @@ export default {
     table_Customizechecks: [],
     headers_table_Customizechecks: [
       { text: "รายการตรวจสอบ", value: "name", sortable: true, align: "start" },
+      { text: "จำนวน", value: "stock_in", sortable: true, align: "start" },
       { text: "", value: "", sortable: false, align: "start" },
     ],
   }),
