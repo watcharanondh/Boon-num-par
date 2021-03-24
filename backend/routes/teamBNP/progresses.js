@@ -10,4 +10,9 @@ router.post("/listtask", authorize, ProgressesContrllers.listTask);
 /* List One Shipping to See */
 router.post("/listchart", authorize, ProgressesContrllers.listChart);
 
+/* List All Tasks */
+router.post("/listalltasks", authorize, ProgressesContrllers.listAllTasks);
+/* List Task  to See*/
+router.post("/listtasktosee", authorize, ProgressesContrllers.listTasktoSee);
+
 module.exports = router;

@@ -273,24 +273,6 @@ exports.manageLineUpFoodTeamTask = async (req, res) => {
     /* Checklist after */
     var isCheckAllAfter = []
     /* check อุปกรณ์ */
-    const food_checklists_after = await quotation_checklists.findAll({
-      attributes: ['id', 'name', 'description', ['returned_status', 'status'], ['is_editable', 'isEdit']],
-      where: {
-        quotation_id: headInfo[0].dataValues.id,
-        checklist_type: 4,
-        is_active: 1,
-        is_delete: 0
-      }
-    }).then(x => {
-      if (x && x.length > 0) {
-        x.map(o => {
-          isCheckAllAfter.push(parseInt(o.dataValues.status))
-          o.dataValues.isEdit = parseInt(o.dataValues.isEdit) == 1 ? true : false
-        })
-      }
-      return x
-    })
-    /* check อุปกรณ์ */
     const equip_checklists_after = await quotation_lineupfood_equiptment_checklists.findAll({
       attributes: ['id', 'description', 'amount', ['returned_status', 'status']],
       include: [
@@ -314,7 +296,6 @@ exports.manageLineUpFoodTeamTask = async (req, res) => {
       }
       return x
     })
-    console.log(equip_checklists_after);
     /* description after */
     const description_after = await quotation_descriptions.findOne({
       attributes: ['description'],
@@ -360,10 +341,9 @@ exports.manageLineUpFoodTeamTask = async (req, res) => {
           img: img_between
         },
         after: {
-          checklist_count: (food_checklists_after ? food_checklists_after.length : 0) + (equip_checklists_after ? equip_checklists_after.length : 0),
+          checklist_count: equip_checklists_after ? equip_checklists_after.length : 0,
           checklist_check_all: isCheckAllAfter.includes(0) || isCheckAllAfter.includes(2) ? 0 : 1,
           checklists: {
-            foods: food_checklists_after,
             equiptments: equip_checklists_after
           },
           description: description_after ? description_after.dataValues.description : '',
@@ -621,11 +601,11 @@ exports.listEquipChecklistToEditAndCreate = async (req, res) => {
       }
     })
     const right_result = await quotation_lineupfood_equiptment_checklists.findAll({
-      attributes: ['id', 'description', 'amount', 'status'],
+      attributes: ['description', 'amount', 'status'],
       include: [
         {
           model: lineupfood_equipments,
-          attributes: ['name']
+          attributes: ['id', 'name']
         }
       ],
       where: {
@@ -679,6 +659,8 @@ exports.createAndupdateChecklistLineUpEquipment = async (req, res) => {
           return { quotation_id: get_id_quotation.dataValues.id, lineupfood_equipment_id: o.id, amount: o.amount }
         })
         /*สร้าง checklists*/
+        console.log('send >>>', equipments);
+        console.log("create equip", equip);
         checklistsResult = await quotation_lineupfood_equiptment_checklists.bulkCreate(equip);
       }
       res.json({
@@ -696,13 +678,24 @@ exports.createAndupdateChecklistLineUpEquipment = async (req, res) => {
 /* List Checklist to Edit LineUpEquipment*/
 exports.listEquipChecklistToEdit = async (req, res) => {
   try {
-    const result = await quotation_lineupfood_equiptment_checklists.findAll({
-      attributes: ['id', 'name', 'description'],
+    const result = await quotation_lineupfood_equiptment_checklists.findOne({
+      attributes: ['id', 'description'],
+      include: [
+        {
+          model: lineupfood_equipments,
+          attributes: ['name']
+        }
+      ],
       where: {
         id: req.body.id,
         is_active: 1,
         is_delete: 0
       }
+    }).then(data => {
+      data.dataValues = { ...data.dataValues, ...data.dataValues.lineupfood_equipment.dataValues }
+      delete data.dataValues.lineupfood_equipment
+      console.log(data);
+      return data
     })
     if (result != '' && result !== null) {
       res.json({
@@ -831,14 +824,16 @@ exports.updateChecklistLineUpEquipmentReturn = async (req, res) => {
 /* Delete Checklist of LineUpEquipment (Update is_delete) */
 exports.deleteChecklistLineUpEquipment = async (req, res) => {
   try {
-    const result = await quotation_lineupfood_equiptment_checklists.update({
-      is_delete: 1
-    }, {
-      where: {
-        id: req.body.id
-      }
-    });
-    if (result != 0) {
+    const get_lineupfood_equipments = await quotation_lineupfood_equiptment_checklists.findOne({ where: { id: req.body.id } })
+    if (get_lineupfood_equipments) {
+      /* คืนอุปกรณ์ก่อนลบ */
+      await lineupfood_equipments.update({ stock_out: Sequelize.literal('stock_out -' + get_lineupfood_equipments.dataValues.amount) }, { where: { id: get_lineupfood_equipments.dataValues.lineupfood_equipment_id } })
+      /* ลบอุปกรณ์ */
+      const result = await quotation_lineupfood_equiptment_checklists.destroy({
+        where: {
+          id: req.body.id
+        }
+      });
       res.json({
         response: "OK",
         result: "Checklist: " + req.body.id + " Deleted. Result: " + result,
@@ -846,7 +841,7 @@ exports.deleteChecklistLineUpEquipment = async (req, res) => {
     } else {
       res.json({
         response: "FAILED",
-        result: "Checklist: " + req.body.id + " Not Found. Result: " + result,
+        result: "Checklist: " + req.body.id + " Not Found.",
       });
     }
   } catch (error) {

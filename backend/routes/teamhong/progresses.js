@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const authorize = require('../../middleware/authorize');
 
-const ProgressesContrllers = require("../../controllers/teamBNP/progresses");
+const ProgressesContrllers = require("../../controllers/teamhong/progresses");
 
 /* List All Shipping */
 router.post("/listtask", authorize, ProgressesContrllers.listTask);
