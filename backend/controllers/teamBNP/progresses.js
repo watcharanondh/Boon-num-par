@@ -42,6 +42,7 @@ exports.listTask = async (req, res) => {
       ],
       where: {
         quotation_status_id: 1,
+        area_viewing_team_id: { [Op.ne]: null },
         area_viewing_date: where,
         is_active: 1,
         is_delete: 0
@@ -84,7 +85,8 @@ exports.listTask = async (req, res) => {
       res.json({
         response: "OK",
         progressing: success_count + '/' + result.length,
-        result: result,
+        // result: result.length > 3 ? result.slice(0, 3) : result,
+        result,
       });
     } else {
       res.json({ response: "FAILED", result: "Not Found." });
@@ -119,6 +121,7 @@ exports.listChart = async (req, res) => {
       ],
       where: {
         quotation_status_id: 1,
+        area_viewing_team_id: { [Op.ne]: null },
         area_viewing_date: where,
         is_active: 1,
         is_delete: 0
@@ -145,9 +148,9 @@ exports.listChart = async (req, res) => {
     });
     const result = [
       {
-        name: 'ยังไม่สำเร็จ',
-        y: (todo / get_data.length) * 100,
-        color: '#F7685B',
+        name: 'สำเร็จ',
+        y: (done / get_data.length) * 100,
+        color: '#2ED47A',
       },
       {
         name: 'ดำเนินการอยู่',
@@ -155,9 +158,9 @@ exports.listChart = async (req, res) => {
         color: '#FFB946',
       },
       {
-        name: 'สำเร็จ',
-        y: (done / get_data.length) * 100,
-        color: '#2ED47A',
+        name: 'ยังไม่สำเร็จ',
+        y: (todo / get_data.length) * 100,
+        color: '#F7685B',
       },
     ]
     res.json({

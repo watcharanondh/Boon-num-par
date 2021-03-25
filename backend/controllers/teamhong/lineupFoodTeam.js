@@ -31,13 +31,18 @@ exports.listAllLineUpFoodTeam = async (req, res) => {
         },
         {
           model: quotation_checklists,
-          attributes: ['id', 'status', 'returned_status', 'checklist_type'],
+          attributes: ['id', 'name', 'status', 'returned_status', 'checklist_type'],
           where: {
             is_active: 1,
             is_delete: 0
           },
           required: false
-        }
+        },
+        {
+          model: quotation_lineupfood_equiptment_checklists,
+          attributes: ['status', 'returned_status'],
+          required: false
+        },
       ],
       where: {
         quotation_status_id: 1,
@@ -50,6 +55,7 @@ exports.listAllLineUpFoodTeam = async (req, res) => {
     }).then(quotation_data => {
       quotation_data.map((data) => {
         const getChecklists = data.dataValues.quotation_checklists
+        const getEquipChecklists = data.dataValues.quotation_lineupfood_equiptment_checklists
         const status_before = []
         const status_between = []
         const status_after = []
@@ -58,13 +64,18 @@ exports.listAllLineUpFoodTeam = async (req, res) => {
           getChecklists.map(x => {
             if (x.checklist_type == 4) {
               status_before.push(x.status)
-              status_after.push(x.returned_status)
+              // status_after.push(x.returned_status)
             } else if (x.checklist_type == 5) {
               status_between.push(x.status)
             }
           })
         }
-
+        if (getEquipChecklists && getEquipChecklists.length > 0) {
+          getEquipChecklists.map(y => {
+            status_before.push(y.status)
+            status_after.push(y.returned_status)
+          })
+        }
         const progress_before = status_before.includes(0) || status_before.includes(2) ? 0 : 1
         const progress_between = status_between.includes(0) || status_between.includes(2) ? 0 : 1
         const progress_after = status_after.includes(0) || status_after.includes(2) ? 0 : 1
@@ -81,6 +92,7 @@ exports.listAllLineUpFoodTeam = async (req, res) => {
         delete data.dataValues.customer;
         delete data.dataValues.lineup_food_team;
         delete data.dataValues.quotation_checklists;
+        delete data.dataValues.quotation_lineupfood_equiptment_checklists;
         count_total++;
       });
       return quotation_data;
