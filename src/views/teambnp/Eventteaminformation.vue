@@ -105,8 +105,8 @@
                 <v-toolbar-title><span class="header-table-title">รายชื่องาน</span></v-toolbar-title>
                 <v-toolbar-title><span class="order">{{ total }}</span></v-toolbar-title>
                 <v-spacer></v-spacer>
-                <v-divider class="mx-4" inset vertical></v-divider>
-                <!-- <v-text-field
+               <!-- <v-divider class="mx-4" inset vertical></v-divider>
+                 <v-text-field
                   v-model="search"
                   prepend-inner-icon="mdi-magnify"
                   label="ค้นหาช่วงเวลาที่ต้องการ"
@@ -204,6 +204,7 @@ export default {
       { text: "ทีมนัดดูสถานที่",value: "quotation_status",sortable: true,align: "start"},
       { text: "วันเวลาจัดสถานที่", value: "", sortable: false, align: "start" },
       { text: "จัดสถานที่", value: "", sortable: false, align: "start" },
+      { text: "", value: "", sortable: false, align: "start" },
       { text: "", value: "", sortable: false, align: "start" },
       { text: "", value: "", sortable: false, align: "start" },
     ]

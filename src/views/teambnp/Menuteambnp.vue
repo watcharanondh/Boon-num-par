@@ -153,7 +153,7 @@ export default {
       this.$router.push({ name: "menuTeambnp_eapa" });
     },
     PageWorkprogress() {
-      this.$router.push({ name: "menuWorkprogress" });
+      this.$router.push({ name: "menuWorkprogressteambnp" });
     },
     PageCustomizethesystem() {
       this.$router.push({ name: "menuManageteamlists" });

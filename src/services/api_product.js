@@ -1087,9 +1087,9 @@ export const DelChecklists = (data) => {
 };
 
 //workprogress
-export const ListDoneTask = (data) => {
+export const getListDoneTaskteambnp = (data) => {
   return axios
-    .post(apiUrl + server.LIST_DONE_TASK_URL, data, {
+    .post(apiUrl + server.LIST_DONE_TASK_URL_TEAMBNP, data, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`,
       },
@@ -1098,9 +1098,9 @@ export const ListDoneTask = (data) => {
       redirectLogin(error);
     });
 };
-export const ListTaskChart = (data) => {
+export const getListTaskChartteambnp = (data) => {
   return axios
-    .post(apiUrl + server.LIST_DONE_CHART_URL, data, {
+    .post(apiUrl + server.LIST_DONE_CHART_URL_TEAMBNP, data, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`,
       },
@@ -1109,6 +1109,29 @@ export const ListTaskChart = (data) => {
       redirectLogin(error);
     });
 };
+export const getListAllTasksteambnp = (data) => {
+  return axios
+    .post(apiUrl + server.LIST_ALL_TASK_URL_TEAMBNP, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`,
+      },
+    })
+    .catch((error) => {
+      redirectLogin(error);
+    });
+};
+export const getListTasktoseeteambnp = (data) => {
+  return axios
+    .post(apiUrl + server.LIST_TASK_TO_SEE_URL_TEAMBNP, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`,
+      },
+    })
+    .catch((error) => {
+      redirectLogin(error);
+    });
+};
+
 
 //teamhong
 /* ------- shipping ------- */
@@ -1366,8 +1389,53 @@ export const deleteChklistEquipmentteamhong = (data) => {
       redirectLogin(error);
     });
 };
+//Teamhong => Workprogressteamhong
+export const getListDoneTaskteamhong = (data) => {
+  return axios
+    .post(apiUrl + server.LIST_DONE_TASK_URL_TEAMHONG, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`,
+      },
+    })
+    .catch((error) => {
+      redirectLogin(error);
+    });
+};
+export const getListTaskChartteamhong = (data) => {
+  return axios
+    .post(apiUrl + server.LIST_DONE_CHART_URL_TEAMHONG, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`,
+      },
+    })
+    .catch((error) => {
+      redirectLogin(error);
+    });
+};
+export const getListAllTasksteamhong = (data) => {
+  return axios
+    .post(apiUrl + server.LIST_ALL_TASK_URL_TEAMHONG, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`,
+      },
+    })
+    .catch((error) => {
+      redirectLogin(error);
+    });
+};
+export const getListTasktoseeteamhong = (data) => {
+  return axios
+    .post(apiUrl + server.LIST_TASK_TO_SEE_URL_TEAMHONG, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(server.TOKEN_KEY)}`,
+      },
+    })
+    .catch((error) => {
+      redirectLogin(error);
+    });
+};
 
-//Teambnp => Team Management
+//Teamhong => Team Management
 export const getListallTeamhong = () => {
   return axios
     .get(apiUrl + server.LIST_ALL_TEAMS, {
@@ -1379,7 +1447,6 @@ export const getListallTeamhong = () => {
       redirectLogin(error);
     });
 };
-//
 export const getListtoCreateTeamhong = () => {
   return axios
     .get(apiUrl + server.LIST_ALL_USERS_TO_CREATETEAM, {
@@ -1391,7 +1458,6 @@ export const getListtoCreateTeamhong = () => {
       redirectLogin(error);
     });
 };
-//
 export const getListTeamhongtoEdit = (data) => {
   return axios
     .post(apiUrl + server.LIST_TEAM_TO_EDIT, data, {
@@ -1403,7 +1469,6 @@ export const getListTeamhongtoEdit = (data) => {
       redirectLogin(error);
     });
 };
-//
 export const addNewTeamhong = (data) => {
   return axios
     .post(apiUrl + server.CREATE_NEW_TEAM, data, {
@@ -1415,7 +1480,6 @@ export const addNewTeamhong = (data) => {
       redirectLogin(error);
     });
 };
-//
 export const editTeamhong = (data) => {
   return axios
     .post(apiUrl + server.EDIT_TEAM, data, {
@@ -1427,7 +1491,6 @@ export const editTeamhong = (data) => {
       redirectLogin(error);
     });
 };
-//
 export const deleteTeamhong = (data) => {
   return axios
     .post(apiUrl + server.DELETE_TEAMHONG, data, {

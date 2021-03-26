@@ -31,7 +31,9 @@ import Menuteambnp from "@/views/teambnp/Menuteambnp.vue";
 
 import Eventteaminformation from "@/views/teambnp/Eventteaminformation.vue";
 import Menuteambnp_eapa from "@/views/teambnp/Menuteambnp_eapa.vue";
-import Workprogress from "@/views/teambnp/Workprogress.vue";
+import Workprogressteambnp from "@/views/teambnp/Workprogressteambnp.vue";
+import JobWorkprogressteambnp from "@/views/teambnp/JobWorkprogressteambnp.vue";
+import MonitorWorkprogressteambnp from "@/views/teambnp/MonitorWorkprogressteambnp.vue";
 import Manageteamlists from "@/views/teambnp/Manageteamlists.vue"; 
 
 import Explorearea from "@/views/teambnp/Explorearea.vue";
@@ -43,7 +45,6 @@ import Createmanageteam from "@/views/teambnp/Createmanageteam.vue";
 import Editmanageteam from "@/views/teambnp/Editmanageteam.vue"; 
 import MonitorTeaminformation from "@/views/teambnp/MonitorTeaminformation.vue";
 import Monitorteamlists from "@/views/teambnp/Monitorteamlists.vue";
-
 import Customizecheck from "@/views/teambnp/Customizecheck.vue";
 
 
@@ -56,7 +57,9 @@ import Lineupfood from "@/views/teamhong/Lineupfood.vue";
 import JobLineupfood from "@/views/teamhong/JobLineupfood.vue";
 import MonitorTeaminformationfood from "@/views/teamhong/MonitorTeaminformationfood.vue";
 
-import Workprogresshong from "@/views/teamhong/Workprogress.vue";
+import Workprogressteamhong from "@/views/teamhong/Workprogressteamhong.vue";
+import JobWorkprogressteamhong from "@/views/teamhong/JobWorkprogressteamhong.vue";
+import MonitorWorkprogressteamhong from "@/views/teamhong/MonitorWorkprogressteamhong.vue";
 
 import Manageteamhong from "@/views/teamhong/Manageteamhong.vue"; 
 import Monitorteamhonglists from "@/views/teamhong/Monitorteamhonglists.vue"; 
@@ -237,10 +240,21 @@ const routes = [
     },
 
   {
-    path: "/teambnp/Workprogress",
-    name: "menuWorkprogress",
-    component: Workprogress
+    path: "/teambnp/Workprogressteambnp",
+    name: "menuWorkprogressteambnp",
+    component: Workprogressteambnp
   },
+    {
+      path: "/teambnp/JobWorkprogressteambnp",
+      name: "menuJobWorkprogressteambnp",
+      component: JobWorkprogressteambnp
+    },
+    {
+      path: "/teambnp/MonitorWorkprogressteambnp",
+      name: "menuMonitorWorkprogressteambnp",
+      component: MonitorWorkprogressteambnp
+    },
+
   {
     path: "/teambnp/Manageteamlists",
     name: "menuManageteamlists",
@@ -301,10 +315,21 @@ const routes = [
     component: JobLineupfood
   },
   {
-    path: "/teamhong/Workprogress",
-    name: "menuWorkprogresshong",
-    component: Workprogresshong
+    path: "/teamhong/Workprogressteamhong",
+    name: "menuWorkprogressteamhong",
+    component: Workprogressteamhong
   },
+  {
+    path: "/teamhong/JobWorkprogressteamhong",
+    name: "menuJobWorkprogressteamhong",
+    component: JobWorkprogressteamhong
+  },
+  {
+    path: "/teamhong/MonitorWorkprogressteamhong",
+    name: "menuMonitorWorkprogressteamhong",
+    component: MonitorWorkprogressteamhong
+  },
+
   {
     path: "/teamhong/Manageteamhong",
     name: "menuManageteamhong",

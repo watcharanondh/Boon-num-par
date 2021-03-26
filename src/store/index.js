@@ -15,6 +15,7 @@ export default new Vuex.Store({
     BNP_ID: "",
     type_id: null,
     bnpdata:"",
+    bnptypeID:null,
   },
   getters: {
     isLogin(state) {
@@ -34,6 +35,9 @@ export default new Vuex.Store({
     },
     BNP_DATA(state) {
       return state.bnpdata;
+    },
+    BNP_TYPE(state) {
+      return state.bnptypeID;
     }
   },
   mutations: {
@@ -57,9 +61,11 @@ export default new Vuex.Store({
     SET_Edit_BNP_ID(state, ID) {
       state.BNP_ID = ID;
     },
-
     SET_DATA_BNP(state, databnp) {
       state.bnpdata = databnp;
+    },
+    SET_DATATYPE_BNP(state, bnptypeID) {
+      state.bnptypeID = bnptypeID;
     }
   },
   actions: {
@@ -104,6 +110,9 @@ export default new Vuex.Store({
     },
     setBNPDATA({ commit }, databnp) {
       commit("SET_DATA_BNP", databnp);
+    },
+    setBNPDATATYPEID({ commit }, bnptypeID) {
+      commit("SET_DATATYPE_BNP", bnptypeID);
     }
   },
   modules: {}

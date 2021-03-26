@@ -40,7 +40,7 @@
             </v-row>
             <v-row>
               <v-col lg="4" md="4" sm="12" cols="12">
-            <!-- รหัสทีม -->
+              <!-- รหัสทีม -->
                 <div>รหัสทีม</div>
                 <v-row class="no-gutters">
                   <v-text-field
@@ -69,16 +69,16 @@
                   ></v-text-field>
                 </v-row>
               </v-col>
-            </v-row>
-            <v-row>
+              </v-row>
+              <v-row>
               <v-col>
                 <div class="create-edit-title">
                   ข้อมูลวันเวลา
                 </div>
               </v-col>
-            </v-row>
-            <v-row>
-            <!-- จัดงาน -->
+              </v-row>
+              <v-row>
+              <!-- จัดงาน -->
               <v-col lg="4" md="4" sm="12" cols="12">
                 <div>จัดงาน</div>
                 <v-row class="no-gutters">
@@ -108,16 +108,16 @@
                   ></v-text-field>
                 </v-row>
               </v-col>
-            </v-row>
-            <v-row>
+              </v-row>
+              <v-row>
               <v-col>
                 <div class="create-edit-title">
                   ข้อมูลทีม
                 </div>
               </v-col>
-            </v-row>
-            <v-row>
-            <!-- ทีมดูสถานที่ -->
+              </v-row>
+              <v-row>
+              <!-- ทีมดูสถานที่ -->
               <v-col lg="4" md="4" sm="12" cols="12">
                 <div>ทีมดูสถานที่</div>
                 <v-row class="no-gutters">

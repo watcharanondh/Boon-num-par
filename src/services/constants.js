@@ -150,8 +150,10 @@ export const server = {
 
 
   /////////////////////////////Workprogress/////////////////////////////
-  LIST_DONE_TASK_URL:`/bnp/progress/listtask`,
-  LIST_DONE_CHART_URL:`/bnp/progress/listchart`,
+  LIST_DONE_TASK_URL_TEAMBNP:`/bnp/progress/listtask`,
+  LIST_DONE_CHART_URL_TEAMBNP:`/bnp/progress/listchart`,
+  LIST_ALL_TASK_URL_TEAMBNP:`/bnp/progress/listalltasks`,
+  LIST_TASK_TO_SEE_URL_TEAMBNP:`/bnp/progress/listtasktosee`,
 
   //จบ teambnp
 
@@ -189,9 +191,11 @@ export const server = {
   EDIT_DESCRIPTION_INMODUL_CHECKLISTEQUIPMENT_TEAMHONG:`/hong/lineupfoodteam/editchecklistlineupequiptment`,
   DELETE_INMODU_CHECKLISTEQUIPMENT_TEAMHONG:`/hong/lineupfoodteam/delchecklistlineupequiptment`,
 
-  ////////////////////Progresses////////////////////////////////////////
-  LIST_DONE_TASK:`/hong/progress/listtask`,
-  LIST_TASK_CHART:`/hong/progress/listchart`,
+  /////////////////////////////Workprogress/////////////////////////////
+  LIST_DONE_TASK_URL_TEAMHONG:`/hong/progress/listtask`,
+  LIST_DONE_CHART_URL_TEAMHONG:`/hong/progress/listchart`,
+  LIST_ALL_TASK_URL_TEAMHONG:`/hong/progress/listalltasks`,
+  LIST_TASK_TO_SEE_URL_TEAMHONG:`/hong/progress/listtasktosee`,
 
 
   ////////////////////Team Management///////////////////////////////////

@@ -153,7 +153,7 @@ export default {
       this.$router.push({ name: "menuLineupfood" });
     },
     PageWorkprogress() {
-      this.$router.push({ name: "menuWorkprogresshong" });
+      this.$router.push({ name: "menuWorkprogressteamhong" });
     },
     PageCustomizethesystem() {
       this.$router.push({ name: "menuManageteamhong" });
