@@ -158,7 +158,7 @@ exports.listChart = async (req, res) => {
             isCheckAll.push(y.returned_status)
           })
         }
-        
+
         data.dataValues.progress_status = isCheckAll.includes(1) || isCheckAll.includes(2) ? (isCheckAll.includes(0) || isCheckAll.includes(2) ? 1 : 2) : 0
         data.dataValues.progress_status_name = isCheckAll.includes(1) || isCheckAll.includes(2) ? (isCheckAll.includes(0) || isCheckAll.includes(2) ? 'กำลังดำเนินการ' : 'สำเร็จ') : 'ยังไม่สำเร็จ'
         if (data.dataValues.progress_status == 0) { todo++ }
@@ -202,9 +202,12 @@ exports.listAllTasks = async (req, res) => {
     let count_total = 0;
     const _where = find_between_date(req.body.startdate, req.body.enddate)
     const result = await quotations.findAll({
-      attributes: ["id", "quotation_code",
+      attributes: ["quotation_code",
         [Sequelize.fn("date_format", Sequelize.col("`quotations`.`event_date`"), "%b %d, %Y"), "event_date"],
-        [Sequelize.fn("date_format", Sequelize.col("`quotations`.`event_date`"), "%h:%i %p"), "event_date_datetime"]
+        [Sequelize.fn("date_format", Sequelize.col("`quotations`.`event_date`"), "%h:%i %p"), "event_date_datetime"],
+        [Sequelize.fn("date_format", Sequelize.col("`quotations`.`area_viewing_date`"), "%b %d, %Y"), "area_viewing_date"],
+        [Sequelize.fn("date_format", Sequelize.col("`quotations`.`area_viewing_date`"), "%h:%i %p"), "area_viewing_date_datetime"],
+        [Sequelize.fn("date_format", Sequelize.col("`quotations`.`updated_at`"), "%d.%m.%Y"), "update"],
       ],
       include: [
         {
@@ -220,7 +223,7 @@ exports.listAllTasks = async (req, res) => {
         {
           model: teams,
           as: 'lineup_food_team',
-          attributes: ['team_code', ['name', 'team_name']],
+          attributes: [['team_code', 'lineup_food_team_code'], ['name', 'lineup_food_team_name']],
           required: false
         },
         {

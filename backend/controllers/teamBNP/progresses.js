@@ -1,4 +1,4 @@
-const { quotations, customers, districts, customer_tax_invoices, teams, quotation_checklists, quotation_descriptions, quotation_statuses, quotation_images } = require("../../models");
+const { quotations, customers, districts, quotation_drivers, customer_tax_invoices, teams, quotation_checklists, quotation_descriptions, quotation_statuses, quotation_images, users, user_details } = require("../../models");
 const { Op, Sequelize } = require("sequelize");
 const { find_between_date } = require("../../helper/finddate");
 
@@ -178,29 +178,80 @@ exports.listAllTasks = async (req, res) => {
   try {
     let count_total = 0;
     const _where = find_between_date(req.body.startdate, req.body.enddate)
+    let result = null
     if (req.body.type == 0) {
-      const result = await quotations.findAll({
+      result = await quotations.findAll({
         attributes: ["quotation_code",
+          [Sequelize.fn("date_format", Sequelize.col("`quotations`.`event_date`"), "%b %d, %Y"), "event_date"],
+          [Sequelize.fn("date_format", Sequelize.col("`quotations`.`event_date`"), "%h:%i %p"), "event_date_datetime"],
           [Sequelize.fn("date_format", Sequelize.col("`quotations`.`area_viewing_date`"), "%b %d, %Y"), "area_viewing_date"],
-          [Sequelize.fn("date_format", Sequelize.col("`quotations`.`area_viewing_date`"), "%h:%i %p"), "area_viewing_date_datetime"]
+          [Sequelize.fn("date_format", Sequelize.col("`quotations`.`area_viewing_date`"), "%h:%i %p"), "area_viewing_date_datetime"],
+          [Sequelize.fn("date_format", Sequelize.col("`quotations`.`updated_at`"), "%d.%m.%Y"), "update"],
         ],
         include: [
           {
             model: customers,
-            attributes: ["name", "address"],
+            attributes: ["name"],
             include: [
               {
-                model: districts,
-                attributes: ["district", "amphoe", "province", "zipcode"]
-              }
+                model: customer_tax_invoices,
+                attributes: ["title"],
+              },
             ],
           },
           {
-            model: teams,
-            as: 'area_viewing_team',
-            attributes: ['team_code', ['name', 'team_name']],
+            model: teams, as: 'area_viewing_team',
             where: {
               team_type: 0
+            },
+          },
+          {
+            model: quotation_drivers, as: 'area_viewing_driver',
+            attributes: ["id"],
+            include: [
+              {
+                model: users,
+                attributes: ['email'],
+                include: [
+                  {
+                    model: user_details,
+                    attributes: ['id', 'name']
+                  }
+                ]
+              }
+            ],
+            where: {
+              driver_type: 0,
+              is_active: 1,
+              is_delete: 0
+            },
+            required: false
+          },
+          {
+            model: teams, as: 'event_team',
+            where: {
+              team_type: 0
+            },
+          },
+          {
+            model: quotation_drivers, as: 'event_driver',
+            attributes: ["id"],
+            include: [
+              {
+                model: users,
+                attributes: ['email'],
+                include: [
+                  {
+                    model: user_details,
+                    attributes: ['id', 'name']
+                  }
+                ]
+              }
+            ],
+            where: {
+              driver_type: 1,
+              is_active: 1,
+              is_delete: 0
             },
             required: false
           },
@@ -217,65 +268,116 @@ exports.listAllTasks = async (req, res) => {
         ],
         where: {
           quotation_status_id: 1,
-          area_viewing_team_id: { [Op.ne]: null },
           area_viewing_date: _where,
+          area_viewing_team_id: { [Op.ne]: null },
           is_active: 1,
           is_delete: 0
         },
         order: [["id", "DESC"]]
-      }).then(quotation_data => {
-        quotation_data.map((data) => {
+      }).then(async quotation_data => {
+        quotation_data.map(async (data) => {
+          /* ชื่อลูกค้า */
+          data.dataValues.customer_tax_invoices = data.dataValues.customer.customer_tax_invoices != '' ? data.dataValues.customer.customer_tax_invoices[0].title : data.dataValues.customer.name;
+
+          /* ชื่อทีม */
+          data.dataValues.event_team = data.dataValues.event_team != null ? data.dataValues.event_team.name : '-'
+          data.dataValues.area_viewing_team = data.dataValues.area_viewing_team != null ? data.dataValues.area_viewing_team.name : '-'
+
+          /* คนขับรถ */
+          data.dataValues.event_driver = data.dataValues.event_driver && data.dataValues.event_driver.length > 0 ? data.dataValues.event_driver[0].dataValues.user.dataValues.user_detail.name : '-'
+          data.dataValues.area_viewing_driver = data.dataValues.area_viewing_driver && data.dataValues.area_viewing_driver.length > 0 ? data.dataValues.area_viewing_driver[0].dataValues.user.dataValues.user_detail.name : '-'
+
+          /* รายการตรวจสอบ */
           var isCheckAll = []
           if (data.dataValues.quotation_checklists.length > 0) {
             data.dataValues.quotation_checklists.map(x => {
               isCheckAll.push(x.status)
             })
           }
-          data.dataValues = {
-            ...data.dataValues.area_viewing_team.dataValues,
-            address: `${data.dataValues.customer.dataValues.address} ต.${data.dataValues.customer.dataValues.district.dataValues.district} อ.${data.dataValues.customer.dataValues.district.dataValues.amphoe} ${data.dataValues.customer.dataValues.district.dataValues.province} ${data.dataValues.customer.dataValues.district.dataValues.zipcode}`,
-            ...data.dataValues,
-            progress_status: isCheckAll.includes(1) || isCheckAll.includes(2) ? (isCheckAll.includes(0) || isCheckAll.includes(2) ? 'กำลังดำเนินการ' : 'สำเร็จ') : 'ยังไม่สำเร็จ',
-          }
-          delete data.dataValues.area_viewing_team;
+          data.dataValues.progress_status = isCheckAll.includes(1) || isCheckAll.includes(2) ? (isCheckAll.includes(2) ? 'ดำเนินการ' : 'สำเร็จ') : 'ไม่สำเร็จ'
+
+          /* type */
+          data.dataValues.type = req.body.type
+
           delete data.dataValues.customer;
           delete data.dataValues.quotation_checklists;
           count_total++;
         });
         return quotation_data;
       });
-      if (result != '' && result !== null) {
-        res.json({
-          response: "OK",
-          total: count_total + " รายการ",
-          result: result,
-        });
-      } else {
-        res.json({ response: "FAILED", result: "Not Found." });
-      }
     } else if (req.body.type == 1) {
-      const result = await quotations.findAll({
-        attributes: ["id", "quotation_code",
+      result = await quotations.findAll({
+        attributes: ["quotation_code",
           [Sequelize.fn("date_format", Sequelize.col("`quotations`.`event_date`"), "%b %d, %Y"), "event_date"],
-          [Sequelize.fn("date_format", Sequelize.col("`quotations`.`event_date`"), "%h:%i %p"), "event_date_datetime"]
+          [Sequelize.fn("date_format", Sequelize.col("`quotations`.`event_date`"), "%h:%i %p"), "event_date_datetime"],
+          [Sequelize.fn("date_format", Sequelize.col("`quotations`.`area_viewing_date`"), "%b %d, %Y"), "area_viewing_date"],
+          [Sequelize.fn("date_format", Sequelize.col("`quotations`.`area_viewing_date`"), "%h:%i %p"), "area_viewing_date_datetime"],
+          [Sequelize.fn("date_format", Sequelize.col("`quotations`.`updated_at`"), "%d.%m.%Y"), "update"],
         ],
         include: [
           {
             model: customers,
-            attributes: ["name", "address"],
+            attributes: ["name"],
             include: [
               {
-                model: districts,
-                attributes: ["district", "amphoe", "province", "zipcode"]
-              }
+                model: customer_tax_invoices,
+                attributes: ["title"],
+              },
             ],
           },
           {
-            model: teams,
-            as: 'event_team',
-            attributes: ['team_code', ['name', 'team_name']],
+            model: teams, as: 'area_viewing_team',
             where: {
               team_type: 0
+            },
+          },
+          {
+            model: quotation_drivers, as: 'area_viewing_driver',
+            attributes: ["id"],
+            include: [
+              {
+                model: users,
+                attributes: ['email'],
+                include: [
+                  {
+                    model: user_details,
+                    attributes: ['id', 'name']
+                  }
+                ]
+              }
+            ],
+            where: {
+              driver_type: 0,
+              is_active: 1,
+              is_delete: 0
+            },
+            required: false
+          },
+          {
+            model: teams, as: 'event_team',
+            where: {
+              team_type: 0
+            },
+          },
+          {
+            model: quotation_drivers, as: 'event_driver',
+            attributes: ["id"],
+            include: [
+              {
+                model: users,
+                attributes: ['email'],
+                include: [
+                  {
+                    model: user_details,
+                    attributes: ['id', 'name']
+                  }
+                ]
+              }
+            ],
+            where: {
+              driver_type: 1,
+              is_active: 1,
+              is_delete: 0
             },
             required: false
           },
@@ -291,14 +393,26 @@ exports.listAllTasks = async (req, res) => {
         ],
         where: {
           quotation_status_id: 1,
-          event_team_id: { [Op.ne]: null },
           event_date: _where,
+          event_team_id: { [Op.ne]: null },
           is_active: 1,
           is_delete: 0
         },
         order: [["id", "DESC"]]
-      }).then(quotation_data => {
-        quotation_data.map((data) => {
+      }).then(async quotation_data => {
+        quotation_data.map(async (data) => {
+          /* ชื่อลูกค้า */
+          data.dataValues.customer_tax_invoices = data.dataValues.customer.customer_tax_invoices != '' ? data.dataValues.customer.customer_tax_invoices[0].title : data.dataValues.customer.name;
+
+          /* ชื่อทีม */
+          data.dataValues.event_team = data.dataValues.event_team != null ? data.dataValues.event_team.name : '-'
+          data.dataValues.area_viewing_team = data.dataValues.area_viewing_team != null ? data.dataValues.area_viewing_team.name : '-'
+
+          /* คนขับรถ */
+          data.dataValues.event_driver = data.dataValues.event_driver && data.dataValues.event_driver.length > 0 ? data.dataValues.event_driver[0].dataValues.user.dataValues.user_detail.name : '-'
+          data.dataValues.area_viewing_driver = data.dataValues.area_viewing_driver && data.dataValues.area_viewing_driver.length > 0 ? data.dataValues.area_viewing_driver[0].dataValues.user.dataValues.user_detail.name : '-'
+
+          /* รายการตรวจสอบ */
           const getChecklists = data.dataValues.quotation_checklists
           const status_before = []
           const status_between = []
@@ -320,31 +434,26 @@ exports.listAllTasks = async (req, res) => {
           const progress_after = status_after.includes(0) || status_after.includes(2) ? 0 : 1
           const progress_total = progress_before + progress_between + progress_after
 
-          data.dataValues = {
-            ...data.dataValues.event_team.dataValues,
-            address: `${data.dataValues.customer.dataValues.address} ต.${data.dataValues.customer.dataValues.district.dataValues.district} อ.${data.dataValues.customer.dataValues.district.dataValues.amphoe} ${data.dataValues.customer.dataValues.district.dataValues.province} ${data.dataValues.customer.dataValues.district.dataValues.zipcode}`,
-            ...data.dataValues,
-            progress: progress_total + ' จาก 3',
-            progress_status: progress_total == 3 ? 'สำเร็จ' : (progress_total == 1 || progress_total == 2 ? 'กำลังดำเนินการ' : 'ยังไม่สำเร็จ')
-          }
+          data.dataValues.progress_status = progress_total == 3 ? 'สำเร็จ' : (progress_total == 1 || progress_total == 2 ? 'ดำเนินการ' : 'ไม่สำเร็จ')
+
+          /* type */
+          data.dataValues.type = req.body.type
+
           delete data.dataValues.customer;
-          delete data.dataValues.event_team;
           delete data.dataValues.quotation_checklists;
           count_total++;
         });
         return quotation_data;
       });
-      if (result != '' && result !== null) {
-        res.json({
-          response: "OK",
-          total: count_total + " รายการ",
-          result: result,
-        });
-      } else {
-        res.json({ response: "FAILED", result: "Not Found." });
-      }
+    }
+    if (result != '' && result !== null) {
+      res.json({
+        response: "OK",
+        total: count_total + " รายการ",
+        result: result,
+      });
     } else {
-      res.json({ response: "FAILED", result: "Unknow type." });
+      res.json({ response: "FAILED", result: "Not Found." });
     }
   } catch (error) {
     console.log(error);
@@ -363,7 +472,8 @@ exports.listTasktoSee = async (req, res) => {
       /* Head Info */
       const headInfo = await quotations.findAll({
         attributes: ["id", "quotation_code",
-          [Sequelize.fn("date_format", Sequelize.col("`quotations`.`area_viewing_date`"), "%b %d, %Y (%h:%i %p)"), "area_viewing_date"]
+          [Sequelize.fn("date_format", Sequelize.col("`quotations`.`area_viewing_date`"), "%b %d, %Y (%h:%i %p)"), "area_viewing_date"],
+          [Sequelize.fn("date_format", Sequelize.col("`quotations`.`event_date`"), "%b %d, %Y (%h:%i %p)"), "event_date"]
         ],
         include: [
           {
@@ -379,7 +489,12 @@ exports.listTasktoSee = async (req, res) => {
           {
             model: teams,
             as: 'area_viewing_team',
-            attributes: ['team_code', ['name', 'team_name']]
+            attributes: [['team_code','area_viewing_team_code'], ['name', 'area_viewing_team_name']]
+          },
+          {
+            model: teams,
+            as: 'event_team',
+            attributes: [['team_code','event_team_code'], ['name', 'event_team_name']]
           },
         ],
         where: {
@@ -393,12 +508,16 @@ exports.listTasktoSee = async (req, res) => {
             if (data.dataValues.area_viewing_team) {
               data.dataValues = { ...data.dataValues, ...data.dataValues.area_viewing_team.dataValues }
             }
+            if (data.dataValues.event_team) {
+              data.dataValues = { ...data.dataValues, ...data.dataValues.event_team.dataValues }
+            }
             data.dataValues = {
               ...data.dataValues,
               customer_name: data.dataValues.customer.name ? data.dataValues.customer.name : '-',
               address: `${data.dataValues.customer.dataValues.address} ต.${data.dataValues.customer.dataValues.district.dataValues.district} อ.${data.dataValues.customer.dataValues.district.dataValues.amphoe} ${data.dataValues.customer.dataValues.district.dataValues.province} ${data.dataValues.customer.dataValues.district.dataValues.zipcode}`,
             }
             delete data.dataValues.area_viewing_team;
+            delete data.dataValues.event_team;
             delete data.dataValues.customer;
           });
         }
@@ -437,7 +556,8 @@ exports.listTasktoSee = async (req, res) => {
       /* Head Info */
       const headInfo = await quotations.findAll({
         attributes: ["id", "quotation_code",
-          [Sequelize.fn("date_format", Sequelize.col("`quotations`.`area_viewing_date`"), "%b %d, %Y (%h:%i %p)"), "area_viewing_date"]
+          [Sequelize.fn("date_format", Sequelize.col("`quotations`.`area_viewing_date`"), "%b %d, %Y (%h:%i %p)"), "area_viewing_date"],
+          [Sequelize.fn("date_format", Sequelize.col("`quotations`.`event_date`"), "%b %d, %Y (%h:%i %p)"), "event_date"]
         ],
         include: [
           {
@@ -452,8 +572,13 @@ exports.listTasktoSee = async (req, res) => {
           },
           {
             model: teams,
+            as: 'area_viewing_team',
+            attributes: [['team_code','area_viewing_team_code'], ['name', 'area_viewing_team_name']]
+          },
+          {
+            model: teams,
             as: 'event_team',
-            attributes: ['team_code', ['name', 'team_name']]
+            attributes: [['team_code','event_team_code'], ['name', 'event_team_name']]
           },
         ],
         where: {
@@ -464,14 +589,18 @@ exports.listTasktoSee = async (req, res) => {
       }).then(quotation_data => {
         if (quotation_data && quotation_data.length > 0) {
           quotation_data.map((data) => {
+            if (data.dataValues.area_viewing_team) {
+              data.dataValues = { ...data.dataValues, ...data.dataValues.area_viewing_team.dataValues, }
+            }
             if (data.dataValues.event_team) {
-              data.dataValues = { ...data.dataValues, ...data.dataValues.event_team.dataValues, }
+              data.dataValues = { ...data.dataValues, ...data.dataValues.event_team.dataValues }
             }
             data.dataValues = {
               ...data.dataValues,
               customer_name: data.dataValues.customer.name ? data.dataValues.customer.name : '-',
               address: `${data.dataValues.customer.dataValues.address} ต.${data.dataValues.customer.dataValues.district.dataValues.district} อ.${data.dataValues.customer.dataValues.district.dataValues.amphoe} ${data.dataValues.customer.dataValues.district.dataValues.province} ${data.dataValues.customer.dataValues.district.dataValues.zipcode}`,
             }
+            delete data.dataValues.area_viewing_team;
             delete data.dataValues.event_team;
             delete data.dataValues.customer;
           });
